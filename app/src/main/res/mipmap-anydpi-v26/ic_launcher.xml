@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground>
+        <inset
+            android:drawable="@drawable/ic_launcher_foreground"
+            android:insetLeft="32dp"
+            android:insetTop="32dp"
+            android:insetRight="32dp"
+            android:insetBottom="32dp" />
+    </foreground>
+</adaptive-icon>

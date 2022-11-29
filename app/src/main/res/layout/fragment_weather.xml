@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.weather.WeatherFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="@dimen/medium_100">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:cardElevation="@dimen/small_100">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="@dimen/small_100"
+                android:padding="@dimen/medium_100">
+
+                <ImageView
+                    android:id="@+id/weatherIcon"
+                    android:layout_width="@dimen/size_weather_icon"
+                    android:layout_height="@dimen/size_weather_icon"
+                    android:src="@drawable/ic_cloudy"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_150"
+                    android:textSize="@dimen/text_size_300"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+                    tools:text="-3 C" />
+
+                <TextView
+                    android:id="@+id/weatherDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_100"
+                    android:labelFor="@id/weatherIcon"
+                    android:text="@string/weather_label_clear_sky"
+                    android:textSize="@dimen/text_size_125"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/temperature" />
+
+                <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                    android:id="@+id/humidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_150"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
+                    app:wm_icon="@drawable/ic_drop"
+                    app:wm_iconColor="?colorOnBackground"
+                    app:wm_iconSize="@dimen/size_weather_metric_icon"
+                    app:wm_text="30%"
+                    app:wm_textColor="?android:textColorSecondary"
+                    app:wm_textIconMargin="@dimen/small_50"
+                    app:wm_textSize="@dimen/text_size_87" />
+
+                <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                    android:id="@+id/pressure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_150"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toStartOf="@+id/humidity"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
+                    app:wm_icon="@drawable/ic_pressure"
+                    app:wm_iconColor="?colorOnBackground"
+                    app:wm_iconSize="@dimen/size_weather_metric_icon"
+                    app:wm_text="1014hpa"
+                    app:wm_textColor="?android:textColorSecondary"
+                    app:wm_textIconMargin="@dimen/small_50"
+                    app:wm_textSize="@dimen/text_size_87" />
+
+                <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                    android:id="@+id/windSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_150"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/humidity"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
+                    app:wm_icon="@drawable/ic_wind"
+                    app:wm_iconColor="?colorOnBackground"
+                    app:wm_iconSize="@dimen/size_weather_metric_icon"
+                    app:wm_text="12km/h"
+                    app:wm_textColor="?android:textColorSecondary"
+                    app:wm_textSize="@dimen/text_size_87" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/todayLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            android:text="@string/weather_today"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hourlyWeather"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/small_100"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_hour_weather" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
