@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:padding="@dimen/medium_100">
+        android:padding="@dimen/padding_layout">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -129,5 +129,11 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_hour_weather" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

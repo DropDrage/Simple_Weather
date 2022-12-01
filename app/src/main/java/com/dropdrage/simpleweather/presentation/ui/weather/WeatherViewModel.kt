@@ -11,7 +11,7 @@ import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.domain.location.LocationTracker
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
-import com.dropdrage.simpleweather.domain.weather.repository.WeatherRepository
+import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.util.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.ResourceMessage

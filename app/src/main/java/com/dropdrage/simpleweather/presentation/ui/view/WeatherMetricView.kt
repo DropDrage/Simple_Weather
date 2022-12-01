@@ -12,6 +12,9 @@ import androidx.annotation.ColorInt
 import com.dropdrage.simpleweather.R
 import kotlin.math.absoluteValue
 
+/**
+ * Better than [android.view.TextView.drawableLeft] bcz you can change size of the icon.
+ */
 class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     View(context, attrs, defStyle) {
 
@@ -83,13 +86,10 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun init(attrs: AttributeSet?, defStyle: Int) {
-        // Load attributes
         val a = context.obtainStyledAttributes(attrs, R.styleable.WeatherMetricView, defStyle, 0)
 
         _text = a.getString(R.styleable.WeatherMetricView_wm_text)
         _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, textColor)
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
         _textSize = a.getDimension(R.styleable.WeatherMetricView_wm_textSize,
             resources.getDimension(R.dimen.text_size_100))
 
@@ -106,13 +106,11 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
 
         a.recycle()
 
-        // Set up a default TextPaint object
         textPaint = TextPaint().apply {
             flags = Paint.ANTI_ALIAS_FLAG
             textAlign = Paint.Align.LEFT
         }
 
-        // Update TextPaint and text measurements from attributes
         invalidateTextPaintAndMeasurements()
     }
 

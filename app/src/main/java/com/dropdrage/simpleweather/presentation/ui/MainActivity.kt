@@ -11,7 +11,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
-import com.dropdrage.simpleweather.data.remote.WeatherApi
+import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var weatherApi: WeatherApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(binding.toolbar)

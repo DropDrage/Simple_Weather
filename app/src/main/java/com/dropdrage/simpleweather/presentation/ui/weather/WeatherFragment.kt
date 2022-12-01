@@ -9,12 +9,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentWeatherBinding
 import com.dropdrage.simpleweather.domain.location.LocationResult
+import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -56,6 +58,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.button2.setOnClickListener {
+            findNavController().navigate(WeatherFragmentDirections.navigateCitySearch())
+        }
         initHourlyWeather()
         bindViewModel()
     }
@@ -74,15 +79,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun bindViewModel() = viewModel.apply {
-        currentWeather.observe(this@WeatherFragment) {
-            binding.weatherIcon.setImageResource(it.weatherType.iconRes)
-            binding.temperature.text = it.temperature
-            binding.weatherDescription.setText(it.weatherType.weatherDescriptionRes)
-
-            binding.pressure.text = it.pressure
-            binding.humidity.text = it.humidity
-            binding.windSpeed.text = it.windSpeed
-        }
+        currentWeather.observe(this@WeatherFragment, ::updateCurrentWeather)
         hourlyWeather.observe(this@WeatherFragment) {
             hourlyWeatherAdapter.values = it
 
@@ -104,6 +101,16 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                 LocationResult.NoLocation -> {}
             }
         }
+    }
+
+    private fun updateCurrentWeather(weather: ViewHourWeather) = binding.apply {
+        weatherIcon.setImageResource(weather.weatherType.iconRes)
+        temperature.text = weather.temperature
+        weatherDescription.setText(weather.weatherType.weatherDescriptionRes)
+
+        pressure.text = weather.pressure
+        humidity.text = weather.humidity
+        windSpeed.text = weather.windSpeed
     }
 
     private fun requestLocationPermission(permission: String) {

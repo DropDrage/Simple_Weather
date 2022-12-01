@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.remote
+package com.dropdrage.simpleweather.data.source.remote
 
 import com.dropdrage.simpleweather.data.dto.WeatherDto
 import retrofit2.http.GET

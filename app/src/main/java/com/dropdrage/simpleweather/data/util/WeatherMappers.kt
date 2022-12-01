@@ -48,12 +48,11 @@ private fun codeToWeatherType(code: Int): WeatherType = when (code) {
     51 -> WeatherType.LightDrizzle
     53 -> WeatherType.ModerateDrizzle
     55 -> WeatherType.DenseDrizzle
-    56 -> WeatherType.LightFreezingDrizzle
+    56, 66 -> WeatherType.LightFreezingDrizzle
     57 -> WeatherType.DenseFreezingDrizzle
     61 -> WeatherType.SlightRain
     63 -> WeatherType.ModerateRain
     65 -> WeatherType.HeavyRain
-    66 -> WeatherType.LightFreezingDrizzle
     67 -> WeatherType.HeavyFreezingRain
     71 -> WeatherType.SlightSnowFall
     73 -> WeatherType.ModerateSnowFall

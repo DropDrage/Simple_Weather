@@ -12,17 +12,17 @@
         tools:layout="@layout/fragment_weather">
 
         <action
-            android:id="@+id/navigateSecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/navigate_CitySearch"
+            app:destination="@id/CitySearchFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.dropdrage.simpleweather.presentation.ui.SecondFragment"
+        android:id="@+id/CitySearchFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.city_search.CitySearchFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_city_search">
 
         <action
-            android:id="@+id/navigateFirstFragment"
+            android:id="@+id/navigate_Weather"
             app:destination="@id/WeatherFragment" />
     </fragment>
 </navigation>

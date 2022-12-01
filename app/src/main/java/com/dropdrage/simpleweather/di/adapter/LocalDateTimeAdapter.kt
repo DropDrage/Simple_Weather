@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.di
+package com.dropdrage.simpleweather.di.adapter
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
@@ -11,9 +11,7 @@ class LocalDateTimeAdapter : JsonAdapter<LocalDateTime>() {
 
 
     override fun toJson(writer: JsonWriter, value: LocalDateTime?) {
-        value?.let {
-            writer.value(it.format(formatter))
-        }
+        value?.let { writer.value(it.format(formatter)) }
     }
 
     override fun fromJson(reader: JsonReader): LocalDateTime? =

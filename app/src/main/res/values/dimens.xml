@@ -33,6 +33,8 @@
     <dimen name="text_size_300">48sp</dimen>
 
 
+    <dimen name="padding_layout">@dimen/medium_100</dimen>
+
     <dimen name="size_weather_icon">@dimen/huge_150</dimen>
     <dimen name="size_weather_metric_icon">@dimen/medium_150</dimen>
     <dimen name="size_weather_hour_icon">@dimen/large_150</dimen>
