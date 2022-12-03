@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_layout"
-    tools:context=".presentation.ui.city_search.CitySearchFragment">
+    tools:context=".presentation.ui.city.search.CitySearchFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/query"

@@ -4,12 +4,12 @@ import android.widget.Toast
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ItemHourWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
-import com.dropdrage.simpleweather.presentation.util.simple_adapter.BindableViewHolder
+import com.dropdrage.simpleweather.presentation.util.adapter.SimpleViewHolder
 import java.util.*
 
 class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
-    BindableViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding) {
-    override fun displayData(weather: ViewHourWeather) {
+    SimpleViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding) {
+    override fun bindData(weather: ViewHourWeather) {
         binding.apply {
             val context = binding.root.context
             val calendar = Calendar.getInstance()

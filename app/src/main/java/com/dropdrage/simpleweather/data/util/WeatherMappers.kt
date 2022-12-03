@@ -1,7 +1,9 @@
 package com.dropdrage.simpleweather.data.util
 
-import com.dropdrage.simpleweather.data.dto.HourlyWeatherDto
-import com.dropdrage.simpleweather.data.dto.WeatherDto
+import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
+import com.dropdrage.simpleweather.data.source.remote.dto.HourlyWeatherDto
+import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
+import com.dropdrage.simpleweather.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.domain.weather.Weather
@@ -11,31 +13,32 @@ private typealias DomainWeather = Weather
 
 private const val HOURS_IN_DAY = 24
 
-fun WeatherDto.toDomainWeather(): DomainWeather {
+fun WeatherResponseDto.toDomainWeather(): DomainWeather {
     var dailyWeather = hourly.toWeatherPerHour().chunked(HOURS_IN_DAY).map {
         DayWeather(it)
     }
     return Weather(dailyWeather)
 }
 
-private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> {
-    return time.mapIndexed { index, time ->
-        val temperature = temperatures[index]
-        val weatherCode = weatherCodes[index]
-        val windSpeed = windSpeeds[index]
-        val pressure = pressures[index]
-        val humidity = humidities[index]
+private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> = time.mapIndexed { index, time ->
+    val temperature = temperatures[index]
+    val weatherCode = weatherCodes[index]
+    val windSpeed = windSpeeds[index]
+    val pressure = pressures[index]
+    val humidity = humidities[index]
 
-        HourWeather(
-            dateTime = time,
-            temperatureCelsius = temperature,
-            pressure = pressure,
-            windSpeed = windSpeed,
-            humidity = humidity,
-            weatherType = codeToWeatherType(weatherCode),
-        )
-    }
+    HourWeather(
+        dateTime = time,
+        temperatureCelsius = temperature,
+        pressure = pressure,
+        windSpeed = windSpeed,
+        humidity = humidity,
+        weatherType = codeToWeatherType(weatherCode),
+    )
 }
+
+fun CurrentWeatherResponseDto.toDomainCurrentWeather(): CurrentWeather =
+    CurrentWeather(currentWeather.temperature, codeToWeatherType(currentWeather.weatherCode))
 
 
 private fun codeToWeatherType(code: Int): WeatherType = when (code) {

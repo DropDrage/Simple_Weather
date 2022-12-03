@@ -13,9 +13,9 @@ import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
-import com.dropdrage.simpleweather.presentation.util.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.ResourceMessage
 import com.dropdrage.simpleweather.presentation.util.TextMessage
+import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.toTextMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -81,7 +81,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     private suspend fun getWeatherForLocation(location: Location) {
-        when (val result = weatherRepository.getWeather(location.latitude, location.longitude)) {
+        when (val result = weatherRepository.getWeather(location)) {
             is Resource.Success -> updateWeather(result.data)
             is Resource.Error -> _error.value = //ToDo don't pass exception messages to view
                 result.message?.toTextMessage() ?: TextMessage.UnknownErrorMessage

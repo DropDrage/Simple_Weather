@@ -2,11 +2,13 @@ package com.dropdrage.simpleweather.di.module
 
 import com.dropdrage.simpleweather.BuildConfig
 import com.dropdrage.simpleweather.data.repository.CitySearchRepositoryImpl
+import com.dropdrage.simpleweather.data.repository.CurrentWeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.di.adapter.LocalDateTimeAdapter
-import com.dropdrage.simpleweather.domain.search.CitySearchRepository
+import com.dropdrage.simpleweather.domain.city.search.CitySearchRepository
+import com.dropdrage.simpleweather.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -26,8 +28,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteDataProviderModule {
-    private const val WEATHER_URL = "https://api.open-meteo.com/"
-    private const val SEARCH_URL = "https://geocoding-api.open-meteo.com/"
+    private const val WEATHER_URL = "https://api.open-meteo.com/v1/"
+    private const val SEARCH_URL = "https://geocoding-api.open-meteo.com/v1/"
 
 
     @Provides
@@ -83,5 +85,9 @@ abstract class RemoteBindModule {
 
     @Binds
     @Singleton
-    abstract fun bindCitiesRepository(citySearchRepository: CitySearchRepositoryImpl): CitySearchRepository
+    abstract fun bindCurrentWeatherRepository(weatherRepository: CurrentWeatherRepositoryImpl): CurrentWeatherRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCitySearchRepository(citySearchRepository: CitySearchRepositoryImpl): CitySearchRepository
 }

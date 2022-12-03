@@ -59,10 +59,10 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.button2.setOnClickListener {
-            findNavController().navigate(WeatherFragmentDirections.navigateCitySearch())
+            findNavController().navigate(WeatherFragmentDirections.navigateCityList())
         }
         initHourlyWeather()
-        bindViewModel()
+        observeViewModel()
     }
 
     private fun initHourlyWeather() {
@@ -78,7 +78,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
     }
 
-    private fun bindViewModel() = viewModel.apply {
+    private fun observeViewModel() = viewModel.apply {
         currentWeather.observe(this@WeatherFragment, ::updateCurrentWeather)
         hourlyWeather.observe(this@WeatherFragment) {
             hourlyWeatherAdapter.values = it
@@ -97,7 +97,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         locationObtainingError.observe(this@WeatherFragment) {
             when (it) {
                 is LocationResult.NoPermission -> requestLocationPermission(it.permission)
-                LocationResult.GpsDisabled -> requestDeviceLocationSettings()
+                LocationResult.GpsDisabled -> requestGpsActivation()
                 LocationResult.NoLocation -> {}
             }
         }
@@ -118,7 +118,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         permissionRequest.launch(permission)
     }
 
-    fun requestDeviceLocationSettings() {
+    fun requestGpsActivation() {
         Log.d(TAG, "GPS activation requested")
 
         val locationRequest: LocationRequest =
@@ -154,4 +154,5 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         super.onResume()
         viewModel.loadWeather()
     }
+
 }
