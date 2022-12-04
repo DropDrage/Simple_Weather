@@ -13,6 +13,8 @@ interface CityDao : CrudDao<CityModel> {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     override suspend fun insert(item: CityModel)
 
+    @Query("SELECT * FROM CityModel WHERE `order` = :order LIMIT 1")
+    suspend fun getWithOrder(order: Int): CityModel?
 
     @Query("SELECT * FROM CityModel")
     suspend fun getAll(): List<CityModel>

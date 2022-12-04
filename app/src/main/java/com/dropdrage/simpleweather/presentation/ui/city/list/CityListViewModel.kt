@@ -34,7 +34,7 @@ class CityListViewModel @Inject constructor(
 
     fun changeOrder(orderedCities: List<ViewCityCurrentWeather>) {
         viewModelScope.launch {
-            cityRepository.updateCitiesOrder(orderedCities.map { it.city })
+            cityRepository.updateCitiesOrders(orderedCities.map { it.city })
         }
     }
 

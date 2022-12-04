@@ -23,4 +23,8 @@ class ResourceMessage(@StringRes private val messageId: Int) : TextMessage() {
 
 fun String.toTextMessage(): TextMessage = StringMessage(this)
 
+fun String?.toTextMessageOrUnknownErrorMessage(): TextMessage =
+    if (this != null) StringMessage(this)
+    else TextMessage.UnknownErrorMessage
+
 fun Int.toTextMessage(): TextMessage = ResourceMessage(this)

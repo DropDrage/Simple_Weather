@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.weather.WeatherFragment">
+    tools:context=".presentation.ui.city.weather.CityWeatherFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +26,26 @@
                 android:elevation="@dimen/small_100"
                 android:padding="@dimen/medium_100">
 
+                <TextView
+                    android:id="@+id/city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="City" />
+
                 <ImageView
                     android:id="@+id/weatherIcon"
                     android:layout_width="@dimen/size_weather_icon"
                     android:layout_height="@dimen/size_weather_icon"
+                    android:layout_marginTop="@dimen/medium_100"
                     android:src="@drawable/ic_cloudy"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/city" />
 
                 <TextView
                     android:id="@+id/temperature"

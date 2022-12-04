@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.ui.weather
+package com.dropdrage.simpleweather.presentation.ui.city.weather
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
