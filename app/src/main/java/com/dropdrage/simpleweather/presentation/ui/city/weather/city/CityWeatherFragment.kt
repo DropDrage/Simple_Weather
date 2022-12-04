@@ -11,7 +11,7 @@ class CityWeatherFragment : BaseCityWeatherFragment<CityWeatherViewModel>(CityWe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.order = arguments!!.getInt(ORDER_ARGUMENT)
+        viewModel.order = requireArguments().getInt(ORDER_ARGUMENT)
     }
 
 

@@ -25,7 +25,9 @@
     <fragment
         android:id="@+id/citiesWeatherFragment"
         android:name="com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragment"
-        android:label="CitiesWeatherFragment">
+        android:label="CitiesWeatherFragment"
+        tools:layout="@layout/fragment_cities_weather">
+
         <action
             android:id="@+id/navigate_CityList"
             app:destination="@id/cityListFragment" />

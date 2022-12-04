@@ -9,21 +9,21 @@ import java.util.*
 
 class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
     SimpleViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding) {
-    override fun bindData(weather: ViewHourWeather) {
+    override fun bindData(value: ViewHourWeather) {
         binding.apply {
             val context = binding.root.context
             val calendar = Calendar.getInstance()
 
-            val isNotCurrentHourWeather = (calendar.get(Calendar.HOUR_OF_DAY) != weather.dateTime.hour
-                || calendar.get(Calendar.DAY_OF_MONTH) != weather.dateTime.dayOfMonth)
+            val isNotCurrentHourWeather = (calendar.get(Calendar.HOUR_OF_DAY) != value.dateTime.hour
+                || calendar.get(Calendar.DAY_OF_MONTH) != value.dateTime.dayOfMonth)
             time.text =
-                if (isNotCurrentHourWeather) weather.timeFormatted
+                if (isNotCurrentHourWeather) value.timeFormatted
                 else context.getString(R.string.weather_hourly_now)
-            weatherIcon.setImageResource(weather.weatherType.iconRes)
-            temperature.text = weather.temperature
+            weatherIcon.setImageResource(value.weatherType.iconRes)
+            temperature.text = value.temperature
 
             root.setOnClickListener {
-                Toast.makeText(it.context, weather.weatherType.weatherDescriptionRes, Toast.LENGTH_SHORT).show()
+                Toast.makeText(it.context, value.weatherType.weatherDescriptionRes, Toast.LENGTH_SHORT).show()
             }
         }
     }
