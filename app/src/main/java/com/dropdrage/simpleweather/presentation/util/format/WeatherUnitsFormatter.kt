@@ -8,7 +8,12 @@ import javax.inject.Inject
 
 private const val FLOAT_FORMAT = "%.1f"
 
+private const val NO_VALUE = "--"
+
 class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val context: Context) {
+    val noTemperature = context.getString(WeatherUnitsPreferences.temperatureUnit.unitResId, NO_VALUE)
+
+
     fun formatTemperature(valueCelsius: Float): String =
         context.getString(WeatherUnitsPreferences.temperatureUnit.unitResId, String.format(FLOAT_FORMAT, valueCelsius))
 

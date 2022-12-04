@@ -84,4 +84,8 @@
 
     <string name="weather_today">Today</string>
     <string name="weather_hourly_now">now</string>
+
+    <string name="weather_search_hint">Enter city</string>
+
+    <string name="city_name_current_location">Current location</string>
 </resources>

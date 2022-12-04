@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.presentation.util.format
 
-import com.dropdrage.simpleweather.data.model.PressureUnit
-import com.dropdrage.simpleweather.data.model.TemperatureUnit
-import com.dropdrage.simpleweather.data.model.WindSpeedUnit
+import com.dropdrage.simpleweather.data.preferences.PressureUnit
+import com.dropdrage.simpleweather.data.preferences.TemperatureUnit
 import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.data.preferences.WindSpeedUnit
 import javax.inject.Inject
 
 private const val CELSIUS_TO_FAHRENHEIT_MODIFIER = 9 / 5f

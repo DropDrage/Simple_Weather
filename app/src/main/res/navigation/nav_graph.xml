@@ -3,26 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/WeatherFragment">
+    app:startDestination="@id/citiesWeatherFragment">
 
     <fragment
-        android:id="@+id/WeatherFragment"
-        android:name="com.dropdrage.simpleweather.presentation.ui.weather.WeatherFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_weather">
+        android:id="@+id/cityListFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.city.list.CityListFragment"
+        android:label="fragment_city_list"
+        tools:layout="@layout/fragment_city_list">
 
         <action
-            android:id="@+id/navigateSecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/navigate_CitySearch"
+            app:destination="@id/citySearchFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.dropdrage.simpleweather.presentation.ui.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
 
+    <fragment
+        android:id="@+id/citySearchFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.city.search.CitySearchFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_city_search" />
+
+    <fragment
+        android:id="@+id/citiesWeatherFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragment"
+        android:label="CitiesWeatherFragment">
         <action
-            android:id="@+id/navigateFirstFragment"
-            app:destination="@id/WeatherFragment" />
+            android:id="@+id/navigate_CityList"
+            app:destination="@id/cityListFragment" />
     </fragment>
 </navigation>
