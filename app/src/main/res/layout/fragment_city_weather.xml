@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.city.weather.CityWeatherFragment">
+    tools:context=".presentation.ui.city.weather.BaseCityWeatherFragment">
 
     <LinearLayout
+        style="@style/Layout.SimpleWeather.Root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="@dimen/padding_layout">
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             style="?materialCardViewOutlinedStyle"
@@ -82,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_humidity"
                     android:textAlignment="center"
-                    android:textAppearance="?textAppearanceBodySmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     app:layout_constraintEnd_toStartOf="@+id/windLabel"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/pressureLabel"
@@ -94,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_wind"
                     android:textAlignment="center"
-                    android:textAppearance="?textAppearanceBodySmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     app:layout_constraintEnd_toStartOf="@+id/visibilityLabel"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/humidityLabel"
@@ -106,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_visibility"
                     android:textAlignment="center"
-                    android:textAppearance="?textAppearanceBodySmall"
+                    android:textAppearance="?textAppearanceLabelMedium"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"

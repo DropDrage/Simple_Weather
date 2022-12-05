@@ -6,6 +6,17 @@
     app:startDestination="@id/citiesWeatherFragment">
 
     <fragment
+        android:id="@+id/citiesWeatherFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragment"
+        android:label=""
+        tools:layout="@layout/fragment_cities_weather">
+
+        <action
+            android:id="@+id/navigate_CityList"
+            app:destination="@id/cityListFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/cityListFragment"
         android:name="com.dropdrage.simpleweather.presentation.ui.city.list.CityListFragment"
         android:label="@string/city_list_label"
@@ -21,14 +32,4 @@
         android:name="com.dropdrage.simpleweather.presentation.ui.city.search.CitySearchFragment"
         tools:layout="@layout/fragment_city_search" />
 
-    <fragment
-        android:id="@+id/citiesWeatherFragment"
-        android:name="com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragment"
-        android:label="CitiesWeatherFragment"
-        tools:layout="@layout/fragment_cities_weather">
-
-        <action
-            android:id="@+id/navigate_CityList"
-            app:destination="@id/cityListFragment" />
-    </fragment>
 </navigation>

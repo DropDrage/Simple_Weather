@@ -3,5 +3,5 @@
     <corners android:radius="?cardCornerRadius" />
     <stroke
         android:width="@dimen/border_thin"
-        android:color="@color/gray_300" />
+        android:color="?strokeColor" />
 </shape>

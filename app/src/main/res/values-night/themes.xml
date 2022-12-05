@@ -1,11 +1,20 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.SimpleWeather" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-
         <item name="cardCornerRadius">@dimen/small_100</item>
 
-        <!--ToDo night-->
+        <item name="dividerColor">?colorPrimaryContainer</item>
+        <item name="strokeColor">@color/gray_900</item>
+
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SimpleWeather.HeadlineLarge</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SimpleWeather.TitleLarge</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.SimpleWeather.BodySmall</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SimpleWeather.BodyMedium</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.SimpleWeather.LabelMedium</item>
+    </style>
+
+    <style name="Theme.AppBar.Primary" parent="ThemeOverlay.Material3.Dark">
+        <item name="iconTint">?colorPrimary</item>
+        <item name="colorControlNormal">?colorPrimary</item>
     </style>
 </resources>
