@@ -51,13 +51,13 @@
 
     <ImageView
         android:id="@+id/drag"
-        android:tint="?colorOnBackground"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:paddingBottom="@dimen/large_100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_drag" />
+        app:srcCompat="@drawable/ic_drag"
+        app:tint="?colorOnBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
