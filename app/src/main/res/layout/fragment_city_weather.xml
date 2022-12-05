@@ -14,6 +14,7 @@
         android:padding="@dimen/padding_layout">
 
         <androidx.cardview.widget.CardView
+            style="?materialCardViewOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
@@ -63,21 +64,24 @@
 
                 <TextView
                     android:id="@+id/pressureLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/medium_150"
                     android:text="@string/weather_current_pressure"
+                    android:textAlignment="center"
                     android:textAppearance="?textAppearanceLabelMedium"
                     app:layout_constraintEnd_toStartOf="@+id/humidityLabel"
                     app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weatherDescription" />
 
                 <TextView
                     android:id="@+id/humidityLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_humidity"
+                    android:textAlignment="center"
                     android:textAppearance="?textAppearanceBodySmall"
                     app:layout_constraintEnd_toStartOf="@+id/windLabel"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -86,9 +90,10 @@
 
                 <TextView
                     android:id="@+id/windLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_wind"
+                    android:textAlignment="center"
                     android:textAppearance="?textAppearanceBodySmall"
                     app:layout_constraintEnd_toStartOf="@+id/visibilityLabel"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -97,10 +102,12 @@
 
                 <TextView
                     android:id="@+id/visibilityLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="94dp"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_visibility"
+                    android:textAlignment="center"
                     android:textAppearance="?textAppearanceBodySmall"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/windLabel"
@@ -145,11 +152,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.SimpleWeather.BodyMedium.Bold"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/visibilityLabel"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/visibilityLabel"
                     app:layout_constraintTop_toTopOf="@+id/wind"
-                    tools:text="8 km" />
+                    tools:text="8 km"
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -158,19 +167,35 @@
             android:id="@+id/todayLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_100"
+            android:layout_marginTop="@dimen/medium_150"
             android:text="@string/weather_today"
             android:textAppearance="?textAppearanceTitleLarge"
             android:textColor="?colorPrimary" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hourlyWeather"
+        <androidx.cardview.widget.CardView
+            style="?materialCardViewFilledStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/small_100"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_hour_weather" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            android:backgroundTint="?colorPrimaryContainer"
+            app:cardCornerRadius="?cardCornerRadius">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/small_100"
+                android:paddingVertical="@dimen/medium_100">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hourlyWeather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_hour_weather" />
+
+            </FrameLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

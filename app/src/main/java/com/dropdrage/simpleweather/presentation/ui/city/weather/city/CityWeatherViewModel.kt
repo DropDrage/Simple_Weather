@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.presentation.ui.city.weather.city
 import com.dropdrage.simpleweather.domain.city.CityRepository
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.presentation.model.ViewCity
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
@@ -23,9 +24,9 @@ class CityWeatherViewModel @Inject constructor(
     var order: Int = ORDER_UNSET
 
 
-    override suspend fun getCityName(): TextMessage = when (val result = cityRepository.getCityWithOrder(order)) {
-        is Resource.Success -> result.data.name.toTextMessage()
-        is Resource.Error -> TextMessage.UnknownErrorMessage
+    override suspend fun getCity(): ViewCity = when (val result = cityRepository.getCityWithOrder(order)) {
+        is Resource.Success -> ViewCity(result.data.name.toTextMessage(), result.data.country.code.toTextMessage())
+        is Resource.Error -> ViewCity(TextMessage.UnknownErrorMessage, TextMessage.UnknownErrorMessage)
     }
 
     override suspend fun tryLoadWeather() {

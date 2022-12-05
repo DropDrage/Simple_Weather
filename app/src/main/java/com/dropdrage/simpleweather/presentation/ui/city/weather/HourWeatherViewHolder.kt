@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
+import android.graphics.Typeface
 import android.widget.Toast
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ItemHourWeatherBinding
@@ -16,9 +17,13 @@ class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
 
             val isNotCurrentHourWeather = (calendar.get(Calendar.HOUR_OF_DAY) != value.dateTime.hour
                 || calendar.get(Calendar.DAY_OF_MONTH) != value.dateTime.dayOfMonth)
-            time.text =
-                if (isNotCurrentHourWeather) value.timeFormatted
-                else context.getString(R.string.weather_hourly_now)
+            if (isNotCurrentHourWeather) {
+                time.text = value.timeFormatted
+                time.typeface = Typeface.DEFAULT
+            } else {
+                time.text = context.getString(R.string.weather_hourly_now)
+                time.typeface = Typeface.DEFAULT_BOLD
+            }
             weatherIcon.setImageResource(value.weatherType.iconRes)
             weatherIcon.contentDescription = context.getString(value.weatherType.weatherDescriptionRes)
             temperature.text = value.temperature

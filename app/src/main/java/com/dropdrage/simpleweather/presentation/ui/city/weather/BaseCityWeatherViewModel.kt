@@ -8,6 +8,7 @@ import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.presentation.model.ViewCity
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
@@ -22,8 +23,8 @@ abstract class BaseCityWeatherViewModel constructor(
     protected val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _cityName = MutableLiveData<TextMessage>()
-    val cityName: LiveData<TextMessage> = _cityName
+    private val _city = MutableLiveData<ViewCity>()
+    val city: LiveData<ViewCity> = _city
 
     protected val _currentWeather = MutableLiveData<ViewHourWeather>()
     val currentWeather: LiveData<ViewHourWeather> = _currentWeather
@@ -35,14 +36,19 @@ abstract class BaseCityWeatherViewModel constructor(
     val error: LiveData<TextMessage> = _error
 
 
-    fun loadData() {
+    fun updateCityName() {
+        viewModelScope.launch {
+            _city.value = getCity()
+        }
+    }
+
+    fun loadWeather() {
         performAsyncWithLoadingIndication {
-            _cityName.value = getCityName()
             tryLoadWeather()
         }
     }
 
-    protected abstract suspend fun getCityName(): TextMessage
+    protected abstract suspend fun getCity(): ViewCity
 
     protected abstract suspend fun tryLoadWeather()
 

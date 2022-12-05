@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Simple Weather</string>
+
+    <string name="action_add_city">Add City</string>
     <string name="action_settings">Settings</string>
 
     <string name="first_fragment_label">First Fragment</string>
@@ -50,8 +52,12 @@
     <string name="weather_unit_wind_speed_km_h">%1$skm/h</string>
     <string name="weather_unit_wind_speed_mph">%1$smph</string>
 
+    <string name="weather_current_pressure">Pressure</string>
+    <string name="weather_current_humidity">Humidity</string>
+    <string name="weather_current_wind">Wind</string>
+    <string name="weather_current_visibility">Visibility</string>
     <string name="weather_today">Today</string>
-    <string name="weather_hourly_now">now</string>
+    <string name="weather_hourly_now">Now</string>
 
     <string name="city_search_label">Search city</string>
     <string name="city_search_hint">Enter city name</string>
