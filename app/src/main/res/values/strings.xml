@@ -48,7 +48,7 @@
     <string name="weather_unit_temperature_fahrenheit">%1$sF</string>
     <string name="weather_unit_pressure_pa">%1$dhpa</string>
     <string name="weather_unit_pressure_mm_hg">%1$dmm Hg</string>
-    <string name="weather_unit_humidity">%1$d\%%</string>
+    <string name="weather_unit_humidity">%1$d%%</string>
     <string name="weather_unit_wind_speed_km_h">%1$skm/h</string>
     <string name="weather_unit_wind_speed_mph">%1$smph</string>
 
