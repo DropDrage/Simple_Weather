@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/cityListFragment"
         android:name="com.dropdrage.simpleweather.presentation.ui.city.list.CityListFragment"
-        android:label="fragment_city_list"
+        android:label="@string/city_list_label"
         tools:layout="@layout/fragment_city_list">
 
         <action
@@ -19,7 +19,6 @@
     <fragment
         android:id="@+id/citySearchFragment"
         android:name="com.dropdrage.simpleweather.presentation.ui.city.search.CitySearchFragment"
-        android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_city_search" />
 
     <fragment

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitySearchBinding
+import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +24,8 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
 
         initCities()
         observeViews()
@@ -40,11 +43,16 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as ChangeableAppBar).restoreDefaultAppBar()
+    }
+
     private fun observeViewModel() = viewModel.apply {
-        searchResults.observe(this@CitySearchFragment) {
+        searchResults.observe(viewLifecycleOwner) {
             citiesAdapter.submitValues(it)
         }
-        cityAddedEvent.observe(this@CitySearchFragment) {
+        cityAddedEvent.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
     }

@@ -8,6 +8,10 @@ sealed class TextMessage {
     abstract fun getMessage(context: Context): String
 
 
+    object EmptyMessage : TextMessage() {
+        override fun getMessage(context: Context): String = ""
+    }
+
     object UnknownErrorMessage : TextMessage() {
         override fun getMessage(context: Context): String = context.getString(R.string.error_unexpected)
     }

@@ -1,6 +1,46 @@
 <resources>
+
     <style name="Widget.Theme.SimpleWeather.MyView" parent="">
         <item name="android:background">@color/gray_400</item>
         <item name="wm_textColor">@color/light_blue_400</item>
+    </style>
+
+
+    <style name="TextAppearance.SimpleWeather.BodyLarge.Primary" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodyMedium.Bold" parent="TextAppearance.SimpleWeather.BodyMedium">
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+
+    <style name="Layout.SimpleWeather.Root" parent="">
+        <item name="android:padding">@dimen/padding_layout</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/gray_500</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/gray_500</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">sans-serif</item>
     </style>
 </resources>

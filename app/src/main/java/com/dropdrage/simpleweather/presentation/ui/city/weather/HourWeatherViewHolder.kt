@@ -11,7 +11,7 @@ class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
     SimpleViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding) {
     override fun bindData(value: ViewHourWeather) {
         binding.apply {
-            val context = binding.root.context
+            val context = root.context
             val calendar = Calendar.getInstance()
 
             val isNotCurrentHourWeather = (calendar.get(Calendar.HOUR_OF_DAY) != value.dateTime.hour
@@ -20,6 +20,7 @@ class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
                 if (isNotCurrentHourWeather) value.timeFormatted
                 else context.getString(R.string.weather_hourly_now)
             weatherIcon.setImageResource(value.weatherType.iconRes)
+            weatherIcon.contentDescription = context.getString(value.weatherType.weatherDescriptionRes)
             temperature.text = value.temperature
 
             root.setOnClickListener {

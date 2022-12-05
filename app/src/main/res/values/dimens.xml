@@ -22,15 +22,15 @@
     <dimen name="huge_200">128dp</dimen>
 
     <!--Text size-->
-    <dimen name="text_size_62">10sp</dimen>
-    <dimen name="text_size_75">12sp</dimen>
-    <dimen name="text_size_87">14sp</dimen>
-    <dimen name="text_size_100">16sp</dimen>
-    <dimen name="text_size_112">18sp</dimen>
-    <dimen name="text_size_125">20sp</dimen>
-    <dimen name="text_size_150">24sp</dimen>
-    <dimen name="text_size_200">32sp</dimen>
-    <dimen name="text_size_300">48sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+    <dimen name="text_size_48">48sp</dimen>
 
 
     <dimen name="padding_layout">@dimen/medium_100</dimen>
