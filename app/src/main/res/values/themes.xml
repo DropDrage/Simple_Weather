@@ -1,14 +1,22 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="Base.Theme.SimpleWeather" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="cardCornerRadius">@dimen/small_100</item>
 
-        <!--        <item name="android:windowTranslucentStatus">true</item>-->
-        <!--        <item name="android:windowTranslucentNavigation">true</item>-->
-        <!--        <item name="android:fitsSystemWindows">true</item>-->
+        <item name="dividerColor">?colorPrimaryContainer</item>
+        <item name="strokeColor">@color/gray_300</item>
+
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SimpleWeather.HeadlineLarge</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SimpleWeather.TitleLarge</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.SimpleWeather.BodySmall</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SimpleWeather.BodyMedium</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.SimpleWeather.LabelMedium</item>
     </style>
 
     <style name="Theme.SimpleWeather" parent="Base.Theme.SimpleWeather" />
+
+    <style name="Theme.AppBar.Primary" parent="ThemeOverlay.Material3.Light">
+        <item name="iconTint">?colorPrimary</item>
+        <item name="colorControlNormal">?colorPrimary</item>
+    </style>
+
 </resources>

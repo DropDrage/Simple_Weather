@@ -7,6 +7,7 @@ import com.dropdrage.simpleweather.domain.location.LocationErrorResult
 import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.domain.location.LocationTracker
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.presentation.model.ViewCity
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.ResourceMessage
 import com.dropdrage.simpleweather.presentation.util.TextMessage
@@ -25,7 +26,8 @@ class CurrentLocationWeatherViewModel @Inject constructor(
     val locationObtainingError: LiveData<LocationErrorResult> = _locationObtainError
 
 
-    override suspend fun getCityName(): TextMessage = ResourceMessage(R.string.city_name_current_location)
+    override suspend fun getCity(): ViewCity =
+        ViewCity(ResourceMessage(R.string.city_name_current_location), TextMessage.EmptyMessage)
 
     override suspend fun tryLoadWeather() {
         when (val locationResult = locationTracker.getCurrentLocation()) {

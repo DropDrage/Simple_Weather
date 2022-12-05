@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textAppearance="?textAppearanceLabelMedium"
         tools:text="13:00" />
 
     <ImageView
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.SimpleWeather.BodyMedium.Bold"
         tools:text="31.0 C" />
+
 </LinearLayout>

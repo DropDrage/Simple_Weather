@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.presentation.ui.city.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.dropdrage.simpleweather.databinding.ItemCityBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.presentation.util.adapter.DifferRecyclerAdapter
@@ -12,6 +13,7 @@ import java.util.*
 
 class CityCurrentWeatherAdapter(
     private val onDeleteClicked: (ViewCityCurrentWeather) -> Unit,
+    private val requestDrag: (ViewHolder) -> Unit,
 ) : DifferRecyclerAdapter<ViewCityCurrentWeather, SimpleViewHolder<ViewCityCurrentWeather, *>>(
     CityCurrentWeatherDifferCallback()
 ), ItemsMovable {
@@ -22,7 +24,8 @@ class CityCurrentWeatherAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CityCurrentWeatherViewHolder(
         ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-        onDeleteClicked
+        onDeleteClicked,
+        requestDrag
     )
 
     override fun moveItem(from: Int, to: Int) {

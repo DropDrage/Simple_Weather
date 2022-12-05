@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -26,33 +27,37 @@ class CityListFragment : Fragment(R.layout.fragment_city_list) {
         super.onViewCreated(view, savedInstanceState)
 
         initCityList()
+        setOnClickListeners()
         observeViewModel()
+    }
 
-        binding.button.setOnClickListener {
+    private fun setOnClickListeners() = binding.apply {
+        addCity.setOnClickListener {
             findNavController().navigate(CityListFragmentDirections.navigateCitySearch())
         }
     }
 
     private fun initCityList() = binding.cities.apply {
-        layoutManager = LinearLayoutManager(requireContext())
-        adapter = CityCurrentWeatherAdapter(viewModel::deleteCity)
-            .also { cityCurrentWeatherAdapter = it }
-
-        val itemTouchHelper = ItemTouchHelper(ItemDragCallback {
+        val itemTouchHelper = ItemTouchHelper(CityCurrentWeatherDragCallback {
             viewModel.changeOrder(cityCurrentWeatherAdapter.cities)
         })
         itemTouchHelper.attachToRecyclerView(this)
+
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = CityCurrentWeatherAdapter(viewModel::deleteCity, itemTouchHelper::startDrag)
+            .apply { addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)) }
+            .also { cityCurrentWeatherAdapter = it }
     }
 
     private fun observeViewModel() = viewModel.apply {
-        citiesCurrentWeathers.observe(this@CityListFragment) {
+        citiesCurrentWeathers.observe(viewLifecycleOwner) {
             cityCurrentWeatherAdapter.submitValues(it.toImmutableList())
         }
     }
 
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.loadCities()
     }
 

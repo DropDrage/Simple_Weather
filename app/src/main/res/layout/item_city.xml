@@ -4,14 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/small_100">
+    android:clipToPadding="false"
+    android:padding="@dimen/medium_100">
 
     <TextView
         android:id="@+id/city"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/small_100"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?textAppearanceHeadlineLarge"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/weather"
+        app:layout_constraintStart_toEndOf="@+id/drag"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="City" />
 
@@ -19,18 +25,16 @@
         android:id="@+id/countryCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="?textAppearanceBodySmall"
+        app:layout_constraintStart_toStartOf="@+id/city"
         app:layout_constraintTop_toBottomOf="@+id/city"
         tools:text="DD" />
 
     <ImageView
         android:id="@+id/weather"
-        android:layout_width="@dimen/large_100"
-        android:layout_height="@dimen/large_100"
-        android:layout_marginEnd="@dimen/medium_150"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete"
+        android:layout_width="@dimen/large_150"
+        android:layout_height="@dimen/large_150"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_cloudy" />
 
@@ -38,22 +42,22 @@
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_100"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toBottomOf="@+id/weather"
-        app:layout_constraintEnd_toStartOf="@+id/weather"
-        app:layout_constraintTop_toTopOf="@+id/weather"
+        android:layout_marginTop="@dimen/small_50"
+        android:textAppearance="@style/TextAppearance.SimpleWeather.BodyLarge.Primary"
+        app:layout_constraintEnd_toEndOf="@+id/weather"
+        app:layout_constraintStart_toStartOf="@+id/weather"
+        app:layout_constraintTop_toBottomOf="@+id/weather"
         tools:text="-37 C" />
 
     <ImageView
-        android:id="@+id/delete"
-        android:layout_width="@dimen/large_150"
-        android:layout_height="@dimen/large_150"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/small_100"
+        android:id="@+id/drag"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/large_100"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
+        app:srcCompat="@drawable/ic_drag"
+        app:tint="?colorOnBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

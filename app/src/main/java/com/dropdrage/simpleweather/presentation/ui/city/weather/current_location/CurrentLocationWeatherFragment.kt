@@ -30,7 +30,7 @@ class CurrentLocationWeatherFragment :
 
         permissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                viewModel.loadData()
+                viewModel.loadWeather()
             } else {
                 Log.d(TAG, "Permission isn't granted")
             }
@@ -39,7 +39,7 @@ class CurrentLocationWeatherFragment :
 
 
     override fun CurrentLocationWeatherViewModel.additionalObserveViewModel() {
-        locationObtainingError.observe(this@CurrentLocationWeatherFragment) {
+        locationObtainingError.observe(viewLifecycleOwner) {
             when (it) {
                 is LocationResult.NoPermission -> requestLocationPermission(it.permission)
                 LocationResult.GpsDisabled -> requestGpsActivation()
@@ -79,7 +79,7 @@ class CurrentLocationWeatherFragment :
                 "Location >> (Present: ${state.isLocationPresent} | Usable: ${state.isLocationUsable})"
             Log.d(TAG, response)
 
-            viewModel.loadData()
+            viewModel.loadWeather()
         }
         checkLocationSettings.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {

@@ -91,7 +91,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         _text = a.getString(R.styleable.WeatherMetricView_wm_text)
         _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, textColor)
         _textSize = a.getDimension(R.styleable.WeatherMetricView_wm_textSize,
-            resources.getDimension(R.dimen.text_size_100))
+            resources.getDimension(R.dimen.text_size_16))
 
         if (a.hasValue(R.styleable.WeatherMetricView_wm_icon)) {
             icon = a.getDrawable(R.styleable.WeatherMetricView_wm_icon)

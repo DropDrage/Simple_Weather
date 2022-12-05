@@ -1,18 +1,16 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
-import com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragmentDirections
+import com.dropdrage.simpleweather.presentation.ui.cities_weather.TitleHolder
 import com.dropdrage.simpleweather.presentation.util.adapter.HorizontalScrollInterceptor
 import com.dropdrage.simpleweather.presentation.util.viewModels
 import com.wholedetail.changemysleep.presentation.ui.utils.SimpleMarginItemDecoration
@@ -33,9 +31,6 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button2.setOnClickListener {
-            findNavController().navigate(CitiesWeatherFragmentDirections.navigateCityList())
-        }
         initHourlyWeather()
         observeViewModel()
     }
@@ -56,12 +51,15 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun observeViewModel() = viewModel.apply {
-        cityName.observe(this@BaseCityWeatherFragment) {
-            binding.city.text = it.getMessage(requireContext())
+        city.observe(viewLifecycleOwner) {
+            (requireParentFragment() as TitleHolder).setTitle(
+                it.title.getMessage(requireContext()),
+                it.subtitle.getMessage(requireContext())
+            )
         }
 
-        currentWeather.observe(this@BaseCityWeatherFragment, ::updateCurrentWeather)
-        hourlyWeather.observe(this@BaseCityWeatherFragment) {
+        currentWeather.observe(viewLifecycleOwner, ::updateCurrentWeather)
+        hourlyWeather.observe(viewLifecycleOwner) {
             hourlyWeatherAdapter.values = it
 
             val calendar = Calendar.getInstance()
@@ -72,7 +70,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
             })
         }
 
-        error.observe(this@BaseCityWeatherFragment) {
+        error.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it.getMessage(requireContext()), Toast.LENGTH_SHORT).show()
         }
 
@@ -81,12 +79,13 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     private fun updateCurrentWeather(weather: ViewHourWeather) = binding.apply {
         weatherIcon.setImageResource(weather.weatherType.iconRes)
+        weatherIcon.contentDescription = getString(weather.weatherType.weatherDescriptionRes)
         temperature.text = weather.temperature
         weatherDescription.setText(weather.weatherType.weatherDescriptionRes)
 
         pressure.text = weather.pressure
         humidity.text = weather.humidity
-        windSpeed.text = weather.windSpeed
+        wind.text = weather.windSpeed
     }
 
     protected open fun VM.additionalObserveViewModel() {
@@ -95,8 +94,12 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "start")
-        viewModel.loadData()
+        viewModel.loadWeather()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateCityName()
     }
 
 
