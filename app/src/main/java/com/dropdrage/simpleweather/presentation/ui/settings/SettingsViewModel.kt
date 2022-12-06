@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.presentation.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dropdrage.simpleweather.data.preferences.TimePreferences
 import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.presentation.model.AnySetting
 import com.dropdrage.simpleweather.presentation.model.Setting
@@ -31,7 +32,7 @@ class SettingsViewModel @Inject constructor(private val weatherUnitConverter: We
             weatherUnitConverter.convertToView(WeatherUnitsPreferences.windSpeedUnit),
             weatherUnitConverter.convertToView(WeatherUnitsPreferences.visibilityUnit),
             weatherUnitConverter.convertToView(WeatherUnitsPreferences.precipitationUnit),
-            weatherUnitConverter.convertToView(WeatherUnitsPreferences.timeFormat),
+            weatherUnitConverter.convertToView(TimePreferences.timeFormat),
         )
     }
 
@@ -41,7 +42,7 @@ class SettingsViewModel @Inject constructor(private val weatherUnitConverter: We
         is ViewWindSpeedUnit -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.windSpeedUnit)
         is ViewVisibilityUnit -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.visibilityUnit)
         is ViewPrecipitationUnit -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.precipitationUnit)
-        is ViewTimeFormat -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.timeFormat)
+        is ViewTimeFormat -> weatherUnitConverter.convertToSetting(TimePreferences.timeFormat)
     }
 
     fun changeSetting(setting: Setting<*, *>) {
@@ -51,7 +52,7 @@ class SettingsViewModel @Inject constructor(private val weatherUnitConverter: We
             is ViewWindSpeedUnit -> WeatherUnitsPreferences.windSpeedUnit = setting.toData()
             is ViewVisibilityUnit -> WeatherUnitsPreferences.visibilityUnit = setting.toData()
             is ViewPrecipitationUnit -> WeatherUnitsPreferences.precipitationUnit = setting.toData()
-            is ViewTimeFormat -> WeatherUnitsPreferences.timeFormat = setting.toData()
+            is ViewTimeFormat -> TimePreferences.timeFormat = setting.toData()
         }
     }
 }

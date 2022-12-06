@@ -5,8 +5,7 @@ import androidx.room.RoomDatabase
 import com.dropdrage.simpleweather.data.source.local.dao.CityDao
 import com.dropdrage.simpleweather.data.source.local.model.CityModel
 
-@Database(entities = [CityModel::class], version = 1)
-//@TypeConverters(TimeConverter::class)
+@Database(entities = [CityModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract val cityDao: CityDao
 
