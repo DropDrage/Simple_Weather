@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.domain.weather
+package com.dropdrage.simpleweather.domain.weather.current
 
 import com.dropdrage.simpleweather.domain.city.search.City
 

@@ -62,6 +62,7 @@
     <plurals name="weather_unit_wind_speed_knots">
         <item quantity="one">%1$sknot</item>
         <item quantity="many">%1$sknots</item>
+        <item quantity="other">%1$sknots</item>
     </plurals>
     <!--Visibility-->
     <string name="weather_unit_visibility_label">Visibility</string>
@@ -71,6 +72,7 @@
     <plurals name="weather_unit_visibility_miles">
         <item quantity="one">%1$smile</item>
         <item quantity="many">%1$smiles</item>
+        <item quantity="other">%1$smiles</item>
     </plurals>
     <!--Precipitation-->
     <string name="weather_unit_precipitation_label">Precipitation</string>
@@ -79,6 +81,7 @@
     <plurals name="weather_unit_precipitation_inches">
         <item quantity="one">%1$sinch</item>
         <item quantity="many">%1$sinches</item>
+        <item quantity="other">%1$sinches</item>
     </plurals>
     <!--Time format-->
     <string name="time_format_label">Time format</string>

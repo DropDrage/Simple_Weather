@@ -10,7 +10,7 @@ fun isLocaleMetric() =
         LocaleData.getMeasurementSystem(ULocale.getDefault()) == LocaleData.MeasurementSystem.SI
     else Locale.getDefault().isLocaleMetric()
 
-fun Locale.isLocaleMetric(): Boolean = when (country.uppercase(this)) {
+private fun Locale.isLocaleMetric(): Boolean = when (country.uppercase(this)) {
     "US", "LR", "MM" -> false
     else -> true
 }

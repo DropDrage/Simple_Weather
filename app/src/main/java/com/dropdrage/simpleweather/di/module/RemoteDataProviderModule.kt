@@ -6,10 +6,11 @@ import com.dropdrage.simpleweather.data.repository.CurrentWeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
+import com.dropdrage.simpleweather.di.adapter.ApiSupportedParamFactory
 import com.dropdrage.simpleweather.di.adapter.LocalDateTimeAdapter
 import com.dropdrage.simpleweather.domain.city.search.CitySearchRepository
-import com.dropdrage.simpleweather.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.domain.weather.current.CurrentWeatherRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
@@ -57,10 +58,11 @@ object RemoteDataProviderModule {
 
     @Provides
     @Singleton
-    fun provideWeatherApi(okHttpClient: OkHttpClient, converterFactory: Converter.Factory): WeatherApi =
+    fun provideWeatherApi(okHttpClient: OkHttpClient, jsonConverterFactory: Converter.Factory): WeatherApi =
         Retrofit.Builder()
             .client(okHttpClient)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(ApiSupportedParamFactory())
+            .addConverterFactory(jsonConverterFactory)
             .baseUrl(WEATHER_URL)
             .build()
             .create(WeatherApi::class.java)

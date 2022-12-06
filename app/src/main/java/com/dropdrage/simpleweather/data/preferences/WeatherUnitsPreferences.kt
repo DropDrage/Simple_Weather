@@ -24,8 +24,4 @@ object WeatherUnitsPreferences : KotprefModel() {
     var precipitationUnit: PrecipitationUnit by enumOrdinalPref(
         if (isLocaleMetric()) PrecipitationUnit.MM else PrecipitationUnit.INCH
     )
-
-    var timeFormat: TimeFormat by enumOrdinalPref(
-        if (isLocaleMetric()) TimeFormat.H_24 else TimeFormat.H_12
-    )
 }
