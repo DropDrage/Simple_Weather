@@ -12,6 +12,8 @@ private const val CELSIUS_TO_FAHRENHEIT_OFFSET = 32
 private const val HPA_TO_MM_HG_MODIFIER = 0.75006157584566f
 
 private const val KM_H_TO_MPH_DIVIDER = 1.6f
+private const val KM_H_TO_M_S_DIVIDER = 3.6f
+private const val KM_H_TO_M_S_MULTIPLIER = 0.54f
 
 class WeatherUnitsConverter @Inject constructor() {
     fun convertTemperature(temperatureCelsius: Float) = when (WeatherUnitsPreferences.temperatureUnit) {
@@ -27,5 +29,7 @@ class WeatherUnitsConverter @Inject constructor() {
     fun convertWindSpeed(windSpeedKmh: Float) = when (WeatherUnitsPreferences.windSpeedUnit) {
         WindSpeedUnit.KM_H -> windSpeedKmh
         WindSpeedUnit.MPH -> windSpeedKmh / KM_H_TO_MPH_DIVIDER
+        WindSpeedUnit.M_S -> windSpeedKmh / KM_H_TO_M_S_DIVIDER
+        WindSpeedUnit.KNOTS -> windSpeedKmh * KM_H_TO_M_S_MULTIPLIER
     }
 }

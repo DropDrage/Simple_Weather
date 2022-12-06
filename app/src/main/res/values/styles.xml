@@ -16,6 +16,18 @@
         <item name="fontFamily">sans-serif-medium</item>
     </style>
 
+    <style name="TextAppearance.SimpleWeather.LabelMedium.Variant" parent="TextAppearance.SimpleWeather.LabelMedium">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.DialogTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">@dimen/text_size_18</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodyMedium.Variant" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    </style>
+
 
     <style name="Layout.SimpleWeather.Root" parent="">
         <item name="android:padding">@dimen/padding_layout</item>

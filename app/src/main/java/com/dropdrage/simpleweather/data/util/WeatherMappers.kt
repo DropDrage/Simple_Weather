@@ -29,7 +29,7 @@ private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> = time.mapInd
 
     HourWeather(
         dateTime = time,
-        temperatureCelsius = temperature,
+        temperature = temperature,
         pressure = pressure,
         windSpeed = windSpeed,
         humidity = humidity,

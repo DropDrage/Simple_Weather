@@ -18,11 +18,11 @@ class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val 
         context.getString(WeatherUnitsPreferences.temperatureUnit.unitResId, String.format(FLOAT_FORMAT, valueCelsius))
 
     fun formatPressure(value: Float): String =
-        context.getString(WeatherUnitsPreferences.pressureUnit.unitResId, value.toInt())
+        context.getString(WeatherUnitsPreferences.pressureUnit.unitResId, value.toInt().toString())
 
     fun formatWindSpeed(value: Float): String =
         context.getString(WeatherUnitsPreferences.windSpeedUnit.unitResId, String.format(FLOAT_FORMAT, value))
 
     fun formatHumidity(value: Int): String =
-        context.getString(R.string.weather_unit_humidity, value)
+        context.getString(R.string.weather_unit_humidity, value.toString())
 }
