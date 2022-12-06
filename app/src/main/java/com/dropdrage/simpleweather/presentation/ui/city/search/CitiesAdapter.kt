@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.presentation.ui.city.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dropdrage.simpleweather.databinding.ItemSearchCityBinding
-import com.dropdrage.simpleweather.domain.city.search.City
+import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.presentation.util.adapter.DifferRecyclerAdapter
 import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 

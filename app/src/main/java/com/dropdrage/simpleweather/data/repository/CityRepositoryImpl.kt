@@ -2,10 +2,10 @@ package com.dropdrage.simpleweather.data.repository
 
 import com.dropdrage.simpleweather.data.source.local.dao.CityDao
 import com.dropdrage.simpleweather.data.source.local.model.CityModel
-import com.dropdrage.simpleweather.data.util.toDomain
-import com.dropdrage.simpleweather.data.util.toModel
+import com.dropdrage.simpleweather.data.util.mapper.toDomain
+import com.dropdrage.simpleweather.data.util.mapper.toModel
+import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
-import com.dropdrage.simpleweather.domain.city.search.City
 import com.dropdrage.simpleweather.domain.util.Resource
 import javax.inject.Inject
 

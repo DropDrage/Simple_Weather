@@ -19,6 +19,7 @@ class CitiesWeatherAdapter(
     var citiesCount: Int = NO_CITIES
         set(value) {
             fragmentsCount = value + LOCATION_FRAGMENT_COUNT
+            field = value
         }
 
     private var fragmentsCount: Int = LOCATION_FRAGMENT_COUNT

@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.util
+package com.dropdrage.simpleweather.data.util.mapper
 
 import android.location.Location
 import com.dropdrage.simpleweather.domain.location.LocationResult

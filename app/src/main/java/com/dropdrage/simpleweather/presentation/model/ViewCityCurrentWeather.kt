@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.presentation.model
 
-import com.dropdrage.simpleweather.domain.city.search.City
+import com.dropdrage.simpleweather.domain.city.City
 
 data class ViewCityCurrentWeather(
     val city: City,

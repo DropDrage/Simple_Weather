@@ -11,9 +11,9 @@ import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.ui.cities_weather.TitleHolder
+import com.dropdrage.simpleweather.presentation.util.SimpleMarginItemDecoration
 import com.dropdrage.simpleweather.presentation.util.adapter.HorizontalScrollInterceptor
-import com.dropdrage.simpleweather.presentation.util.viewModels
-import com.wholedetail.changemysleep.presentation.ui.utils.SimpleMarginItemDecoration
+import com.dropdrage.simpleweather.presentation.util.extension.viewModels
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -24,8 +24,8 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     protected val binding by viewBinding(FragmentCityWeatherBinding::bind)
     protected val viewModel: VM by viewModels(viewModelClass)
 
-    protected lateinit var hourlyWeatherAdapter: HourlyWeatherAdapter
-    protected lateinit var hourlyWeatherLayoutManager: RecyclerView.LayoutManager
+    private lateinit var hourlyWeatherAdapter: HourlyWeatherAdapter
+    private lateinit var hourlyWeatherLayoutManager: RecyclerView.LayoutManager
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,13 +59,13 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         }
 
         currentWeather.observe(viewLifecycleOwner, ::updateCurrentWeather)
-        hourlyWeather.observe(viewLifecycleOwner) {
-            hourlyWeatherAdapter.values = it
+        hourlyWeather.observe(viewLifecycleOwner) { hourWeatherList ->
+            hourlyWeatherAdapter.values = hourWeatherList
 
             val calendar = Calendar.getInstance()
             val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
             val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-            hourlyWeatherLayoutManager.scrollToPosition(it.indexOfFirst {
+            hourlyWeatherLayoutManager.scrollToPosition(hourWeatherList.indexOfFirst {
                 currentDayOfMonth == it.dateTime.dayOfMonth && currentHour == it.dateTime.hour
             })
         }

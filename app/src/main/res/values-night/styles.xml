@@ -5,17 +5,4 @@
         <item name="wm_textColor">@color/light_blue_600</item>
     </style>
 
-
-    <!--<style name="TextAppearance.SimpleWeather.BodyMedium.Bold" parent="TextAppearance.SimpleWeather.BodyMedium">
-        <item name="fontFamily">sans-serif-medium</item>
-    </style>
-
-
-    <style name="TextAppearance.SimpleWeather.BodySmall" parent="TextAppearance.Material3.BodySmall">
-        <item name="android:textColor">?colorOnSurface</item>
-    </style>
-
-    <style name="TextAppearance.SimpleWeather.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?colorOnSurface</item>
-    </style>-->
 </resources>

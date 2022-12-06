@@ -1,10 +1,10 @@
-package com.dropdrage.simpleweather.data.util
+package com.dropdrage.simpleweather.data.util.mapper
 
 import com.dropdrage.simpleweather.data.source.local.model.CityModel
 import com.dropdrage.simpleweather.data.source.remote.dto.CitiesDto
 import com.dropdrage.simpleweather.data.source.remote.dto.CityDto
+import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.Country
-import com.dropdrage.simpleweather.domain.city.search.City
 import com.dropdrage.simpleweather.domain.location.Location
 
 

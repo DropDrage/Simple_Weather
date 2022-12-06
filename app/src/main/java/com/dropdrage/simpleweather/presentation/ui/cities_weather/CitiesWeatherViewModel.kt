@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
-import com.dropdrage.simpleweather.domain.city.search.City
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

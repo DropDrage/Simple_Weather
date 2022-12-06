@@ -7,6 +7,7 @@ import com.dropdrage.simpleweather.data.source.local.model.CityModel
 
 @Database(entities = [CityModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract val cityDao: CityDao
 
 

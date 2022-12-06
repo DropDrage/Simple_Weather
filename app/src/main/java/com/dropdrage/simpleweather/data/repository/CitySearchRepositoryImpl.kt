@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.data.repository
 
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.util.LogTags
-import com.dropdrage.simpleweather.data.util.toDomainCities
-import com.dropdrage.simpleweather.domain.city.search.City
+import com.dropdrage.simpleweather.data.util.mapper.toDomainCities
+import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.search.CitySearchRepository
 import com.dropdrage.simpleweather.domain.util.Resource
 import javax.inject.Inject

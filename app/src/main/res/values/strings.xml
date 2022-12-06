@@ -96,7 +96,6 @@
     <string name="weather_today">Today</string>
     <string name="weather_hourly_now">Now</string>
 
-    <string name="city_search_label">Search city</string>
     <string name="city_search_hint">Enter city name</string>
 
     <string name="city_list_label">Cities</string>

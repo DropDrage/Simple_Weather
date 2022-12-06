@@ -7,7 +7,7 @@ data class Weather(
 ) {
     val currentHourWeather: HourWeather
         get() {
-            var currentDay = dailyWeather.first()
+            val currentDay = dailyWeather.first()
             val currentHour = LocalDateTime.now().hour
             return currentDay.weatherPerHour.find { it.dateTime.hour == currentHour }
                 ?: error("Current hour is not found in current day: $currentHour. \n $currentDay")

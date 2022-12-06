@@ -16,20 +16,20 @@ import com.dropdrage.simpleweather.presentation.util.toTextMessageOrUnknownError
 import kotlinx.coroutines.launch
 
 abstract class BaseCityWeatherViewModel constructor(
-    protected val weatherRepository: WeatherRepository,
-    protected val hourWeatherConverter: HourWeatherConverter,
+    private val weatherRepository: WeatherRepository,
+    private val hourWeatherConverter: HourWeatherConverter,
 ) : ViewModel() {
 
-    protected val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _city = MutableLiveData<ViewCity>()
     val city: LiveData<ViewCity> = _city
 
-    protected val _currentWeather = MutableLiveData<ViewHourWeather>()
+    private val _currentWeather = MutableLiveData<ViewHourWeather>()
     val currentWeather: LiveData<ViewHourWeather> = _currentWeather
 
-    protected val _hourlyWeather = MutableLiveData<List<ViewHourWeather>>()
+    private val _hourlyWeather = MutableLiveData<List<ViewHourWeather>>()
     val hourlyWeather: LiveData<List<ViewHourWeather>> = _hourlyWeather
 
     protected val _error = MutableLiveData<TextMessage>()
@@ -52,7 +52,7 @@ abstract class BaseCityWeatherViewModel constructor(
 
     protected abstract suspend fun tryLoadWeather()
 
-    protected fun performAsyncWithLoadingIndication(action: suspend () -> Unit) {
+    private fun performAsyncWithLoadingIndication(action: suspend () -> Unit) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
@@ -71,7 +71,7 @@ abstract class BaseCityWeatherViewModel constructor(
         }
     }
 
-    protected fun updateWeather(weather: Weather) {
+    private fun updateWeather(weather: Weather) {
         _currentWeather.value = hourWeatherConverter.convertToView(weather.currentHourWeather)
         _hourlyWeather.value = weather.hourlyWeather.map(hourWeatherConverter::convertToView)
     }

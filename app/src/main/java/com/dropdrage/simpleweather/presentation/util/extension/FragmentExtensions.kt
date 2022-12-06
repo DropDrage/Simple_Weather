@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.util
+package com.dropdrage.simpleweather.presentation.util.extension
 
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment

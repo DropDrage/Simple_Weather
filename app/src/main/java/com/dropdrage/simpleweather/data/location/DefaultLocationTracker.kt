@@ -8,7 +8,7 @@ import android.os.Build
 import android.os.Looper
 import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
-import com.dropdrage.simpleweather.data.util.toLocationResult
+import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
 import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.domain.location.LocationTracker
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -20,8 +20,6 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-
-private const val TAG = "Location_Tracker"
 
 private const val LOCATION_REQUEST_INTERVAL = 60000L
 

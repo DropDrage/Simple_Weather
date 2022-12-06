@@ -10,7 +10,7 @@ import com.dropdrage.simpleweather.data.preferences.WindSpeedUnit
 private const val CELSIUS_TO_FAHRENHEIT_MODIFIER = 9 / 5f
 private const val CELSIUS_TO_FAHRENHEIT_OFFSET = 32
 
-private const val HPA_TO_MM_HG_MODIFIER = 0.75006157584566f
+private const val HPA_TO_MM_HG_MODIFIER = 0.7500616f
 
 private const val KM_H_TO_MPH_DIVIDER = 1.6f
 private const val KM_H_TO_M_S_DIVIDER = 3.6f

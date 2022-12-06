@@ -1,8 +1,9 @@
-package com.dropdrage.simpleweather.data.util
+package com.dropdrage.simpleweather.data.util.mapper
 
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
 import com.dropdrage.simpleweather.data.source.remote.dto.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.domain.weather.Weather
@@ -14,7 +15,7 @@ private typealias DomainWeather = Weather
 private const val HOURS_IN_DAY = 24
 
 fun WeatherResponseDto.toDomainWeather(): DomainWeather {
-    var dailyWeather = hourly.toWeatherPerHour().chunked(HOURS_IN_DAY).map {
+    val dailyWeather = hourly.toWeatherPerHour().chunked(HOURS_IN_DAY).map {
         DayWeather(it)
     }
     return Weather(dailyWeather)

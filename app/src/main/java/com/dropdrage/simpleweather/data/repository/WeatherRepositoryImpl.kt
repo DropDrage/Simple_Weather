@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.data.repository
 import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.data.util.LogTags
-import com.dropdrage.simpleweather.data.util.toDomainWeather
+import com.dropdrage.simpleweather.data.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather

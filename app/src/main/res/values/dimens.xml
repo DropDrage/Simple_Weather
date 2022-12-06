@@ -1,6 +1,4 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-
     <dimen name="small_50">4dp</dimen>
     <dimen name="small_75">6dp</dimen>
     <dimen name="small_100">8dp</dimen>

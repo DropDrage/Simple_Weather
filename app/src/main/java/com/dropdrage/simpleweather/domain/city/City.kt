@@ -1,6 +1,5 @@
-package com.dropdrage.simpleweather.domain.city.search
+package com.dropdrage.simpleweather.domain.city
 
-import com.dropdrage.simpleweather.domain.city.Country
 import com.dropdrage.simpleweather.domain.location.Location
 
 data class City(

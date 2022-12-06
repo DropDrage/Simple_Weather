@@ -1,4 +1,4 @@
-package com.wholedetail.changemysleep.presentation.ui.utils
+package com.dropdrage.simpleweather.presentation.util
 
 import android.graphics.Rect
 import android.view.View
