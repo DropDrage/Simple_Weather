@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import kotlin.properties.Delegates
 
 abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : Adapter<VH>() {
+
     var values: List<T> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }

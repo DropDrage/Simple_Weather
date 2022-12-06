@@ -1,13 +1,9 @@
 package com.dropdrage.simpleweather.presentation.util.format
 
+import com.dropdrage.simpleweather.data.preferences.TimePreferences
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import javax.inject.Inject
 
 class TimeFormatter @Inject constructor() {
-    private val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-
-
-    fun formatAsHour(time: LocalDateTime): String = time.format(timeFormatter)
+    fun formatAsHour(time: LocalDateTime): String = time.format(TimePreferences.timeFormat.formatter)
 }

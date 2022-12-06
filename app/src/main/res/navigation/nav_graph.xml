@@ -14,6 +14,9 @@
         <action
             android:id="@+id/navigate_CityList"
             app:destination="@id/cityListFragment" />
+        <action
+            android:id="@+id/navigate_SettingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -31,5 +34,11 @@
         android:id="@+id/citySearchFragment"
         android:name="com.dropdrage.simpleweather.presentation.ui.city.search.CitySearchFragment"
         tools:layout="@layout/fragment_city_search" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dropdrage.simpleweather.presentation.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

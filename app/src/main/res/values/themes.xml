@@ -1,6 +1,10 @@
 <resources>
+
     <style name="Base.Theme.SimpleWeather" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="cardCornerRadius">@dimen/small_100</item>
+
+        <item name="colorOnSurface">@color/gray_700</item>
+        <item name="colorOnSurfaceVariant">@color/gray_500</item>
 
         <item name="dividerColor">?colorPrimaryContainer</item>
         <item name="strokeColor">@color/gray_300</item>

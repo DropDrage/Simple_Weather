@@ -83,7 +83,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
                 true
             }
             R.id.settings -> {
-                //ToDo move to settings
+                findNavController().navigate(CitiesWeatherFragmentDirections.navigateSettingsFragment())
                 true
             }
             else -> false

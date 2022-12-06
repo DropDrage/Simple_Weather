@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.domain.weather.use_case
 
 import com.dropdrage.simpleweather.domain.city.CityRepository
 import com.dropdrage.simpleweather.domain.util.Resource
-import com.dropdrage.simpleweather.domain.weather.CityCurrentWeather
-import com.dropdrage.simpleweather.domain.weather.CurrentWeatherRepository
+import com.dropdrage.simpleweather.domain.weather.current.CityCurrentWeather
+import com.dropdrage.simpleweather.domain.weather.current.CurrentWeatherRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.channelFlow

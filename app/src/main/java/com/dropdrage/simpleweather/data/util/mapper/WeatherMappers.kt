@@ -3,11 +3,11 @@ package com.dropdrage.simpleweather.data.util
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
 import com.dropdrage.simpleweather.data.source.remote.dto.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
-import com.dropdrage.simpleweather.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherType
+import com.dropdrage.simpleweather.domain.weather.current.CurrentWeather
 
 private typealias DomainWeather = Weather
 
@@ -21,15 +21,15 @@ fun WeatherResponseDto.toDomainWeather(): DomainWeather {
 }
 
 private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> = time.mapIndexed { index, time ->
-    val temperature = temperatures[index]
+    val temperature = WeatherUnitsConverter.convertTemperatureIfApiDontSupport(temperatures[index])
     val weatherCode = weatherCodes[index]
-    val windSpeed = windSpeeds[index]
-    val pressure = pressures[index]
+    val windSpeed = WeatherUnitsConverter.convertWindSpeedIfApiDontSupport(windSpeeds[index])
+    val pressure = WeatherUnitsConverter.convertPressureIfApiDontSupport(pressures[index])
     val humidity = humidities[index]
 
     HourWeather(
         dateTime = time,
-        temperatureCelsius = temperature,
+        temperature = temperature,
         pressure = pressure,
         windSpeed = windSpeed,
         humidity = humidity,
@@ -37,8 +37,10 @@ private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> = time.mapInd
     )
 }
 
-fun CurrentWeatherResponseDto.toDomainCurrentWeather(): CurrentWeather =
-    CurrentWeather(currentWeather.temperature, codeToWeatherType(currentWeather.weatherCode))
+fun CurrentWeatherResponseDto.toDomainCurrentWeather(): CurrentWeather = CurrentWeather(
+    WeatherUnitsConverter.convertTemperatureIfApiDontSupport(currentWeather.temperature),
+    codeToWeatherType(currentWeather.weatherCode)
+)
 
 
 private fun codeToWeatherType(code: Int): WeatherType = when (code) {

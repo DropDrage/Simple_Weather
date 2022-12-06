@@ -6,7 +6,7 @@ import com.dropdrage.simpleweather.data.util.isLocaleMetric
 
 object WeatherUnitsPreferences : KotprefModel() {
     var temperatureUnit: TemperatureUnit by enumOrdinalPref(
-        if (isLocaleMetric()) TemperatureUnit.CELSIUS else TemperatureUnit.FAHRENHEIT
+        if (isLocaleMetric()) TemperatureUnit.CELSIUS else TemperatureUnit.FAHRENHEIT,
     )
 
     var pressureUnit: PressureUnit by enumOrdinalPref(
@@ -15,5 +15,13 @@ object WeatherUnitsPreferences : KotprefModel() {
 
     var windSpeedUnit: WindSpeedUnit by enumOrdinalPref(
         if (isLocaleMetric()) WindSpeedUnit.KM_H else WindSpeedUnit.MPH
+    )
+
+    var visibilityUnit: VisibilityUnit by enumOrdinalPref(
+        if (isLocaleMetric()) VisibilityUnit.K_METER else VisibilityUnit.MILE
+    )
+
+    var precipitationUnit: PrecipitationUnit by enumOrdinalPref(
+        if (isLocaleMetric()) PrecipitationUnit.MM else PrecipitationUnit.INCH
     )
 }
