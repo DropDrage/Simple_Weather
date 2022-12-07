@@ -4,13 +4,15 @@
     android:layout_height="match_parent">
 
     <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
-        style="@style/Widget.Theme.SimpleWeather.MyView"
+        style="@style/Widget.Theme.SimpleWeather.WeatherMetricView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:wm_textSize="16sp"
+        app:wm_dividerThickness="@dimen/divider_width"
         app:wm_icon="@android:drawable/ic_menu_add"
-        app:wm_textIconMargin="@dimen/small_100"
         app:wm_iconSize="@dimen/medium_150"
-        app:wm_text="Hello, WeatherMetricView" />
+        app:wm_textIconMargin="@dimen/small_100"
+        app:wm_textSize="16sp"
+        app:wm_topText="Hello, WeatherMetricView"
+        app:wm_bottomText="SAdasdas" />
 
 </FrameLayout>

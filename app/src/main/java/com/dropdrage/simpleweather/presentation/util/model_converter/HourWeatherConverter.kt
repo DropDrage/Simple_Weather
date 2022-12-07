@@ -13,11 +13,12 @@ class HourWeatherConverter @Inject constructor(
 ) {
     fun convertToView(hourWeather: HourWeather): ViewHourWeather = ViewHourWeather(
         dateTime = hourWeather.dateTime,
+        weatherType = ViewWeatherType.fromWeatherType(hourWeather.weatherType),
         timeFormatted = timeFormatter.formatAsHour(hourWeather.dateTime),
         temperature = unitsFormatter.formatTemperature(hourWeather.temperature),
         pressure = unitsFormatter.formatPressure(hourWeather.pressure),
         windSpeed = unitsFormatter.formatWindSpeed(hourWeather.windSpeed),
         humidity = unitsFormatter.formatHumidity(hourWeather.humidity),
-        weatherType = ViewWeatherType.fromWeatherType(hourWeather.weatherType),
+        visibility = unitsFormatter.formatVisibility(hourWeather.visibility),
     )
 }

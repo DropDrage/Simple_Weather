@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
+import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.ui.cities_weather.TitleHolder
 import com.dropdrage.simpleweather.presentation.util.SimpleMarginItemDecoration
@@ -42,8 +43,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
             adapter = HourlyWeatherAdapter().also { hourlyWeatherAdapter = it }
 
             addItemDecoration(SimpleMarginItemDecoration(
-                leftMargin = resources.getDimensionPixelSize(R.dimen.small_100),
-                rightMargin = resources.getDimensionPixelSize(R.dimen.small_100)
+                horizontalMargin = resources.getDimensionPixelSize(R.dimen.small_100)
             ))
 
             addOnItemTouchListener(HorizontalScrollInterceptor())
@@ -58,6 +58,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
             )
         }
 
+        currentDayWeather.observe(viewLifecycleOwner, ::updateCurrentDayWeather)
         currentWeather.observe(viewLifecycleOwner, ::updateCurrentWeather)
         hourlyWeather.observe(viewLifecycleOwner) { hourWeatherList ->
             hourlyWeatherAdapter.values = hourWeatherList
@@ -77,15 +78,23 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         additionalObserveViewModel()
     }
 
+    private fun updateCurrentDayWeather(weather: ViewDayWeather) = binding.apply {
+        temperatureRange.setText(weather.temperatureRange)
+        apparentTemperatureRange.setText(weather.apparentTemperatureRange)
+        precipitation.setText(weather.precipitationSum)
+        maxWindSpeed.setText(weather.maxWindSpeed)
+    }
+
     private fun updateCurrentWeather(weather: ViewHourWeather) = binding.apply {
         weatherIcon.setImageResource(weather.weatherType.iconRes)
         weatherIcon.contentDescription = getString(weather.weatherType.weatherDescriptionRes)
-        temperature.text = weather.temperature
         weatherDescription.setText(weather.weatherType.weatherDescriptionRes)
+        temperature.text = weather.temperature
 
         pressure.text = weather.pressure
         humidity.text = weather.humidity
         wind.text = weather.windSpeed
+        visibility.text = weather.visibility
     }
 
     protected open fun VM.additionalObserveViewModel() {

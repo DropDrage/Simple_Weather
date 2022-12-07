@@ -7,6 +7,7 @@ import com.dropdrage.simpleweather.data.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.di.adapter.ApiSupportedParamFactory
+import com.dropdrage.simpleweather.di.adapter.LocalDateAdapter
 import com.dropdrage.simpleweather.di.adapter.LocalDateTimeAdapter
 import com.dropdrage.simpleweather.domain.city.search.CitySearchRepository
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
@@ -23,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Singleton
 
@@ -49,6 +51,7 @@ object RemoteDataProviderModule {
     @Singleton
     fun provideMoshi() = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
+        .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
         .add(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())
         .build()
 

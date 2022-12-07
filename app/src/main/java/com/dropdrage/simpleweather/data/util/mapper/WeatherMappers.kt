@@ -1,9 +1,14 @@
 package com.dropdrage.simpleweather.data.util.mapper
 
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
+import com.dropdrage.simpleweather.data.source.remote.dto.DailyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
-import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertPressureIfApiDontSupport
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertTemperatureIfApiDontSupport
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertVisibilityIfApiDontSupport
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertWindSpeedIfApiDontSupport
+import com.dropdrage.simpleweather.domain.util.Range
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.domain.weather.Weather
@@ -15,31 +20,62 @@ private typealias DomainWeather = Weather
 private const val HOURS_IN_DAY = 24
 
 fun WeatherResponseDto.toDomainWeather(): DomainWeather {
-    val dailyWeather = hourly.toWeatherPerHour().chunked(HOURS_IN_DAY).map {
-        DayWeather(it)
-    }
+    val weathersPerHour = hourly.toWeatherPerHour().chunked(HOURS_IN_DAY)
+    val dailyWeather = daily.toDayWeather(weathersPerHour)
     return Weather(dailyWeather)
 }
 
 private fun HourlyWeatherDto.toWeatherPerHour(): List<HourWeather> = time.mapIndexed { index, time ->
-    val temperature = WeatherUnitsConverter.convertTemperatureIfApiDontSupport(temperatures[index])
-    val weatherCode = weatherCodes[index]
-    val windSpeed = WeatherUnitsConverter.convertWindSpeedIfApiDontSupport(windSpeeds[index])
-    val pressure = WeatherUnitsConverter.convertPressureIfApiDontSupport(pressures[index])
+    val temperature = convertTemperatureIfApiDontSupport(temperatures[index])
+    val weatherType = codeToWeatherType(weatherCodes[index])
+    val windSpeed = convertWindSpeedIfApiDontSupport(windSpeeds[index])
+    val pressure = convertPressureIfApiDontSupport(pressures[index])
     val humidity = humidities[index]
+    val visibility = convertVisibilityIfApiDontSupport(visibilities[index])
 
     HourWeather(
         dateTime = time,
+        weatherType = weatherType,
         temperature = temperature,
         pressure = pressure,
         windSpeed = windSpeed,
         humidity = humidity,
-        weatherType = codeToWeatherType(weatherCode),
+        visibility = visibility,
     )
 }
 
+private fun DailyWeatherDto.toDayWeather(weathersPerHour: List<List<HourWeather>>): List<DayWeather> =
+    dates.mapIndexed { index, date ->
+        val weatherType = codeToWeatherType(weatherCodes[index])
+        val temperatureRange = Range(
+            convertTemperatureIfApiDontSupport(minTemperatures[index]),
+            convertTemperatureIfApiDontSupport(maxTemperatures[index])
+        )
+        val apparentTemperatureRange = Range(
+            convertTemperatureIfApiDontSupport(apparentMinTemperatures[index]),
+            convertTemperatureIfApiDontSupport(apparentMaxTemperatures[index]),
+        )
+        val precipitationSum = precipitationSums[index]
+        val maxWindSpeed = maxWindSpeeds[index]
+        val sunrise = sunrises[index]
+        val sunset = sunsets[index]
+
+        DayWeather(
+            date = date,
+            weatherType = weatherType,
+            temperatureRange = temperatureRange,
+            apparentTemperatureRange = apparentTemperatureRange,
+            precipitationSum = precipitationSum,
+            maxWindSpeed = maxWindSpeed,
+            sunrise = sunrise,
+            sunset = sunset,
+            weatherPerHour = weathersPerHour[index],
+        )
+    }
+
+
 fun CurrentWeatherResponseDto.toDomainCurrentWeather(): CurrentWeather = CurrentWeather(
-    WeatherUnitsConverter.convertTemperatureIfApiDontSupport(currentWeather.temperature),
+    convertTemperatureIfApiDontSupport(currentWeather.temperature),
     codeToWeatherType(currentWeather.weatherCode)
 )
 

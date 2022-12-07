@@ -16,8 +16,8 @@ private const val KM_H_TO_MPH_DIVIDER = 1.6f
 private const val KM_H_TO_M_S_DIVIDER = 3.6f
 private const val KM_H_TO_M_S_MULTIPLIER = 0.54f
 
-private const val METER_TO_KM_DIVIDER = 1000
-private const val METER_TO_MILE_DIVIDER = 1609
+private const val METER_TO_KM_DIVIDER = 1000f
+private const val METER_TO_MILE_DIVIDER = 1609f
 
 private const val MM_TO_INCH_DIVIDER = 25.4f
 
@@ -27,9 +27,9 @@ object WeatherUnitsConverter {
         TemperatureUnit.FAHRENHEIT -> temperatureCelsius * CELSIUS_TO_FAHRENHEIT_MODIFIER + CELSIUS_TO_FAHRENHEIT_OFFSET
     }
 
-    fun convertPressure(pressureHpa: Float) = when (WeatherUnitsPreferences.pressureUnit) {
+    fun convertPressure(pressureHpa: Int): Int = when (WeatherUnitsPreferences.pressureUnit) {
         PressureUnit.H_PASCAL -> pressureHpa
-        PressureUnit.MM_HG -> pressureHpa * HPA_TO_MM_HG_MODIFIER
+        PressureUnit.MM_HG -> (pressureHpa * HPA_TO_MM_HG_MODIFIER).toInt()
     }
 
     fun convertWindSpeed(windSpeedKmh: Float) = when (WeatherUnitsPreferences.windSpeedUnit) {
@@ -39,7 +39,7 @@ object WeatherUnitsConverter {
         WindSpeedUnit.KNOTS -> windSpeedKmh * KM_H_TO_M_S_MULTIPLIER
     }
 
-    fun convertVisibility(visibilityMeters: Int) = when (WeatherUnitsPreferences.visibilityUnit) {
+    fun convertVisibility(visibilityMeters: Float): Float = when (WeatherUnitsPreferences.visibilityUnit) {
         VisibilityUnit.METER -> visibilityMeters
         VisibilityUnit.K_METER -> visibilityMeters / METER_TO_KM_DIVIDER
         VisibilityUnit.MILE -> visibilityMeters / METER_TO_MILE_DIVIDER
@@ -58,7 +58,7 @@ object WeatherUnitsConverter {
     )
 
     fun convertPressureIfApiDontSupport(value: Float) = convertIfApiDontSupport(
-        value,
+        value.toInt(),
         ApiSupportedUnits.isPressureSupported,
         ::convertPressure
     )
@@ -69,8 +69,8 @@ object WeatherUnitsConverter {
         ::convertWindSpeed
     )
 
-    fun convertVisibilityIfApiDontSupport(value: Int) = convertIfApiDontSupport(
-        value,
+    fun convertVisibilityIfApiDontSupport(value: Int): Float = convertIfApiDontSupport(
+        value.toFloat(),
         ApiSupportedUnits.isVisibilitySupported,
         ::convertVisibility
     )
@@ -81,7 +81,8 @@ object WeatherUnitsConverter {
         ::convertPrecipitation
     )
 
-    private fun <T> convertIfApiDontSupport(value: T, isSupported: Boolean, convert: (T) -> T): T =
+    private fun <T : Number> convertIfApiDontSupport(value: T, isSupported: Boolean, convert: (T) -> T): T =
         if (isSupported) value
         else convert(value)
+
 }

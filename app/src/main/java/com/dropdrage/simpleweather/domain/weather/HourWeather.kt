@@ -4,9 +4,10 @@ import java.time.LocalDateTime
 
 data class HourWeather(
     val dateTime: LocalDateTime,
+    val weatherType: WeatherType,
     val temperature: Float,
-    val pressure: Float,
+    val pressure: Int,
     val windSpeed: Float,
     val humidity: Int,
-    val weatherType: WeatherType,
+    val visibility: Float,
 )

@@ -8,6 +8,7 @@ import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import java.util.*
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
@@ -19,6 +20,7 @@ class WeatherRepositoryImpl @Inject constructor(
             WeatherUnitsPreferences.temperatureUnit,
             WeatherUnitsPreferences.windSpeedUnit,
             WeatherUnitsPreferences.precipitationUnit,
+            TimeZone.getDefault().id.toString(),
         ).toDomainWeather()
     }
 }
