@@ -8,22 +8,19 @@ import com.dropdrage.simpleweather.databinding.ItemCityBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.presentation.util.adapter.DifferRecyclerAdapter
 import com.dropdrage.simpleweather.presentation.util.adapter.ItemsMovable
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleViewHolder
 import java.util.*
 
 class CityCurrentWeatherAdapter(
     private val onDeleteClicked: (ViewCityCurrentWeather) -> Unit,
     private val requestDrag: (ViewHolder) -> Unit,
-) : DifferRecyclerAdapter<ViewCityCurrentWeather, SimpleViewHolder<ViewCityCurrentWeather, *>>(
-    CityCurrentWeatherDifferCallback()
-), ItemsMovable {
+) : DifferRecyclerAdapter<ViewCityCurrentWeather, CityCurrentWeatherViewHolder>(CityCurrentWeatherDifferCallback()),
+    ItemsMovable {
 
     val cities: List<ViewCityCurrentWeather>
         get() = differ.currentList
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CityCurrentWeatherViewHolder(
-        ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = CityCurrentWeatherViewHolder(
+        ItemCityBinding.inflate(inflater, parent, false),
         onDeleteClicked,
         requestDrag
     )

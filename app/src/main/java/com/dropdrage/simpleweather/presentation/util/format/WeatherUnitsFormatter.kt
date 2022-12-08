@@ -24,7 +24,7 @@ class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val 
     fun formatHumidity(value: Int): String =
         context.getString(R.string.weather_unit_humidity, value.toString())
 
-    fun formatWindSpeed(value: Float): String = formatPlural(value, WeatherUnitsPreferences.windSpeedUnit)
+    fun formatWindSpeed(value: Float): String = formatPlural(value.toInt(), WeatherUnitsPreferences.windSpeedUnit)
 
     fun formatVisibility(value: Float): String = formatPlural(value, WeatherUnitsPreferences.visibilityUnit)
 
@@ -41,5 +41,11 @@ class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val 
         val valueString = String.format(FLOAT_FORMAT, value)
         return if (!unit.isPlural) context.getString(unit.unitResId, valueString)
         else context.resources.getQuantityString(unit.unitPluralResId, value.toInt(), valueString)
+    }
+
+    private fun formatPlural(value: Int, unit: CanBePluralUnit): String {
+        val valueString = value.toString()
+        return if (!unit.isPlural) context.getString(unit.unitResId, valueString)
+        else context.resources.getQuantityString(unit.unitPluralResId, value, valueString)
     }
 }

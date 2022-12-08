@@ -7,12 +7,20 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?textAppearanceLabelMedium"
+        tools:text="Today" />
+
+    <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?textAppearanceBodySmall"
-        tools:text="13:00" />
+        tools:text="03.12" />
 
     <ImageView
         android:id="@+id/weatherIcon"
@@ -23,11 +31,23 @@
         app:srcCompat="@drawable/ic_cloudy" />
 
     <TextView
-        android:id="@+id/temperature"
+        android:id="@+id/temperatureMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.SimpleWeather.BodyMedium.Bold"
         tools:text="31.0 C" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/temperatureMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.SimpleWeather.BodyMedium.Bold"
+        tools:text="11.0 C" />
 
 </LinearLayout>

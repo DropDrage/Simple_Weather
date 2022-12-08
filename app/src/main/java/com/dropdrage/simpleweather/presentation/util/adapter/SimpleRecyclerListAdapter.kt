@@ -1,10 +1,9 @@
 package com.dropdrage.simpleweather.presentation.util.adapter
 
 import androidx.annotation.CallSuper
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import kotlin.properties.Delegates
 
-abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : Adapter<VH>() {
+abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : BaseSimpleRecyclerListAdapter<VH>() {
 
     var values: List<T> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()

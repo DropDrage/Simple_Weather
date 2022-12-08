@@ -88,6 +88,17 @@
     <string name="time_format_12">11 PM</string>
     <string name="time_format_24">23:00</string>
 
+    <!--Week day-->
+    <string name="week_day_monday_short">Mo</string>
+    <string name="week_day_tuesday_short">Tu</string>
+    <string name="week_day_wednesday_short">We</string>
+    <string name="week_day_thursday_short">Th</string>
+    <string name="week_day_friday_short">Fr</string>
+    <string name="week_day_saturday_short">St</string>
+    <string name="week_day_sunday_short">Su</string>
+    <string name="day_today_short">Today</string>
+    <string name="day_tomorrow_short">Tmrw</string>
+
 
     <string name="weather_current_pressure">Pressure</string>
     <string name="weather_current_humidity">Humidity</string>
@@ -95,6 +106,7 @@
     <string name="weather_current_visibility">Visibility</string>
     <string name="weather_today">Today</string>
     <string name="weather_hourly_now">Now</string>
+    <string name="weather_daily_weather">Daily Weather</string>
 
     <string name="city_search_hint">Enter city name</string>
 

@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.fonts.FontStyle
@@ -17,6 +18,7 @@ import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.domain.util.Range
+import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import kotlin.math.absoluteValue
 import kotlin.math.max
 
@@ -35,12 +37,17 @@ private val FONT_WEIGHT_RANGE = FontStyle.FONT_WEIGHT_MIN..FontStyle.FONT_WEIGHT
 class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     View(context, attrs, defStyle) {
 
-    private var _textColor: Int = Color.BLACK // TODO: use a default from R.color...
+    private var _textColor: Int = Color.BLACK
     private var _textSize: Float = 0f
     private var fontWeight: Int = 600
+    private var textStartDrawX: Float = 0f
 
-    private var topText: String? = null // TODO: use a default from R.string...
-    private var bottomText: String? = null // TODO: use a default from R.string...
+    private var topText: String? = null
+    private var topTextX: Float = 0f
+    private var topTextY: Float = 0f
+    private var bottomText: String? = null
+    private var bottomTextX: Float = 0f
+    private var bottomTextY: Float = 0f
 
     private lateinit var textPaint: TextPaint
     private var maxTextWidth: Float = 0f
@@ -52,14 +59,20 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     private val iconSize: Int get() = if (icon != null) _iconSize else 0
     private var _iconIntrinsicWidth: Int = 0
     private var _iconIntrinsicHeight: Int = 0
+    private var iconRect: Rect = Rect()
 
     private lateinit var dividerPaint: Paint
     private var dividerThickness: Float = 0f
+        set(value) {
+            dividerThicknessHalf = value / 2
+            field = value
+        }
+    private var dividerThicknessHalf: Float = 0f
+    private var dividerEndX: Float = 0f
 
     private var _textIconMargin: Int = 0
     private val textIconMargin: Int get() = if (icon != null) _textIconMargin else 0
     private var _textDividerMargin: Int = 0
-    private val textDividerMargin: Int get() = if (bottomText.isNullOrEmpty()) 0 else _textDividerMargin
 
     private var isOnlyTopText: Boolean = false
 
@@ -67,6 +80,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     private var fontWeightAdjustment: Int = 0
     private var originalTypeface: Typeface? = null
 
+    private var centerY: Float = 0f
 
     var icon: Drawable? = null
         set(value) {
@@ -77,11 +91,14 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
                 var wrappedDrawable = value
                 wrappedDrawable.setTint(iconColor)
                 field = wrappedDrawable
+                recalculateIconRect()
             } else {
                 _iconIntrinsicWidth = 0
                 _iconIntrinsicHeight = 0
                 field = null
             }
+
+            invalidate()
         }
 
     @ColorInt
@@ -96,13 +113,6 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             _textSize = value
             invalidateTextPaintAndMeasurements()
             requestLayout()
-        }
-
-    var textColor: Int
-        get() = _textColor
-        set(value) {
-            _textColor = value
-            invalidateTextPaintAndMeasurements()
         }
 
 
@@ -122,7 +132,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
 
         val topText = a.getString(R.styleable.WeatherMetricView_wm_topText).orEmpty()
         val bottomText = a.getString(R.styleable.WeatherMetricView_wm_bottomText)
-        _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, textColor)
+        _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, _textColor)
         _textSize = a.getDimension(R.styleable.WeatherMetricView_wm_textSize,
             resources.getDimension(R.dimen.text_size_16))
         fontWeight = a.getInt(R.styleable.WeatherMetricView_wm_fontWeight, R.integer.font_weight_600)
@@ -138,7 +148,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
                 resources.getDimensionPixelSize(R.dimen.small_100))
         }
         dividerThickness = a.getDimension(R.styleable.WeatherMetricView_wm_dividerThickness,
-            resources.getDimension(R.dimen.divider_width))
+            resources.getDimension(R.dimen.divider_thickness))
 
         _textDividerMargin = a.getDimensionPixelSize(R.styleable.WeatherMetricView_wm_textDividerMargin,
             resources.getDimensionPixelSize(R.dimen.small_50))
@@ -149,8 +159,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     private fun initTextPaint() {
-        textPaint = TextPaint().apply {
-            flags = Paint.ANTI_ALIAS_FLAG
+        textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textAlign = Paint.Align.LEFT
             density = resources.getDisplayMetrics().density
         }
@@ -260,7 +269,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     private fun invalidateTextPaintAndMeasurements() {
         textPaint.let {
             it.textSize = textSize
-            it.color = textColor
+            it.color = _textColor
 
             topTextWidth = it.measureText(topText.orEmpty())
             bottomTextWidth = it.measureText(bottomText.orEmpty())
@@ -278,102 +287,106 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         }
     }
 
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val paddingTop = paddingTop
+        val paddingLeft = paddingLeft
+        val paddingVertical = paddingTop + paddingBottom
 
-        val newWidth = iconSize + textIconMargin + maxTextWidth.toInt() + paddingLeft + paddingRight
-        val textsBlockHeight =
-            if (isOnlyTopText) textHeight
-            else textHeight + textHeight + textDividerMargin + textDividerMargin + dividerThickness
-        val newHeight = max(iconSize, textsBlockHeight.toInt()) + paddingTop + paddingBottom
+        val textsBlockHeight = textHeight + textHeight + _textDividerMargin + _textDividerMargin + dividerThickness
+        val contentHeight = max(iconSize, textsBlockHeight.toInt())
+        val newHeight = contentHeight + paddingVertical
 
-        val resolvedWidth = resolveSize(newWidth, widthMeasureSpec)
+        val resolvedWidth = resolveSize(0, widthMeasureSpec)
         val resolvedHeight = resolveSize(newHeight, heightMeasureSpec)
 
+        val resolvedContentHeight = resolvedHeight - paddingVertical
+
         setMeasuredDimension(resolvedWidth, resolvedHeight)
+
+        recalculateIconRect(resolvedContentHeight, paddingLeft, paddingTop)
+
+        centerY = (resolvedHeight shr 1).toFloat()
+
+        val dividerMargin = _textDividerMargin + dividerThicknessHalf
+
+        bottomTextY = centerY + textHeight + dividerMargin
+
+        recalculateTextMeasurements(resolvedWidth)
+    }
+
+    private fun recalculateTextMeasurements(width: Int = getWidth()) {
+        val paddingLeft = paddingLeft
+        val resolvedContentWidth = width - paddingLeft - paddingRight
+        val textIconSpace = (resolvedContentWidth - iconSize - maxTextWidth).coerceAtLeast(textIconMargin.toFloat())
+        textStartDrawX = paddingLeft + iconSize + textIconSpace
+        bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) / 2
+
+        dividerEndX = textStartDrawX + maxTextWidth
+
+        if (isOnlyTopText) {
+            topTextX = textStartDrawX
+            topTextY = centerY + textHeight / 2
+        } else {
+            topTextX = textStartDrawX + (maxTextWidth - topTextWidth) / 2
+            val dividerMargin = _textDividerMargin + dividerThicknessHalf
+            topTextY = centerY - dividerMargin
+        }
+
+        bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) / 2
+    }
+
+    private fun recalculateIconRect() {
+        val paddingTop = paddingTop
+        recalculateIconRect(
+            height - paddingTop - paddingBottom,
+            paddingLeft,
+            paddingTop
+        )
+    }
+
+    private fun recalculateIconRect(contentHeight: Int, paddingLeft: Int, paddingTop: Int) {
+        val (width, height) = ViewUtils.resizeToTargetSize(_iconIntrinsicWidth, _iconIntrinsicHeight, iconSize)
+
+        val topOffset = paddingTop + ((contentHeight - height) shr 1)
+        val leftOffset = paddingLeft + ((iconSize - width) shr 1)
+
+        iconRect.set(leftOffset, topOffset, leftOffset + width, topOffset + height)
+        icon?.setBounds(iconRect)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // TODO: consider storing these as member variables to reduce allocations per draw cycle.
-        val paddingLeft = paddingLeft
-        val paddingRight = paddingRight
-        val paddingTop = paddingTop
-        val paddingBottom = paddingBottom
+        drawIcon(canvas)
 
-        val contentWidth = width - paddingLeft - paddingRight
-        val contentHeight = height - paddingTop - paddingBottom
-
-        drawIcon(paddingTop, contentHeight, paddingLeft, canvas)
-
-        val textIconSpace = (contentWidth - iconSize - maxTextWidth).coerceAtLeast(textIconMargin.toFloat())
-
-        val textStartDrawX = paddingLeft + iconSize + textIconSpace
-        val dividerMargin = textDividerMargin + dividerThickness / 2
-        val centerY = (paddingTop + (contentHeight shr 1)).toFloat()
-
-        drawTopText(canvas, paddingTop, textStartDrawX, contentHeight, dividerMargin)
-        drawBottomPartIfNeeded(canvas, centerY, textStartDrawX, dividerMargin)
+        drawTopText(canvas)
+        drawBottomPartIfNeeded(canvas)
     }
 
-    private fun drawIcon(paddingTop: Int, contentHeight: Int, paddingLeft: Int, canvas: Canvas) {
-        icon?.apply {
-            val scaleFactor: Float =
-                if (_iconIntrinsicWidth > _iconIntrinsicHeight) iconSize / (_iconIntrinsicWidth).toFloat()
-                else iconSize / (_iconIntrinsicHeight).toFloat()
-
-            val width: Int = (_iconIntrinsicWidth * scaleFactor).toInt()
-            val height: Int = (_iconIntrinsicHeight * scaleFactor).toInt()
-
-            val topOffset: Int = paddingTop + ((contentHeight - height) shr 1)
-            val leftOffset: Int = paddingLeft + ((iconSize - width) shr 1)
-
-            setBounds(leftOffset, topOffset, leftOffset + width, topOffset + height)
-            draw(canvas)
-        }
+    private fun drawIcon(canvas: Canvas) {
+        icon?.draw(canvas)
     }
 
-    private fun drawTopText(
-        canvas: Canvas,
-        paddingTop: Int,
-        textStartDrawX: Float,
-        contentHeight: Int,
-        dividerMargin: Float,
-    ) {
+    private fun drawTopText(canvas: Canvas) {
         topText?.let {
-            val drawX: Float
-            val drawY: Float
-            if (isOnlyTopText) {
-                drawX = textStartDrawX
-                drawY = paddingTop + (contentHeight + textHeight) / 2
-            } else {
-                drawX = textStartDrawX + (maxTextWidth - topTextWidth) / 2
-                drawY = paddingTop + contentHeight / 2 - dividerMargin
-            }
-
-            canvas.drawText(it, drawX, drawY, textPaint)
+            canvas.drawText(it, topTextX, topTextY, textPaint)
         }
     }
 
-    private fun drawBottomPartIfNeeded(canvas: Canvas, centerY: Float, textStartDrawX: Float, dividerMargin: Float) {
+    private fun drawBottomPartIfNeeded(canvas: Canvas) {
         if (!isOnlyTopText) {
-            drawDivider(canvas, centerY, textStartDrawX)
-            drawBottomText(canvas, textStartDrawX, centerY, dividerMargin)
+            drawDivider(canvas)
+            drawBottomText(canvas)
         }
     }
 
-    private fun drawDivider(canvas: Canvas, centerY: Float, textStartDrawX: Float) {
-        canvas.drawLine(textStartDrawX, centerY, textStartDrawX + maxTextWidth, centerY, dividerPaint)
+    private fun drawDivider(canvas: Canvas) {
+        canvas.drawLine(textStartDrawX, centerY, dividerEndX, centerY, dividerPaint)
     }
 
-    private fun drawBottomText(canvas: Canvas, textStartDrawX: Float, centerY: Float, dividerMargin: Float) {
+    private fun drawBottomText(canvas: Canvas) {
         bottomText?.let {
-            canvas.drawText(it,
-                textStartDrawX + (maxTextWidth - bottomTextWidth) / 2,
-                centerY + textHeight + dividerMargin,
-                textPaint)
+            canvas.drawText(it, bottomTextX, bottomTextY, textPaint)
         }
     }
 
@@ -386,7 +399,8 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         setTexts(topText, bottomText)
 
         invalidateTextPaintAndMeasurements()
-        requestLayout()
+        recalculateTextMeasurements()
+        invalidate()
     }
 
     private fun setTexts(topText: String, bottomText: String?) {

@@ -9,8 +9,8 @@ import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 
 class CitiesAdapter(private val onItemClickListener: OnItemClickListener<City>) :
     DifferRecyclerAdapter<City, CityViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder = CityViewHolder(
-        ItemSearchCityBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = CityViewHolder(
+        ItemSearchCityBinding.inflate(inflater, parent, false),
         onItemClickListener,
     )
 }

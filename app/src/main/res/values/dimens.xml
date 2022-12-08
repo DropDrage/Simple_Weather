@@ -33,12 +33,15 @@
     <dimen name="text_size_48">48sp</dimen>
 
 
-    <dimen name="divider_width">1dp</dimen>
+    <dimen name="divider_thickness">1dp</dimen>
     <dimen name="border_thin">1dp</dimen>
 
     <dimen name="padding_layout">@dimen/medium_100</dimen>
 
+    <dimen name="width_city_tab">@dimen/small_150</dimen>
+
     <dimen name="size_weather_icon">@dimen/huge_112</dimen>
     <dimen name="size_weather_hour_icon">@dimen/large_100</dimen>
     <dimen name="size_weather_metric_icon">@dimen/large_175</dimen>
+
 </resources>

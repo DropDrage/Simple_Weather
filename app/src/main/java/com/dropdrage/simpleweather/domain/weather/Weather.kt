@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.domain.weather
 
 import java.time.LocalDateTime
 
-data class Weather(private val dailyWeather: List<DayWeather>) {
+data class Weather(val dailyWeather: List<DayWeather>) {
 
     val currentDayWeather: DayWeather
         get() = dailyWeather.first()

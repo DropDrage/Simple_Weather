@@ -6,6 +6,7 @@ import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCity
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.TextMessage
+import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.toTextMessage
@@ -20,8 +21,14 @@ class CityWeatherViewModel @Inject constructor(
     weatherRepository: WeatherRepository,
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
+    currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val cityRepository: CityRepository,
-) : BaseCityWeatherViewModel(weatherRepository, hourWeatherConverter, dailyWeatherConverter) {
+) : BaseCityWeatherViewModel(
+    weatherRepository,
+    hourWeatherConverter,
+    dailyWeatherConverter,
+    currentDayWeatherConverter
+) {
 
     var order: Int = ORDER_UNSET
 

@@ -16,8 +16,8 @@ class SettingChangeAdapter(private val onSettingClickListener: OnItemClickListen
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SettingChangeViewHolder(
-        ItemSettingChangeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = SettingChangeViewHolder(
+        ItemSettingChangeBinding.inflate(inflater, parent, false),
         onSettingClickListener,
     )
 

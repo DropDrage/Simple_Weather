@@ -9,8 +9,8 @@ import com.dropdrage.simpleweather.presentation.util.adapter.SimpleRecyclerListA
 
 class SettingsAdapter(private val openSettingChangeDialog: OnItemClickListener<ViewSetting>) :
     SimpleRecyclerListAdapter<ViewSetting, SettingsViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SettingsViewHolder(
-        ItemSettingBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = SettingsViewHolder(
+        ItemSettingBinding.inflate(inflater, parent, false),
         openSettingChangeDialog,
     )
 }
