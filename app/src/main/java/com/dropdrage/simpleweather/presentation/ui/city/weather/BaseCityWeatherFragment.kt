@@ -70,10 +70,10 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun observeViewModel() = viewModel.apply {
-        city.observe(viewLifecycleOwner) {
+        cityTitle.observe(viewLifecycleOwner) {
             (requireParentFragment() as TitleHolder).setTitle(
-                it.title.getMessage(requireContext()),
-                it.subtitle.getMessage(requireContext())
+                it.city.getMessage(requireContext()),
+                it.countryCode.getMessage(requireContext())
             )
         }
 

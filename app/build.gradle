@@ -40,6 +40,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
 }
 
 dependencies {

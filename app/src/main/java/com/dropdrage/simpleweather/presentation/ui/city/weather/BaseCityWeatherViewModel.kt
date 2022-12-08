@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,8 +31,8 @@ abstract class BaseCityWeatherViewModel constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _city = MutableLiveData<ViewCityTitle>()
-    val city: LiveData<ViewCityTitle> = _city
+    private val _cityTitle = MutableLiveData<ViewCityTitle>()
+    val cityTitle: LiveData<ViewCityTitle> = _cityTitle
 
     private val _currentDayWeather = MutableLiveData<ViewCurrentDayWeather>()
     val currentDayWeather: LiveData<ViewCurrentDayWeather> = _currentDayWeather
@@ -49,9 +50,10 @@ abstract class BaseCityWeatherViewModel constructor(
     val error: LiveData<TextMessage> = _error
 
 
+    @SuppressLint("NullSafeMutableLiveData") //lint considers getCity() is @Nullable
     fun updateCityName() {
         viewModelScope.launch {
-            _city.value = getCity()
+            _cityTitle.value = getCity()
         }
     }
 
