@@ -126,7 +126,7 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
             resources.getDimensionPixelSize(R.dimen.small_100))
 
         sun = a.getDrawableOrThrow(R.styleable.SunTimesView_st_sunIcon)
-        sun?.callback = this
+        sun.callback = this
         sunSize = a.getDimensionPixelSize(R.styleable.SunTimesView_st_sunSize,
             resources.getDimensionPixelSize(R.dimen.medium_150))
         sunriseTime = a.getString(R.styleable.SunTimesView_st_sunriseText)
