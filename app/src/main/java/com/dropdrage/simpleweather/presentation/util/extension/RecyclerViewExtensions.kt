@@ -17,6 +17,7 @@ fun RecyclerView.setLinearLayoutManager() {
     layoutManager = LinearLayoutManager(context)
 }
 
-fun RecyclerView.setLinearLayoutManager(@RecyclerView.Orientation orientation: Int, reverseLayout: Boolean = false) {
-    layoutManager = LinearLayoutManager(context, orientation, reverseLayout)
-}
+fun RecyclerView.setLinearLayoutManager(
+    @RecyclerView.Orientation orientation: Int,
+    reverseLayout: Boolean = false,
+): LinearLayoutManager = LinearLayoutManager(context, orientation, reverseLayout).also { layoutManager = it }

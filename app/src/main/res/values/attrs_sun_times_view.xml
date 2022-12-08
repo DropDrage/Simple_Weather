@@ -1,0 +1,19 @@
+<resources>
+    <declare-styleable name="SunTimesView">
+        <attr name="st_sunIcon" format="reference" />
+        <attr name="st_sunSize" format="dimension" />
+
+        <attr name="st_primaryColor" format="color" />
+
+        <attr name="st_arcBackgroundColor" format="color" />
+        <attr name="st_arcThickness" format="dimension" />
+        <attr name="st_arcEdgeGroundMargin" format="dimension" />
+
+        <attr name="st_timeTextColor" format="color" />
+        <attr name="st_timeTextSize" format="dimension" />
+        <attr name="st_timeTextTopMargin" format="dimension" />
+
+        <attr name="st_sunriseText" format="string" />
+        <attr name="st_sunsetText" format="string" />
+    </declare-styleable>
+</resources>

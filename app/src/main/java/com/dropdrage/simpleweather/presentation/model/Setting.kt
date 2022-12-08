@@ -25,8 +25,7 @@ enum class ViewTemperatureUnit(@StringRes override val unitResId: Int) :
     Setting<ViewTemperatureUnit, DataTemperatureUnit> {
     CELSIUS(R.string.weather_unit_temperature_celsius), FAHRENHEIT(R.string.weather_unit_temperature_fahrenheit);
 
-    override val labelResId: Int
-        get() = R.string.weather_unit_temperature_label
+    override val labelResId: Int = R.string.weather_unit_temperature_label
 
     override val values: List<ViewTemperatureUnit>
         get() = values().toList()
@@ -51,8 +50,7 @@ typealias DataPressureUnit = com.dropdrage.simpleweather.data.preferences.Pressu
 enum class ViewPressureUnit(@StringRes override val unitResId: Int) : Setting<ViewPressureUnit, DataPressureUnit> {
     H_PASCAL(R.string.weather_unit_pressure_pa), MM_HG(R.string.weather_unit_pressure_mm_hg);
 
-    override val labelResId: Int
-        get() = R.string.weather_unit_pressure_label
+    override val labelResId: Int = R.string.weather_unit_pressure_label
 
     override val values: List<ViewPressureUnit>
         get() = values().toList()
@@ -80,8 +78,7 @@ enum class ViewWindSpeedUnit(@StringRes override val unitResId: Int) : Setting<V
     MPH(R.string.weather_unit_wind_speed_mph),
     KNOTS(R.string.weather_unit_wind_speed_knot);
 
-    override val labelResId: Int
-        get() = R.string.weather_unit_wind_speed_label
+    override val labelResId: Int = R.string.weather_unit_wind_speed_label
 
     override val values: List<ViewWindSpeedUnit>
         get() = values().toList()
@@ -113,8 +110,7 @@ enum class ViewVisibilityUnit(@StringRes override val unitResId: Int) :
     K_METER(R.string.weather_unit_visibility_kmeter),
     MILE(R.string.weather_unit_visibility_mile);
 
-    override val labelResId: Int
-        get() = R.string.weather_unit_visibility_label
+    override val labelResId: Int = R.string.weather_unit_visibility_label
 
     override val values: List<ViewVisibilityUnit>
         get() = values().toList()
@@ -144,8 +140,7 @@ enum class ViewPrecipitationUnit(
     MM(R.string.weather_unit_precipitation_mm),
     INCH(R.string.weather_unit_precipitation_inch);
 
-    override val labelResId: Int
-        get() = R.string.weather_unit_precipitation_label
+    override val labelResId: Int = R.string.weather_unit_precipitation_label
 
     override val values: List<ViewPrecipitationUnit>
         get() = values().toList()
@@ -171,8 +166,7 @@ enum class ViewTimeFormat(@StringRes override val unitResId: Int) : Setting<View
     H_12(R.string.time_format_12),
     H_24(R.string.time_format_24);
 
-    override val labelResId: Int
-        get() = R.string.time_format_label
+    override val labelResId: Int = R.string.time_format_label
 
     override val values: List<ViewTimeFormat>
         get() = values().toList()
@@ -187,6 +181,30 @@ enum class ViewTimeFormat(@StringRes override val unitResId: Int) : Setting<View
         fun fromData(unit: DataTimeFormat) = when (unit) {
             DataTimeFormat.H_12 -> H_12
             DataTimeFormat.H_24 -> H_24
+        }
+    }
+}
+
+typealias DataDateFormat = com.dropdrage.simpleweather.data.preferences.DateFormat
+
+enum class ViewDateFormat(@StringRes override val unitResId: Int) : Setting<ViewDateFormat, DataDateFormat> {
+    REVERSED(R.string.date_format_reversed), STRAIGHT(R.string.date_format_straight);
+
+    override val labelResId: Int = R.string.date_format_label
+
+    override val values: List<ViewDateFormat>
+        get() = values().toList()
+
+
+    override fun toData(): DataDateFormat = when (this) {
+        REVERSED -> DataDateFormat.REVERSED
+        STRAIGHT -> DataDateFormat.STRAIGHT
+    }
+
+    companion object {
+        fun fromData(unit: DataDateFormat) = when (unit) {
+            DataDateFormat.REVERSED -> REVERSED
+            DataDateFormat.STRAIGHT -> STRAIGHT
         }
     }
 }

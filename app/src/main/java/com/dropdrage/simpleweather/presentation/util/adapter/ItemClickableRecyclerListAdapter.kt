@@ -1,6 +1,7 @@
 package com.dropdrage.simpleweather.presentation.util.adapter
 
 import androidx.viewbinding.ViewBinding
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleViewHolder
 
 typealias OnItemClickListener<T> = (T) -> Unit
 

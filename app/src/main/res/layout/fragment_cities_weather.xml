@@ -55,7 +55,7 @@
                 app:tabGravity="center"
                 app:tabIndicator="@null"
                 app:tabIndicatorGravity="center"
-                app:tabMaxWidth="@dimen/small_150"
+                app:tabMaxWidth="@dimen/width_city_tab"
                 app:tabPaddingEnd="@dimen/small_75"
                 app:tabPaddingStart="@dimen/small_75" />
 

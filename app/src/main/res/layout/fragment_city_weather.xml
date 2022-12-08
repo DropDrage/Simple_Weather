@@ -6,26 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.city.weather.BaseCityWeatherFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/Layout.SimpleWeather.Root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/currentWeatherCard"
             style="?materialCardViewOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             app:cardCornerRadius="?cardCornerRadius"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                style="@style/Layout.SimpleWeather.Root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_thin"
-                android:elevation="@dimen/small_100"
-                android:padding="@dimen/medium_100">
+                android:elevation="@dimen/small_100">
 
                 <ImageView
                     android:id="@+id/weatherIcon"
@@ -101,12 +105,12 @@
 
                 <TextView
                     android:id="@+id/visibilityLabel"
-                    android:layout_width="94dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/weather_current_visibility"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.SimpleWeather.LabelMedium.Variant"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/windLabel"
@@ -151,13 +155,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.SimpleWeather.BodyMedium.Bold"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@+id/visibilityLabel"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/visibilityLabel"
                     app:layout_constraintTop_toTopOf="@+id/wind"
-                    tools:text="8 km"
-                    tools:visibility="gone" />
+                    tools:text="900m" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -169,32 +172,198 @@
             android:layout_marginTop="@dimen/medium_150"
             android:text="@string/weather_today"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorPrimary" />
+            android:textColor="?colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentWeatherCard" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/temperatureRangeCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            android:layout_marginEnd="@dimen/small_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toStartOf="@+id/apparentTemperatureRangeCard"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/todayLabel">
+
+            <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                android:id="@+id/temperatureRange"
+                style="@style/Widget.Theme.SimpleWeather.WeatherMetricView.Spaced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingVertical="@dimen/medium_100"
+                android:paddingStart="@dimen/small_100"
+                android:paddingEnd="@dimen/small_150"
+                app:wm_dividerThickness="@dimen/divider_thickness"
+                app:wm_icon="@drawable/ic_temperature"
+                tools:wm_bottomText="72.1F"
+                tools:wm_topText="82.1F" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/apparentTemperatureRangeCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/temperatureRangeCard"
+            app:layout_constraintTop_toTopOf="@+id/temperatureRangeCard">
+
+            <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                android:id="@+id/apparentTemperatureRange"
+                style="@style/Widget.Theme.SimpleWeather.WeatherMetricView.Spaced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:wm_dividerThickness="@dimen/divider_thickness"
+                app:wm_icon="@drawable/ic_temperature_feel"
+                tools:wm_bottomText="72.1F"
+                tools:wm_topText="82.1F" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/precipitationCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            android:layout_marginEnd="@dimen/small_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toStartOf="@+id/maxWindSpeedCard"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperatureRangeCard">
+
+            <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                android:id="@+id/precipitation"
+                style="@style/Widget.Theme.SimpleWeather.WeatherMetricView.Spaced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:wm_dividerThickness="@dimen/divider_thickness"
+                app:wm_icon="@drawable/ic_precipitation"
+                tools:wm_topText="71\mm" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/maxWindSpeedCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/precipitationCard"
+            app:layout_constraintTop_toTopOf="@+id/precipitationCard">
+
+            <com.dropdrage.simpleweather.presentation.ui.view.WeatherMetricView
+                android:id="@+id/maxWindSpeed"
+                style="@style/Widget.Theme.SimpleWeather.WeatherMetricView.Spaced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:wm_dividerThickness="@dimen/divider_thickness"
+                app:wm_icon="@drawable/ic_wind_speed"
+                tools:wm_topText="32 km/h" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sunCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/precipitationCard">
+
+            <com.dropdrage.simpleweather.presentation.ui.view.SunTimesView
+                android:id="@+id/sunTimes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/medium_100"
+                android:paddingTop="@dimen/medium_100"
+                android:paddingBottom="@dimen/small_150"
+                app:st_arcBackgroundColor="?colorOnPrimarySurface"
+                app:st_arcEdgeGroundMargin="@dimen/medium_125"
+                app:st_arcThickness="@dimen/small_100"
+                app:st_primaryColor="?colorOnPrimaryContainer"
+                app:st_sunIcon="@drawable/ic_sun"
+                app:st_sunSize="@dimen/medium_150"
+                app:st_timeTextColor="?colorOnSurface"
+                app:st_timeTextSize="@dimen/text_size_12"
+                app:st_timeTextTopMargin="@dimen/small_150" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/hourlyWeatherCard"
             style="?materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_100"
-            android:backgroundTint="?colorPrimaryContainer"
-            app:cardCornerRadius="?cardCornerRadius">
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sunCard">
 
-            <FrameLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hourlyWeather"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/small_100"
-                android:paddingVertical="@dimen/medium_100">
+                android:paddingVertical="@dimen/medium_100"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_hour_weather" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/hourlyWeather"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_hour_weather" />
-
-            </FrameLayout>
         </androidx.cardview.widget.CardView>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/dailyWeatherLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_150"
+            android:text="@string/weather_daily_weather"
+            android:textAppearance="?textAppearanceTitleLarge"
+            android:textColor="?colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hourlyWeatherCard" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dailyWeatherCard"
+            style="?materialCardViewFilledStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_100"
+            app:cardCornerRadius="?cardCornerRadius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dailyWeatherLabel">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dailyWeather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/small_100"
+                android:paddingVertical="@dimen/medium_100"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_hour_weather" />
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

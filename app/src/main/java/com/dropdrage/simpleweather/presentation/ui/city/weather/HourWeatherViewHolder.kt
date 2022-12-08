@@ -1,15 +1,18 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
 import android.graphics.Typeface
-import android.widget.Toast
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ItemHourWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleViewHolder
+import com.dropdrage.simpleweather.presentation.util.adapter.ClickableViewHolder
+import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
+import com.dropdrage.simpleweather.presentation.util.extension.setWeather
 import java.util.*
 
-class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
-    SimpleViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding) {
+class HourWeatherViewHolder(
+    binding: ItemHourWeatherBinding,
+    onItemClick: OnItemClickListener<ViewHourWeather>,
+) : ClickableViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding, onItemClick) {
     override fun bindData(value: ViewHourWeather) {
         binding.apply {
             val context = root.context
@@ -24,13 +27,8 @@ class HourWeatherViewHolder(binding: ItemHourWeatherBinding) :
                 time.text = context.getString(R.string.weather_hourly_now)
                 time.typeface = Typeface.DEFAULT_BOLD
             }
-            weatherIcon.setImageResource(value.weatherType.iconRes)
-            weatherIcon.contentDescription = context.getString(value.weatherType.weatherDescriptionRes)
+            weatherIcon.setWeather(value.weatherType)
             temperature.text = value.temperature
-
-            root.setOnClickListener {
-                Toast.makeText(it.context, value.weatherType.weatherDescriptionRes, Toast.LENGTH_SHORT).show()
-            }
         }
     }
 }

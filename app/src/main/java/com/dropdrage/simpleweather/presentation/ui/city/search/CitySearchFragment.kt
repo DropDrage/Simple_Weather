@@ -19,7 +19,7 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
     private val binding by viewBinding(FragmentCitySearchBinding::bind)
     private val viewModel: CitySearchViewModel by viewModels()
 
-    private lateinit var citiesAdapter: CitiesAdapter
+    private lateinit var citySearchAdapter: CitySearchResultAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
 
     private fun initCities() = binding.cities.apply {
         layoutManager = LinearLayoutManager(requireContext())
-        adapter = CitiesAdapter { viewModel.addCity(it) }.also { citiesAdapter = it }
+        adapter = CitySearchResultAdapter { viewModel.addCity(it) }.also { citySearchAdapter = it }
     }
 
     private fun observeViews() = binding.apply {
@@ -50,7 +50,7 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
 
     private fun observeViewModel() = viewModel.apply {
         searchResults.observe(viewLifecycleOwner) {
-            citiesAdapter.submitValues(it)
+            citySearchAdapter.submitValues(it)
         }
         cityAddedEvent.observe(viewLifecycleOwner) {
             findNavController().navigateUp()

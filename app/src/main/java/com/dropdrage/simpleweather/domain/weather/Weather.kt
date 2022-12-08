@@ -2,9 +2,11 @@ package com.dropdrage.simpleweather.domain.weather
 
 import java.time.LocalDateTime
 
-data class Weather(
-    val dailyWeather: List<DayWeather>,
-) {
+data class Weather(val dailyWeather: List<DayWeather>) {
+
+    val currentDayWeather: DayWeather
+        get() = dailyWeather.first()
+
     val currentHourWeather: HourWeather
         get() {
             val currentDay = dailyWeather.first()
@@ -15,4 +17,5 @@ data class Weather(
 
     val hourlyWeather: List<HourWeather>
         get() = dailyWeather.flatMap { it.weatherPerHour }
+
 }

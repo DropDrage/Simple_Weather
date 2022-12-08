@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import com.dropdrage.simpleweather.databinding.ItemSettingBinding
 import com.dropdrage.simpleweather.presentation.model.ViewSetting
 import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleRecyclerListAdapter
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleRecyclerListAdapter
 
 class SettingsAdapter(private val openSettingChangeDialog: OnItemClickListener<ViewSetting>) :
     SimpleRecyclerListAdapter<ViewSetting, SettingsViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SettingsViewHolder(
-        ItemSettingBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = SettingsViewHolder(
+        ItemSettingBinding.inflate(inflater, parent, false),
         openSettingChangeDialog,
     )
 }

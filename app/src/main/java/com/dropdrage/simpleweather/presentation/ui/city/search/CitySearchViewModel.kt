@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
 import com.dropdrage.simpleweather.domain.city.search.CitySearchRepository
 import com.dropdrage.simpleweather.domain.util.Resource
+import com.dropdrage.simpleweather.presentation.model.ViewCitySearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,8 +27,8 @@ class CitySearchViewModel @Inject constructor(
     private val cityRepository: CityRepository,
 ) : ViewModel() {
 
-    private val _searchResults = MutableLiveData<List<City>>()
-    val searchResults: LiveData<List<City>> = _searchResults
+    private val _searchResults = MutableLiveData<List<ViewCitySearchResult>>()
+    val searchResults: LiveData<List<ViewCitySearchResult>> = _searchResults
 
     private val query = MutableStateFlow("")
 
@@ -49,14 +49,14 @@ class CitySearchViewModel @Inject constructor(
 
     private suspend fun loadCities(query: String) {
         when (val result = searchRepository.searchCities(query)) {
-            is Resource.Success -> _searchResults.value = result.data
+            is Resource.Success -> _searchResults.value = result.data.map { ViewCitySearchResult(it) }
             is Resource.Error -> Log.e(TAG, result.message, result.exception)
         }
     }
 
-    fun addCity(city: City) {
+    fun addCity(cityResult: ViewCitySearchResult) {
         viewModelScope.launch {
-            cityRepository.addCity(city)
+            cityRepository.addCity(cityResult.city)
             _cityAddedEvent.value = Unit
         }
     }

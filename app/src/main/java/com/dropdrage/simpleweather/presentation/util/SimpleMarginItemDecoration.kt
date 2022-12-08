@@ -14,7 +14,7 @@ class SimpleMarginItemDecoration(
 
     constructor(@Px margin: Int) : this(margin, margin, margin, margin)
 
-    constructor(@Px verticalMargin: Int, @Px horizontalMargin: Int) : this(
+    constructor(@Px verticalMargin: Int = 0, @Px horizontalMargin: Int = 0) : this(
         verticalMargin,
         verticalMargin,
         horizontalMargin,
