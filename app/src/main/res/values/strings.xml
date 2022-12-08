@@ -87,6 +87,10 @@
     <string name="time_format_label">Time format</string>
     <string name="time_format_12">11 PM</string>
     <string name="time_format_24">23:00</string>
+    <!--Date format-->
+    <string name="date_format_label">Date format</string>
+    <string name="date_format_reversed">MM.DD</string>
+    <string name="date_format_straight">DD.MM</string>
 
     <!--Week day-->
     <string name="week_day_monday_short">Mo</string>

@@ -6,7 +6,7 @@ import com.dropdrage.simpleweather.data.util.isDateFormatStraight
 
 private typealias AndroidDateFormat = android.text.format.DateFormat
 
-object DateTimePreferences : KotprefModel() {
+object GeneralPreferences : KotprefModel() {
     var timeFormat: TimeFormat by enumOrdinalPref(
         if (AndroidDateFormat.is24HourFormat(context)) TimeFormat.H_24 else TimeFormat.H_12
     )

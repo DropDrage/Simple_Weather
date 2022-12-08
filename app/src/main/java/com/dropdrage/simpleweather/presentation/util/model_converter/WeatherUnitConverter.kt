@@ -16,10 +16,8 @@ class WeatherUnitConverter @Inject constructor(@ApplicationContext private val c
         is DataWindSpeedUnit -> ViewWindSpeedUnit.fromData(unit)
     }
 
-    fun convertToSetting(timeFormat: DataTimeFormat) = ViewTimeFormat.fromData(timeFormat)
 
-
-    fun convertToView(unit: WeatherUnit): ViewSetting {
+    fun convertToViewSetting(unit: WeatherUnit): ViewSetting {
         val setting: AnySetting = convertToSetting(unit)
 
         return ViewSetting(
@@ -29,13 +27,4 @@ class WeatherUnitConverter @Inject constructor(@ApplicationContext private val c
         )
     }
 
-    fun convertToView(timeFormat: DataTimeFormat): ViewSetting {
-        val viewTimeFormat = convertToSetting(timeFormat)
-
-        return ViewSetting(
-            context.getString(viewTimeFormat.labelResId),
-            context.getString(viewTimeFormat.unitResId),
-            viewTimeFormat.values,
-        )
-    }
 }
