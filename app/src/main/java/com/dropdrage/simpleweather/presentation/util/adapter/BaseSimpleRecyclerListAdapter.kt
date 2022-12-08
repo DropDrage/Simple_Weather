@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.presentation.util.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleViewHolder
 
 abstract class BaseSimpleRecyclerListAdapter<VH : SimpleViewHolder<*, *>> : RecyclerView.Adapter<VH>() {
 

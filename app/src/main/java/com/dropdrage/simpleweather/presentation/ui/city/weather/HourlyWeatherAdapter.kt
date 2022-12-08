@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.dropdrage.simpleweather.databinding.ItemHourWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleRecyclerListAdapter
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleRecyclerListAdapter
 
 class HourlyWeatherAdapter(private val onItemClick: OnItemClickListener<ViewHourWeather>) :
     SimpleRecyclerListAdapter<ViewHourWeather, HourWeatherViewHolder>() {

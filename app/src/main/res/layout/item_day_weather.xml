@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="?textAppearanceLabelMedium"
+        android:textAppearance="@style/TextAppearance.SimpleWeather.Dark.BodyMedium"
         tools:text="Today" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="?textAppearanceBodySmall"
+        android:textAppearance="?textAppearanceLabelMedium"
         tools:text="03.12" />
 
     <ImageView

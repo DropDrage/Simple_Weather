@@ -1,9 +1,11 @@
-package com.dropdrage.simpleweather.presentation.util.adapter
+package com.dropdrage.simpleweather.presentation.util.adapter.differ
 
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import com.dropdrage.simpleweather.presentation.util.adapter.BaseSimpleRecyclerListAdapter
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleViewHolder
 
-abstract class DifferRecyclerAdapter<T : Any, VH : SimpleViewHolder<T, *>>(
+abstract class DifferRecyclerAdapter<T : SameEquatable<T>, VH : SimpleViewHolder<T, *>>(
     differCallBack: DiffUtil.ItemCallback<T> = DefaultDifferCallback(),
 ) : BaseSimpleRecyclerListAdapter<VH>() {
 

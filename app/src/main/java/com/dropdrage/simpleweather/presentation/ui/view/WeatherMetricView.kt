@@ -14,22 +14,12 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.domain.util.Range
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import kotlin.math.absoluteValue
 import kotlin.math.max
-
-@IntDef(value = [DEFAULT_TYPEFACE, SANS, SERIF, MONOSPACE])
-@Retention(AnnotationRetention.SOURCE)
-annotation class TypefaceInt
-
-private const val DEFAULT_TYPEFACE = -1
-private const val SANS = 1
-private const val SERIF = 2
-private const val MONOSPACE = 3
 
 @RequiresApi(Build.VERSION_CODES.Q)
 private val FONT_WEIGHT_RANGE = FontStyle.FONT_WEIGHT_MIN..FontStyle.FONT_WEIGHT_MAX
@@ -164,12 +154,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             density = resources.getDisplayMetrics().density
         }
 
-        setTypefaceFromAttrs(Typeface.SANS_SERIF,
-            getSemiBoldFontFamilyIfWeightUnsupported(),
-            SANS,
-            Typeface.NORMAL,
-            fontWeight
-        )
+        setSansSerifTypeface(getSemiBoldFontFamilyIfWeightUnsupported(), fontWeight)
 
         invalidateTextPaintAndMeasurements()
     }
@@ -180,82 +165,59 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
 
     //region Typeface
 
-    private fun setTypefaceFromAttrs(
-        typeface: Typeface?, familyName: String?,
-        @TypefaceInt typefaceIndex: Int, style: Int,
-        @androidx.annotation.IntRange(from = -1, to = 1000) weight: Int,
+    private fun setSansSerifTypeface(
+        familyName: String?, @androidx.annotation.IntRange(from = -1, to = 1000) weight: Int,
     ) {
-        if (typeface == null && familyName != null) {
-            // Lookup normal Typeface from system font map.
+        val sansSerifTypeface = Typeface.SANS_SERIF
+
+        if (sansSerifTypeface == null && familyName != null) {
             val normalTypeface = Typeface.create(familyName, Typeface.NORMAL)
-            resolveStyleAndSetTypeface(normalTypeface, style, weight)
-        } else if (typeface != null) {
-            resolveStyleAndSetTypeface(typeface, style, weight)
-        } else {  // both typeface and familyName is null.
-            when (typefaceIndex) {
-                SANS -> resolveStyleAndSetTypeface(Typeface.SANS_SERIF, style, weight)
-                SERIF -> resolveStyleAndSetTypeface(Typeface.SERIF, style, weight)
-                MONOSPACE -> resolveStyleAndSetTypeface(Typeface.MONOSPACE, style, weight)
-                DEFAULT_TYPEFACE -> resolveStyleAndSetTypeface(null, style, weight)
-                else -> resolveStyleAndSetTypeface(null, style, weight)
-            }
+            resolveStyleAndSetTypeface(normalTypeface, weight)
+        } else {
+            resolveStyleAndSetTypeface(sansSerifTypeface, weight)
         }
     }
 
     private fun resolveStyleAndSetTypeface(
-        typeface: Typeface?, style: Int,
-        @androidx.annotation.IntRange(from = -1, to = 1000) weight: Int,
+        typeface: Typeface?, @androidx.annotation.IntRange(from = -1, to = 1000) weight: Int,
     ) {
-        if (weight >= 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val correctWeight = Math.min(FontStyle.FONT_WEIGHT_MAX, weight)
-            val italic = style and Typeface.ITALIC != 0
-            setTypeface(Typeface.create(typeface, correctWeight, italic))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && weight >= 0) {
+            val correctWeight = weight.coerceAtMost(FontStyle.FONT_WEIGHT_MAX)
+            setTypeface(Typeface.create(typeface, correctWeight, false))
         } else {
-            setTypeface(typeface, style)
+            setNormalTypeface(typeface)
         }
     }
 
     private fun setTypeface(typeface: Typeface?) {
         var newTypeface = typeface
         originalTypeface = newTypeface
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (fontWeightAdjustment != 0 && fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED) {
                 newTypeface =
                     if (newTypeface == null) Typeface.DEFAULT
                     else {
                         val newWeight = (newTypeface.weight + fontWeightAdjustment).coerceIn(FONT_WEIGHT_RANGE)
-                        val typefaceStyle = newTypeface.style
-                        val italic = typefaceStyle and Typeface.ITALIC != 0
-                        Typeface.create(newTypeface, newWeight, italic)
+                        Typeface.create(newTypeface, newWeight, false)
                     }
             }
         }
 
-        if (textPaint.getTypeface() !== newTypeface) {
-            textPaint.setTypeface(newTypeface)
+        if (textPaint.typeface !== newTypeface) {
+            textPaint.typeface = newTypeface
         }
     }
 
-    private fun setTypeface(tf: Typeface?, style: Int) {
-        if (style > 0) {
-            val nonNullTypeface =
-                if (tf == null) Typeface.defaultFromStyle(style)
-                else Typeface.create(tf, style)
-            setTypeface(nonNullTypeface)
-            // now compute what (if any) algorithmic styling is needed
-            val typefaceStyle = nonNullTypeface?.style ?: 0
-            val need = style and typefaceStyle.inv()
-            textPaint.setFakeBoldText(need and Typeface.BOLD != 0)
-            textPaint.setTextSkewX(if (need and Typeface.ITALIC != 0) -0.25f else 0f)
-        } else {
-            textPaint.setFakeBoldText(false)
-            textPaint.setTextSkewX(0f)
-            setTypeface(tf)
-        }
+    private fun setNormalTypeface(tf: Typeface?) {
+        textPaint.setFakeBoldText(false)
+        textPaint.setTextSkewX(0f)
+        setTypeface(tf)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (fontWeightAdjustment != newConfig.fontWeightAdjustment) {
                 fontWeightAdjustment = newConfig.fontWeightAdjustment
@@ -308,7 +270,6 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         centerY = (resolvedHeight shr 1).toFloat()
 
         val dividerMargin = _textDividerMargin + dividerThicknessHalf
-
         bottomTextY = centerY + textHeight + dividerMargin
 
         recalculateTextMeasurements(resolvedWidth)
@@ -319,9 +280,6 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         val resolvedContentWidth = width - paddingLeft - paddingRight
         val textIconSpace = (resolvedContentWidth - iconSize - maxTextWidth).coerceAtLeast(textIconMargin.toFloat())
         textStartDrawX = paddingLeft + iconSize + textIconSpace
-        bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) / 2
-
-        dividerEndX = textStartDrawX + maxTextWidth
 
         if (isOnlyTopText) {
             topTextX = textStartDrawX
@@ -331,6 +289,8 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             val dividerMargin = _textDividerMargin + dividerThicknessHalf
             topTextY = centerY - dividerMargin
         }
+
+        dividerEndX = textStartDrawX + maxTextWidth
 
         bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) / 2
     }

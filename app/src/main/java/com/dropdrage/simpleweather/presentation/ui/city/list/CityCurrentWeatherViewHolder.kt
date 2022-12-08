@@ -8,7 +8,7 @@ import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ItemCityBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.presentation.util.adapter.DragListener
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleViewHolder
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleViewHolder
 
 private const val ON_DRAG_ALPHA = 0.5f
 private const val IDLE_ALPHA = 1f

@@ -16,29 +16,6 @@
     </style>
 
 
-    <style name="TextAppearance.SimpleWeather.BodyLarge.Primary" parent="TextAppearance.Material3.BodyLarge">
-        <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">?colorPrimary</item>
-    </style>
-
-    <style name="TextAppearance.SimpleWeather.BodyMedium.Bold" parent="TextAppearance.SimpleWeather.BodyMedium">
-        <item name="fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="TextAppearance.SimpleWeather.LabelMedium.Variant" parent="TextAppearance.SimpleWeather.LabelMedium">
-        <item name="android:textColor">?colorOnSurfaceVariant</item>
-    </style>
-
-    <style name="TextAppearance.SimpleWeather.DialogTitle" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textSize">@dimen/text_size_18</item>
-    </style>
-
-    <style name="TextAppearance.SimpleWeather.BodyMedium.Variant" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?colorOnSurfaceVariant</item>
-    </style>
-
-
     <style name="Layout.SimpleWeather.Root" parent="">
         <item name="android:padding">@dimen/padding_layout</item>
         <item name="android:clipToPadding">false</item>
@@ -64,5 +41,32 @@
 
     <style name="TextAppearance.SimpleWeather.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
         <item name="fontFamily">sans-serif</item>
+    </style>
+
+
+    <style name="TextAppearance.SimpleWeather.BodyLarge.Primary" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.Dark.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodyMedium.Bold">
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.BodyMedium.Variant">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.LabelMedium.Variant">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.SimpleWeather.DialogTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">@dimen/text_size_18</item>
     </style>
 </resources>

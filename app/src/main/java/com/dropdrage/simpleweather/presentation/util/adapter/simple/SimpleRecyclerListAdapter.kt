@@ -1,6 +1,7 @@
-package com.dropdrage.simpleweather.presentation.util.adapter
+package com.dropdrage.simpleweather.presentation.util.adapter.simple
 
 import androidx.annotation.CallSuper
+import com.dropdrage.simpleweather.presentation.util.adapter.BaseSimpleRecyclerListAdapter
 import kotlin.properties.Delegates
 
 abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : BaseSimpleRecyclerListAdapter<VH>() {

@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.util.adapter
+package com.dropdrage.simpleweather.presentation.util.adapter.simple
 
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.dropdrage.simpleweather.databinding.ItemSettingBinding
 import com.dropdrage.simpleweather.presentation.model.ViewSetting
 import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
-import com.dropdrage.simpleweather.presentation.util.adapter.SimpleRecyclerListAdapter
+import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleRecyclerListAdapter
 
 class SettingsAdapter(private val openSettingChangeDialog: OnItemClickListener<ViewSetting>) :
     SimpleRecyclerListAdapter<ViewSetting, SettingsViewHolder>() {
