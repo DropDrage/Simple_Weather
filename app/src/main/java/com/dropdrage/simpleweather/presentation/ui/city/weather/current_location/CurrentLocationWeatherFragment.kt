@@ -1,9 +1,13 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather.current_location
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.IntentSender
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherFragment
@@ -24,6 +28,7 @@ class CurrentLocationWeatherFragment :
     BaseCityWeatherFragment<CurrentLocationWeatherViewModel>(CurrentLocationWeatherViewModel::class) {
 
     private lateinit var permissionRequest: ActivityResultLauncher<String>
+    private lateinit var gpsActivationListener: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,13 @@ class CurrentLocationWeatherFragment :
                 Log.d(TAG, "Permission isn't granted")
             }
         }
+
+        gpsActivationListener = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+            Log.d(TAG, "GPS activation result: ${it.resultCode}")
+            if (it.resultCode == RESULT_OK) {
+                viewModel.loadWeather()
+            }
+        }
     }
 
 
@@ -43,7 +55,7 @@ class CurrentLocationWeatherFragment :
             when (it) {
                 is LocationResult.NoPermission -> requestLocationPermission(it.permission)
                 LocationResult.GpsDisabled -> requestGpsActivation()
-                LocationResult.NoLocation -> {}
+                else -> {}
             }
         }
     }
@@ -84,10 +96,17 @@ class CurrentLocationWeatherFragment :
         checkLocationSettings.addOnFailureListener { exception ->
             if (exception is ResolvableApiException) {
                 try {
-                    exception.startResolutionForResult(requireActivity(), GPS_ACTIVATION_REQUEST_CODE)
+                    Log.d(TAG, "Location settings resolving error")
+                    val request = IntentSenderRequest.Builder(exception.resolution.intentSender)
+                        .setFillInIntent(Intent())
+                        .setFlags(FLAG_ACTIVITY_CLEAR_TASK, 0)
+                        .build()
+                    gpsActivationListener.launch(request)
                 } catch (sendEx: IntentSender.SendIntentException) {
                     Log.e(TAG, "Exception", sendEx)
                 }
+            } else {
+                Log.e(TAG, exception.message, exception)
             }
         }
     }

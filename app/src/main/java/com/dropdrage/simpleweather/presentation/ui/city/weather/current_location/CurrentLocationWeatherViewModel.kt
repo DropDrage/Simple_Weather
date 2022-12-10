@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.domain.location.LocationErrorResult
 import com.dropdrage.simpleweather.domain.location.LocationResult
-import com.dropdrage.simpleweather.domain.location.LocationTracker
+import com.dropdrage.simpleweather.domain.location.use_case.GetLocationUseCase
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
@@ -23,7 +23,7 @@ class CurrentLocationWeatherViewModel @Inject constructor(
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
     currentDayWeatherConverter: CurrentDayWeatherConverter,
-    private val locationTracker: LocationTracker,
+    private val getLocation: GetLocationUseCase,
 ) : BaseCityWeatherViewModel(
     weatherRepository,
     hourWeatherConverter,
@@ -31,34 +31,34 @@ class CurrentLocationWeatherViewModel @Inject constructor(
     currentDayWeatherConverter
 ) {
 
-    private val _locationObtainError = MutableLiveData<LocationErrorResult>()
-    val locationObtainingError: LiveData<LocationErrorResult> = _locationObtainError
+    private val _locationObtainError = MutableLiveData<LocationErrorResult?>()
+    val locationObtainingError: LiveData<LocationErrorResult?> = _locationObtainError
 
 
     override suspend fun getCity(): ViewCityTitle =
         ViewCityTitle(ResourceMessage(R.string.city_name_current_location), TextMessage.EmptyMessage)
 
     override suspend fun tryLoadWeather() {
-        when (val locationResult = locationTracker.getCurrentLocation()) {
-            is LocationResult.Success -> {
-                getWeatherForLocation(locationResult.location)
-            }
-            is LocationResult.NoPermission -> {
-                _locationObtainError.value = locationResult
-                _error.value = ResourceMessage(R.string.error_location_no_permission)
-            }
-            is LocationResult.GpsDisabled -> {
-                _locationObtainError.value = locationResult
-                _error.value = ResourceMessage(R.string.error_location_gps_disabled)
-            }
-            else -> locationTracker.requestLocationUpdate().collect {
-                if (it is LocationResult.Success) {
-                    getWeatherForLocation(it.location)
-                } else {
-                    _error.value = ResourceMessage(R.string.error_location_no_location)
+        getLocation().collect {
+            when (it) {
+                is LocationResult.Success -> getWeatherForLocation(it.location)
+                is LocationResult.NoPermission -> {
+                    _locationObtainError.value = it
+                    _error.value = ResourceMessage(R.string.error_location_no_permission)
                 }
+                is LocationResult.GpsDisabled -> {
+                    _locationObtainError.value = it
+                    _error.value = ResourceMessage(R.string.error_location_gps_disabled)
+                }
+                else -> _error.value = ResourceMessage(R.string.error_location_no_location)
             }
         }
+    }
+
+
+    override fun clearErrors() {
+        super.clearErrors()
+        _locationObtainError.value = null
     }
 
 }

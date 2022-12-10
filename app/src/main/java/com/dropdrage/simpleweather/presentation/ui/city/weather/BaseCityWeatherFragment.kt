@@ -83,7 +83,9 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         dailyWeather.observe(viewLifecycleOwner, ::updateDailyWeather)
 
         error.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it.getMessage(requireContext()), Toast.LENGTH_SHORT).show()
+            if (it != null) {
+                Toast.makeText(requireContext(), it.getMessage(requireContext()), Toast.LENGTH_SHORT).show()
+            }
         }
 
         additionalObserveViewModel()
@@ -136,6 +138,11 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.updateCityName()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.clearErrors()
     }
 
 
