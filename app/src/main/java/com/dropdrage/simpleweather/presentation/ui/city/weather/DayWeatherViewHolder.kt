@@ -12,7 +12,7 @@ class DayWeatherViewHolder(
 ) : ClickableViewHolder<ViewDayWeather, ItemDayWeatherBinding>(binding, onItemClick) {
     override fun bindData(value: ViewDayWeather) {
         binding.apply {
-            day.text = value.day
+            day.text = value.dayTitle
             date.text = value.dateFormatted
             weatherIcon.setWeather(value.weatherType)
             temperatureMax.text = value.temperatureRange.end

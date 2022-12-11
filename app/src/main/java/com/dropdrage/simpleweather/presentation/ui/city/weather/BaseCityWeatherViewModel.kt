@@ -39,7 +39,7 @@ abstract class BaseCityWeatherViewModel constructor(
     val currentDayWeather: LiveData<ViewCurrentDayWeather> = _currentDayWeather
 
     private val _currentWeather = MutableLiveData<ViewHourWeather>()
-    val currentWeather: LiveData<ViewHourWeather> = _currentWeather
+    val currentHourWeather: LiveData<ViewHourWeather> = _currentWeather
 
     private val _hourlyWeather = MutableLiveData<List<ViewHourWeather>>()
     val hourlyWeather: LiveData<List<ViewHourWeather>> = _hourlyWeather
@@ -68,7 +68,7 @@ abstract class BaseCityWeatherViewModel constructor(
 
     protected abstract suspend fun tryLoadWeather()
 
-    private fun performAsyncWithLoadingIndication(action: suspend () -> Unit) {
+    private inline fun performAsyncWithLoadingIndication(crossinline action: suspend () -> Unit) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true

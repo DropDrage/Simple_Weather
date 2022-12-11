@@ -10,14 +10,14 @@ sealed interface WeatherUnit {
     val unitResId: Int
 }
 
-private const val NO_PLURAL = 0
+private const val NOT_PLURAL = 0
 
 interface CanBePluralUnit {
     @get:StringRes
     val unitResId: Int
 
-    val isPlural: Boolean
-        get() = unitPluralResId != NO_PLURAL
+    val isNotPlural: Boolean
+        get() = unitPluralResId == NOT_PLURAL
 
     @get:PluralsRes
     val unitPluralResId: Int
@@ -39,7 +39,7 @@ enum class PressureUnit(@StringRes override val unitResId: Int) : WeatherUnit {
 enum class WindSpeedUnit(
     @StringRes override val unitResId: Int,
     override val apiParam: String,
-    override val unitPluralResId: Int = NO_PLURAL,
+    override val unitPluralResId: Int = NOT_PLURAL,
 ) : WeatherUnit, ApiSupportedParam, CanBePluralUnit {
     M_S(R.string.weather_unit_wind_speed_m_s, "ms"),
     KM_H(R.string.weather_unit_wind_speed_km_h, "kmh"),
@@ -49,7 +49,7 @@ enum class WindSpeedUnit(
 
 enum class VisibilityUnit(
     @StringRes override val unitResId: Int,
-    override val unitPluralResId: Int = NO_PLURAL,
+    override val unitPluralResId: Int = NOT_PLURAL,
 ) : WeatherUnit, CanBePluralUnit {
     METER(R.string.weather_unit_visibility_meter),
     K_METER(R.string.weather_unit_visibility_kmeter),
@@ -59,7 +59,7 @@ enum class VisibilityUnit(
 enum class PrecipitationUnit(
     @StringRes override val unitResId: Int,
     override val apiParam: String,
-    override val unitPluralResId: Int = NO_PLURAL,
+    override val unitPluralResId: Int = NOT_PLURAL,
 ) : WeatherUnit, ApiSupportedParam, CanBePluralUnit {
     MM(R.string.weather_unit_precipitation_mm, "mm"),
     INCH(R.string.weather_unit_precipitation_inch, "inch", R.plurals.weather_unit_precipitation_inches),

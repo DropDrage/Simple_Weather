@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
@@ -16,6 +15,7 @@ import com.dropdrage.simpleweather.databinding.FragmentCitiesWeatherBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Math.pow
 
 @AndroidEntryPoint
 class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleHolder {
@@ -33,7 +33,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
         initCitiesWeatherPager()
         observeViewModel()
 
-        requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner, Lifecycle.State.RESUMED)
+        requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
         viewModel.loadCities()
     }
 
@@ -45,9 +45,20 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
     private fun initCitiesWeatherPager() {
         binding.citiesWeather.adapter = CitiesWeatherAdapter(childFragmentManager, lifecycle)
             .also { citiesAdapter = it }
+
+        val titleMarginEnd = resources.getDimensionPixelOffset(R.dimen.toolbar_expanded_margin_end)
+        var previousScrollPercent = 0f
         binding.appBar.addOnOffsetChangedListener { appBar, verticalOffset ->
             val totalScrollRange = appBar.totalScrollRange
-            binding.tabs.alpha = (totalScrollRange + verticalOffset).toFloat() / totalScrollRange
+            val scrollPercentDone = (totalScrollRange + verticalOffset).toFloat() / totalScrollRange
+
+            if (scrollPercentDone != previousScrollPercent) {
+                binding.tabs.alpha = scrollPercentDone
+                val toolbarMarginPercent = pow(scrollPercentDone.toDouble(), 4.0)
+                binding.collapsingToolbar.expandedTitleMarginEnd = (titleMarginEnd * toolbarMarginPercent).toInt()
+
+                previousScrollPercent = scrollPercentDone
+            }
         }
 
         updateTabLayout()

@@ -19,6 +19,7 @@
     <dimen name="huge_112">72dp</dimen>
     <dimen name="huge_125">80dp</dimen>
     <dimen name="huge_150">96dp</dimen>
+    <dimen name="huge_180">116dp</dimen>
     <dimen name="huge_200">128dp</dimen>
 
     <!--Text size-->
@@ -43,5 +44,7 @@
     <dimen name="size_weather_icon">@dimen/huge_112</dimen>
     <dimen name="size_weather_hour_icon">@dimen/large_100</dimen>
     <dimen name="size_weather_metric_icon">@dimen/large_175</dimen>
+
+    <dimen name="toolbar_expanded_margin_end">@dimen/huge_125</dimen>
 
 </resources>

@@ -8,7 +8,7 @@ import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-private const val FLOAT_FORMAT = "%.1f"
+private const val FLOAT_DOT = '.'
 
 private const val NO_VALUE = "--"
 
@@ -35,17 +35,24 @@ class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val 
         context.getString(unit.unitResId, value.toString())
 
     private fun formatUnit(value: Float, unit: WeatherUnit) =
-        context.getString(unit.unitResId, String.format(FLOAT_FORMAT, value))
-
-    private fun formatPlural(value: Float, unit: CanBePluralUnit): String {
-        val valueString = String.format(FLOAT_FORMAT, value)
-        return if (!unit.isPlural) context.getString(unit.unitResId, valueString)
-        else context.resources.getQuantityString(unit.unitPluralResId, value.toInt(), valueString)
-    }
+        context.getString(unit.unitResId, fastFormat(value))
 
     private fun formatPlural(value: Int, unit: CanBePluralUnit): String {
         val valueString = value.toString()
-        return if (!unit.isPlural) context.getString(unit.unitResId, valueString)
+        return if (unit.isNotPlural) context.getString(unit.unitResId, valueString)
         else context.resources.getQuantityString(unit.unitPluralResId, value, valueString)
     }
+
+    private fun formatPlural(value: Float, unit: CanBePluralUnit): String {
+        val valueString = fastFormat(value)
+        return if (unit.isNotPlural) context.getString(unit.unitResId, valueString)
+        else context.resources.getQuantityString(unit.unitPluralResId, value.toInt(), valueString)
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun fastFormat(value: Float): String {
+        val valueString = value.toString()
+        return valueString.take(valueString.indexOf(FLOAT_DOT) + 2)
+    }
+
 }

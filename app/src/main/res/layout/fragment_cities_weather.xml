@@ -23,13 +23,13 @@
             app:expandedSubtitleTextAppearance="?textAppearanceBodySmall"
             app:expandedTitleGravity="top"
             app:expandedTitleMarginBottom="0dp"
-            app:expandedTitleMarginEnd="@dimen/large_100"
+            app:expandedTitleMarginEnd="@dimen/toolbar_expanded_margin_end"
             app:expandedTitleMarginStart="@dimen/medium_100"
             app:expandedTitleMarginTop="@dimen/small_150"
             app:expandedTitleTextAppearance="?textAppearanceHeadlineLarge"
             app:expandedTitleTextColor="?colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:scrimVisibleHeightTrigger="64dp"
+            app:scrimVisibleHeightTrigger="@dimen/huge_100"
             app:titleCollapseMode="scale"
             app:toolbarId="@id/toolbar">
 
@@ -41,7 +41,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:titleMargin="0dp"
                 tools:subtitle="CY"
-                tools:title="City" />
+                tools:title="Long long long long long city" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
@@ -62,20 +62,11 @@
         </com.google.android.material.appbar.SubtitleCollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/citiesWeather"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:nestedScrollingEnabled="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/citiesWeather"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

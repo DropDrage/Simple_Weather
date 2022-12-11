@@ -78,7 +78,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         }
 
         currentDayWeather.observe(viewLifecycleOwner, ::updateCurrentDayWeather)
-        currentWeather.observe(viewLifecycleOwner, ::updateCurrentWeather)
+        currentHourWeather.observe(viewLifecycleOwner, ::updateCurrentHourWeather)
         hourlyWeather.observe(viewLifecycleOwner, ::updateHourlyWeather)
         dailyWeather.observe(viewLifecycleOwner, ::updateDailyWeather)
 
@@ -100,7 +100,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         sunTimes.setSunTimes(weather.sunrise, weather.sunset, weather.sunriseTime, weather.sunsetTime)
     }
 
-    private fun updateCurrentWeather(weather: ViewHourWeather) = binding.apply {
+    private fun updateCurrentHourWeather(weather: ViewHourWeather) = binding.apply {
         weatherIcon.setWeather(weather.weatherType)
         weatherDescription.setText(weather.weatherType.weatherDescriptionRes)
         temperature.text = weather.temperature
@@ -112,7 +112,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun updateHourlyWeather(hourWeatherList: List<ViewHourWeather>) {
-        hourlyWeatherAdapter.values = hourWeatherList
+        hourlyWeatherAdapter.submitValues(hourWeatherList)
 
         val calendar = Calendar.getInstance()
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -123,7 +123,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun updateDailyWeather(dailyWeatherList: List<ViewDayWeather>) {
-        dailyWeatherAdapter.values = dailyWeatherList
+        dailyWeatherAdapter.submitValues(dailyWeatherList)
     }
 
     protected open fun VM.additionalObserveViewModel() {

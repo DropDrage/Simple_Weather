@@ -362,7 +362,7 @@
                 android:paddingHorizontal="@dimen/small_100"
                 android:paddingVertical="@dimen/medium_100"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_hour_weather" />
+                tools:listitem="@layout/item_day_weather" />
 
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,8 +16,8 @@ class DailyWeatherConverter @Inject constructor(
     private val unitsFormatter: WeatherUnitsFormatter,
 ) {
     fun convertToView(dayWeather: DayWeather, now: LocalDate): ViewDayWeather = ViewDayWeather(
-        day = dayFormatter.formatFromStartDay(dayWeather.date, now),
         date = dayWeather.date,
+        dayTitle = dayFormatter.formatFromStartDay(dayWeather.date, now),
         dateFormatted = dateFormatter.formatDayMonth(dayWeather.date),
         weatherType = ViewWeatherType.fromWeatherType(dayWeather.weatherType),
         temperatureRange = Range(

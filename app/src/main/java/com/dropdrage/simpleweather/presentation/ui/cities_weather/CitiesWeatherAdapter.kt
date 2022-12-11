@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dropdrage.simpleweather.presentation.ui.city.weather.CityWeatherFragmentFactory
+import kotlin.math.absoluteValue
 
 private const val NO_CITIES = 0
 
@@ -18,7 +19,15 @@ class CitiesWeatherAdapter(
 
     var citiesCount: Int = NO_CITIES
         set(value) {
+            val previousFragmentCount = fragmentsCount
             fragmentsCount = value + LOCATION_FRAGMENT_COUNT
+            val fragmentCountChange = fragmentsCount - previousFragmentCount
+            if (fragmentCountChange > 0) {
+                notifyItemRangeInserted(previousFragmentCount, fragmentCountChange)
+            } else {
+                notifyItemRangeRemoved(fragmentsCount, previousFragmentCount.absoluteValue)
+            }
+
             field = value
         }
 
