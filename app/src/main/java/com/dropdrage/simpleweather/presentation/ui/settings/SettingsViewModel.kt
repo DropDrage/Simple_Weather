@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.presentation.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dropdrage.simpleweather.data.preferences.GeneralFormat
 import com.dropdrage.simpleweather.data.preferences.GeneralPreferences
 import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.presentation.model.AnySetting
@@ -25,21 +26,19 @@ class SettingsViewModel @Inject constructor(
     private val generalFormatConverter: GeneralFormatConverter,
 ) : ViewModel() {
 
-    private val _settings = MutableLiveData<List<ViewSetting>>()
-    val settings: LiveData<List<ViewSetting>> = _settings
+    val settings: List<ViewSetting> = listOf(
+        weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.temperatureUnit),
+        weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.pressureUnit),
+        weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.windSpeedUnit),
+        weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.visibilityUnit),
+        weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.precipitationUnit),
+        generalFormatConverter.convertToViewSetting(GeneralPreferences.timeFormat),
+        generalFormatConverter.convertToViewSetting(GeneralPreferences.dateFormat),
+    )
 
+    private val _settingChanged = MutableLiveData<ViewSetting>()
+    val settingChanged: LiveData<ViewSetting> = _settingChanged
 
-    fun updateSettings() {
-        _settings.value = listOf(
-            weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.temperatureUnit),
-            weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.pressureUnit),
-            weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.windSpeedUnit),
-            weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.visibilityUnit),
-            weatherUnitConverter.convertToViewSetting(WeatherUnitsPreferences.precipitationUnit),
-            generalFormatConverter.convertToViewSetting(GeneralPreferences.timeFormat),
-            generalFormatConverter.convertToViewSetting(GeneralPreferences.dateFormat),
-        )
-    }
 
     fun getCurrentValue(setting: AnySetting): AnySetting = when (setting) {
         is ViewTemperatureUnit -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.temperatureUnit)
@@ -61,5 +60,12 @@ class SettingsViewModel @Inject constructor(
             is ViewTimeFormat -> GeneralPreferences.timeFormat = setting.toData()
             is ViewDateFormat -> GeneralPreferences.dateFormat = setting.toData()
         }
+
+        val changedSettingIndex = settings.indexOfFirst { it.values.contains(setting) }
+        settings[changedSettingIndex].currentValue =
+            if (setting is GeneralFormat) generalFormatConverter.convertToValue(setting)
+            else weatherUnitConverter.convertToValue(setting)
+
+        _settingChanged.value = settings[changedSettingIndex]
     }
 }

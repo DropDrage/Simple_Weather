@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ItemCityBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityCurrentWeather
+import com.dropdrage.simpleweather.presentation.model.ViewCurrentWeather
 import com.dropdrage.simpleweather.presentation.util.adapter.DragListener
 import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleViewHolder
 
@@ -27,9 +28,7 @@ class CityCurrentWeatherViewHolder constructor(
             city.text = value.city.name
             countryCode.text = value.city.country.code
 
-            weather.setImageResource(value.currentWeather.weatherType.iconRes)
-            weather.contentDescription = root.context.getString(value.currentWeather.weatherType.weatherDescriptionRes)
-            temperature.text = value.currentWeather.temperature
+            changeWeather(value.currentWeather)
 
             drag.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
@@ -57,6 +56,15 @@ class CityCurrentWeatherViewHolder constructor(
         binding.root.setOnLongClickListener {
             deletePopup.show()
             true
+        }
+    }
+
+
+    fun changeWeather(currentWeather: ViewCurrentWeather) {
+        binding.apply {
+            weather.setImageResource(currentWeather.weatherType.iconRes)
+            weather.contentDescription = root.context.getString(currentWeather.weatherType.weatherDescriptionRes)
+            temperature.text = currentWeather.temperature
         }
     }
 
