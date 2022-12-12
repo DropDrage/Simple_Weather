@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val REQUEST_INTERVAL = 5000L
-private const val GPS_ACTIVATION_REQUEST_CODE = 100
 
 @AndroidEntryPoint
 class CurrentLocationWeatherFragment :
@@ -29,6 +28,7 @@ class CurrentLocationWeatherFragment :
 
     private lateinit var permissionRequest: ActivityResultLauncher<String>
     private lateinit var gpsActivationListener: ActivityResultLauncher<IntentSenderRequest>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,9 @@ class CurrentLocationWeatherFragment :
     }
 
 
-    override fun CurrentLocationWeatherViewModel.additionalObserveViewModel() {
+    override fun observeViewModel() = viewModel.apply {
+        super.observeViewModel()
+
         locationObtainingError.observe(viewLifecycleOwner) {
             when (it) {
                 is LocationResult.NoPermission -> requestLocationPermission(it.permission)

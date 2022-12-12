@@ -22,10 +22,12 @@ class GeneralFormatConverter @Inject constructor(@ApplicationContext private val
         val viewGeneralFormat = convertToSetting(format)
 
         return ViewSetting(
-            context.getString(viewGeneralFormat.labelResId),
-            context.getString(viewGeneralFormat.unitResId),
-            viewGeneralFormat.values,
+            label = context.getString(viewGeneralFormat.labelResId),
+            currentValue = context.getString(viewGeneralFormat.unitResId),
+            values = viewGeneralFormat.values,
         )
     }
+
+    fun convertToValue(generalFormat: AnySetting): String = context.getString(generalFormat.unitResId)
 
 }

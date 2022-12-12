@@ -21,10 +21,12 @@ class WeatherUnitConverter @Inject constructor(@ApplicationContext private val c
         val setting: AnySetting = convertToSetting(unit)
 
         return ViewSetting(
-            context.getString(setting.labelResId),
-            context.getString(setting.unitResId, ""),
-            setting.values,
+            label = context.getString(setting.labelResId),
+            currentValue = convertToValue(setting),
+            values = setting.values,
         )
     }
+
+    fun convertToValue(setting: AnySetting): String = context.getString(setting.unitResId, "")
 
 }

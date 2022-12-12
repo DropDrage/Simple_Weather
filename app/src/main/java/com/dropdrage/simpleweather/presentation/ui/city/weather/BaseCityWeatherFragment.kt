@@ -3,18 +3,21 @@ package com.dropdrage.simpleweather.presentation.ui.city.weather
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
+import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.presentation.ui.cities_weather.TitleHolder
 import com.dropdrage.simpleweather.presentation.util.SimpleMarginItemDecoration
+import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.adapter.HorizontalScrollInterceptor
 import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.simpleweather.presentation.util.extension.setWeather
@@ -69,26 +72,24 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         Toast.makeText(requireContext(), weatherType.weatherDescriptionRes, Toast.LENGTH_SHORT).show()
     }
 
-    private fun observeViewModel() = viewModel.apply {
-        cityTitle.observe(viewLifecycleOwner) {
-            (requireParentFragment() as TitleHolder).setTitle(
-                it.city.getMessage(requireContext()),
-                it.countryCode.getMessage(requireContext())
-            )
-        }
+    @CallSuper
+    protected open fun observeViewModel() = viewModel.apply {
+        cityTitle.observe(viewLifecycleOwner, ::setCityTitle)
 
         currentDayWeather.observe(viewLifecycleOwner, ::updateCurrentDayWeather)
         currentHourWeather.observe(viewLifecycleOwner, ::updateCurrentHourWeather)
         hourlyWeather.observe(viewLifecycleOwner, ::updateHourlyWeather)
         dailyWeather.observe(viewLifecycleOwner, ::updateDailyWeather)
 
-        error.observe(viewLifecycleOwner) {
-            if (it != null) {
-                Toast.makeText(requireContext(), it.getMessage(requireContext()), Toast.LENGTH_SHORT).show()
-            }
-        }
+        error.observe(viewLifecycleOwner, ::toastTextMessage)
+    }
 
-        additionalObserveViewModel()
+    private fun setCityTitle(title: ViewCityTitle) {
+        val context = requireContext()
+        (requireParentFragment() as TitleHolder).setTitle(
+            title.city.getMessage(context),
+            title.countryCode.getMessage(context)
+        )
     }
 
     private fun updateCurrentDayWeather(weather: ViewCurrentDayWeather) = binding.apply {
@@ -126,7 +127,10 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         dailyWeatherAdapter.submitValues(dailyWeatherList)
     }
 
-    protected open fun VM.additionalObserveViewModel() {
+    private fun toastTextMessage(message: TextMessage?) {
+        if (message != null) {
+            Toast.makeText(requireContext(), message.getMessage(requireContext()), Toast.LENGTH_SHORT).show()
+        }
     }
 
 
