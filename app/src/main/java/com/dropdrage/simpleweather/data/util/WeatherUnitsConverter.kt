@@ -22,7 +22,7 @@ private const val METER_TO_MILE_DIVIDER = 1609f
 private const val MM_TO_INCH_DIVIDER = 25.4f
 
 object WeatherUnitsConverter {
-    fun convertTemperature(temperatureCelsius: Float) = when (WeatherUnitsPreferences.temperatureUnit) {
+    fun convertTemperature(temperatureCelsius: Float): Float = when (WeatherUnitsPreferences.temperatureUnit) {
         TemperatureUnit.CELSIUS -> temperatureCelsius
         TemperatureUnit.FAHRENHEIT -> temperatureCelsius * CELSIUS_TO_FAHRENHEIT_MODIFIER + CELSIUS_TO_FAHRENHEIT_OFFSET
     }
@@ -32,7 +32,7 @@ object WeatherUnitsConverter {
         PressureUnit.MM_HG -> (pressureHpa * HPA_TO_MM_HG_MODIFIER).toInt()
     }
 
-    fun convertWindSpeed(windSpeedKmh: Float) = when (WeatherUnitsPreferences.windSpeedUnit) {
+    fun convertWindSpeed(windSpeedKmh: Float): Float = when (WeatherUnitsPreferences.windSpeedUnit) {
         WindSpeedUnit.KM_H -> windSpeedKmh
         WindSpeedUnit.MPH -> windSpeedKmh / KM_H_TO_MPH_DIVIDER
         WindSpeedUnit.M_S -> windSpeedKmh / KM_H_TO_M_S_DIVIDER
@@ -45,7 +45,7 @@ object WeatherUnitsConverter {
         VisibilityUnit.MILE -> visibilityMeters / METER_TO_MILE_DIVIDER
     }
 
-    fun convertPrecipitation(precipitationMm: Float) = when (WeatherUnitsPreferences.precipitationUnit) {
+    fun convertPrecipitation(precipitationMm: Float): Float = when (WeatherUnitsPreferences.precipitationUnit) {
         PrecipitationUnit.MM -> precipitationMm
         PrecipitationUnit.INCH -> precipitationMm / MM_TO_INCH_DIVIDER
     }
@@ -81,7 +81,7 @@ object WeatherUnitsConverter {
         ::convertPrecipitation
     )
 
-    private fun <T : Number> convertIfApiDontSupport(value: T, isSupported: Boolean, convert: (T) -> T): T =
+    private inline fun <T : Number> convertIfApiDontSupport(value: T, isSupported: Boolean, convert: (T) -> T): T =
         if (isSupported) value
         else convert(value)
 

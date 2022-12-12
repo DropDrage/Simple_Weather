@@ -15,8 +15,8 @@ class DayWeatherViewHolder(
             day.text = value.dayTitle
             date.text = value.dateFormatted
             weatherIcon.setWeather(value.weatherType)
-            temperatureMax.text = value.temperatureRange.end
             temperatureMin.text = value.temperatureRange.start
+            temperatureMax.text = value.temperatureRange.end
         }
     }
 }

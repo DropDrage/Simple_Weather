@@ -4,6 +4,7 @@ import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponse
 import com.dropdrage.simpleweather.data.source.remote.dto.DailyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
+import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertPrecipitationIfApiDontSupport
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertPressureIfApiDontSupport
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertTemperatureIfApiDontSupport
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertVisibilityIfApiDontSupport
@@ -55,7 +56,7 @@ private fun DailyWeatherDto.toDayWeather(weathersPerHour: List<List<HourWeather>
             convertTemperatureIfApiDontSupport(apparentMinTemperatures[index]),
             convertTemperatureIfApiDontSupport(apparentMaxTemperatures[index]),
         )
-        val precipitationSum = precipitationSums[index]
+        val precipitationSum = convertPrecipitationIfApiDontSupport(precipitationSums[index])
         val maxWindSpeed = maxWindSpeeds[index]
         val sunrise = sunrises[index]
         val sunset = sunsets[index]
