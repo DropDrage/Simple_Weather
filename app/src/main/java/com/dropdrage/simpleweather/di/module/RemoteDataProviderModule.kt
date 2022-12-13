@@ -31,9 +31,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteDataProviderModule {
-    private const val WEATHER_URL = "https://api.open-meteo.com/v1/"
-    private const val SEARCH_URL = "https://geocoding-api.open-meteo.com/v1/"
-
 
     @Provides
     @Singleton
@@ -66,7 +63,7 @@ object RemoteDataProviderModule {
             .client(okHttpClient)
             .addConverterFactory(ApiSupportedParamFactory())
             .addConverterFactory(jsonConverterFactory)
-            .baseUrl(WEATHER_URL)
+            .baseUrl(BuildConfig.WEATHER_URL)
             .build()
             .create(WeatherApi::class.java)
 
@@ -76,9 +73,10 @@ object RemoteDataProviderModule {
         Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
-            .baseUrl(SEARCH_URL)
+            .baseUrl(BuildConfig.SEARCH_URL)
             .build()
             .create(SearchApi::class.java)
+
 }
 
 @Module

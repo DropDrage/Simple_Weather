@@ -22,12 +22,21 @@ android {
     }
 
     buildTypes {
+        def WEATHER_URL = "WEATHER_URL"
+        def SEARCH_URL = "SEARCH_URL"
+
         debug {
             minifyEnabled false
+
+            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
+            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
+            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
         }
     }
     compileOptions {
