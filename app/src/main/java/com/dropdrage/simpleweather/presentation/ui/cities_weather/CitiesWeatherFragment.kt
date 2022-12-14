@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
@@ -15,13 +16,15 @@ import com.dropdrage.simpleweather.databinding.FragmentCitiesWeatherBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Math.pow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleHolder {
+class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
 
     private val binding by viewBinding(FragmentCitiesWeatherBinding::bind)
     private val viewModel: CitiesWeatherViewModel by viewModels()
+    private val observableCityTitle: ObservableCityTitle by viewModels<CitiesSharedViewModel>()
 
     private lateinit var citiesAdapter: CitiesWeatherAdapter
     private var tabLayoutMediator: TabLayoutMediator? = null
@@ -32,9 +35,20 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
 
         initCitiesWeatherPager()
         observeViewModel()
+        observeCityTitle()
 
         requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
         viewModel.loadCities()
+    }
+
+    private fun observeCityTitle() = observableCityTitle.currentCityTitle.observe(viewLifecycleOwner) {
+        val context = requireContext()
+        binding.collapsingToolbar.apply {
+            lifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
+                title = it.city.getMessage(context)
+                subtitle = it.countryCode.getMessage(context)
+            }
+        }
     }
 
     override fun onStart() {
@@ -43,8 +57,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
     }
 
     private fun initCitiesWeatherPager() {
-        binding.citiesWeather.adapter = CitiesWeatherAdapter(childFragmentManager, lifecycle)
-            .also { citiesAdapter = it }
+        binding.citiesWeather.adapter = CitiesWeatherAdapter(this).also { citiesAdapter = it }
 
         val titleMarginEnd = resources.getDimensionPixelOffset(R.dimen.toolbar_expanded_margin_end)
         var previousScrollPercent = 0f
@@ -54,7 +67,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
 
             if (scrollPercentDone != previousScrollPercent) {
                 binding.tabs.alpha = scrollPercentDone
-                val toolbarMarginPercent = pow(scrollPercentDone.toDouble(), 4.0)
+                val toolbarMarginPercent = scrollPercentDone * scrollPercentDone * scrollPercentDone * scrollPercentDone
                 binding.collapsingToolbar.expandedTitleMarginEnd = (titleMarginEnd * toolbarMarginPercent).toInt()
 
                 previousScrollPercent = scrollPercentDone
@@ -77,8 +90,9 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         (requireActivity() as ChangeableAppBar).restoreDefaultAppBar()
+        tabLayoutMediator = null
+        super.onDestroyView()
     }
 
 
@@ -101,8 +115,4 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather), TitleH
         }
     }
 
-    override fun setTitle(title: String, subtitle: String) {
-        binding.collapsingToolbar.title = title
-        binding.collapsingToolbar.subtitle = subtitle
-    }
 }

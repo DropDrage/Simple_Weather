@@ -7,12 +7,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityListBinding
+import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.toImmutableList
 
 @AndroidEntryPoint
 class CityListFragment : Fragment(R.layout.fragment_city_list) {
@@ -39,11 +38,11 @@ class CityListFragment : Fragment(R.layout.fragment_city_list) {
 
     private fun initCityList() = binding.cities.apply {
         val itemTouchHelper = ItemTouchHelper(CityCurrentWeatherDragCallback {
-            viewModel.changeOrder(cityCurrentWeatherAdapter.cities)
+            viewModel.saveOrder(cityCurrentWeatherAdapter.cities)
         })
         itemTouchHelper.attachToRecyclerView(this)
 
-        layoutManager = LinearLayoutManager(requireContext())
+        setLinearLayoutManager()
         adapter = CityCurrentWeatherAdapter(viewModel::deleteCity, itemTouchHelper::startDrag)
             .apply { addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)) }
             .also { cityCurrentWeatherAdapter = it }
@@ -51,7 +50,7 @@ class CityListFragment : Fragment(R.layout.fragment_city_list) {
 
     private fun observeViewModel() = viewModel.apply {
         citiesCurrentWeathers.observe(viewLifecycleOwner) {
-            cityCurrentWeatherAdapter.submitValues(it.toImmutableList())
+            cityCurrentWeatherAdapter.submitList(it)
         }
     }
 

@@ -2,6 +2,7 @@ package com.dropdrage.simpleweather.presentation.ui.city.weather
 
 import android.annotation.SuppressLint
 import androidx.annotation.CallSuper
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,10 @@ import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayW
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.toTextMessageOrUnknownErrorMessage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.time.LocalDate
 
 abstract class BaseCityWeatherViewModel constructor(
@@ -51,7 +55,7 @@ abstract class BaseCityWeatherViewModel constructor(
     val error: LiveData<TextMessage?> = _error
 
 
-    @SuppressLint("NullSafeMutableLiveData") //lint considers getCity() is @Nullable
+    @SuppressLint("NullSafeMutableLiveData") //lint considers getCity() as @Nullable
     fun updateCityName() {
         viewModelScope.launch {
             _cityTitle.value = getCity()
@@ -87,20 +91,29 @@ abstract class BaseCityWeatherViewModel constructor(
         }
     }
 
-    private fun updateWeather(weather: Weather) {
+    @SuppressLint("NullSafeMutableLiveData") //lint considers await() as @Nullable
+    private suspend fun updateWeather(weather: Weather) {
+        val defaultViewModelScope = viewModelScope + Dispatchers.Default
+        val viewDailyWeather = defaultViewModelScope.async {
+            val now = LocalDate.now()
+            weather.dailyWeather.map { dailyWeatherConverter.convertToView(it, now) }
+        }
+        val viewHourlyWeather = defaultViewModelScope.async {
+            weather.hourlyWeather.map(hourWeatherConverter::convertToView)
+        }
+
         _currentDayWeather.value = currentDayWeatherConverter.convertToView(weather.currentDayWeather)
         _currentWeather.value = hourWeatherConverter.convertToView(weather.currentHourWeather)
-        _hourlyWeather.value = weather.hourlyWeather.map(hourWeatherConverter::convertToView)
 
-        val now = LocalDate.now()
-        _dailyWeather.value = weather.dailyWeather.map {
-            dailyWeatherConverter.convertToView(it, now)
-        }
+        _dailyWeather.value = viewDailyWeather.await()
+        _hourlyWeather.value = viewHourlyWeather.await()
     }
 
 
     @CallSuper
+    @MainThread
     open fun clearErrors() {
-        _error.postValue(null)
+        _error.value = null
     }
+
 }

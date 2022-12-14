@@ -4,7 +4,7 @@ import com.dropdrage.simpleweather.presentation.util.adapter.differ.SameEquatabl
 import java.time.LocalDateTime
 
 data class ViewHourWeather(
-    val dateTime: LocalDateTime,
+    private val dateTime: LocalDateTime,
     val weatherType: ViewWeatherType,
     val timeFormatted: String,
     val temperature: String,
@@ -13,5 +13,9 @@ data class ViewHourWeather(
     val humidity: String,
     val visibility: String,
 ) : SameEquatable<ViewHourWeather> {
+
+    val hour: Int = dateTime.hour
+    val dayOfMonth: Int = dateTime.dayOfMonth
+
     override fun isSame(other: ViewHourWeather) = dateTime == other.dateTime
 }

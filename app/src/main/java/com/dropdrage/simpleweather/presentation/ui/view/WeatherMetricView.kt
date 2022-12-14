@@ -261,10 +261,9 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         val resolvedWidth = resolveSize(0, widthMeasureSpec)
         val resolvedHeight = resolveSize(newHeight, heightMeasureSpec)
 
-        val resolvedContentHeight = resolvedHeight - paddingVertical
-
         setMeasuredDimension(resolvedWidth, resolvedHeight)
 
+        val resolvedContentHeight = resolvedHeight - paddingVertical
         recalculateIconRect(resolvedContentHeight, paddingLeft, paddingTop)
 
         centerY = (resolvedHeight shr 1).toFloat()

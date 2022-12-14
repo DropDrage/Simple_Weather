@@ -13,21 +13,29 @@ class HourWeatherViewHolder(
     binding: ItemHourWeatherBinding,
     onItemClick: OnItemClickListener<ViewHourWeather>,
 ) : ClickableViewHolder<ViewHourWeather, ItemHourWeatherBinding>(binding, onItemClick) {
+
     override fun bindData(value: ViewHourWeather) {
         binding.apply {
-            val calendar = Calendar.getInstance()
-
-            val isNotCurrentHourWeather = (calendar.get(Calendar.HOUR_OF_DAY) != value.dateTime.hour
-                || calendar.get(Calendar.DAY_OF_MONTH) != value.dateTime.dayOfMonth)
-            if (isNotCurrentHourWeather) {
+            if (isNotCurrentHourWeather(value)) {
                 time.text = value.timeFormatted
                 time.typeface = Typeface.DEFAULT
             } else {
                 time.text = root.context.getString(R.string.weather_hourly_now)
                 time.typeface = Typeface.DEFAULT_BOLD
             }
+
             weatherIcon.setWeather(value.weatherType)
             temperature.text = value.temperature
         }
     }
+
+
+    private companion object {
+        val calendar = Calendar.getInstance()
+
+        fun isNotCurrentHourWeather(value: ViewHourWeather) =
+            calendar.get(Calendar.HOUR_OF_DAY) != value.hour
+                || calendar.get(Calendar.DAY_OF_MONTH) != value.dayOfMonth
+    }
+
 }

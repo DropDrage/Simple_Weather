@@ -44,4 +44,5 @@ class CityWeatherViewModel @Inject constructor(
             is Resource.Error -> _error.value = result.message.toTextMessageOrUnknownErrorMessage()
         }
     }
+
 }
