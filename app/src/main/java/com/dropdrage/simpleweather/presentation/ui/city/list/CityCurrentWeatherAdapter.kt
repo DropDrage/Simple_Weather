@@ -14,10 +14,12 @@ import java.util.*
 class CityCurrentWeatherAdapter(
     private val onDeleteClicked: (ViewCityCurrentWeather) -> Unit,
     private val requestDrag: (ViewHolder) -> Unit,
-) : DifferRecyclerAdapter<ViewCityCurrentWeather, CityCurrentWeatherViewHolder>(), ItemsMovable {
+) : DifferRecyclerAdapter<ViewCityCurrentWeather, CityCurrentWeatherViewHolder>(CityCurrentWeatherDifferCallback()),
+    ItemsMovable {
 
     val cities: List<ViewCityCurrentWeather>
-        get() = differ.currentList
+        get() = currentList
+
 
     override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = CityCurrentWeatherViewHolder(
         ItemCityBinding.inflate(inflater, parent, false),
@@ -26,9 +28,9 @@ class CityCurrentWeatherAdapter(
     )
 
     override fun moveItem(from: Int, to: Int) {
-        val list = differ.currentList.toMutableList()
+        val list = currentList.toMutableList()
         Collections.swap(list, from, to)
-        submitValues(list)
+        submitList(list)
     }
 
 

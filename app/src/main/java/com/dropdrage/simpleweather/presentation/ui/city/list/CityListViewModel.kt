@@ -25,14 +25,13 @@ class CityListViewModel @Inject constructor(
 
     fun loadCities() {
         viewModelScope.launch {
-            getCitiesWithWeather.invoke()
-                .collect {
-                    _citiesCurrentWeathers.value = it.map(cityCurrentWeatherConverter::convertToView)
-                }
+            getCitiesWithWeather().collect {
+                _citiesCurrentWeathers.value = it.map(cityCurrentWeatherConverter::convertToView)
+            }
         }
     }
 
-    fun changeOrder(orderedCities: List<ViewCityCurrentWeather>) {
+    fun saveOrder(orderedCities: List<ViewCityCurrentWeather>) {
         viewModelScope.launch {
             cityRepository.updateCitiesOrders(orderedCities.map { it.city })
         }
@@ -41,9 +40,11 @@ class CityListViewModel @Inject constructor(
     fun deleteCity(city: ViewCityCurrentWeather) {
         viewModelScope.launch {
             cityRepository.deleteCity(city.city)
-            _citiesCurrentWeathers.value = _citiesCurrentWeathers.value?.toMutableList()?.apply {
-                remove(city)
+
+            val newCitiesList = _citiesCurrentWeathers.value!!.toMutableList().apply {
+                removeAt(indexOfFirst { it.city == city.city })
             }
+            _citiesCurrentWeathers.value = newCitiesList
         }
     }
 }

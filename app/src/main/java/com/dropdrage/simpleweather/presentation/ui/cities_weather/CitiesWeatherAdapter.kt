@@ -1,8 +1,6 @@
 package com.dropdrage.simpleweather.presentation.ui.cities_weather
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dropdrage.simpleweather.presentation.ui.city.weather.CityWeatherFragmentFactory
 import kotlin.math.absoluteValue
@@ -12,10 +10,7 @@ private const val NO_CITIES = 0
 private const val LOCATION_FRAGMENT_POSITION = 0
 private const val LOCATION_FRAGMENT_COUNT = 1
 
-class CitiesWeatherAdapter(
-    fragmentManager: FragmentManager,
-    lifecycle: Lifecycle,
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+class CitiesWeatherAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     var citiesCount: Int = NO_CITIES
         set(value) {

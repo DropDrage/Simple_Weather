@@ -6,11 +6,11 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitySearchBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
+import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,8 +33,10 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
     }
 
     private fun initCities() = binding.cities.apply {
-        layoutManager = LinearLayoutManager(requireContext())
+        setLinearLayoutManager()
         adapter = CitySearchResultAdapter { viewModel.addCity(it) }.also { citySearchAdapter = it }
+
+        setHasFixedSize(true)
     }
 
     private fun observeViews() = binding.apply {
@@ -43,18 +45,19 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (requireActivity() as ChangeableAppBar).restoreDefaultAppBar()
-    }
-
     private fun observeViewModel() = viewModel.apply {
         searchResults.observe(viewLifecycleOwner) {
-            citySearchAdapter.submitValues(it)
+            citySearchAdapter.submitList(it)
         }
         cityAddedEvent.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
+    }
+
+
+    override fun onDestroyView() {
+        (requireActivity() as ChangeableAppBar).restoreDefaultAppBar()
+        super.onDestroyView()
     }
 
 }

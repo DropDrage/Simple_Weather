@@ -1,21 +1,18 @@
 package com.dropdrage.simpleweather.domain.weather
 
-import java.time.LocalDateTime
+import java.time.LocalTime
 
 data class Weather(val dailyWeather: List<DayWeather>) {
 
-    val currentDayWeather: DayWeather
-        get() = dailyWeather.first()
+    val currentDayWeather: DayWeather = dailyWeather.first()
 
     val currentHourWeather: HourWeather
         get() {
-            val currentDay = dailyWeather.first()
-            val currentHour = LocalDateTime.now().hour
-            return currentDay.weatherPerHour.find { it.dateTime.hour == currentHour }
-                ?: error("Current hour is not found in current day: $currentHour. \n $currentDay")
+            val currentHour = LocalTime.now().hour
+            return currentDayWeather.weatherPerHour.find { it.dateTime.hour == currentHour }
+                ?: error("Current hour is not found in current day: $currentHour. \n $currentDayWeather")
         }
 
-    val hourlyWeather: List<HourWeather>
-        get() = dailyWeather.flatMap { it.weatherPerHour }
+    val hourlyWeather: List<HourWeather> = dailyWeather.flatMap { it.weatherPerHour }
 
 }

@@ -18,6 +18,7 @@
     <dimen name="huge_100">64dp</dimen>
     <dimen name="huge_112">72dp</dimen>
     <dimen name="huge_125">80dp</dimen>
+    <dimen name="huge_137">88dp</dimen>
     <dimen name="huge_150">96dp</dimen>
     <dimen name="huge_180">116dp</dimen>
     <dimen name="huge_200">128dp</dimen>
@@ -40,6 +41,11 @@
     <dimen name="padding_layout">@dimen/medium_100</dimen>
 
     <dimen name="width_city_tab">@dimen/small_150</dimen>
+
+    <dimen name="height_day_weather">160dp</dimen>
+    <dimen name="height_day_weather_item">@dimen/huge_200</dimen>
+    <dimen name="height_hour_weather">120dp</dimen>
+    <dimen name="height_hour_weather_item">@dimen/huge_137</dimen>
 
     <dimen name="size_weather_icon">@dimen/huge_112</dimen>
     <dimen name="size_weather_hour_icon">@dimen/large_100</dimen>

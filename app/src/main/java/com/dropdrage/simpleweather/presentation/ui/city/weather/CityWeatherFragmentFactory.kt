@@ -5,11 +5,13 @@ import com.dropdrage.simpleweather.presentation.ui.city.weather.city.CityWeather
 import com.dropdrage.simpleweather.presentation.ui.city.weather.current_location.CurrentLocationWeatherFragment
 
 object CityWeatherFragmentFactory {
-    fun createForCurrentLocation(): BaseCityWeatherFragment<*> = CurrentLocationWeatherFragment()
+
+    fun createForCurrentLocation() = CurrentLocationWeatherFragment()
 
     fun createForCityWithOrder(order: Int) = CityWeatherFragment().apply {
         arguments = Bundle().apply {
             putInt(CityWeatherFragment.ORDER_ARGUMENT, order)
         }
     }
+
 }

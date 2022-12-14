@@ -323,7 +323,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hourlyWeather"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/height_hour_weather"
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/small_100"
                 android:paddingVertical="@dimen/medium_100"
@@ -357,7 +357,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dailyWeather"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/height_day_weather"
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/small_100"
                 android:paddingVertical="@dimen/medium_100"
