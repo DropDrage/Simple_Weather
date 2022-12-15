@@ -13,6 +13,7 @@ import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
+import com.dropdrage.simpleweather.presentation.model.ViewCurrentHourWeather
 import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.model.ViewWeatherType
@@ -24,7 +25,6 @@ import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutMa
 import com.dropdrage.simpleweather.presentation.util.extension.setPool
 import com.dropdrage.simpleweather.presentation.util.extension.setWeather
 import com.dropdrage.simpleweather.presentation.util.extension.viewModels
-import java.util.*
 import kotlin.reflect.KClass
 
 abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
@@ -63,10 +63,8 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         horizontalScrollInterceptor: HorizontalScrollInterceptor,
     ) = binding.hourlyWeather.apply {
         setLinearLayoutManager(LinearLayoutManager.HORIZONTAL, false).also { hourlyWeatherLayoutManager = it }
-        adapter = HourlyWeatherAdapter { makeToast(it.weatherType) }.also {
-            setHourlyWeatherPool(it)
-            hourlyWeatherAdapter = it
-        }
+        adapter = HourlyWeatherAdapter { makeToast(it.weatherType) }.also { hourlyWeatherAdapter = it }
+        setHourlyWeatherPool(hourlyWeatherAdapter)
 
         setHasFixedSize(true)
 
@@ -76,7 +74,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     private fun RecyclerView.setHourlyWeatherPool(adapter: HourlyWeatherAdapter) {
         citiesSharedModel.createHourWeatherPoolIfNeeded(requireContext(), adapter::createViewHolder)
-        setPool(citiesSharedModel.hourWeatherRecyclerPool)
+        setPool(citiesSharedModel.hourlyWeatherRecyclerPool)
     }
 
     private fun initDailyWeather(
@@ -84,10 +82,8 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         horizontalScrollInterceptor: HorizontalScrollInterceptor,
     ) = binding.dailyWeather.apply {
         setLinearLayoutManager(LinearLayoutManager.HORIZONTAL, false)
-        adapter = DailyWeatherAdapter { makeToast(it.weatherType) }.also {
-            setDailyWeatherPool(it)
-            dailyWeatherAdapter = it
-        }
+        adapter = DailyWeatherAdapter { makeToast(it.weatherType) }.also { dailyWeatherAdapter = it }
+        setDailyWeatherPool(dailyWeatherAdapter)
 
         setHasFixedSize(true)
 
@@ -100,7 +96,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun RecyclerView.setDailyWeatherPool(adapter: DailyWeatherAdapter) {
-        citiesSharedModel.createDailyWeatherPoolIfNeeded(requireContext(), adapter::onCreateViewHolder)
+        citiesSharedModel.createDailyWeatherPoolIfNeeded(requireContext(), adapter::createViewHolder)
         setPool(citiesSharedModel.dailyWeatherRecyclerPool)
     }
 
@@ -129,7 +125,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         sunTimes.setSunTimes(weather.sunrise, weather.sunset, weather.sunriseTime, weather.sunsetTime)
     }
 
-    private fun updateCurrentHourWeather(weather: ViewHourWeather) = binding.apply {
+    private fun updateCurrentHourWeather(weather: ViewCurrentHourWeather) = binding.apply {
         weatherIcon.setWeather(weather.weatherType)
         weatherDescription.setText(weather.weatherType.weatherDescriptionRes)
         temperature.text = weather.temperature
@@ -143,11 +139,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     private fun updateHourlyWeather(hourWeatherList: List<ViewHourWeather>) {
         hourlyWeatherAdapter.submitList(hourWeatherList)
 
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        hourlyWeatherLayoutManager.scrollToPosition(hourWeatherList.indexOfFirst {
-            currentHour == it.hour && currentDayOfMonth == it.dayOfMonth
-        })
+        hourlyWeatherLayoutManager.scrollToPosition(hourWeatherList.indexOfFirst { it.isNow })
     }
 
     private fun updateDailyWeather(dailyWeatherList: List<ViewDayWeather>) {
@@ -180,8 +172,6 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     protected companion object {
         const val TAG = "Weather"
-
-        private val calendar = Calendar.getInstance()
     }
 
 }

@@ -13,10 +13,12 @@ import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
+import com.dropdrage.simpleweather.presentation.model.ViewCurrentHourWeather
 import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter
+import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentHourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.toTextMessageOrUnknownErrorMessage
@@ -25,12 +27,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 abstract class BaseCityWeatherViewModel constructor(
     private val weatherRepository: WeatherRepository,
+    private val currentHourWeatherConverter: CurrentHourWeatherConverter,
+    private val currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val hourWeatherConverter: HourWeatherConverter,
     private val dailyWeatherConverter: DailyWeatherConverter,
-    private val currentDayWeatherConverter: CurrentDayWeatherConverter,
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -42,8 +46,8 @@ abstract class BaseCityWeatherViewModel constructor(
     private val _currentDayWeather = MutableLiveData<ViewCurrentDayWeather>()
     val currentDayWeather: LiveData<ViewCurrentDayWeather> = _currentDayWeather
 
-    private val _currentWeather = MutableLiveData<ViewHourWeather>()
-    val currentHourWeather: LiveData<ViewHourWeather> = _currentWeather
+    private val _currentHourWeather = MutableLiveData<ViewCurrentHourWeather>()
+    val currentHourWeather: LiveData<ViewCurrentHourWeather> = _currentHourWeather
 
     private val _hourlyWeather = MutableLiveData<List<ViewHourWeather>>()
     val hourlyWeather: LiveData<List<ViewHourWeather>> = _hourlyWeather
@@ -99,11 +103,12 @@ abstract class BaseCityWeatherViewModel constructor(
             weather.dailyWeather.map { dailyWeatherConverter.convertToView(it, now) }
         }
         val viewHourlyWeather = defaultViewModelScope.async {
-            weather.hourlyWeather.map(hourWeatherConverter::convertToView)
+            val now = LocalDateTime.now()
+            weather.hourlyWeather.map { hourWeatherConverter.convertToView(it, now) }
         }
 
         _currentDayWeather.value = currentDayWeatherConverter.convertToView(weather.currentDayWeather)
-        _currentWeather.value = hourWeatherConverter.convertToView(weather.currentHourWeather)
+        _currentHourWeather.value = currentHourWeatherConverter.convertToView(weather.currentHourWeather)
 
         _dailyWeather.value = viewDailyWeather.await()
         _hourlyWeather.value = viewHourlyWeather.await()

@@ -41,21 +41,6 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
         viewModel.loadCities()
     }
 
-    private fun observeCityTitle() = observableCityTitle.currentCityTitle.observe(viewLifecycleOwner) {
-        val context = requireContext()
-        binding.collapsingToolbar.apply {
-            lifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
-                title = it.city.getMessage(context)
-                subtitle = it.countryCode.getMessage(context)
-            }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
-    }
-
     private fun initCitiesWeatherPager() {
         binding.citiesWeather.adapter = CitiesWeatherAdapter(this).also { citiesAdapter = it }
 
@@ -87,6 +72,22 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
     private fun updateTabLayout() {
         tabLayoutMediator?.detach()
         TabLayoutMediator(binding.tabs, binding.citiesWeather) { _, _ -> }.also { tabLayoutMediator = it }.attach()
+    }
+
+    private fun observeCityTitle() = observableCityTitle.currentCityTitle.observe(viewLifecycleOwner) {
+        val context = requireContext()
+        binding.collapsingToolbar.apply {
+            lifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
+                title = it.city.getMessage(context)
+                subtitle = it.countryCode.getMessage(context)
+            }
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
     }
 
     override fun onDestroyView() {
