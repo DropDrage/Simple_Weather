@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.simpleweather.BuildConfig
 import java.util.concurrent.atomic.AtomicInteger
 
 typealias ViewHolderProducer = (parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder
@@ -16,10 +17,10 @@ private const val TAG = "ViewHolderSupplier"
 
 abstract class ViewHolderSupplier(context: Context, private val viewHolderProducer: ViewHolderProducer) {
 
+    internal lateinit var viewHolderConsumer: ViewHolderConsumer
+
     private val itemsCreated = AtomicInteger(0)
     private val itemsQueued = AtomicInteger(0)
-
-    internal lateinit var viewHolderConsumer: ViewHolderConsumer
 
     private val fakeParent: ViewGroup by lazy { FrameLayout(context) }
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -33,7 +34,7 @@ abstract class ViewHolderSupplier(context: Context, private val viewHolderProduc
 
 
     protected fun createItem(viewType: Int) {
-        val created = itemsCreated.getAndAdd(1)
+        val created = itemsCreated.get() + 1
         val queued = itemsQueued.get()
         if (created > queued) return
 
@@ -44,6 +45,12 @@ abstract class ViewHolderSupplier(context: Context, private val viewHolderProduc
         } catch (e: Exception) {
             Log.e(TAG, e.message, e)
             return
+        }
+        if (BuildConfig.DEBUG) {
+            require(
+                holder.itemViewType != -1,
+                { "ViewType is unset. Check if you use createViewHolder instead of onCreateViewHolder" }
+            )
         }
 
         itemsCreated.incrementAndGet()
@@ -61,8 +68,8 @@ abstract class ViewHolderSupplier(context: Context, private val viewHolderProduc
         repeat(count - created) { enqueueItemCreation(viewType) }
     }
 
-    internal fun onItemCreatedOutside() {
-        Log.d(TAG, "Item Created Outside: ${itemsCreated.incrementAndGet()}")
+    internal fun onItemCreatedOutside(viewType: Int) {
+        Log.w(TAG, "Item $viewType Created Outside: ${itemsCreated.incrementAndGet()}/${itemsQueued.get()}")
     }
 
 }

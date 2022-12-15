@@ -33,7 +33,7 @@ class PrefetchPlainViewPool(
 
     override fun getRecycledView(viewType: Int): RecyclerView.ViewHolder? {
         val holder = super.getRecycledView(viewType)
-        if (holder == null) viewHolderSupplier.onItemCreatedOutside()
+        if (holder == null) viewHolderSupplier.onItemCreatedOutside(viewType)
         return holder
     }
 

@@ -5,17 +5,14 @@ import java.time.LocalDateTime
 
 data class ViewHourWeather(
     private val dateTime: LocalDateTime,
-    val weatherType: ViewWeatherType,
     val timeFormatted: String,
+    val isNow: Boolean,
+    val weatherType: ViewWeatherType,
     val temperature: String,
     val pressure: String,
     val windSpeed: String,
     val humidity: String,
     val visibility: String,
 ) : SameEquatable<ViewHourWeather> {
-
-    val hour: Int = dateTime.hour
-    val dayOfMonth: Int = dateTime.dayOfMonth
-
     override fun isSame(other: ViewHourWeather) = dateTime == other.dateTime
 }

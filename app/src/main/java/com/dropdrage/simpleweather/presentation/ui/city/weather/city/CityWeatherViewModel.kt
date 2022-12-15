@@ -7,6 +7,7 @@ import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter
+import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentHourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.toTextMessage
@@ -19,15 +20,17 @@ private const val ORDER_UNSET = -1
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
     weatherRepository: WeatherRepository,
+    currentHourWeatherConverter: CurrentHourWeatherConverter,
+    currentDayWeatherConverter: CurrentDayWeatherConverter,
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
-    currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val cityRepository: CityRepository,
 ) : BaseCityWeatherViewModel(
     weatherRepository,
+    currentHourWeatherConverter,
+    currentDayWeatherConverter,
     hourWeatherConverter,
-    dailyWeatherConverter,
-    currentDayWeatherConverter
+    dailyWeatherConverter
 ) {
 
     var order: Int = ORDER_UNSET

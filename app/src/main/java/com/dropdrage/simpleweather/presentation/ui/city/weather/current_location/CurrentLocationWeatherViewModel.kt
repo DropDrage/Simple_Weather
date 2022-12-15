@@ -12,6 +12,7 @@ import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherV
 import com.dropdrage.simpleweather.presentation.util.ResourceMessage
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter
+import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentHourWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,15 +21,17 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrentLocationWeatherViewModel @Inject constructor(
     weatherRepository: WeatherRepository,
+    currentHourWeatherConverter: CurrentHourWeatherConverter,
+    currentDayWeatherConverter: CurrentDayWeatherConverter,
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
-    currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val getLocation: GetLocationUseCase,
 ) : BaseCityWeatherViewModel(
     weatherRepository,
+    currentHourWeatherConverter,
+    currentDayWeatherConverter,
     hourWeatherConverter,
-    dailyWeatherConverter,
-    currentDayWeatherConverter
+    dailyWeatherConverter
 ) {
 
     private val _locationObtainError = MutableLiveData<LocationErrorResult?>()

@@ -24,4 +24,5 @@ abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : Recyc
     }
 
     final override fun getItemCount(): Int = values.size
+
 }
