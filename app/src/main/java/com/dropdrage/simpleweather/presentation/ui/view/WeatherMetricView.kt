@@ -18,7 +18,7 @@ import androidx.annotation.RequiresApi
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.domain.util.Range
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
-import kotlin.math.absoluteValue
+import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
 import kotlin.math.max
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -233,10 +233,12 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             it.textSize = textSize
             it.color = _textColor
 
+            it.density = resources.getDisplayMetrics().density
+
             topTextWidth = it.measureText(topText.orEmpty())
             bottomTextWidth = it.measureText(bottomText.orEmpty())
             maxTextWidth = max(topTextWidth, bottomTextWidth)
-            textHeight = it.fontMetrics.ascent.absoluteValue - it.fontMetrics.descent
+            textHeight = it.calculateTextHeight()
         }
     }
 
@@ -250,34 +252,33 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val paddingTop = paddingTop
-        val paddingLeft = paddingLeft
-        val paddingVertical = paddingTop + paddingBottom
-
         val textsBlockHeight = textHeight + textHeight + _textDividerMargin + _textDividerMargin + dividerThickness
         val contentHeight = max(iconSize, textsBlockHeight.toInt())
-        val newHeight = contentHeight + paddingVertical
+        val newHeight = contentHeight + paddingTop + paddingBottom
 
         val resolvedWidth = resolveSize(0, widthMeasureSpec)
         val resolvedHeight = resolveSize(newHeight, heightMeasureSpec)
 
         setMeasuredDimension(resolvedWidth, resolvedHeight)
+    }
 
-        val resolvedContentHeight = resolvedHeight - paddingVertical
-        recalculateIconRect(resolvedContentHeight, paddingLeft, paddingTop)
+    override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
+        recalculateTextMeasurements(width)
 
-        centerY = (resolvedHeight shr 1).toFloat()
+        val paddingTop = paddingTop
+        val resolvedContentHeight = height - paddingTop - paddingBottom
+        centerY = ((resolvedContentHeight shr 1) + paddingTop).toFloat()
 
         val dividerMargin = _textDividerMargin + dividerThicknessHalf
         bottomTextY = centerY + textHeight + dividerMargin
 
-        recalculateTextMeasurements(resolvedWidth)
+        recalculateIconRect(resolvedContentHeight, paddingLeft, paddingTop)
     }
 
     private fun recalculateTextMeasurements(width: Int = getWidth()) {
         val paddingLeft = paddingLeft
-        val resolvedContentWidth = width - paddingLeft - paddingRight
-        val textIconSpace = (resolvedContentWidth - iconSize - maxTextWidth).coerceAtLeast(textIconMargin.toFloat())
+        val contentWidth = width - paddingLeft - paddingRight
+        val textIconSpace = (contentWidth - iconSize - maxTextWidth).coerceAtLeast(textIconMargin.toFloat())
         textStartDrawX = paddingLeft + iconSize + textIconSpace
 
         if (isOnlyTopText) {
