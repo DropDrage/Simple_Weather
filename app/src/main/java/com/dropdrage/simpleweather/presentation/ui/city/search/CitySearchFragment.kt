@@ -10,8 +10,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitySearchBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
+import com.dropdrage.simpleweather.presentation.util.extension.focusEditText
 import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
@@ -30,6 +32,7 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
         initCities()
         observeViews()
         observeViewModel()
+        focusEditText(binding.queryInput)
     }
 
     private fun initCities() = binding.cities.apply {

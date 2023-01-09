@@ -1,6 +1,9 @@
 package com.dropdrage.simpleweather.presentation.util.extension
 
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.MainThread
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
@@ -30,4 +33,11 @@ fun <VM : ViewModel> Fragment.viewModels(
             (owner as? HasDefaultViewModelProviderFactory)?.defaultViewModelProviderFactory
                 ?: defaultViewModelProviderFactory
         })
+}
+
+
+fun Fragment.focusEditText(target: EditText) {
+    target.requestFocus()
+    val inputMethodManager = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)
+    inputMethodManager?.showSoftInput(target, InputMethodManager.SHOW_IMPLICIT)
 }
