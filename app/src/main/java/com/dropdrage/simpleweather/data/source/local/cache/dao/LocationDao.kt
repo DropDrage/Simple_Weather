@@ -19,4 +19,15 @@ interface LocationDao : CrudDao<LocationModel> {
         "AND ABS(longitude - :longitude) < $POSITION_APPROXIMATION ")
     suspend fun getLocationApproximately(latitude: Float, longitude: Float): LocationModel?
 
+    @Query("SELECT * FROM LocationModel")
+    suspend fun getAll(): List<LocationModel>
+
+
+    @Query("SELECT COUNT(*) > 0 FROM LocationModel")
+    suspend fun hasItems(): Boolean
+
+
+    @Query("DELETE FROM LocationModel WHERE id = :id")
+    suspend fun delete(id: Long)
+
 }
