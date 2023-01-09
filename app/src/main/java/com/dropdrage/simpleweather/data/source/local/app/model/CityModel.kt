@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.source.local.model
+package com.dropdrage.simpleweather.data.source.local.app.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded

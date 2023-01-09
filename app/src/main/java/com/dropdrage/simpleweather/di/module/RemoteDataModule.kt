@@ -8,7 +8,6 @@ import com.dropdrage.simpleweather.data.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.di.CacheInterceptor
-import com.dropdrage.simpleweather.di.ForceCacheInterceptor
 import com.dropdrage.simpleweather.di.adapter.ApiSupportedParamFactory
 import com.dropdrage.simpleweather.di.adapter.LocalDateAdapter
 import com.dropdrage.simpleweather.di.adapter.LocalDateTimeAdapter
@@ -51,7 +50,7 @@ object RemoteDataProviderModule {
         return OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(CacheInterceptor())
-            .addInterceptor(ForceCacheInterceptor(context))
+//            .addInterceptor(ForceCacheInterceptor(context))
             .addInterceptor(loggingInterceptor)
             .build()
     }

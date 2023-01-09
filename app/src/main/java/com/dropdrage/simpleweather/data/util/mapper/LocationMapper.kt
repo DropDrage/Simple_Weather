@@ -5,9 +5,7 @@ import com.dropdrage.simpleweather.domain.location.LocationResult
 
 private typealias DomainLocation = com.dropdrage.simpleweather.domain.location.Location
 
-fun Location.toDomainLocation(): DomainLocation {
-    return DomainLocation(latitude, longitude)
-}
+fun Location.toDomainLocation(): DomainLocation = DomainLocation(latitude.toFloat(), longitude.toFloat())
 
 fun Location?.toLocationResult() =
     if (this != null) LocationResult.Success(toDomainLocation())

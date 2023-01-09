@@ -9,7 +9,7 @@ class SimpleMarginItemDecoration(
     @Px private val topMargin: Int = 0,
     @Px private val bottomMargin: Int = 0,
     @Px private val leftMargin: Int = 0,
-    @Px private val rightMargin: Int = 0
+    @Px private val rightMargin: Int = 0,
 ) : RecyclerView.ItemDecoration() {
 
     constructor(@Px margin: Int) : this(margin, margin, margin, margin)
@@ -32,4 +32,5 @@ class SimpleMarginItemDecoration(
             right = rightMargin
         }
     }
+
 }

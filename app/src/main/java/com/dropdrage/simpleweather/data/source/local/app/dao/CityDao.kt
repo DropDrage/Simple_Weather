@@ -1,11 +1,12 @@
-package com.dropdrage.simpleweather.data.source.local.dao
+package com.dropdrage.simpleweather.data.source.local.app.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.dropdrage.simpleweather.data.source.local.model.CityModel
+import com.dropdrage.simpleweather.data.source.local.CrudDao
+import com.dropdrage.simpleweather.data.source.local.app.model.CityModel
 
 @Dao
 interface CityDao : CrudDao<CityModel> {
@@ -29,7 +30,7 @@ interface CityDao : CrudDao<CityModel> {
     @Query("DELETE FROM CityModel " +
         "WHERE name = :name AND country_code = :countryCode " +
         "AND location_latitude = :latitude AND location_longitude = :longitude")
-    suspend fun delete(name: String, countryCode: String, latitude: Double, longitude: Double)
+    suspend fun delete(name: String, countryCode: String, latitude: Float, longitude: Float)
 
 
     @Transaction
@@ -39,4 +40,5 @@ interface CityDao : CrudDao<CityModel> {
         val correctlyOrderedCities = orderedCities.onEach { it.order = -it.order - 1 }
         updateAll(correctlyOrderedCities)
     }
+
 }

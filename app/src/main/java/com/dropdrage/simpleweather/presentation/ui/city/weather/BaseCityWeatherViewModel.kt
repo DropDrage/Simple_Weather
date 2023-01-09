@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.simpleweather.domain.location.Location
+import com.dropdrage.simpleweather.domain.util.CantObtainResourceException
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
@@ -24,6 +25,7 @@ import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeather
 import com.dropdrage.simpleweather.presentation.util.toTextMessageOrUnknownErrorMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.time.LocalDate
@@ -88,11 +90,18 @@ abstract class BaseCityWeatherViewModel constructor(
     }
 
     protected suspend fun getWeatherForLocation(location: Location) {
-        when (val result = weatherRepository.getWeather(location)) {
-            is Resource.Success -> updateWeather(result.data)
-            //ToDo don't pass exception messages to view
-            is Resource.Error -> _error.value = result.message.toTextMessageOrUnknownErrorMessage()
-        }
+        weatherRepository.getWeatherFromNow(location)
+            .flowOn(Dispatchers.IO)
+            .collect { result ->
+                when (result) {
+                    is Resource.Success -> updateWeather(result.data)
+                    //ToDo don't pass exception messages to view
+                    is Resource.Error -> _error.value = when (result.exception) {
+                        is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
+                        else -> result.message.toTextMessageOrUnknownErrorMessage()
+                    }
+                }
+            }
     }
 
     @SuppressLint("NullSafeMutableLiveData") //lint considers await() as @Nullable

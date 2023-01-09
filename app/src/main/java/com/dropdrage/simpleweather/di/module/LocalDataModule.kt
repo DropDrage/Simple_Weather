@@ -3,8 +3,8 @@ package com.dropdrage.simpleweather.di.module
 import android.content.Context
 import androidx.room.Room
 import com.dropdrage.simpleweather.data.repository.CityRepositoryImpl
-import com.dropdrage.simpleweather.data.source.local.AppDatabase
-import com.dropdrage.simpleweather.data.source.local.dao.CityDao
+import com.dropdrage.simpleweather.data.source.local.app.AppDatabase
+import com.dropdrage.simpleweather.data.source.local.app.dao.CityDao
 import com.dropdrage.simpleweather.domain.city.CityRepository
 import dagger.Binds
 import dagger.Module

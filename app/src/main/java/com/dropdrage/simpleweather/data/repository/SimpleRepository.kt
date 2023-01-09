@@ -8,6 +8,6 @@ abstract class SimpleRepository<T>(protected val tag: String) {
         Resource.Success(tryGetData())
     } catch (e: Exception) {
         Log.e(tag, e.message, e)
-        Resource.Error(e.message, e)
+        Resource.Error(e)
     }
 }
