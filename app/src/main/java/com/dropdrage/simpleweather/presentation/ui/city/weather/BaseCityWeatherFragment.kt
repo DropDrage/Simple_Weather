@@ -117,8 +117,8 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun updateCurrentDayWeather(weather: ViewCurrentDayWeather) = binding.apply {
-        temperatureRange.setText(weather.temperatureRange)
-        apparentTemperatureRange.setText(weather.apparentTemperatureRange)
+        temperatureRange.setTextEndOnTop(weather.temperatureRange)
+        apparentTemperatureRange.setTextEndOnTop(weather.apparentTemperatureRange)
         precipitation.setText(weather.precipitationSum)
         maxWindSpeed.setText(weather.maxWindSpeed)
 

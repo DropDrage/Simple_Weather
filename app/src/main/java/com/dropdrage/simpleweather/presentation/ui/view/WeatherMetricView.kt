@@ -351,8 +351,8 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     }
 
 
-    fun setText(texts: Range<String>) {
-        setText(texts.start, texts.end)
+    fun setTextEndOnTop(texts: Range<String>) {
+        setText(texts.end, texts.start)
     }
 
     fun setText(topText: String, bottomText: String? = null) {
