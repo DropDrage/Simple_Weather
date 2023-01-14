@@ -10,6 +10,7 @@ plugins {
 android {
     namespace 'com.dropdrage.simpleweather'
     compileSdk 33
+    buildToolsVersion '33.0.1'
 
     defaultConfig {
         applicationId "com.dropdrage.simpleweather"
