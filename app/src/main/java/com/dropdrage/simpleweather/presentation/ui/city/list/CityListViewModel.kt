@@ -33,4 +33,5 @@ class CityListViewModel @Inject constructor(
     fun deleteCity(city: ViewCityCurrentWeather) {
         viewModelScope.launch { cityRepository.deleteCity(city.city) }
     }
+
 }

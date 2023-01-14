@@ -55,9 +55,9 @@ android {
     buildFeatures {
         viewBinding true
     }
-    lintOptions {
+    lint {
+        baseline file('lint-baseline.xml')
         warningsAsErrors false
-        baseline file("lint-baseline.xml")
     }
 }
 
