@@ -1,17 +1,11 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
-import android.annotation.SuppressLint
 import androidx.annotation.CallSuper
-import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.util.CantObtainResourceException
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
-import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentHourWeather
@@ -25,46 +19,48 @@ import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeather
 import com.dropdrage.simpleweather.presentation.util.toTextMessageOrUnknownErrorMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 abstract class BaseCityWeatherViewModel constructor(
-    private val weatherRepository: WeatherRepository,
     private val currentHourWeatherConverter: CurrentHourWeatherConverter,
     private val currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val hourWeatherConverter: HourWeatherConverter,
     private val dailyWeatherConverter: DailyWeatherConverter,
 ) : ViewModel() {
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: Flow<Boolean> = _isLoading.asStateFlow()
 
-    private val _cityTitle = MutableLiveData<ViewCityTitle>()
-    val cityTitle: LiveData<ViewCityTitle> = _cityTitle
+    private val _cityTitle = MutableSharedFlow<ViewCityTitle>()
+    val cityTitle: Flow<ViewCityTitle> = _cityTitle.asSharedFlow()
 
-    private val _currentDayWeather = MutableLiveData<ViewCurrentDayWeather>()
-    val currentDayWeather: LiveData<ViewCurrentDayWeather> = _currentDayWeather
+    private val _currentDayWeather = MutableSharedFlow<ViewCurrentDayWeather>()
+    val currentDayWeather: Flow<ViewCurrentDayWeather> = _currentDayWeather.asSharedFlow()
 
-    private val _currentHourWeather = MutableLiveData<ViewCurrentHourWeather>()
-    val currentHourWeather: LiveData<ViewCurrentHourWeather> = _currentHourWeather
+    private val _currentHourWeather = MutableSharedFlow<ViewCurrentHourWeather>()
+    val currentHourWeather: Flow<ViewCurrentHourWeather> = _currentHourWeather.asSharedFlow()
 
-    private val _hourlyWeather = MutableLiveData<List<ViewHourWeather>>()
-    val hourlyWeather: LiveData<List<ViewHourWeather>> = _hourlyWeather
+    private val _hourlyWeather = MutableSharedFlow<List<ViewHourWeather>>()
+    val hourlyWeather: Flow<List<ViewHourWeather>> = _hourlyWeather.asSharedFlow()
 
-    private val _dailyWeather = MutableLiveData<List<ViewDayWeather>>()
-    val dailyWeather: LiveData<List<ViewDayWeather>> = _dailyWeather
+    private val _dailyWeather = MutableSharedFlow<List<ViewDayWeather>>()
+    val dailyWeather: Flow<List<ViewDayWeather>> = _dailyWeather.asSharedFlow()
 
-    protected val _error = MutableLiveData<TextMessage?>()
-    val error: LiveData<TextMessage?> = _error
+    protected val _error = MutableStateFlow<TextMessage?>(null)
+    val error: Flow<TextMessage?> = _error.asStateFlow()
 
 
-    @SuppressLint("NullSafeMutableLiveData") //lint considers getCity() as @Nullable
     fun updateCityName() {
         viewModelScope.launch {
-            _cityTitle.value = getCity()
+            _cityTitle.emit(getCity())
         }
     }
 
@@ -81,30 +77,25 @@ abstract class BaseCityWeatherViewModel constructor(
     private inline fun performAsyncWithLoadingIndication(crossinline action: suspend () -> Unit) {
         viewModelScope.launch {
             try {
-                _isLoading.value = true
+                _isLoading.emit(true)
                 action()
             } finally {
-                _isLoading.value = false
+                _isLoading.emit(false)
             }
         }
     }
 
-    protected suspend fun getWeatherForLocation(location: Location) {
-        weatherRepository.getWeatherFromNow(location)
-            .flowOn(Dispatchers.IO)
-            .collect { result ->
-                when (result) {
-                    is Resource.Success -> updateWeather(result.data)
-                    //ToDo don't pass exception messages to view
-                    is Resource.Error -> _error.value = when (result.exception) {
-                        is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
-                        else -> result.message.toTextMessageOrUnknownErrorMessage()
-                    }
-                }
-            }
+    protected suspend fun processWeatherResult(result: Resource<Weather>) {
+        when (result) {
+            is Resource.Success -> updateWeather(result.data)
+            //ToDo don't pass exception messages to view
+            is Resource.Error -> _error.emit(when (result.exception) {
+                is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
+                else -> result.message.toTextMessageOrUnknownErrorMessage()
+            })
+        }
     }
 
-    @SuppressLint("NullSafeMutableLiveData") //lint considers await() as @Nullable
     private suspend fun updateWeather(weather: Weather) {
         val defaultViewModelScope = viewModelScope + Dispatchers.Default
         val viewDailyWeather = defaultViewModelScope.async {
@@ -116,18 +107,19 @@ abstract class BaseCityWeatherViewModel constructor(
             weather.hourlyWeather.map { hourWeatherConverter.convertToView(it, now) }
         }
 
-        _currentDayWeather.value = currentDayWeatherConverter.convertToView(weather.currentDayWeather)
-        _currentHourWeather.value = currentHourWeatherConverter.convertToView(weather.currentHourWeather)
+        _currentDayWeather.emit(currentDayWeatherConverter.convertToView(weather.currentDayWeather))
+        _currentHourWeather.emit(currentHourWeatherConverter.convertToView(weather.currentHourWeather))
 
-        _dailyWeather.value = viewDailyWeather.await()
-        _hourlyWeather.value = viewHourlyWeather.await()
+        _dailyWeather.emit(viewDailyWeather.await())
+        _hourlyWeather.emit(viewHourlyWeather.await())
     }
 
 
     @CallSuper
-    @MainThread
     open fun clearErrors() {
-        _error.value = null
+        viewModelScope.launch {
+            _error.emit(null)
+        }
     }
 
 }

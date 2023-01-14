@@ -1,7 +1,6 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather.current_location
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.domain.location.LocationErrorResult
 import com.dropdrage.simpleweather.domain.location.LocationResult
@@ -16,26 +15,29 @@ import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentHour
 import com.dropdrage.simpleweather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.presentation.util.model_converter.HourWeatherConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrentLocationWeatherViewModel @Inject constructor(
-    weatherRepository: WeatherRepository,
     currentHourWeatherConverter: CurrentHourWeatherConverter,
     currentDayWeatherConverter: CurrentDayWeatherConverter,
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
     private val getLocation: GetLocationUseCase,
+    private val weatherRepository: WeatherRepository,
 ) : BaseCityWeatherViewModel(
-    weatherRepository,
     currentHourWeatherConverter,
     currentDayWeatherConverter,
     hourWeatherConverter,
     dailyWeatherConverter
 ) {
 
-    private val _locationObtainError = MutableLiveData<LocationErrorResult?>()
-    val locationObtainingError: LiveData<LocationErrorResult?> = _locationObtainError
+    private val _locationObtainError = MutableStateFlow<LocationErrorResult?>(null)
+    val locationObtainingError: Flow<LocationErrorResult?> = _locationObtainError.asStateFlow()
 
 
     override suspend fun getCity(): ViewCityTitle =
@@ -44,16 +46,17 @@ class CurrentLocationWeatherViewModel @Inject constructor(
     override suspend fun tryLoadWeather() {
         getLocation().collect {
             when (it) {
-                is LocationResult.Success -> getWeatherForLocation(it.location)
+                is LocationResult.Success ->
+                    weatherRepository.getUpdatedWeatherFromNow(it.location).collect(::processWeatherResult)
                 is LocationResult.NoPermission -> {
-                    _locationObtainError.value = it
-                    _error.value = ResourceMessage(R.string.error_location_no_permission)
+                    _locationObtainError.emit(it)
+                    _error.emit(ResourceMessage(R.string.error_location_no_permission))
                 }
                 is LocationResult.GpsDisabled -> {
                     _locationObtainError.value = it
-                    _error.value = ResourceMessage(R.string.error_location_gps_disabled)
+                    _error.emit(ResourceMessage(R.string.error_location_gps_disabled))
                 }
-                else -> _error.value = ResourceMessage(R.string.error_location_no_location)
+                else -> _error.emit(ResourceMessage(R.string.error_location_no_location))
             }
         }
     }
@@ -61,7 +64,7 @@ class CurrentLocationWeatherViewModel @Inject constructor(
 
     override fun clearErrors() {
         super.clearErrors()
-        _locationObtainError.value = null
+        viewModelScope.launch { _locationObtainError.emit(null) }
     }
 
 }

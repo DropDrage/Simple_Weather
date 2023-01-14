@@ -11,6 +11,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherFragment
+import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -53,13 +54,13 @@ class CurrentLocationWeatherFragment :
     override fun observeViewModel() = viewModel.apply {
         super.observeViewModel()
 
-        locationObtainingError.observe(viewLifecycleOwner) {
+        collectWithViewLifecycle(locationObtainingError, {
             when (it) {
                 is LocationResult.NoPermission -> requestLocationPermission(it.permission)
                 LocationResult.GpsDisabled -> requestGpsActivation()
                 else -> {}
             }
-        }
+        })
     }
 
     private fun requestLocationPermission(permission: String) {

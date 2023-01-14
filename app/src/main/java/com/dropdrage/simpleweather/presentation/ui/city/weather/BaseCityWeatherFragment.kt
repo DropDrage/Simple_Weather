@@ -21,6 +21,7 @@ import com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesSharedVi
 import com.dropdrage.simpleweather.presentation.util.SimpleMarginItemDecoration
 import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.adapter.HorizontalScrollInterceptor
+import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
 import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.simpleweather.presentation.util.extension.setPool
 import com.dropdrage.simpleweather.presentation.util.extension.setWeather
@@ -102,14 +103,14 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     @CallSuper
     protected open fun observeViewModel() = viewModel.apply {
-        cityTitle.observe(viewLifecycleOwner, ::setCityTitle)
+        collectWithViewLifecycle(cityTitle, ::setCityTitle)
 
-        currentDayWeather.observe(viewLifecycleOwner, ::updateCurrentDayWeather)
-        currentHourWeather.observe(viewLifecycleOwner, ::updateCurrentHourWeather)
-        hourlyWeather.observe(viewLifecycleOwner, ::updateHourlyWeather)
-        dailyWeather.observe(viewLifecycleOwner, ::updateDailyWeather)
+        collectWithViewLifecycle(currentDayWeather, ::updateCurrentDayWeather)
+        collectWithViewLifecycle(currentHourWeather, ::updateCurrentHourWeather)
+        collectWithViewLifecycle(hourlyWeather, ::updateHourlyWeather)
+        collectWithViewLifecycle(dailyWeather, ::updateDailyWeather)
 
-        error.observe(viewLifecycleOwner, ::toastTextMessage)
+        collectWithViewLifecycle(error, ::toastTextMessage)
     }
 
     private fun setCityTitle(title: ViewCityTitle) {

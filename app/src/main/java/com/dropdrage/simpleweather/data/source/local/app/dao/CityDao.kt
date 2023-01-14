@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.dropdrage.simpleweather.data.source.local.CrudDao
 import com.dropdrage.simpleweather.data.source.local.app.model.CityModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CityDao : CrudDao<CityModel> {
@@ -22,6 +23,9 @@ interface CityDao : CrudDao<CityModel> {
 
     @Query("SELECT * FROM CityModel ORDER BY `order`")
     suspend fun getAllOrdered(): List<CityModel>
+
+    @Query("SELECT * FROM CityModel ORDER BY `order`")
+    fun getAllOrderedList(): Flow<List<CityModel>>
 
     @Query("SELECT max(city.`order`) FROM CityModel city")
     suspend fun getLastOrder(): Int?

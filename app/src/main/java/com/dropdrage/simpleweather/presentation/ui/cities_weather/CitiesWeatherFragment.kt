@@ -8,12 +8,13 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitiesWeatherBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
+import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
+import com.dropdrage.simpleweather.presentation.util.extension.viewLifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,6 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
         observeCityTitle()
 
         requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
-        viewModel.loadCities()
     }
 
     private fun initCitiesWeatherPager() {
@@ -63,10 +63,10 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
     }
 
     private fun observeViewModel() = viewModel.apply {
-        cities.observe(viewLifecycleOwner) {
+        collectWithViewLifecycle(cities, {
             citiesAdapter.citiesCount = it.size
             updateTabLayout()
-        }
+        })
     }
 
     private fun updateTabLayout() {
@@ -77,7 +77,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
     private fun observeCityTitle() = observableCityTitle.currentCityTitle.observe(viewLifecycleOwner) {
         val context = requireContext()
         binding.collapsingToolbar.apply {
-            lifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
+            viewLifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
                 title = it.city.getMessage(context)
                 subtitle = it.countryCode.getMessage(context)
             }
