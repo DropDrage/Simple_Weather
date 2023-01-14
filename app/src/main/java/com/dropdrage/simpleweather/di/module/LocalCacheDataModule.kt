@@ -6,6 +6,7 @@ import com.dropdrage.simpleweather.data.source.local.cache.CacheDatabase
 import com.dropdrage.simpleweather.data.source.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.HourWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.LocationDao
+import com.dropdrage.simpleweather.data.source.local.cache.dao.WeatherCacheDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +31,8 @@ object LocalCacheDataProviderModule {
 
     @[Provides Singleton]
     fun provideDayWeatherDao(cacheDatabase: CacheDatabase): DayWeatherDao = cacheDatabase.dayWeatherDao
+
+    @[Provides Singleton]
+    fun provideCacheDao(cacheDatabase: CacheDatabase): WeatherCacheDao = cacheDatabase.weatherCacheDao
 
 }

@@ -11,7 +11,7 @@ import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.presentation.model.ViewCitySearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class CitySearchViewModel @Inject constructor(
     private val _searchResults = MutableLiveData<List<ViewCitySearchResult>>()
     val searchResults: LiveData<List<ViewCitySearchResult>> = _searchResults
 
-    private val query = MutableStateFlow("")
+    private val query = MutableSharedFlow<String>()
 
     private val _cityAddedEvent = MutableLiveData<Unit>()
     val cityAddedEvent: LiveData<Unit> = _cityAddedEvent
@@ -60,4 +60,5 @@ class CitySearchViewModel @Inject constructor(
             _cityAddedEvent.value = Unit
         }
     }
+
 }

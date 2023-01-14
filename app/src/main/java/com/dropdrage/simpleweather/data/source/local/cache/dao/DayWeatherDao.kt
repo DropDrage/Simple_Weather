@@ -1,7 +1,6 @@
 package com.dropdrage.simpleweather.data.source.local.cache.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.dropdrage.simpleweather.data.source.local.CrudDao
@@ -11,9 +10,6 @@ import java.time.LocalDate
 
 @Dao
 interface DayWeatherDao : CrudDao<DayWeatherModel> {
-
-    @Insert
-    suspend fun insertAllAndGetIds(items: List<DayWeatherModel>): List<Long>
 
     @Transaction
     @Query("SELECT * FROM DayWeatherModel day_weather " +
@@ -25,17 +21,7 @@ interface DayWeatherDao : CrudDao<DayWeatherModel> {
     suspend fun hasWeatherForLocation(locationId: Long): Boolean
 
 
-    @Query("DELETE FROM DayWeatherModel WHERE location_id = :locationId")
-    suspend fun clearForLocation(locationId: Long)
-
     @Query("DELETE FROM DayWeatherModel WHERE location_id = :locationId AND date < :currentDate")
     suspend fun deleteOutdatedForLocation(locationId: Long, currentDate: LocalDate): Int
-
-
-    @Transaction
-    suspend fun clearAndInsertWeather(locationId: Long, dayWeathers: List<DayWeatherModel>): List<Long> {
-        clearForLocation(locationId)
-        return insertAllAndGetIds(dayWeathers)
-    }
 
 }

@@ -14,6 +14,7 @@ interface LocationDao : CrudDao<LocationModel> {
     @Insert
     suspend fun insertAndGetId(item: LocationModel): Long
 
+
     @Query("SELECT * FROM LocationModel " +
         "WHERE ABS(latitude - :latitude) < $POSITION_APPROXIMATION " +
         "AND ABS(longitude - :longitude) < $POSITION_APPROXIMATION ")

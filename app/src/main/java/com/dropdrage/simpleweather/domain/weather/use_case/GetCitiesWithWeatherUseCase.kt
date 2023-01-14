@@ -6,6 +6,7 @@ import com.dropdrage.simpleweather.domain.weather.current.CurrentWeatherReposito
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class GetCitiesWithWeatherUseCase @Inject constructor(
@@ -19,7 +20,8 @@ class GetCitiesWithWeatherUseCase @Inject constructor(
 
         val allLocations = allCitiesNoWeather.map { it.city.location }
         val currentWeatherFlow = currentWeatherRepository.getCurrentWeather(allLocations)
-        currentWeatherFlow.catch { channel.close() }
+        currentWeatherFlow.take(2)
+            .catch { channel.close() }
             .collect {
                 val allCitiesProbablyWithWeather = it.mapIndexed { i, weather ->
                     if (weather != null) allCitiesNoWeather[i].copy(weather = weather)

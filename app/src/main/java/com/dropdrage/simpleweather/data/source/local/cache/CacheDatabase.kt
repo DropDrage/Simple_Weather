@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.dropdrage.simpleweather.data.source.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.HourWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.LocationDao
+import com.dropdrage.simpleweather.data.source.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.source.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.data.source.local.cache.model.HourWeatherModel
 import com.dropdrage.simpleweather.data.source.local.cache.model.LocationModel
@@ -19,7 +20,7 @@ import com.dropdrage.simpleweather.data.source.local.util.converter.WeatherTypeC
 @TypeConverters(
     LocalDateConverter::class,
     LocalDateTimeConverter::class,
-    WeatherTypeConverter::class
+    WeatherTypeConverter::class,
 )
 abstract class CacheDatabase : RoomDatabase() {
 
@@ -27,6 +28,8 @@ abstract class CacheDatabase : RoomDatabase() {
 
     abstract val hourWeatherDao: HourWeatherDao
     abstract val dayWeatherDao: DayWeatherDao
+
+    abstract val weatherCacheDao: WeatherCacheDao
 
 
     companion object {
