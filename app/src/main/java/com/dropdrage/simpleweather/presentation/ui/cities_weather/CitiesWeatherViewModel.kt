@@ -7,26 +7,20 @@ import com.dropdrage.simpleweather.domain.city.CityRepository
 import com.dropdrage.simpleweather.domain.weather.use_case.UpdateAllCitiesWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CitiesWeatherViewModel @Inject constructor(
-    private val cityRepository: CityRepository,
+    cityRepository: CityRepository,
     private val updateAllCitiesWeather: UpdateAllCitiesWeatherUseCase,
 ) : ViewModel() {
 
-    private val _cities = MutableStateFlow<List<City>>(emptyList())
-    val cities: Flow<List<City>> = _cities.asStateFlow()
+    val cities: Flow<List<City>> =
+        cityRepository.orderedCities.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-
-    fun loadCities() {
-        viewModelScope.launch {
-            _cities.emit(cityRepository.getAllCitiesOrdered())
-        }
-    }
 
     fun updateWeather() {
         viewModelScope.launch { updateAllCitiesWeather.invoke() }

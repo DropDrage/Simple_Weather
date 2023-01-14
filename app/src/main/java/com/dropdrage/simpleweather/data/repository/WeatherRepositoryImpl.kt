@@ -38,23 +38,35 @@ class WeatherRepositoryImpl @Inject constructor(
     private val weatherCacheDao: WeatherCacheDao,
 ) : CachedRepository(LogTags.WEATHER), WeatherRepository {
 
-    override suspend fun getWeatherFromNow(location: Location): Flow<Resource<Weather>> = flow<Resource<Weather>> {
+    override suspend fun getWeatherFromNow(location: Location): Resource<Weather> {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
         val localWeatherResult = getLocalWeatherResult(savedLocationModel)
-        if (localWeatherResult is LocalResource.Success) {
-            emit(Resource.Success(localWeatherResult.data))
+        return if (localWeatherResult is LocalResource.Success) {
+            Resource.Success(localWeatherResult.data)
+        } else {
+            Resource.CantObtainResource()
         }
+    }
 
-        if (isUpdateNotRequired(savedLocationModel?.updateTime)) {
-            currentCoroutineContext().cancel()
-            return@flow
-        }
+    override suspend fun getUpdatedWeatherFromNow(location: Location): Flow<Resource<Weather>> =
+        flow {
+            val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
+            val localWeatherResult = getLocalWeatherResult(savedLocationModel)
+            if (localWeatherResult is LocalResource.Success) {
+                emit(Resource.Success(localWeatherResult.data))
+            }
 
-        tryProcessRemoteResourceOrEmitError(localWeatherResult) {
-            updateLocalWeatherFromApi(location, savedLocationModel?.id)
-            emitUpdatedLocalWeather(savedLocationModel, location)
-        }
-    }.flowOn(Dispatchers.IO)
+            if (isUpdateNotRequired(savedLocationModel?.updateTime)) {
+                currentCoroutineContext().cancel()
+                return@flow
+            }
+
+            @Suppress("RemoveExplicitTypeArguments")
+            tryProcessRemoteResourceOrEmitError<Weather>(localWeatherResult) {
+                updateLocalWeatherFromApi(location, savedLocationModel?.id)
+                emitUpdatedLocalWeather(savedLocationModel, location)
+            }
+        }.flowOn(Dispatchers.IO)
 
     private suspend fun getLocalWeatherResult(locationModel: LocationModel?): LocalResource<Weather> {
         if (locationModel == null) return LocalResource.NotFound()

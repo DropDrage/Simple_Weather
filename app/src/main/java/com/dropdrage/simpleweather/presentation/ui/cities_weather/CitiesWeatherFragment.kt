@@ -39,7 +39,6 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
         observeCityTitle()
 
         requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
-        viewModel.loadCities()
     }
 
     private fun initCitiesWeatherPager() {

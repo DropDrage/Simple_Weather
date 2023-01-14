@@ -1,8 +1,12 @@
 package com.dropdrage.simpleweather.domain.city
 
 import com.dropdrage.simpleweather.domain.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface CityRepository {
+
+    val orderedCities: Flow<List<City>>
+
 
     suspend fun getCityWithOrder(order: Int): Resource<City>
 

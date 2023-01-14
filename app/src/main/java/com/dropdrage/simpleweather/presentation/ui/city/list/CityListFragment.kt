@@ -53,10 +53,4 @@ class CityListFragment : Fragment(R.layout.fragment_city_list) {
         collectWithViewLifecycle(citiesCurrentWeathers, cityCurrentWeatherAdapter::submitList)
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadCities()
-    }
-
 }

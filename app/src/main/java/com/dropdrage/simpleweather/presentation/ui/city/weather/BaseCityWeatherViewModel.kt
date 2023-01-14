@@ -3,11 +3,9 @@ package com.dropdrage.simpleweather.presentation.ui.city.weather
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.util.CantObtainResourceException
 import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
-import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentHourWeather
@@ -32,7 +30,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 abstract class BaseCityWeatherViewModel constructor(
-    private val weatherRepository: WeatherRepository,
     private val currentHourWeatherConverter: CurrentHourWeatherConverter,
     private val currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val hourWeatherConverter: HourWeatherConverter,
@@ -88,16 +85,14 @@ abstract class BaseCityWeatherViewModel constructor(
         }
     }
 
-    protected suspend fun getWeatherForLocation(location: Location) {
-        weatherRepository.getWeatherFromNow(location).collect { result ->
-            when (result) {
-                is Resource.Success -> updateWeather(result.data)
-                //ToDo don't pass exception messages to view
-                is Resource.Error -> _error.emit(when (result.exception) {
-                    is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
-                    else -> result.message.toTextMessageOrUnknownErrorMessage()
-                })
-            }
+    protected suspend fun processWeatherResult(result: Resource<Weather>) {
+        when (result) {
+            is Resource.Success -> updateWeather(result.data)
+            //ToDo don't pass exception messages to view
+            is Resource.Error -> _error.emit(when (result.exception) {
+                is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
+                else -> result.message.toTextMessageOrUnknownErrorMessage()
+            })
         }
     }
 

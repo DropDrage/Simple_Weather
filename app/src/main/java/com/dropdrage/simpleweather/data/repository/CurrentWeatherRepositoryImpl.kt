@@ -31,22 +31,24 @@ class CurrentWeatherRepositoryImpl @Inject constructor(
 ) : CurrentWeatherRepository {
 
     override suspend fun getCurrentWeather(locations: List<Location>): Flow<List<CurrentWeather?>> = flow {
-        val locationsFlow = locations.asFlow().flowOn(Dispatchers.IO)
+        val locationsFlow = locations.asFlow()
         val localWeathers = locationsFlow.map(::getLocalCurrentWeather).toList()
         emit(localWeathers)
 
         try {
-            val remoteWeathers = locationsFlow.map {
-                api.getCurrentWeather(it.latitude, it.longitude, WeatherUnitsPreferences.temperatureUnit)
-                    .toDomainCurrentWeather()
-            }.toList()
+            val remoteWeathers = locationsFlow
+                .map {
+                    api.getCurrentWeather(it.latitude, it.longitude, WeatherUnitsPreferences.temperatureUnit)
+                        .toDomainCurrentWeather()
+                }
+                .toList()
             emit(remoteWeathers)
         } catch (e: UnknownHostException) {
             Log.e(LogTags.WEATHER, "Probably, no internet: " + e.message, e)
         } catch (e: Exception) {
             Log.e(LogTags.WEATHER, e.message, e)
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun getLocalCurrentWeather(location: Location): CurrentWeather? {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)

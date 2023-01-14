@@ -8,10 +8,16 @@ import com.dropdrage.simpleweather.data.util.LogTags
 import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
 import com.dropdrage.simpleweather.domain.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CityRepositoryImpl @Inject constructor(private val dao: CityDao) : SimpleRepository<City>(LogTags.CITY),
-    CityRepository {
+class CityRepositoryImpl @Inject constructor(
+    private val dao: CityDao,
+) : SimpleRepository<City>(LogTags.CITY), CityRepository {
+
+    override val orderedCities: Flow<List<City>> = dao.getAllOrderedList().map { it.map(CityModel::toDomain) }
+
 
     override suspend fun getCityWithOrder(order: Int): Resource<City> = simplyResourceWrap {
         dao.getWithOrder(order)!!.toDomain()

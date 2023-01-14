@@ -19,14 +19,13 @@ private const val ORDER_UNSET = -1
 
 @HiltViewModel
 class CityWeatherViewModel @Inject constructor(
-    weatherRepository: WeatherRepository,
     currentHourWeatherConverter: CurrentHourWeatherConverter,
     currentDayWeatherConverter: CurrentDayWeatherConverter,
     hourWeatherConverter: HourWeatherConverter,
     dailyWeatherConverter: DailyWeatherConverter,
     private val cityRepository: CityRepository,
+    private val weatherRepository: WeatherRepository,
 ) : BaseCityWeatherViewModel(
-    weatherRepository,
     currentHourWeatherConverter,
     currentDayWeatherConverter,
     hourWeatherConverter,
@@ -43,8 +42,11 @@ class CityWeatherViewModel @Inject constructor(
 
     override suspend fun tryLoadWeather() {
         when (val result = cityRepository.getCityWithOrder(order)) {
-            is Resource.Success -> getWeatherForLocation(result.data.location)
-            is Resource.Error -> _error.value = result.message.toTextMessageOrUnknownErrorMessage()
+            is Resource.Success -> {
+                val weatherResult = weatherRepository.getWeatherFromNow(result.data.location)
+                processWeatherResult(weatherResult)
+            }
+            is Resource.Error -> _error.emit(result.message.toTextMessageOrUnknownErrorMessage())
         }
     }
 
