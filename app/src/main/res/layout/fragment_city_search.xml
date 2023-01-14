@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/city_search_hint"
                     android:imeOptions="actionSearch"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textAutoCorrect|textPostalAddress|textCapWords"
                     android:singleLine="true"
                     android:textAppearance="?textAppearanceBodyLarge" />
 

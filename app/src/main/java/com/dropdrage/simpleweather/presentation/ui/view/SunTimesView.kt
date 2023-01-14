@@ -17,6 +17,7 @@ import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.graphics.alpha
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
+import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.math.absoluteValue
@@ -52,6 +53,7 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
             field = value
         }
     private var arcThicknessHalf: Float = 0f
+    private var arcTopMargin: Int = 0
     private var arcRectangle: RectF = RectF()
     private var arcCenterX: Int = 0
     private var arcCenterY: Float = 0f
@@ -60,10 +62,12 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     @ColorInt
     private var timeColor: Int = Color.GRAY
-
     private var timeTextSize: Float = 12f
     private var timeTextTopMargin: Int = 8
     private var textHeight: Float = 0f
+    private var textLeftX: Float = 0f
+    private var textRightX: Float = 0f
+    private var timeTextY: Float = 0f
 
     private var sun: Drawable = ColorDrawable()
         set(value) {
@@ -92,6 +96,9 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     private var sunFutureAngle: Float = 0f
     private var sunFutureArcStartAngle: Float = 0f
+
+    private var leftBorder: Float = 0f
+    private var rightBorder: Float = 0f
 
 
     init {
@@ -132,6 +139,8 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
         sunriseTime = a.getString(R.styleable.SunTimesView_st_sunriseText)
         sunsetTime = a.getString(R.styleable.SunTimesView_st_sunsetText)
 
+        arcTopMargin = (sunSize shr 1).coerceAtLeast(arcThickness.toInt())
+
         a.recycle()
     }
 
@@ -161,57 +170,58 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
             textSize = timeTextSize
             color = timeColor
             textAlign = Paint.Align.CENTER
-            density = resources.getDisplayMetrics().density
-        }
-        recalculateTextMeasurements()
-    }
 
-    private fun recalculateTextMeasurements() {
-        textHeight = timePaint.fontMetrics.ascent.absoluteValue - timePaint.fontMetrics.descent
+            density = resources.getDisplayMetrics().density
+            textHeight = calculateTextHeight()
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
         val resolvedWidth = resolveSize(0, widthMeasureSpec)
         val contentWidth = resolvedWidth - paddingLeft - paddingRight
+        val contentWidthHalf = contentWidth shr 1
 
-        arcCenterX = resolvedWidth shr 1
-        arcRadius = (contentWidth shr 1).toFloat() - arcGroundEdgeMargin
+        arcRadius = contentWidthHalf - arcGroundEdgeMargin
         arcHeight = arcRadius * ARC_HEIGHT_COMPRESSION
+        arcCenterX = contentWidthHalf + paddingLeft
 
-        val arcTopMargin = (sunSize shr 1).coerceAtLeast(arcThickness.toInt())
+        val paddingTop = paddingTop
         val textSpace = timeTextTopMargin + textHeight
         val contentHeight = arcTopMargin + arcHeight + textSpace
         val newHeight = contentHeight + paddingTop + paddingBottom
 
         val contentHeightWithoutTextSpace = contentHeight - textSpace
-        arcCenterY = paddingTop + contentHeightWithoutTextSpace
-        arcRectangle.set(
-            arcGroundEdgeMargin + arcThicknessHalf + paddingLeft,
-            (arcTopMargin + paddingTop).toFloat(),
-            resolvedWidth - arcGroundEdgeMargin - arcThicknessHalf - paddingRight,
-            arcTopMargin + arcHeight * 2 + paddingTop
-        )
+        arcCenterY = contentHeightWithoutTextSpace + paddingTop
 
         val resolvedHeight = resolveSize(newHeight.toInt(), heightMeasureSpec)
 
         setMeasuredDimension(resolvedWidth, resolvedHeight)
     }
 
+    override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
+        leftBorder = paddingLeft.toFloat()
+        rightBorder = (width - paddingRight).toFloat()
+
+        val arcTopMarginWithPaddingTop = arcTopMargin + paddingTop
+        arcRectangle.set(
+            leftBorder + arcGroundEdgeMargin + arcThicknessHalf,
+            arcTopMarginWithPaddingTop.toFloat(),
+            rightBorder - arcGroundEdgeMargin - arcThicknessHalf,
+            arcTopMarginWithPaddingTop + arcHeight * 2
+        )
+
+        textLeftX = arcRectangle.left
+        textRightX = arcRectangle.right
+        timeTextY = arcCenterY + timeTextTopMargin + textHeight / 2
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val paddingLeft = paddingLeft
-        val paddingRight = paddingRight
-        val width = width
-
-        val rightEnd = (width - paddingRight).toFloat()
-
         drawArc(canvas)
-        drawGround(canvas, paddingLeft.toFloat(), rightEnd)
+        drawGround(canvas)
         drawSun(canvas)
-        drawTime(canvas, rightEnd - arcGroundEdgeMargin - arcThicknessHalf)
+        drawTime(canvas)
     }
 
     private fun drawArc(canvas: Canvas) {
@@ -219,8 +229,8 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
         canvas.drawArc(arcRectangle, sunFutureArcStartAngle, sunFutureAngle, false, futureArcPaint)
     }
 
-    fun drawGround(canvas: Canvas, startX: Float, endX: Float) {
-        canvas.drawLine(startX, arcCenterY, endX, arcCenterY, groundPaint)
+    fun drawGround(canvas: Canvas) {
+        canvas.drawLine(leftBorder, arcCenterY, rightBorder, arcCenterY, groundPaint)
     }
 
     private fun drawSun(canvas: Canvas) {
@@ -229,13 +239,12 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     }
 
-    private fun drawTime(canvas: Canvas, rightArcX: Float) {
-        val timeTextY = arcCenterY + timeTextTopMargin + textHeight / 2
+    private fun drawTime(canvas: Canvas) {
         sunriseTime?.let {
-            canvas.drawText(it, paddingLeft + arcGroundEdgeMargin + arcThicknessHalf, timeTextY, timePaint)
+            canvas.drawText(it, textLeftX, timeTextY, timePaint)
         }
         sunsetTime?.let {
-            canvas.drawText(it, rightArcX, timeTextY, timePaint)
+            canvas.drawText(it, textRightX, timeTextY, timePaint)
         }
     }
 
@@ -257,24 +266,26 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     private fun calculateSunAngle(sunriseTime: LocalDateTime, sunsetTime: LocalDateTime) {
-        val nowSeconds = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
-        val sunriseSeconds = sunriseTime.atZone(ZoneId.systemDefault()).toEpochSecond()
-        val sunsetSeconds = sunsetTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        val defaultZone = ZoneId.systemDefault()
+        val nowSeconds = LocalDateTime.now().atZone(defaultZone).toEpochSecond()
+        val sunriseSeconds = sunriseTime.atZone(defaultZone).toEpochSecond()
+        val sunsetSeconds = sunsetTime.atZone(defaultZone).toEpochSecond()
+
         val percentOfDayPast = ((nowSeconds - sunriseSeconds).toFloat() / (sunsetSeconds - sunriseSeconds))
             .coerceIn(0f, 1f)
         sunPastAngle = SWEEP_START_ANGLE + SWEEP_DISTANCE * percentOfDayPast
     }
 
     private fun recalculateSunRect() {
-        val (width, height) = ViewUtils.resizeToTargetSize(_sunIntrinsicWidth, _sunIntrinsicHeight, sunSize)
-        val widthHalf = width shr 1
-        val heightHalf = height shr 1
-
         val sunPastAngleRadians = Math.toRadians(sunPastAngle.toDouble()).toFloat()
         val sunPositionCenter = Point(
             (arcCenterX - cos(sunPastAngleRadians) * (arcRadius - arcThicknessHalf)).toInt(),
             (arcCenterY - sin(sunPastAngleRadians) * arcHeight).toInt()
         )
+
+        val (width, height) = ViewUtils.resizeToTargetSize(_sunIntrinsicWidth, _sunIntrinsicHeight, sunSize)
+        val widthHalf = width shr 1
+        val heightHalf = height shr 1
 
         sunRect.set(
             sunPositionCenter.x - widthHalf,

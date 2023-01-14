@@ -37,6 +37,12 @@ android {
 
             buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
             buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
+
+            kapt {
+                arguments {
+                    arg("dagger.fullBindingGraphValidation", "ERROR")
+                }
+            }
         }
     }
     compileOptions {
