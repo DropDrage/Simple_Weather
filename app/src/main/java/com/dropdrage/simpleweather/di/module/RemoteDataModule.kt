@@ -39,8 +39,7 @@ object RemoteDataProviderModule {
     private const val CACHE_SIZE = 6 * 1024 * 1024L
 
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideLoggingHttpClient(@ApplicationContext context: Context): OkHttpClient {
         val cache = Cache(context.cacheDir, CACHE_SIZE)
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -55,20 +54,17 @@ object RemoteDataProviderModule {
             .build()
     }
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideMoshi() = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
         .add(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())
         .build()
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideMoshiConverterFactory(moshi: Moshi): Converter.Factory = MoshiConverterFactory.create(moshi)
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideWeatherApi(okHttpClient: OkHttpClient, jsonConverterFactory: Converter.Factory): WeatherApi =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -78,8 +74,7 @@ object RemoteDataProviderModule {
             .build()
             .create(WeatherApi::class.java)
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideSearchApi(okHttpClient: OkHttpClient, converterFactory: Converter.Factory): SearchApi =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -92,16 +87,16 @@ object RemoteDataProviderModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RemoteBindModule {
-    @Binds
-    @Singleton
-    abstract fun bindWeatherRepository(weatherRepository: WeatherRepositoryImpl): WeatherRepository
+interface RemoteBindModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindCurrentWeatherRepository(weatherRepository: CurrentWeatherRepositoryImpl): CurrentWeatherRepository
+    @[Binds Singleton]
+    fun bindWeatherRepository(weatherRepository: WeatherRepositoryImpl): WeatherRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindCitySearchRepository(citySearchRepository: CitySearchRepositoryImpl): CitySearchRepository
+    @[Binds Singleton]
+    fun bindCurrentWeatherRepository(weatherRepository: CurrentWeatherRepositoryImpl): CurrentWeatherRepository
+
+    @[Binds Singleton]
+    fun bindCitySearchRepository(citySearchRepository: CitySearchRepositoryImpl): CitySearchRepository
+
 }
+

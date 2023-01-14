@@ -16,16 +16,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataProviderModule {
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideLocationClient(@ApplicationContext context: Context): FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataBindModule {
-    @Binds
-    @Singleton
-    abstract fun bindLocationTracker(defaultTracker: DefaultLocationTracker): LocationTracker
+interface DataBindModule {
+    @[Binds Singleton]
+    fun bindLocationTracker(defaultTracker: DefaultLocationTracker): LocationTracker
 }

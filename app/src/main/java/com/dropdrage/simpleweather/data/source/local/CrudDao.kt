@@ -19,7 +19,7 @@ interface CrudDao<T> {
     suspend fun updateAll(items: List<T>)
 
     @Delete
-    suspend fun delete(items: T)
+    suspend fun delete(item: T)
 
     @Delete
     suspend fun deleteAll(items: List<T>)

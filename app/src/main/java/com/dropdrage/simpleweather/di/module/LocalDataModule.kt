@@ -17,21 +17,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalDataProviderModule {
-    @Provides
-    @Singleton
+
+    @[Provides Singleton]
     fun provideRoom(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.DATABASE_NAME).build()
 
 
-    @Provides
-    @Singleton
+    @[Provides Singleton]
     fun provideCityDao(appDatabase: AppDatabase): CityDao = appDatabase.cityDao
+
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class LocalDataBindModule {
-    @Binds
-    @Singleton
-    abstract fun bindCityRepository(cityRepository: CityRepositoryImpl): CityRepository
+interface LocalDataBindModule {
+    @[Binds Singleton]
+    fun bindCityRepository(cityRepository: CityRepositoryImpl): CityRepository
 }
