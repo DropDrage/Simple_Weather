@@ -1,7 +1,5 @@
 package com.dropdrage.simpleweather.presentation.ui.city.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.simpleweather.domain.city.CityRepository
@@ -9,6 +7,11 @@ import com.dropdrage.simpleweather.domain.weather.use_case.GetCitiesWithWeatherU
 import com.dropdrage.simpleweather.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.presentation.util.model_converter.CityCurrentWeatherConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,15 +22,15 @@ class CityListViewModel @Inject constructor(
     private val cityRepository: CityRepository,
 ) : ViewModel() {
 
-    private val _citiesCurrentWeathers = MutableLiveData<List<ViewCityCurrentWeather>>()
-    val citiesCurrentWeathers: LiveData<out List<ViewCityCurrentWeather>> = _citiesCurrentWeathers
+    private val _citiesCurrentWeathers = MutableStateFlow<List<ViewCityCurrentWeather>>(emptyList())
+    val citiesCurrentWeathers: Flow<List<ViewCityCurrentWeather>> = _citiesCurrentWeathers.asStateFlow()
 
 
     fun loadCities() {
         viewModelScope.launch {
-            getCitiesWithWeather().collect {
-                _citiesCurrentWeathers.value = it.map(cityCurrentWeatherConverter::convertToView)
-            }
+            _citiesCurrentWeathers.emitAll(
+                getCitiesWithWeather().map { it.map(cityCurrentWeatherConverter::convertToView) }
+            )
         }
     }
 
@@ -41,7 +44,7 @@ class CityListViewModel @Inject constructor(
         viewModelScope.launch {
             cityRepository.deleteCity(city.city)
 
-            val newCitiesList = _citiesCurrentWeathers.value!!.toMutableList().apply {
+            val newCitiesList = _citiesCurrentWeathers.value.toMutableList().apply {
                 removeAt(indexOfFirst { it.city == city.city })
             }
             _citiesCurrentWeathers.value = newCitiesList

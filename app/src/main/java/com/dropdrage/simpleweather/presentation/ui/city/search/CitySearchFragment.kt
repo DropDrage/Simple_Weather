@@ -10,6 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitySearchBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
+import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
 import com.dropdrage.simpleweather.presentation.util.extension.focusEditText
 import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,12 +50,8 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
     }
 
     private fun observeViewModel() = viewModel.apply {
-        searchResults.observe(viewLifecycleOwner) {
-            citySearchAdapter.submitList(it)
-        }
-        cityAddedEvent.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
-        }
+        collectWithViewLifecycle(searchResults, citySearchAdapter::submitList)
+        collectWithViewLifecycle(cityAddedEvent, { findNavController().navigateUp() })
     }
 
 

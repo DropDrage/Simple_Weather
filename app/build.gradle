@@ -70,7 +70,6 @@ dependencies {
 
     //Ktx
     def lifecycleKtx_version = '2.5.1'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleKtx_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtx_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
