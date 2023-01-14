@@ -88,6 +88,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
     override fun onStart() {
         super.onStart()
         (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
+        viewModel.updateWeather()
     }
 
     override fun onDestroyView() {
@@ -99,6 +100,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
 
     @Suppress("RedundantInnerClassModifier")
     private inner class MainMenuProvider : MenuProvider {
+
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_main, menu)
         }
@@ -114,6 +116,7 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
             }
             else -> false
         }
+
     }
 
 }

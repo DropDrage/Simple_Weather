@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import com.dropdrage.simpleweather.R
 
 sealed class TextMessage {
+
     abstract fun getMessage(context: Context): String
 
 
@@ -15,6 +16,10 @@ sealed class TextMessage {
     object UnknownErrorMessage : TextMessage() {
         override fun getMessage(context: Context): String = context.getString(R.string.error_unexpected)
     }
+
+    object NoDataAvailableErrorMessage : TextMessage() {
+        override fun getMessage(context: Context): String = context.getString(R.string.error_no_data_available)
+    }
 }
 
 class StringMessage(private val message: String) : TextMessage() {
@@ -24,6 +29,7 @@ class StringMessage(private val message: String) : TextMessage() {
 class ResourceMessage(@StringRes private val messageId: Int) : TextMessage() {
     override fun getMessage(context: Context): String = context.getString(messageId)
 }
+
 
 fun String.toTextMessage(): TextMessage = StringMessage(this)
 

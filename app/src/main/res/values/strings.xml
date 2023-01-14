@@ -39,6 +39,7 @@
 
     <!--Errors-->
     <string name="error_unexpected">Unexpected error</string>
+    <string name="error_no_data_available">No data available</string>
     <string name="error_location_no_permission">No permission to obtain location</string>
     <string name="error_location_gps_disabled">GPS is disabled</string>
     <string name="error_location_no_location">Cannot obtain location</string>

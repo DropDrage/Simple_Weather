@@ -17,9 +17,10 @@ private const val DAILY_PARAMS = "weathercode,temperature_2m_min,temperature_2m_
     "sunrise,sunset"
 
 interface WeatherApi {
+
     @GET("forecast?hourly=$HOURLY_PARAMS&daily=$DAILY_PARAMS")
     suspend fun getWeather(
-        @Query("latitude") latitude: Double, @Query("longitude") longitude: Double,
+        @Query("latitude") latitude: Float, @Query("longitude") longitude: Float,
         @Query("temperature_unit") temperatureUnit: TemperatureUnit,
         @Query("windspeed_unit") windSpeedUnit: WindSpeedUnit,
         @Query("precipitation_unit") precipitationUnit: PrecipitationUnit,
@@ -28,7 +29,8 @@ interface WeatherApi {
 
     @GET("forecast?current_weather=true")
     suspend fun getCurrentWeather(
-        @Query("latitude") latitude: Double, @Query("longitude") longitude: Double,
+        @Query("latitude") latitude: Float, @Query("longitude") longitude: Float,
         @Query("temperature_unit") temperatureUnit: TemperatureUnit,
     ): CurrentWeatherResponseDto
+
 }

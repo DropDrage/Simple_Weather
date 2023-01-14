@@ -54,4 +54,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ChangeableAppBar
         supportActionBar?.show()
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
+
 }

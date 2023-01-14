@@ -10,7 +10,7 @@ data class Weather(val dailyWeather: List<DayWeather>) {
         get() {
             val currentHour = LocalTime.now().hour
             return currentDayWeather.weatherPerHour.find { it.dateTime.hour == currentHour }
-                ?: error("Current hour is not found in current day: $currentHour. \n $currentDayWeather")
+                ?: error("Current hour ($currentHour) is not found in current day: $currentDayWeather")
         }
 
     val hourlyWeather: List<HourWeather> = dailyWeather.flatMap { it.weatherPerHour }

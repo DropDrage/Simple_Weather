@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
+import com.dropdrage.simpleweather.domain.weather.use_case.UpdateAllCitiesWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CitiesWeatherViewModel @Inject constructor(
     private val cityRepository: CityRepository,
+    private val updateAllCitiesWeather: UpdateAllCitiesWeatherUseCase,
 ) : ViewModel() {
 
     private val _cities = MutableLiveData<List<City>>()
@@ -24,4 +26,9 @@ class CitiesWeatherViewModel @Inject constructor(
             _cities.value = cityRepository.getAllCitiesOrdered()
         }
     }
+
+    fun updateWeather() {
+        viewModelScope.launch { updateAllCitiesWeather.invoke() }
+    }
+
 }

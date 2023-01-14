@@ -1,11 +1,13 @@
 package com.dropdrage.simpleweather.di.module
 
+import android.content.Context
 import com.dropdrage.simpleweather.BuildConfig
 import com.dropdrage.simpleweather.data.repository.CitySearchRepositoryImpl
 import com.dropdrage.simpleweather.data.repository.CurrentWeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.source.remote.SearchApi
 import com.dropdrage.simpleweather.data.source.remote.WeatherApi
+import com.dropdrage.simpleweather.di.CacheInterceptor
 import com.dropdrage.simpleweather.di.adapter.ApiSupportedParamFactory
 import com.dropdrage.simpleweather.di.adapter.LocalDateAdapter
 import com.dropdrage.simpleweather.di.adapter.LocalDateTimeAdapter
@@ -18,7 +20,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -32,14 +36,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RemoteDataProviderModule {
 
+    private const val CACHE_SIZE = 6 * 1024 * 1024L
+
+
     @Provides
     @Singleton
-    fun provideLoggingHttpClient(): OkHttpClient {
+    fun provideLoggingHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        val cache = Cache(context.cacheDir, CACHE_SIZE)
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.BASIC
         }
 
         return OkHttpClient.Builder()
+            .cache(cache)
+            .addInterceptor(CacheInterceptor())
+//            .addInterceptor(ForceCacheInterceptor(context))
             .addInterceptor(loggingInterceptor)
             .build()
     }

@@ -8,8 +8,8 @@ data class CitiesDto(@Json(name = "results") val result: List<CityDto> = emptyLi
 
 data class CityDto(
     @Json(name = "name") val name: String,
-    @Json(name = "latitude") val latitude: Double,
-    @Json(name = "longitude") val longitude: Double,
+    @Json(name = "latitude") val latitude: Float,
+    @Json(name = "longitude") val longitude: Float,
     @Json(name = "country_code") val countryCode: String,
     @Json(name = "country") val country: String,
 )

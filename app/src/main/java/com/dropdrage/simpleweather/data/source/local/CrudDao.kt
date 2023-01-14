@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.source.local.dao
+package com.dropdrage.simpleweather.data.source.local
 
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,4 +23,5 @@ interface CrudDao<T> {
 
     @Delete
     suspend fun deleteAll(items: List<T>)
+
 }
