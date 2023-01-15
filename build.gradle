@@ -29,4 +29,7 @@ ext {
     sdk = 33
     minSdk = 26
     buildTools = '33.0.1'
+
+    versionCode = 1
+    versionName = '1.0'
 }

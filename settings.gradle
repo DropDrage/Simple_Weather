@@ -16,3 +16,5 @@ rootProject.name = "Simple Weather"
 include ':app'
 include ':adapters'
 include ':core'
+include ':settings-ui'
+include ':settings-data'

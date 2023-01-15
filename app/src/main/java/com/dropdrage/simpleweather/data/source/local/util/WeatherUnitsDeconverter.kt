@@ -1,12 +1,6 @@
 package com.dropdrage.simpleweather.data.source.local.util
 
-import com.dropdrage.simpleweather.data.preferences.PrecipitationUnit
-import com.dropdrage.simpleweather.data.preferences.PressureUnit
-import com.dropdrage.simpleweather.data.preferences.TemperatureUnit
-import com.dropdrage.simpleweather.data.preferences.VisibilityUnit
-import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
-import com.dropdrage.simpleweather.data.preferences.WindSpeedUnit
-import com.dropdrage.simpleweather.data.util.ApiSupportedUnits
+import com.dropdrage.simpleweather.settings_data.utils.ApiSupportedUnits
 
 private const val CELSIUS_TO_FAHRENHEIT_MODIFIER = 9 / 5f
 private const val CELSIUS_TO_FAHRENHEIT_OFFSET = 32
@@ -25,34 +19,37 @@ private const val MM_TO_INCH_DIVIDER = 25.4f
 object WeatherUnitsDeconverter {
 
     private fun deconvertTemperature(temperatureCelsius: Float): Float =
-        when (WeatherUnitsPreferences.temperatureUnit) {
-            TemperatureUnit.CELSIUS -> temperatureCelsius
-            TemperatureUnit.FAHRENHEIT -> (temperatureCelsius - CELSIUS_TO_FAHRENHEIT_OFFSET) /
-                CELSIUS_TO_FAHRENHEIT_MODIFIER
+        when (com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.temperatureUnit) {
+            com.dropdrage.simpleweather.settings_data.TemperatureUnit.CELSIUS -> temperatureCelsius
+            com.dropdrage.simpleweather.settings_data.TemperatureUnit.FAHRENHEIT -> (temperatureCelsius - CELSIUS_TO_FAHRENHEIT_OFFSET) /
+                    CELSIUS_TO_FAHRENHEIT_MODIFIER
         }
 
-    private fun deconvertPressure(pressureHpa: Int): Int = when (WeatherUnitsPreferences.pressureUnit) {
-        PressureUnit.H_PASCAL -> pressureHpa
-        PressureUnit.MM_HG -> (pressureHpa / HPA_TO_MM_HG_MODIFIER).toInt()
-    }
+    private fun deconvertPressure(pressureHpa: Int): Int =
+        when (com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.pressureUnit) {
+            com.dropdrage.simpleweather.settings_data.PressureUnit.H_PASCAL -> pressureHpa
+            com.dropdrage.simpleweather.settings_data.PressureUnit.MM_HG -> (pressureHpa / HPA_TO_MM_HG_MODIFIER).toInt()
+        }
 
-    private fun deconvertWindSpeed(windSpeedKmh: Float): Float = when (WeatherUnitsPreferences.windSpeedUnit) {
-        WindSpeedUnit.KM_H -> windSpeedKmh
-        WindSpeedUnit.MPH -> windSpeedKmh * KM_H_TO_MPH_DIVIDER
-        WindSpeedUnit.M_S -> windSpeedKmh * KM_H_TO_M_S_DIVIDER
-        WindSpeedUnit.KNOTS -> windSpeedKmh / KM_H_TO_M_S_MULTIPLIER
-    }
+    private fun deconvertWindSpeed(windSpeedKmh: Float): Float =
+        when (com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.windSpeedUnit) {
+            com.dropdrage.simpleweather.settings_data.WindSpeedUnit.KM_H -> windSpeedKmh
+            com.dropdrage.simpleweather.settings_data.WindSpeedUnit.MPH -> windSpeedKmh * KM_H_TO_MPH_DIVIDER
+            com.dropdrage.simpleweather.settings_data.WindSpeedUnit.M_S -> windSpeedKmh * KM_H_TO_M_S_DIVIDER
+            com.dropdrage.simpleweather.settings_data.WindSpeedUnit.KNOTS -> windSpeedKmh / KM_H_TO_M_S_MULTIPLIER
+        }
 
-    private fun deconvertVisibility(visibilityMeters: Float): Float = when (WeatherUnitsPreferences.visibilityUnit) {
-        VisibilityUnit.METER -> visibilityMeters
-        VisibilityUnit.K_METER -> visibilityMeters * METER_TO_KM_DIVIDER
-        VisibilityUnit.MILE -> visibilityMeters * METER_TO_MILE_DIVIDER
-    }
+    private fun deconvertVisibility(visibilityMeters: Float): Float =
+        when (com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.visibilityUnit) {
+            com.dropdrage.simpleweather.settings_data.VisibilityUnit.METER -> visibilityMeters
+            com.dropdrage.simpleweather.settings_data.VisibilityUnit.K_METER -> visibilityMeters * METER_TO_KM_DIVIDER
+            com.dropdrage.simpleweather.settings_data.VisibilityUnit.MILE -> visibilityMeters * METER_TO_MILE_DIVIDER
+        }
 
     private fun deconvertPrecipitation(precipitationMm: Float): Float =
-        when (WeatherUnitsPreferences.precipitationUnit) {
-            PrecipitationUnit.MM -> precipitationMm
-            PrecipitationUnit.INCH -> precipitationMm * MM_TO_INCH_DIVIDER
+        when (com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.precipitationUnit) {
+            com.dropdrage.simpleweather.settings_data.PrecipitationUnit.MM -> precipitationMm
+            com.dropdrage.simpleweather.settings_data.PrecipitationUnit.INCH -> precipitationMm * MM_TO_INCH_DIVIDER
         }
 
 

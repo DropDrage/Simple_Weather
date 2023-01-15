@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Weather Units-->
+    <!--Temperature-->
+    <string name="weather_unit_temperature_label">Temperature</string>
+    <string name="weather_unit_temperature_celsius">%1$s°C</string>
+    <string name="weather_unit_temperature_fahrenheit">%1$sF</string>
+    <!--Pressure-->
+    <string name="weather_unit_pressure_label">Pressure</string>
+    <string name="weather_unit_pressure_pa">%1$shpa</string>
+    <string name="weather_unit_pressure_mm_hg">%1$smm Hg</string>
+    <string name="weather_unit_humidity">%1$s%%</string>
+    <!--Wind speed-->
+    <string name="weather_unit_wind_speed_label">Wind speed</string>
+    <string name="weather_unit_wind_speed_m_s">%1$sm/s</string>
+    <string name="weather_unit_wind_speed_km_h">%1$skm/h</string>
+    <string name="weather_unit_wind_speed_mph">%1$smph</string>
+    <string name="weather_unit_wind_speed_knot">%1$sknot</string>
+    <plurals name="weather_unit_wind_speed_knots">
+        <item quantity="one">%1$sknot</item>
+        <item quantity="many">%1$sknots</item>
+        <item quantity="other">%1$sknots</item>
+    </plurals>
+    <!--Visibility-->
+    <string name="weather_unit_visibility_label">Visibility</string>
+    <string name="weather_unit_visibility_meter">%1$sm</string>
+    <string name="weather_unit_visibility_kmeter">%1$skm</string>
+    <string name="weather_unit_visibility_mile">%1$smile</string>
+    <plurals name="weather_unit_visibility_miles">
+        <item quantity="one">%1$smile</item>
+        <item quantity="many">%1$smiles</item>
+        <item quantity="other">%1$smiles</item>
+    </plurals>
+    <!--Precipitation-->
+    <string name="weather_unit_precipitation_label">Precipitation</string>
+    <string name="weather_unit_precipitation_mm">%1$smm</string>
+    <string name="weather_unit_precipitation_inch">%1$sinch</string>
+    <plurals name="weather_unit_precipitation_inches">
+        <item quantity="one">%1$sinch</item>
+        <item quantity="many">%1$sinches</item>
+        <item quantity="other">%1$sinches</item>
+    </plurals>
+    <!--Time format-->
+    <string name="time_format_label">Time format</string>
+    <string name="time_format_12">11 PM</string>
+    <string name="time_format_24">23:00</string>
+    <!--Date format-->
+    <string name="date_format_label">Date format</string>
+    <string name="date_format_reversed">MM.DD</string>
+    <string name="date_format_straight">DD.MM</string>
+</resources>

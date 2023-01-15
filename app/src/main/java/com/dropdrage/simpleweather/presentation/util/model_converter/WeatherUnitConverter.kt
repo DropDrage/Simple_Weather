@@ -1,14 +1,13 @@
 package com.dropdrage.simpleweather.presentation.util.model_converter
 
 import android.content.Context
-import com.dropdrage.simpleweather.data.preferences.WeatherUnit
 import com.dropdrage.simpleweather.presentation.model.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class WeatherUnitConverter @Inject constructor(@ApplicationContext private val context: Context) {
 
-    fun convertToSetting(unit: WeatherUnit): AnySetting = when (unit) {
+    fun convertToSetting(unit: com.dropdrage.simpleweather.settings_data.WeatherUnit): AnySetting = when (unit) {
         is DataPrecipitationUnit -> ViewPrecipitationUnit.fromData(unit)
         is DataPressureUnit -> ViewPressureUnit.fromData(unit)
         is DataTemperatureUnit -> ViewTemperatureUnit.fromData(unit)
@@ -17,10 +16,10 @@ class WeatherUnitConverter @Inject constructor(@ApplicationContext private val c
     }
 
 
-    fun convertToViewSetting(unit: WeatherUnit): ViewSetting {
+    fun convertToViewSetting(unit: com.dropdrage.simpleweather.settings_data.WeatherUnit): com.dropdrage.simpleweather.settings.model.ViewSetting {
         val setting: AnySetting = convertToSetting(unit)
 
-        return ViewSetting(
+        return com.dropdrage.simpleweather.settings.model.ViewSetting(
             label = context.getString(setting.labelResId),
             currentValue = convertToValue(setting),
             values = setting.values,

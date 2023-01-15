@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.di.adapter
 
-import com.dropdrage.simpleweather.data.util.ApiSupportedParam
+import com.dropdrage.simpleweather.settings_data.utils.ApiSupportedParam
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type

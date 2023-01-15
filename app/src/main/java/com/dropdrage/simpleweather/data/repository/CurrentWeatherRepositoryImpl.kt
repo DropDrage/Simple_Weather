@@ -1,7 +1,6 @@
 package com.dropdrage.simpleweather.data.repository
 
 import android.util.Log
-import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.source.local.cache.dao.HourWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.data.source.local.cache.model.LocationModel
@@ -15,12 +14,7 @@ import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.weather.current.CurrentWeather
 import com.dropdrage.simpleweather.domain.weather.current.CurrentWeatherRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -38,7 +32,11 @@ class CurrentWeatherRepositoryImpl @Inject constructor(
         try {
             val remoteWeathers = locationsFlow
                 .map {
-                    api.getCurrentWeather(it.latitude, it.longitude, WeatherUnitsPreferences.temperatureUnit)
+                    api.getCurrentWeather(
+                        it.latitude,
+                        it.longitude,
+                        com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.temperatureUnit
+                    )
                         .toDomainCurrentWeather()
                 }
                 .toList()

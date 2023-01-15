@@ -1,0 +1,4 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+apply from: "$rootDir/android-build.gradle"

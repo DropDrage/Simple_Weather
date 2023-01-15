@@ -2,7 +2,6 @@ package com.dropdrage.simpleweather.data.repository
 
 import android.util.Log
 import com.dropdrage.simpleweather.core.domain.Resource
-import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.source.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.WeatherCacheDao
@@ -83,9 +82,9 @@ class WeatherRepositoryImpl @Inject constructor(
     private suspend fun updateLocalWeatherFromApi(location: Location, saveLocationId: Long?) {
         val remoteDomainWeather = api.getWeather(
             location.latitude, location.longitude,
-            WeatherUnitsPreferences.temperatureUnit,
-            WeatherUnitsPreferences.windSpeedUnit,
-            WeatherUnitsPreferences.precipitationUnit,
+            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.temperatureUnit,
+            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.windSpeedUnit,
+            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.precipitationUnit,
             TimeZone.getDefault().id.toString(),
         ).toDomainWeather()
 
