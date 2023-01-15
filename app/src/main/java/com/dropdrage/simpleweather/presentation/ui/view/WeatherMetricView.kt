@@ -2,11 +2,7 @@ package com.dropdrage.simpleweather.presentation.ui.view
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.graphics.fonts.FontStyle
 import android.os.Build
@@ -16,7 +12,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import com.dropdrage.simpleweather.R
-import com.dropdrage.simpleweather.domain.util.Range
+import com.dropdrage.simpleweather.core.domain.Range
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
 import kotlin.math.max
@@ -151,7 +147,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
     private fun initTextPaint() {
         textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             textAlign = Paint.Align.LEFT
-            density = resources.getDisplayMetrics().density
+            density = resources.displayMetrics.density
         }
 
         setSansSerifTypeface(getSemiBoldFontFamilyIfWeightUnsupported(), fontWeight)
@@ -233,7 +229,7 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             it.textSize = textSize
             it.color = _textColor
 
-            it.density = resources.getDisplayMetrics().density
+            it.density = resources.displayMetrics.density
 
             topTextWidth = it.measureText(topText.orEmpty())
             bottomTextWidth = it.measureText(bottomText.orEmpty())

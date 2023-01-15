@@ -9,6 +9,7 @@ import com.dropdrage.simpleweather.presentation.util.extension.canScrollRight
  * Disallows horizontal scrolling of [RecyclerView's][RecyclerView] parent if scroll is applied to RecyclerView.
  */
 class HorizontalScrollInterceptor : RecyclerView.OnItemTouchListener {
+
     private var startX = 0f
 
 
@@ -29,4 +30,5 @@ class HorizontalScrollInterceptor : RecyclerView.OnItemTouchListener {
     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
 
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
 }

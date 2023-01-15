@@ -1,12 +1,7 @@
 package com.dropdrage.simpleweather.data.source.local.cache.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
-import com.dropdrage.simpleweather.domain.util.Range
+import androidx.room.*
+import com.dropdrage.simpleweather.core.domain.Range
 import com.dropdrage.simpleweather.domain.weather.WeatherType
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.util.mapper
 
+import com.dropdrage.simpleweather.core.domain.Range
 import com.dropdrage.simpleweather.data.source.local.util.converter.WeatherTypeConverter
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
 import com.dropdrage.simpleweather.data.source.remote.dto.DailyWeatherDto
@@ -10,7 +11,6 @@ import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertPressu
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertTemperatureIfApiDontSupport
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertVisibilityIfApiDontSupport
 import com.dropdrage.simpleweather.data.util.WeatherUnitsConverter.convertWindSpeedIfApiDontSupport
-import com.dropdrage.simpleweather.domain.util.Range
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.domain.weather.Weather

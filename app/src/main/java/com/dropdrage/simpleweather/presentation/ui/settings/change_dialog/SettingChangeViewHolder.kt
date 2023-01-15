@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.presentation.ui.settings.change_dialog
 
 import androidx.core.view.isVisible
+import com.dropdrage.adapters.ClickableViewHolder
+import com.dropdrage.adapters.OnItemClickListener
 import com.dropdrage.simpleweather.databinding.ItemSettingChangeBinding
 import com.dropdrage.simpleweather.presentation.model.AnySetting
-import com.dropdrage.simpleweather.presentation.util.adapter.ClickableViewHolder
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 
 class SettingChangeViewHolder(
     binding: ItemSettingChangeBinding,

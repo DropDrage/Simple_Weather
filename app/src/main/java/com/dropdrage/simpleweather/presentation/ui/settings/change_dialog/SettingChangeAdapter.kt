@@ -2,10 +2,10 @@ package com.dropdrage.simpleweather.presentation.ui.settings.change_dialog
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.dropdrage.adapters.OnItemClickListener
+import com.dropdrage.adapters.simple.SimpleRecyclerListAdapter
 import com.dropdrage.simpleweather.databinding.ItemSettingChangeBinding
 import com.dropdrage.simpleweather.presentation.model.AnySetting
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
-import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleRecyclerListAdapter
 import kotlin.properties.Delegates
 
 class SettingChangeAdapter(private val onSettingClickListener: OnItemClickListener<AnySetting>) :

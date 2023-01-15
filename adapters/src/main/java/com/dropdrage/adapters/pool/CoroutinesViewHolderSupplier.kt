@@ -1,16 +1,12 @@
-package com.dropdrage.simpleweather.presentation.util.adapter.pool
+package com.dropdrage.adapters.pool
 
 import android.content.Context
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class CoroutinesViewHolderSupplier(
+internal class CoroutinesViewHolderSupplier(
     context: Context,
     viewHolderProducer: ViewHolderProducer,
 ) : ViewHolderSupplier(context, viewHolderProducer), CoroutineScope {

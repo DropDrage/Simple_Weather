@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.util.adapter.pool
+package com.dropdrage.adapters.pool
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
@@ -6,7 +6,7 @@ import java.lang.Integer.max
 
 private const val DEFAULT_VIEW_TYPE = 0
 
-class PrefetchPlainViewPool(
+class PrefetchPlainViewPool internal constructor(
     private val defaultMaxRecycledViews: Int,
     private val viewHolderSupplier: ViewHolderSupplier,
 ) : RecyclerView.RecycledViewPool() {

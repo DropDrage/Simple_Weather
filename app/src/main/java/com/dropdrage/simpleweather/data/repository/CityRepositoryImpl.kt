@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.repository
 
+import com.dropdrage.simpleweather.core.domain.Resource
 import com.dropdrage.simpleweather.data.source.local.app.dao.CityDao
 import com.dropdrage.simpleweather.data.source.local.app.model.CityModel
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
@@ -7,7 +8,6 @@ import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toModel
 import com.dropdrage.simpleweather.data.util.LogTags
 import com.dropdrage.simpleweather.domain.city.City
 import com.dropdrage.simpleweather.domain.city.CityRepository
-import com.dropdrage.simpleweather.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

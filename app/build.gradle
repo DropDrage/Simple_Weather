@@ -9,13 +9,13 @@ plugins {
 
 android {
     namespace 'com.dropdrage.simpleweather'
-    compileSdk 33
-    buildToolsVersion '33.0.1'
+    compileSdk sdk
+    buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.dropdrage.simpleweather"
-        minSdk 26
-        targetSdk 33
+        minSdk project.minSdk
+        targetSdk project.sdk
         versionCode 1
         versionName "1.0"
 
@@ -119,6 +119,9 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation project(path: ':adapters')
+    implementation project(path: ':core')
 }
 
 kapt {

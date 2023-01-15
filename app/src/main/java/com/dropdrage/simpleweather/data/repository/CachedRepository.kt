@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.data.repository
 
 import android.util.Log
+import com.dropdrage.simpleweather.core.domain.Resource
 import com.dropdrage.simpleweather.data.source.local.util.LocalResource
-import com.dropdrage.simpleweather.domain.util.Resource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.FlowCollector
 import okio.IOException

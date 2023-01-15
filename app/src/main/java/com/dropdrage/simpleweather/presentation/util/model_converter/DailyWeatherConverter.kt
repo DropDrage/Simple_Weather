@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.presentation.util.model_converter
 
-import com.dropdrage.simpleweather.domain.util.Range
+import com.dropdrage.simpleweather.core.domain.Range
 import com.dropdrage.simpleweather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewWeatherType

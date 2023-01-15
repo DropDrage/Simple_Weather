@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather
 
 import android.graphics.Typeface
+import com.dropdrage.adapters.ClickableViewHolder
+import com.dropdrage.adapters.OnItemClickListener
 import com.dropdrage.simpleweather.databinding.ItemHourWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
-import com.dropdrage.simpleweather.presentation.util.adapter.ClickableViewHolder
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 import com.dropdrage.simpleweather.presentation.util.extension.setWeather
 
 class HourWeatherViewHolder(

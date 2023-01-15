@@ -27,12 +27,12 @@ class ForceCacheInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
         if (isOffline()) {
-            builder.cacheControl(CacheControl.FORCE_CACHE);
+            builder.cacheControl(CacheControl.FORCE_CACHE)
         }
-        return chain.proceed(builder.build());
+        return chain.proceed(builder.build())
     }
 
-    fun isOffline(): Boolean {
+    private fun isOffline(): Boolean {
         val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
         val activeNetwork = connectivityManager.activeNetwork
         return connectivityManager.getNetworkCapabilities(activeNetwork)

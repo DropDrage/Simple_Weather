@@ -1,3 +1,3 @@
-package com.dropdrage.simpleweather.domain.util
+package com.dropdrage.simpleweather.core.domain
 
 class CantObtainResourceException : Exception("Can't obtain resource")

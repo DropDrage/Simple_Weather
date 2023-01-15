@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather.city
 
+import com.dropdrage.simpleweather.core.domain.Resource
 import com.dropdrage.simpleweather.domain.city.CityRepository
-import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel

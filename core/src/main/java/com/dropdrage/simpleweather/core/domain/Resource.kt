@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.domain.util
+package com.dropdrage.simpleweather.core.domain
 
 sealed class Resource<T> {
     class Success<T>(val data: T) : Resource<T>()

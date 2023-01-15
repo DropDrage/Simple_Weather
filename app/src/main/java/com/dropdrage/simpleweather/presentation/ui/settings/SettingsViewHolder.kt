@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.presentation.ui.settings
 
+import com.dropdrage.adapters.ClickableViewHolder
+import com.dropdrage.adapters.OnItemClickListener
 import com.dropdrage.simpleweather.databinding.ItemSettingBinding
 import com.dropdrage.simpleweather.presentation.model.ViewSetting
-import com.dropdrage.simpleweather.presentation.util.adapter.ClickableViewHolder
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 
 class SettingsViewHolder(
     binding: ItemSettingBinding,

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dropdrage.adapters.pool.PrefetchPlainViewPool
+import com.dropdrage.adapters.pool.ViewHolderProducer
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
-import com.dropdrage.simpleweather.presentation.util.adapter.pool.PrefetchPlainViewPool
-import com.dropdrage.simpleweather.presentation.util.adapter.pool.ViewHolderProducer
 
 private const val HOURLY_WEATHER_POOL_SIZE_PER_FRAGMENT = 8
 private const val HOURLY_WEATHER_POOL_INITIAL_SIZE: Int = (HOURLY_WEATHER_POOL_SIZE_PER_FRAGMENT * 2.5f).toInt()

@@ -1,6 +1,7 @@
 package com.dropdrage.simpleweather.data.repository
 
 import android.util.Log
+import com.dropdrage.simpleweather.core.domain.Resource
 import com.dropdrage.simpleweather.data.preferences.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.source.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.source.local.cache.dao.LocationDao
@@ -15,7 +16,6 @@ import com.dropdrage.simpleweather.data.source.remote.WeatherApi
 import com.dropdrage.simpleweather.data.util.LogTags
 import com.dropdrage.simpleweather.data.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.domain.location.Location
-import com.dropdrage.simpleweather.domain.util.Resource
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import kotlinx.coroutines.Dispatchers

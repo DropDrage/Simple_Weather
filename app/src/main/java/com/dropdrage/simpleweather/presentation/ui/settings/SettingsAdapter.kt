@@ -2,10 +2,10 @@ package com.dropdrage.simpleweather.presentation.ui.settings
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.dropdrage.adapters.OnItemClickListener
+import com.dropdrage.adapters.simple.SimpleRecyclerListAdapter
 import com.dropdrage.simpleweather.databinding.ItemSettingBinding
 import com.dropdrage.simpleweather.presentation.model.ViewSetting
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
-import com.dropdrage.simpleweather.presentation.util.adapter.simple.SimpleRecyclerListAdapter
 
 class SettingsAdapter(
     settings: List<ViewSetting>,

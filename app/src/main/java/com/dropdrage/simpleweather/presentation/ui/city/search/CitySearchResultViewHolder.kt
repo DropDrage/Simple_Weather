@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.presentation.ui.city.search
 
+import com.dropdrage.adapters.ClickableViewHolder
+import com.dropdrage.adapters.OnItemClickListener
 import com.dropdrage.simpleweather.databinding.ItemSearchCityBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCitySearchResult
-import com.dropdrage.simpleweather.presentation.util.adapter.ClickableViewHolder
-import com.dropdrage.simpleweather.presentation.util.adapter.OnItemClickListener
 
 class CitySearchResultViewHolder(
     binding: ItemSearchCityBinding,

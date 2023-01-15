@@ -24,3 +24,9 @@ plugins {
     id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
     id "org.jetbrains.kotlin.kapt" version "$kotlin_version" apply false
 }
+
+ext {
+    sdk = 33
+    minSdk = 26
+    buildTools = '33.0.1'
+}

@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.util.adapter.differ
+package com.dropdrage.adapters.differ
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

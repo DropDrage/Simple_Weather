@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.presentation.model
 
-import com.dropdrage.simpleweather.domain.util.Range
+import com.dropdrage.simpleweather.core.domain.Range
 import java.time.LocalDateTime
 
 data class ViewCurrentDayWeather(

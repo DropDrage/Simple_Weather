@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.presentation.util.adapter.pool
+package com.dropdrage.adapters.pool
 
 import android.content.Context
 import android.os.Handler
@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.dropdrage.simpleweather.BuildConfig
+import com.dropdrage.adapters.BuildConfig
 import java.util.concurrent.atomic.AtomicInteger
 
 typealias ViewHolderProducer = (parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder
@@ -15,7 +15,7 @@ typealias ViewHolderConsumer = (viewHolder: RecyclerView.ViewHolder) -> Unit
 
 private const val TAG = "ViewHolderSupplier"
 
-abstract class ViewHolderSupplier(context: Context, private val viewHolderProducer: ViewHolderProducer) {
+internal abstract class ViewHolderSupplier(context: Context, private val viewHolderProducer: ViewHolderProducer) {
 
     internal lateinit var viewHolderConsumer: ViewHolderConsumer
 
@@ -47,10 +47,8 @@ abstract class ViewHolderSupplier(context: Context, private val viewHolderProduc
             return
         }
         if (BuildConfig.DEBUG) {
-            require(
-                holder.itemViewType != -1,
-                { "ViewType is unset. Check if you use createViewHolder instead of onCreateViewHolder" }
-            )
+            require(holder.itemViewType != -1)
+            { "ViewType is unset. Check if you use createViewHolder instead of onCreateViewHolder" }
         }
 
         itemsCreated.incrementAndGet()

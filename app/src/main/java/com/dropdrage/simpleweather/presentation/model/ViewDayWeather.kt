@@ -1,7 +1,6 @@
 package com.dropdrage.simpleweather.presentation.model
 
-import com.dropdrage.simpleweather.domain.util.Range
-import com.dropdrage.simpleweather.presentation.util.adapter.differ.SameEquatable
+import com.dropdrage.simpleweather.core.domain.Range
 import java.time.LocalDate
 
 data class ViewDayWeather(
@@ -10,6 +9,6 @@ data class ViewDayWeather(
     val dateFormatted: String,
     val weatherType: ViewWeatherType,
     val temperatureRange: Range<String>,
-) : SameEquatable<ViewDayWeather> {
+) : com.dropdrage.adapters.differ.SameEquatable<ViewDayWeather> {
     override fun isSame(other: ViewDayWeather) = date == other.date
 }

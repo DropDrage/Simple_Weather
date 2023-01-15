@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.domain.util
+package com.dropdrage.simpleweather.core.domain
 
 data class Range<T : Comparable<T>>(override val start: T, val end: T) : ClosedRange<T> {
 
