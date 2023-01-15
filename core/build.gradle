@@ -1,1 +1,1 @@
-apply from: "$rootDir/library-build.gradle"
+apply from: import_library

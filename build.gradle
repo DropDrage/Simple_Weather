@@ -5,9 +5,10 @@ buildscript {
         mavenCentral()
     }
 
-    ext.kotlin_version = "1.7.21"
+    ext.kotlin_version = "1.8.0"
     ext.hilt_version = "2.44.2"
     ext.navigation_version = "2.5.3"
+    ext.kotpref_version = "2.13.2"
 
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -32,4 +33,12 @@ ext {
 
     versionCode = 1
     versionName = '1.0'
+
+    //imports
+    import_androidNoUi = "$rootDir/android-no-ui-build.gradle"
+    import_androidNoUiLibrary = "$rootDir/android-no-ui-library-build.gradle"
+    import_android = "$rootDir/android-build.gradle"
+    import_androidLibrary = "$rootDir/android-library-build.gradle"
+
+    import_library = "$rootDir/library-build.gradle"
 }

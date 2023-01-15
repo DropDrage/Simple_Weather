@@ -1,0 +1,14 @@
+apply from: "$rootDir/android-library-build.gradle"
+
+android {
+    namespace 'com.dropdrage.simpleweather.settings.presentation'
+}
+
+dependencies {
+    implementation "com.chibatching.kotpref:kotpref:$kotpref_version"
+//    implementation "com.chibatching.kotpref:enum-support:$kotpref_version"
+
+    implementation project(path: ':settings:data')
+    implementation project(path: ':adapters')
+    implementation project(path: ':common:presentation')
+}

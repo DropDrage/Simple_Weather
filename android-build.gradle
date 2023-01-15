@@ -1,6 +1,8 @@
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.dagger.hilt.android'
 
+apply from: import_androidNoUi // "$rootDir/android-no-ui-build.gradle"
+
 android {
     compileSdk sdk
     buildToolsVersion buildTools
@@ -30,18 +32,17 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    api 'androidx.core:core-ktx:1.9.0'
+    api 'androidx.appcompat:appcompat:1.6.0'
 
-    def lifecycleKtx_version = '2.5.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtx_version"
+    def lifecycle_version = '2.5.1'
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     //Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    api "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:2.44.2"
 
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
+    api 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

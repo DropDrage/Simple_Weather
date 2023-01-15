@@ -13,8 +13,14 @@ import com.dropdrage.simpleweather.data.util.mapper.toDomainCurrentWeather
 import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.weather.current.CurrentWeather
 import com.dropdrage.simpleweather.domain.weather.current.CurrentWeatherRepository
+import com.dropdrage.simpleweather.settings.data.WeatherUnitsPreferences
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -32,11 +38,7 @@ class CurrentWeatherRepositoryImpl @Inject constructor(
         try {
             val remoteWeathers = locationsFlow
                 .map {
-                    api.getCurrentWeather(
-                        it.latitude,
-                        it.longitude,
-                        com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.temperatureUnit
-                    )
+                    api.getCurrentWeather(it.latitude, it.longitude, WeatherUnitsPreferences.temperatureUnit)
                         .toDomainCurrentWeather()
                 }
                 .toList()

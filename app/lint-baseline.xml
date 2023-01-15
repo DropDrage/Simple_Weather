@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.3.1)" variant="all"
-    version="7.3.1">
+<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all"
+    version="7.4.0">
 
-    <issue id="NotifyDataSetChanged"
-        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
-        errorLine1="        notifyDataSetChanged()" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/dropdrage/simpleweather/presentation/util/adapter/simple/SimpleRecyclerListAdapter.kt"
-            line="10" column="9" />
+    <issue id="GradleDependency" message="A newer version of androidx.room:room-ktx than 2.4.3 is available: 2.5.0"
+        errorLine1="    implementation &quot;androidx.room:room-ktx:$room_version&quot;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="build.gradle" line="58" column="20" />
+    </issue>
+
+    <issue id="GradleDependency" message="A newer version of androidx.room:room-runtime than 2.4.3 is available: 2.5.0"
+        errorLine1="    implementation &quot;androidx.room:room-runtime:$room_version&quot;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="build.gradle" line="59" column="20" />
     </issue>
 
     <issue id="VectorPath"
@@ -31,20 +35,6 @@
         <location file="src/main/res/drawable/ic_wind_speed.xml" line="24" column="31" />
     </issue>
 
-    <issue id="Overdraw"
-        message="Possible overdraw: Root element paints background `?selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.SimpleWeather`)"
-        errorLine1="    android:background=&quot;?selectableItemBackground&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/layout/item_setting.xml" line="7" column="5" />
-    </issue>
-
-    <issue id="Overdraw"
-        message="Possible overdraw: Root element paints background `?selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Theme.SimpleWeather`)"
-        errorLine1="    android:background=&quot;?selectableItemBackground&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/layout/item_setting_change.xml" line="7" column="5" />
-    </issue>
-
     <issue id="UnusedResources" message="The resource `R.color.gray_400` appears to be unused"
         errorLine1="    &lt;color name=&quot;gray_400&quot;>#FFBDBDBD&lt;/color>"
         errorLine2="           ~~~~~~~~~~~~~~~">
@@ -55,72 +45,6 @@
         errorLine1="    &lt;color name=&quot;gray_600&quot;>#FF757575&lt;/color>"
         errorLine2="           ~~~~~~~~~~~~~~~">
         <location file="src/main/res/values/colors.xml" line="6" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.small_125` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;small_125&quot;>10dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="5" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.medium_175` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;medium_175&quot;>28dp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="11" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.large_125` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;large_125&quot;>40dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="14" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.huge_100` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;huge_100&quot;>64dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="18" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.huge_125` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;huge_125&quot;>80dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="20" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.huge_150` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;huge_150&quot;>96dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="21" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.huge_200` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;huge_200&quot;>128dp&lt;/dimen>" errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="22" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.text_size_10` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;text_size_10&quot;>10sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="25" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.text_size_14` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;text_size_14&quot;>14sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="27" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.text_size_24` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;text_size_24&quot;>24sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="31" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.text_size_32` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;text_size_32&quot;>32sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="32" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.dimen.text_size_48` appears to be unused"
-        errorLine1="    &lt;dimen name=&quot;text_size_48&quot;>48sp&lt;/dimen>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/dimens.xml" line="33" column="12" />
     </issue>
 
     <issue id="UnusedResources" message="The resource `R.drawable.ic_sunnycloudy` appears to be unused"
@@ -144,6 +68,25 @@
         <location file="src/main/res/values-v28/styles.xml" line="14" column="12" />
     </issue>
 
+    <issue id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium_Variant` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium.Variant&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location file="src/main/res/values/styles.xml" line="61" column="12" />
+    </issue>
+
+    <issue id="MonochromeLauncherIcon" message="The application adaptive icon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location file="src/main/res/mipmap/ic_launcher.xml" line="2" column="1" />
+    </issue>
+
+    <issue id="MonochromeLauncherIcon" message="The application adaptive roundIcon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location file="src/main/res/mipmap/ic_launcher_round.xml" line="2" column="1" />
+    </issue>
+
     <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
         errorLine1="                &lt;ImageView" errorLine2="                 ~~~~~~~~~">
         <location file="src/main/res/layout/fragment_city_weather.xml" line="34" column="18" />
@@ -161,17 +104,12 @@
 
     <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
         errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
-        <location file="src/main/res/layout/item_day_weather.xml" line="25" column="6" />
+        <location file="src/main/res/layout/item_day_weather.xml" line="26" column="6" />
     </issue>
 
     <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
         errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
-        <location file="src/main/res/layout/item_hour_weather.xml" line="17" column="6" />
-    </issue>
-
-    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
-        errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
-        <location file="src/main/res/layout/item_setting_change.xml" line="19" column="6" />
+        <location file="src/main/res/layout/item_hour_weather.xml" line="18" column="6" />
     </issue>
 
 </issues>

@@ -2,6 +2,7 @@ package com.dropdrage.simpleweather.presentation.util.format
 
 import android.content.Context
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.settings.data.GeneralPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -9,13 +10,13 @@ import javax.inject.Inject
 class TimeFormatter @Inject constructor(@ApplicationContext private val context: Context) {
 
     fun formatAsHour(time: LocalDateTime): String =
-        time.format(com.dropdrage.simpleweather.settings_data.GeneralPreferences.timeFormat.hourFormatter)
+        time.format(GeneralPreferences.timeFormat.hourFormatter)
 
     fun formatAsHourOrNow(time: LocalDateTime, isNow: Boolean): String =
         if (!isNow) formatAsHour(time)
         else context.getString(R.string.weather_hourly_now)
 
     fun formatTime(time: LocalDateTime): String =
-        time.format(com.dropdrage.simpleweather.settings_data.GeneralPreferences.timeFormat.timeFormatter)
+        time.format(GeneralPreferences.timeFormat.timeFormatter)
 
 }

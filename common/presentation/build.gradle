@@ -1,0 +1,5 @@
+apply from: import_androidNoUiLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.common.presentation'
+}

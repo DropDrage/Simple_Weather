@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.common.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.simpleweather.databinding.FragmentCityListBinding
 import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
-import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

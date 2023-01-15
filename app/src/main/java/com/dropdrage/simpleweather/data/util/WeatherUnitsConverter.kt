@@ -1,7 +1,12 @@
 package com.dropdrage.simpleweather.data.util
 
-import com.dropdrage.simpleweather.settings_data.*
-import com.dropdrage.simpleweather.settings_data.utils.ApiSupportedUnits
+import com.dropdrage.simpleweather.settings.data.PrecipitationUnit
+import com.dropdrage.simpleweather.settings.data.PressureUnit
+import com.dropdrage.simpleweather.settings.data.TemperatureUnit
+import com.dropdrage.simpleweather.settings.data.VisibilityUnit
+import com.dropdrage.simpleweather.settings.data.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.settings.data.WindSpeedUnit
+import com.dropdrage.simpleweather.settings.data.utils.ApiSupportedUnits
 
 private const val CELSIUS_TO_FAHRENHEIT_MODIFIER = 9 / 5f
 private const val CELSIUS_TO_FAHRENHEIT_OFFSET = 32

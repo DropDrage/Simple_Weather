@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.common.presentation.util.TextMessage
+import com.dropdrage.simpleweather.common.presentation.util.extension.setLinearLayoutManager
+import com.dropdrage.simpleweather.common.presentation.util.extension.setPool
+import com.dropdrage.simpleweather.common.presentation.utils.CommonDimen
+import com.dropdrage.simpleweather.common.presentation.utils.SimpleMarginItemDecoration
 import com.dropdrage.simpleweather.databinding.FragmentCityWeatherBinding
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
@@ -18,12 +23,8 @@ import com.dropdrage.simpleweather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesSharedViewModel
-import com.dropdrage.simpleweather.presentation.util.SimpleMarginItemDecoration
-import com.dropdrage.simpleweather.presentation.util.TextMessage
 import com.dropdrage.simpleweather.presentation.util.adapter.HorizontalScrollInterceptor
 import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
-import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
-import com.dropdrage.simpleweather.presentation.util.extension.setPool
 import com.dropdrage.simpleweather.presentation.util.extension.setWeather
 import com.dropdrage.simpleweather.presentation.util.extension.viewModels
 import kotlin.reflect.KClass
@@ -51,7 +52,7 @@ abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     private fun initWeatherLists() {
         val marginDecoration = SimpleMarginItemDecoration(
-            horizontalMargin = resources.getDimensionPixelSize(R.dimen.small_100)
+            horizontalMargin = resources.getDimensionPixelSize(CommonDimen.small_100)
         )
         val horizontalScrollInterceptor = HorizontalScrollInterceptor()
 

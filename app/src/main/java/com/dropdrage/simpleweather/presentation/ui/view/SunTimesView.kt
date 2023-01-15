@@ -16,6 +16,7 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.getDrawableOrThrow
 import androidx.core.graphics.alpha
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.common.presentation.utils.CommonDimen
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
 import java.time.LocalDateTime
@@ -121,21 +122,31 @@ class SunTimesView @JvmOverloads constructor(context: Context, attrs: AttributeS
         primaryColor = a.getColor(R.styleable.SunTimesView_st_primaryColor, primaryColor)
 
         arcBackgroundColor = a.getColor(R.styleable.SunTimesView_st_arcBackgroundColor, arcBackgroundColor)
-        arcThickness = a.getDimension(R.styleable.SunTimesView_st_arcThickness,
-            resources.getDimension(R.dimen.small_100))
-        arcGroundEdgeMargin = a.getDimension(R.styleable.SunTimesView_st_arcEdgeGroundMargin,
-            resources.getDimension(R.dimen.medium_100))
+        arcThickness = a.getDimension(
+            R.styleable.SunTimesView_st_arcThickness,
+            resources.getDimension(CommonDimen.small_100)
+        )
+        arcGroundEdgeMargin = a.getDimension(
+            R.styleable.SunTimesView_st_arcEdgeGroundMargin,
+            resources.getDimension(CommonDimen.medium_100)
+        )
 
         timeColor = a.getColor(R.styleable.SunTimesView_st_timeTextColor, timeColor)
-        timeTextSize = a.getDimension(R.styleable.SunTimesView_st_timeTextSize,
-            resources.getDimension(R.dimen.text_size_12))
-        timeTextTopMargin = a.getDimensionPixelSize(R.styleable.SunTimesView_st_timeTextTopMargin,
-            resources.getDimensionPixelSize(R.dimen.small_100))
+        timeTextSize = a.getDimension(
+            R.styleable.SunTimesView_st_timeTextSize,
+            resources.getDimension(CommonDimen.text_size_12)
+        )
+        timeTextTopMargin = a.getDimensionPixelSize(
+            R.styleable.SunTimesView_st_timeTextTopMargin,
+            resources.getDimensionPixelSize(CommonDimen.small_100)
+        )
 
         sun = a.getDrawableOrThrow(R.styleable.SunTimesView_st_sunIcon)
         sun.callback = this
-        sunSize = a.getDimensionPixelSize(R.styleable.SunTimesView_st_sunSize,
-            resources.getDimensionPixelSize(R.dimen.medium_150))
+        sunSize = a.getDimensionPixelSize(
+            R.styleable.SunTimesView_st_sunSize,
+            resources.getDimensionPixelSize(CommonDimen.medium_150)
+        )
         sunriseTime = a.getString(R.styleable.SunTimesView_st_sunriseText)
         sunsetTime = a.getString(R.styleable.SunTimesView_st_sunsetText)
 

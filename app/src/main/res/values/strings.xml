@@ -38,12 +38,11 @@
     <string name="weather_label_thunderstorm_with_heavy_hail">Thunderstorm with heavy hail</string>
 
     <!--Errors-->
-    <string name="error_unexpected">Unexpected error</string>
-    <string name="error_no_data_available">No data available</string>
     <string name="error_location_no_permission">No permission to obtain location</string>
     <string name="error_location_gps_disabled">GPS is disabled</string>
     <string name="error_location_no_location">Cannot obtain location</string>
 
+    <string name="weather_unit_humidity">%1$s%%</string>
 
     <!--Week day-->
     <string name="week_day_monday_short">Mo</string>

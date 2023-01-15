@@ -17,6 +17,7 @@ import com.dropdrage.simpleweather.data.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.domain.location.Location
 import com.dropdrage.simpleweather.domain.weather.Weather
 import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.settings.data.WeatherUnitsPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
@@ -82,9 +83,9 @@ class WeatherRepositoryImpl @Inject constructor(
     private suspend fun updateLocalWeatherFromApi(location: Location, saveLocationId: Long?) {
         val remoteDomainWeather = api.getWeather(
             location.latitude, location.longitude,
-            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.temperatureUnit,
-            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.windSpeedUnit,
-            com.dropdrage.simpleweather.settings_data.WeatherUnitsPreferences.precipitationUnit,
+            WeatherUnitsPreferences.temperatureUnit,
+            WeatherUnitsPreferences.windSpeedUnit,
+            WeatherUnitsPreferences.precipitationUnit,
             TimeZone.getDefault().id.toString(),
         ).toDomainWeather()
 

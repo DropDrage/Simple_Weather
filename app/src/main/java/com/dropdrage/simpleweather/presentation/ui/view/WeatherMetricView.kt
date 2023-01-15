@@ -12,6 +12,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.common.presentation.utils.CommonDimen
 import com.dropdrage.simpleweather.core.domain.Range
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
@@ -119,8 +120,10 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
         val topText = a.getString(R.styleable.WeatherMetricView_wm_topText).orEmpty()
         val bottomText = a.getString(R.styleable.WeatherMetricView_wm_bottomText)
         _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, _textColor)
-        _textSize = a.getDimension(R.styleable.WeatherMetricView_wm_textSize,
-            resources.getDimension(R.dimen.text_size_16))
+        _textSize = a.getDimension(
+            R.styleable.WeatherMetricView_wm_textSize,
+            resources.getDimension(CommonDimen.text_size_16)
+        )
         fontWeight = a.getInt(R.styleable.WeatherMetricView_wm_fontWeight, R.integer.font_weight_600)
 
         if (a.hasValue(R.styleable.WeatherMetricView_wm_icon)) {
@@ -130,14 +133,18 @@ class WeatherMetricView @JvmOverloads constructor(context: Context, attrs: Attri
             _iconSize = a.getDimensionPixelSize(R.styleable.WeatherMetricView_wm_iconSize, _iconIntrinsicWidth)
             iconColor = a.getColor(R.styleable.WeatherMetricView_wm_iconColor, Color.BLACK)
 
-            _textIconMargin = a.getDimensionPixelSize(R.styleable.WeatherMetricView_wm_textIconMargin,
-                resources.getDimensionPixelSize(R.dimen.small_100))
+            _textIconMargin = a.getDimensionPixelSize(
+                R.styleable.WeatherMetricView_wm_textIconMargin,
+                resources.getDimensionPixelSize(CommonDimen.small_100)
+            )
         }
         dividerThickness = a.getDimension(R.styleable.WeatherMetricView_wm_dividerThickness,
             resources.getDimension(R.dimen.divider_thickness))
 
-        _textDividerMargin = a.getDimensionPixelSize(R.styleable.WeatherMetricView_wm_textDividerMargin,
-            resources.getDimensionPixelSize(R.dimen.small_50))
+        _textDividerMargin = a.getDimensionPixelSize(
+            R.styleable.WeatherMetricView_wm_textDividerMargin,
+            resources.getDimensionPixelSize(CommonDimen.small_50)
+        )
 
         a.recycle()
 

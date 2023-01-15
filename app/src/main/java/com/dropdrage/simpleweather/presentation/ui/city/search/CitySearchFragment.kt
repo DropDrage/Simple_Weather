@@ -8,11 +8,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.simpleweather.R
+import com.dropdrage.simpleweather.common.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.simpleweather.databinding.FragmentCitySearchBinding
 import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
 import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
 import com.dropdrage.simpleweather.presentation.util.extension.focusEditText
-import com.dropdrage.simpleweather.presentation.util.extension.setLinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 

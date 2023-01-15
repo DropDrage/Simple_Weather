@@ -2,6 +2,9 @@ package com.dropdrage.simpleweather.data.source.remote
 
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
 import com.dropdrage.simpleweather.data.source.remote.dto.WeatherResponseDto
+import com.dropdrage.simpleweather.settings.data.PrecipitationUnit
+import com.dropdrage.simpleweather.settings.data.TemperatureUnit
+import com.dropdrage.simpleweather.settings.data.WindSpeedUnit
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
@@ -18,16 +21,16 @@ interface WeatherApi {
     @GET("forecast?hourly=$HOURLY_PARAMS&daily=$DAILY_PARAMS")
     suspend fun getWeather(
         @Query("latitude") latitude: Float, @Query("longitude") longitude: Float,
-        @Query("temperature_unit") temperatureUnit: com.dropdrage.simpleweather.settings_data.TemperatureUnit,
-        @Query("windspeed_unit") windSpeedUnit: com.dropdrage.simpleweather.settings_data.WindSpeedUnit,
-        @Query("precipitation_unit") precipitationUnit: com.dropdrage.simpleweather.settings_data.PrecipitationUnit,
+        @Query("temperature_unit") temperatureUnit: TemperatureUnit,
+        @Query("windspeed_unit") windSpeedUnit: WindSpeedUnit,
+        @Query("precipitation_unit") precipitationUnit: PrecipitationUnit,
         @Query("timezone") timezone: String,
     ): WeatherResponseDto
 
     @GET("forecast?current_weather=true")
     suspend fun getCurrentWeather(
         @Query("latitude") latitude: Float, @Query("longitude") longitude: Float,
-        @Query("temperature_unit") temperatureUnit: com.dropdrage.simpleweather.settings_data.TemperatureUnit,
+        @Query("temperature_unit") temperatureUnit: TemperatureUnit,
     ): CurrentWeatherResponseDto
 
 }
