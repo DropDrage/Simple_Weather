@@ -9,7 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import java.util.concurrent.TimeUnit
 
-class CacheInterceptor : Interceptor {
+internal class CacheInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         val cacheControl = CacheControl.Builder()
@@ -22,7 +22,7 @@ class CacheInterceptor : Interceptor {
     }
 }
 
-class ForceCacheInterceptor(private val context: Context) : Interceptor {
+internal class ForceCacheInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()

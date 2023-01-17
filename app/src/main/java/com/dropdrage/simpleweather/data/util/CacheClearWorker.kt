@@ -13,7 +13,7 @@ import dagger.assisted.AssistedInject
 private const val TAG = "Worker_CacheClear"
 
 @HiltWorker
-class CacheClearWorker @AssistedInject constructor(
+internal class CacheClearWorker @AssistedInject constructor(
     @Assisted applicationContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val cacheRepository: CacheRepository,

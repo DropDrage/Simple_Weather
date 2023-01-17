@@ -2,21 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/citiesWeatherFragment">
+    app:startDestination="@id/weather">
 
-    <fragment
-        android:id="@+id/citiesWeatherFragment"
-        android:name="com.dropdrage.simpleweather.presentation.ui.cities_weather.CitiesWeatherFragment"
-        android:label=""
-        tools:layout="@layout/fragment_cities_weather">
-
-        <action
-            android:id="@+id/navigate_CityList"
-            app:destination="@id/city_list" />
-        <action
-            android:id="@+id/navigate_SettingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
+    <include app:graph="@navigation/weather" />
 
     <fragment
         android:id="@+id/settingsFragment"

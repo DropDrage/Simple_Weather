@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonWriter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class LocalDateAdapter : JsonAdapter<LocalDate>() {
+internal class LocalDateAdapter : JsonAdapter<LocalDate>() {
 
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 

@@ -5,7 +5,6 @@ plugins {
 
 apply from: "$rootDir/android-build.gradle"
 apply from: component_retrofit
-apply from: component_android_room
 
 android {
     namespace 'com.dropdrage.simpleweather'
@@ -32,11 +31,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine_version"
+    implementation project(path: ':common:presentation')
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -50,7 +45,6 @@ dependencies {
     //Utils
     implementation "com.chibatching.kotpref:kotpref:$kotpref_version"
 
-    implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
@@ -60,17 +54,8 @@ dependencies {
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
-    implementation project(path: ':adapters')
-    implementation project(path: ':core:data')
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:presentation')
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':common:presentation')
-    implementation project(path: ':data:city')
-    implementation project(path: ':data:city-search')
     implementation project(path: ':data:weather')
-    implementation project(path: ':data:settings')
+    implementation project(path: ':feature:weather')
     implementation project(path: ':feature:settings')
     implementation project(path: ':feature:city:list')
 }
