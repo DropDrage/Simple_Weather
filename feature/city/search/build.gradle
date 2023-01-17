@@ -1,0 +1,15 @@
+apply from: import_androidNetworkLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.city.search'
+}
+
+dependencies {
+    implementation project(path: ':adapters')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:presentation')
+    implementation project(path: ':data:city')
+    implementation project(path: ':data:city-search')
+}

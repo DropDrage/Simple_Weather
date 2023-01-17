@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-apply from: import_androidNoUi
+apply from: import_androidEmpty
 
 android {
     defaultConfig {
@@ -16,4 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.7.0'
 }

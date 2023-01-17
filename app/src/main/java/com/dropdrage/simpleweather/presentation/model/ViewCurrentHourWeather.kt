@@ -1,5 +1,7 @@
 package com.dropdrage.simpleweather.presentation.model
 
+import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
+
 data class ViewCurrentHourWeather(
     val weatherType: ViewWeatherType,
     val temperature: String,

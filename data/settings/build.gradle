@@ -1,0 +1,10 @@
+apply from: import_androidNoUiLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.data.settings'
+}
+
+dependencies {
+    api "com.chibatching.kotpref:kotpref:$kotpref_version"
+    implementation "com.chibatching.kotpref:enum-support:$kotpref_version"
+}

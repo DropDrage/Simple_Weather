@@ -1,5 +1,7 @@
 package com.dropdrage.simpleweather.domain.location
 
+import com.dropdrage.simpleweather.core.domain.Location
+
 sealed class LocationResult {
     class Success(val location: Location) : LocationResult()
     class NoPermission(val permission: String) : LocationResult(), LocationErrorResult

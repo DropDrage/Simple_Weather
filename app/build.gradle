@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 apply from: "$rootDir/android-build.gradle"
+apply from: component_retrofit
+apply from: component_android_room
 
 android {
     namespace 'com.dropdrage.simpleweather'
@@ -15,21 +15,12 @@ android {
     }
 
     buildTypes {
-        def WEATHER_URL = "WEATHER_URL"
-        def SEARCH_URL = "SEARCH_URL"
-
         debug {
             minifyEnabled false
-
-            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
-            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
-            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
 
             kapt {
                 arguments {
@@ -44,32 +35,16 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    //Ktx
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    def coroutine_version = '1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine_version"
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
-    //Room
-    def room_version = '2.4.3'
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
     //Hilt
     implementation 'androidx.hilt:hilt-work:1.0.0'
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
-    //Retrofit
-    def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    def moshi_version = "1.14.0"
-    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    //Moshi
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
     //Utils
@@ -86,10 +61,18 @@ dependencies {
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
     implementation project(path: ':adapters')
-    implementation project(path: ':core')
+    implementation project(path: ':core:data')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:presentation')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')
-    implementation project(path: ':settings:data')
-    implementation project(path: ':settings:presentation')
+    implementation project(path: ':data:city')
+    implementation project(path: ':data:city-search')
+    implementation project(path: ':data:weather')
+    implementation project(path: ':data:settings')
+    implementation project(path: ':feature:settings')
+    implementation project(path: ':feature:city:list')
 }
 
 kapt {

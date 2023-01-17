@@ -3,11 +3,11 @@ package com.dropdrage.simpleweather.presentation.ui.city.weather
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.common.presentation.util.TextMessage
-import com.dropdrage.simpleweather.common.presentation.util.toTextMessageOrUnknownErrorMessage
-import com.dropdrage.simpleweather.core.domain.CantObtainResourceException
-import com.dropdrage.simpleweather.core.domain.Resource
-import com.dropdrage.simpleweather.domain.weather.Weather
+import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
+import com.dropdrage.simpleweather.common.domain.CantObtainResourceException
+import com.dropdrage.simpleweather.common.domain.Resource
+import com.dropdrage.simpleweather.data.weather.domain.Weather
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentHourWeather

@@ -1,0 +1,9 @@
+apply from: import_androidDataLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.common.data'
+}
+
+dependencies {
+    implementation project(path: ':common:domain')
+}

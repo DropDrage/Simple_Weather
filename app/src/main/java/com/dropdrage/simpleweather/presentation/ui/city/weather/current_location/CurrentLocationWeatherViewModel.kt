@@ -1,13 +1,13 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather.current_location
 
 import androidx.lifecycle.viewModelScope
+import com.dropdrage.common.presentation.util.ResourceMessage
+import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.simpleweather.R
-import com.dropdrage.simpleweather.common.presentation.util.ResourceMessage
-import com.dropdrage.simpleweather.common.presentation.util.TextMessage
+import com.dropdrage.simpleweather.data.weather.repository.WeatherRepository
 import com.dropdrage.simpleweather.domain.location.LocationErrorResult
 import com.dropdrage.simpleweather.domain.location.LocationResult
 import com.dropdrage.simpleweather.domain.location.use_case.GetLocationUseCase
-import com.dropdrage.simpleweather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter

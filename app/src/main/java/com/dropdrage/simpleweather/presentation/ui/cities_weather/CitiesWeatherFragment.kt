@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.dropdrage.common.presentation.utils.ChangeableAppBar
+import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
+import com.dropdrage.common.presentation.utils.viewLifecycleScope
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.FragmentCitiesWeatherBinding
-import com.dropdrage.simpleweather.presentation.ui.ChangeableAppBar
-import com.dropdrage.simpleweather.presentation.util.extension.collectWithViewLifecycle
-import com.dropdrage.simpleweather.presentation.util.extension.viewLifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

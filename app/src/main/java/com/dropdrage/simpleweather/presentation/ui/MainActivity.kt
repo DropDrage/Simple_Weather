@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.dropdrage.common.presentation.utils.ChangeableAppBar
 import com.dropdrage.simpleweather.R
 import com.dropdrage.simpleweather.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint

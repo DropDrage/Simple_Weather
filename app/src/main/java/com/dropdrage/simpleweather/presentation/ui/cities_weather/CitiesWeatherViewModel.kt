@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.presentation.ui.cities_weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.domain.city.City
-import com.dropdrage.simpleweather.domain.city.CityRepository
+import com.dropdrage.simpleweather.data.city.data.repository.CityRepository
+import com.dropdrage.simpleweather.data.city.domain.City
 import com.dropdrage.simpleweather.domain.weather.use_case.UpdateAllCitiesWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

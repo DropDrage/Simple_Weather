@@ -8,6 +8,12 @@ buildscript {
     ext.kotlin_version = "1.8.0"
     ext.hilt_version = "2.44.2"
     ext.navigation_version = "2.5.3"
+    ext.coroutine_version = '1.6.4'
+    ext.room_version = '2.4.3'
+
+    ext.retrofit_version = '2.9.0'
+    ext.moshi_version = '1.14.0'
+
     ext.kotpref_version = "2.13.2"
 
     dependencies {
@@ -35,10 +41,17 @@ ext {
     versionName = '1.0'
 
     //imports
-    import_androidNoUi = "$rootDir/android-no-ui-build.gradle"
+    import_androidEmpty = "$rootDir/android-empty-build.gradle"
+    import_androidEmptyLibrary = "$rootDir/android-empty-library-build.gradle"
     import_androidNoUiLibrary = "$rootDir/android-no-ui-library-build.gradle"
     import_android = "$rootDir/android-build.gradle"
     import_androidLibrary = "$rootDir/android-library-build.gradle"
+    import_androidNetworkLibrary = "$rootDir/android-network-library-build.gradle"
+    import_androidDataLibrary = "$rootDir/android-library-data-build.gradle"
 
     import_library = "$rootDir/library-build.gradle"
+
+    component_android_room = "$rootDir/component-android-room.gradle"
+    component_android_hilt = "$rootDir/component-android-hilt.gradle"
+    component_retrofit = "$rootDir/component-retrofit.gradle"
 }

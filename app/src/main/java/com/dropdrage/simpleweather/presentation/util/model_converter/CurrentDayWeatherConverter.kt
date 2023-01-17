@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.presentation.util.model_converter
 
-import com.dropdrage.simpleweather.core.domain.Range
-import com.dropdrage.simpleweather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.common.domain.Range
+import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
+import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.data.weather.domain.DayWeather
 import com.dropdrage.simpleweather.presentation.model.ViewCurrentDayWeather
-import com.dropdrage.simpleweather.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.presentation.util.format.TimeFormatter
-import com.dropdrage.simpleweather.presentation.util.format.WeatherUnitsFormatter
 import javax.inject.Inject
 
 class CurrentDayWeatherConverter @Inject constructor(

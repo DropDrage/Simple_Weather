@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.presentation.ui.city.weather.city
 
-import com.dropdrage.simpleweather.common.presentation.util.TextMessage
-import com.dropdrage.simpleweather.common.presentation.util.toTextMessage
-import com.dropdrage.simpleweather.common.presentation.util.toTextMessageOrUnknownErrorMessage
-import com.dropdrage.simpleweather.core.domain.Resource
-import com.dropdrage.simpleweather.domain.city.CityRepository
-import com.dropdrage.simpleweather.domain.weather.WeatherRepository
+import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.presentation.util.toTextMessage
+import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
+import com.dropdrage.simpleweather.common.domain.Resource
+import com.dropdrage.simpleweather.data.city.data.repository.CityRepository
+import com.dropdrage.simpleweather.data.weather.repository.WeatherRepository
 import com.dropdrage.simpleweather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.presentation.util.model_converter.CurrentDayWeatherConverter

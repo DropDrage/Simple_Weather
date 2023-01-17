@@ -1,5 +1,13 @@
 apply from: import_androidNoUiLibrary
+apply from: component_android_hilt
 
 android {
-    namespace 'com.dropdrage.simpleweather.common.presentation'
+    namespace 'com.dropdrage.common.presentation'
+}
+
+dependencies {
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+
+    implementation project(path: ':data:settings')
 }

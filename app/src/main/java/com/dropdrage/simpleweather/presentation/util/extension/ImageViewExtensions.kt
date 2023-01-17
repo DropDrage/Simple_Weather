@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.presentation.util.extension
 
 import android.widget.ImageView
-import com.dropdrage.simpleweather.presentation.model.ViewWeatherType
+import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 
 fun ImageView.setWeather(weatherType: ViewWeatherType) {
     setImageResource(weatherType.iconRes)

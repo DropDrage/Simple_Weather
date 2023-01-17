@@ -1,0 +1,13 @@
+apply from: import_androidNoUiLibrary
+apply from: component_android_hilt
+
+android {
+    namespace 'com.dropdrage.simpleweather.core.presentation'
+}
+
+dependencies {
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
+
+    implementation project(path: ':core:domain')
+    implementation project(path: ':data:settings')
+}

@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.presentation.util.adapter
 
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import com.dropdrage.simpleweather.common.presentation.util.extension.canScrollLeft
-import com.dropdrage.simpleweather.common.presentation.util.extension.canScrollRight
+import com.dropdrage.common.presentation.util.extension.canScrollLeft
+import com.dropdrage.common.presentation.util.extension.canScrollRight
 
 /**
  * Disallows horizontal scrolling of [RecyclerView's][RecyclerView] parent if scroll is applied to RecyclerView.

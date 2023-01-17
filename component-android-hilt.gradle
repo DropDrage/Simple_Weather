@@ -1,0 +1,10 @@
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.dagger.hilt.android'
+
+dependencies {
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    def hilt_ext_version = '1.3.0'
+    implementation "it.czerwinski.android.hilt:hilt-extensions:$hilt_ext_version"
+    kapt "it.czerwinski.android.hilt:hilt-processor:$hilt_ext_version"
+}

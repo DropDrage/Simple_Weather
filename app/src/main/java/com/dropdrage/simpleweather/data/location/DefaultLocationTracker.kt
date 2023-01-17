@@ -14,15 +14,20 @@ import com.dropdrage.simpleweather.domain.location.LocationTracker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.Priority
+import dagger.hilt.components.SingletonComponent
+import it.czerwinski.android.hilt.annotations.Bound
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val LOCATION_REQUEST_INTERVAL = 60000L
 
+@Singleton
+@Bound(component = SingletonComponent::class)
 class DefaultLocationTracker @Inject constructor(
     private val locationClient: FusedLocationProviderClient,
     private val application: Application,

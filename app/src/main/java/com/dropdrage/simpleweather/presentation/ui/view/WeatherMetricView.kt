@@ -11,9 +11,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
+import com.dropdrage.common.presentation.utils.CommonDimen
 import com.dropdrage.simpleweather.R
-import com.dropdrage.simpleweather.common.presentation.utils.CommonDimen
-import com.dropdrage.simpleweather.core.domain.Range
+import com.dropdrage.simpleweather.common.domain.Range
 import com.dropdrage.simpleweather.presentation.util.ViewUtils
 import com.dropdrage.simpleweather.presentation.util.extension.calculateTextHeight
 import kotlin.math.max
