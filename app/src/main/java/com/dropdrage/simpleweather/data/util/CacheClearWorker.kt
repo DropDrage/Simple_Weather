@@ -6,7 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
+import com.dropdrage.simpleweather.weather.data.repository.CacheRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 

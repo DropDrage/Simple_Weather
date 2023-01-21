@@ -54,10 +54,10 @@ dependencies {
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
-    implementation project(path: ':data:weather')
-    implementation project(path: ':feature:weather')
-    implementation project(path: ':feature:settings')
-    implementation project(path: ':feature:city:list')
+    implementation project(path: ':feature:city:list:presentation')
+    implementation project(path: ':feature:settings:presentation')
+    implementation project(path: ':feature:weather:data')
+    implementation project(path: ':feature:weather:presentation')
 }
 
 kapt {

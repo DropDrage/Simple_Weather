@@ -1,9 +1,12 @@
-apply from: import_androidDataLibrary
+apply from: import_androidEmptyLibrary
 
 android {
     namespace 'com.dropdrage.simpleweather.common.data'
 }
 
 dependencies {
+    implementation "androidx.room:room-common:$room_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+
     implementation project(path: ':common:domain')
 }

@@ -1,0 +1,17 @@
+apply from: import_androidLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.city_list.presentation'
+}
+
+dependencies {
+    implementation project(path: ':adapters')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':common:presentation')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:presentation')
+    implementation project(path: ':feature:weather:data')
+    implementation project(path: ':feature:city:list:data')
+    implementation project(path: ':feature:city:search:presentation')
+}
