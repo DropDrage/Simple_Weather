@@ -3,7 +3,8 @@ package com.dropdrage.simpleweather.city_search.presentation.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.city_search.data.repository.CitySearchRepository
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.city_search.presentation.model.ViewCitySearchResult
 import com.dropdrage.simpleweather.common.domain.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,7 @@ private const val TAG = "CitySearch"
 @HiltViewModel
 internal class CitySearchViewModel @Inject constructor(
     private val searchRepository: CitySearchRepository,
-    private val cityRepository: com.dropdrage.simpleweather.city_list.data.data.repository.CityRepository,
+    private val cityRepository: CityRepository,
 ) : ViewModel() {
 
     private val _searchResults = MutableSharedFlow<List<ViewCitySearchResult>>()

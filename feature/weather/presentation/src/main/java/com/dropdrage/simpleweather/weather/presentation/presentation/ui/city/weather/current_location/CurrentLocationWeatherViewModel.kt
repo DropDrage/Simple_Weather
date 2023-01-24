@@ -5,7 +5,7 @@ import com.dropdrage.common.presentation.util.ResourceMessage
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.simpleweather.data.location.LocationErrorResult
 import com.dropdrage.simpleweather.data.location.LocationResult
-import com.dropdrage.simpleweather.weather.data.repository.WeatherRepository
+import com.dropdrage.simpleweather.weather.domain.WeatherRepository
 import com.dropdrage.simpleweather.weather.presentation.R
 import com.dropdrage.simpleweather.weather.presentation.domain.use_case.GetLocationUseCase
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCityTitle

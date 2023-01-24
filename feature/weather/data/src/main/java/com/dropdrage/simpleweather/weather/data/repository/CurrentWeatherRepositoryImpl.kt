@@ -1,20 +1,19 @@
 package com.dropdrage.simpleweather.weather.data.repository
 
 import android.util.Log
+import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
+import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.common.data.LocalResource
 import com.dropdrage.simpleweather.core.data.LogTags
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.weather.remote.toDomain
 import com.dropdrage.simpleweather.data.weather.remote.toDomainCurrentWeather
-import com.dropdrage.simpleweather.weather.data.domain.CurrentWeather
 import com.dropdrage.simpleweather.weather.data.local.cache.dao.HourWeatherDao
 import com.dropdrage.simpleweather.weather.data.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.weather.data.local.cache.model.LocationModel
 import com.dropdrage.simpleweather.weather.data.local.util.LocalDateTimeUtils
 import com.dropdrage.simpleweather.weather.data.remote.WeatherApi
-import dagger.hilt.components.SingletonComponent
-import it.czerwinski.android.hilt.annotations.Bound
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -24,11 +23,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import java.net.UnknownHostException
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-@Bound(component = SingletonComponent::class)
-internal class CurrentWeatherRepositoryImpl @Inject constructor(
+class CurrentWeatherRepositoryImpl internal @Inject constructor(
     private val api: WeatherApi,
     private val locationDao: LocationDao,
     private val hourWeatherDao: HourWeatherDao,

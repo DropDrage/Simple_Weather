@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.room.TypeConverter
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 
-object WeatherTypeConverter {
+internal object WeatherTypeConverter {
 
     private const val TAG = "WeatherTypeConverter"
 

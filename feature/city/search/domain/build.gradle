@@ -1,0 +1,6 @@
+apply from: import_library
+
+dependencies {
+    implementation project(path: ':common:domain')
+    implementation project(path: ':feature:city:list:domain')
+}

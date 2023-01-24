@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.weather.presentation.util.model_converter
 import com.dropdrage.simpleweather.common.domain.Range
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
-import com.dropdrage.simpleweather.weather.data.domain.DayWeather
+import com.dropdrage.simpleweather.weather.domain.DayWeather
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.weather.presentation.util.format.TimeFormatter
 import javax.inject.Inject

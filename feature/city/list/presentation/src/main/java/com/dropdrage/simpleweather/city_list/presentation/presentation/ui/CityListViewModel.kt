@@ -2,6 +2,7 @@ package com.dropdrage.simpleweather.city_list.presentation.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.city_list.presentation.domain.use_case.ObserveCitiesWithWeatherUseCase
 import com.dropdrage.simpleweather.city_list.presentation.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.city_list.presentation.presentation.utils.CityCurrentWeatherConverter
@@ -17,7 +18,7 @@ import javax.inject.Inject
 internal class CityListViewModel @Inject constructor(
     observeCitiesWithWeather: ObserveCitiesWithWeatherUseCase,
     private val cityCurrentWeatherConverter: CityCurrentWeatherConverter,
-    private val cityRepository: com.dropdrage.simpleweather.city_list.data.data.repository.CityRepository,
+    private val cityRepository: CityRepository,
 ) : ViewModel() {
 
     val citiesCurrentWeathers: Flow<List<ViewCityCurrentWeather>> = observeCitiesWithWeather()

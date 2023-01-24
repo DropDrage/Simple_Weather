@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.weather.data.domain
+package com.dropdrage.simpleweather.city_list.domain.weather
 
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 

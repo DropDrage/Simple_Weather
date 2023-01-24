@@ -2,22 +2,18 @@ package com.dropdrage.simpleweather.city_list.data.data.repository
 
 import com.dropdrage.simpleweather.city_list.data.data.local.dao.CityDao
 import com.dropdrage.simpleweather.city_list.data.data.local.model.CityModel
-import com.dropdrage.simpleweather.city_list.data.domain.City
+import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.common.data.repository.SimpleRepository
 import com.dropdrage.simpleweather.common.domain.Resource
 import com.dropdrage.simpleweather.core.data.LogTags
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toModel
-import dagger.hilt.components.SingletonComponent
-import it.czerwinski.android.hilt.annotations.BoundTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-@BoundTo(supertype = CityRepository::class, component = SingletonComponent::class)
-internal class CityRepositoryImpl @Inject constructor(
+class CityRepositoryImpl @Inject internal constructor(
     private val dao: CityDao,
 ) : SimpleRepository<City>(LogTags.CITY), CityRepository {
 

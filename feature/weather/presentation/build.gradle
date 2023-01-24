@@ -16,8 +16,8 @@ dependencies {
     implementation project(path: ':core:data')
     implementation project(path: ':core:domain')
     implementation project(path: ':core:presentation')
-    implementation project(path: ':feature:weather:data')
-    implementation project(path: ':feature:weather:location')
     implementation project(path: ':feature:settings:data')
-    implementation project(path: ':feature:city:list:data')
+    implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:weather:domain')
+    implementation project(path: ':feature:weather:location')
 }

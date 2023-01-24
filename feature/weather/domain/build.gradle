@@ -1,0 +1,8 @@
+apply from: import_library
+
+dependencies {
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+
+    implementation project(path: ':core:domain')
+    implementation project(path: ':common:domain')
+}

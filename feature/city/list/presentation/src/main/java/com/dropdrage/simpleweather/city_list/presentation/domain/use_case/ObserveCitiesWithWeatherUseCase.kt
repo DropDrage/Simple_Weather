@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.city_list.presentation.domain.use_case
 
 import android.util.Log
-import com.dropdrage.simpleweather.city_list.data.data.repository.CityRepository
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.city_list.presentation.domain.CityCurrentWeather
-import com.dropdrage.simpleweather.weather.data.repository.CurrentWeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

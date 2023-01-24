@@ -7,7 +7,7 @@ import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
 import com.dropdrage.simpleweather.common.domain.CantObtainResourceException
 import com.dropdrage.simpleweather.common.domain.Resource
-import com.dropdrage.simpleweather.weather.data.domain.Weather
+import com.dropdrage.simpleweather.weather.domain.Weather
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCurrentHourWeather

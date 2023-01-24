@@ -31,7 +31,6 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':common:presentation')
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -54,9 +53,16 @@ dependencies {
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
-    implementation project(path: ':feature:city:list:presentation')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:presentation')
     implementation project(path: ':feature:settings:presentation')
+    implementation project(path: ':feature:city:list:data')
+    implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:city:list:presentation')
+    implementation project(path: ':feature:city:search:data')
+    implementation project(path: ':feature:city:search:domain')
     implementation project(path: ':feature:weather:data')
+    implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
 }
 

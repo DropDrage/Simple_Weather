@@ -1,8 +1,7 @@
-package com.dropdrage.simpleweather.weather.data.repository
+package com.dropdrage.simpleweather.weather.domain
 
 import com.dropdrage.simpleweather.common.domain.Resource
 import com.dropdrage.simpleweather.core.domain.Location
-import com.dropdrage.simpleweather.weather.data.domain.Weather
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {

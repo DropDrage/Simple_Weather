@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.weather.presentation.util.model_converter
 
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
-import com.dropdrage.simpleweather.weather.data.domain.HourWeather
+import com.dropdrage.simpleweather.weather.domain.HourWeather
 import com.dropdrage.simpleweather.weather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.weather.presentation.util.format.TimeFormatter
 import java.time.LocalDateTime

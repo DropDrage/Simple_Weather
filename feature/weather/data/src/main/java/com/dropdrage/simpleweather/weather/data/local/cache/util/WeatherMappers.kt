@@ -1,14 +1,14 @@
 package com.dropdrage.simpleweather.data.weather.local.util.mapper
 
-import com.dropdrage.simpleweather.weather.data.domain.DayWeather
-import com.dropdrage.simpleweather.weather.data.domain.HourWeather
-import com.dropdrage.simpleweather.weather.data.domain.Weather
 import com.dropdrage.simpleweather.weather.data.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.weather.data.local.cache.model.HourWeatherModel
 import com.dropdrage.simpleweather.weather.data.local.cache.model.TemperatureRange
 import com.dropdrage.simpleweather.weather.data.local.cache.relation.DayToHourWeather
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsConverter
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsDeconverter
+import com.dropdrage.simpleweather.weather.domain.DayWeather
+import com.dropdrage.simpleweather.weather.domain.HourWeather
+import com.dropdrage.simpleweather.weather.domain.Weather
 
 private typealias DomainWeather = Weather
 private typealias DomainDayWeather = DayWeather

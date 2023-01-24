@@ -6,8 +6,9 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:domain')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':common:data')
     implementation project(path: ':core:data')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':feature:city:list:domain')
 }

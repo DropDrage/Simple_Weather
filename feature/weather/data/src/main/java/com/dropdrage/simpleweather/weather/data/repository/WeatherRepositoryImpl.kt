@@ -11,15 +11,14 @@ import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDayModels
 import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.data.weather.local.util.mapper.toHourModels
 import com.dropdrage.simpleweather.data.weather.remote.toDomainWeather
-import com.dropdrage.simpleweather.weather.data.domain.Weather
 import com.dropdrage.simpleweather.weather.data.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.weather.data.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.weather.data.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.weather.data.local.cache.model.LocationModel
 import com.dropdrage.simpleweather.weather.data.local.util.mapper.toNewModel
 import com.dropdrage.simpleweather.weather.data.remote.WeatherApi
-import dagger.hilt.components.SingletonComponent
-import it.czerwinski.android.hilt.annotations.BoundTo
+import com.dropdrage.simpleweather.weather.domain.Weather
+import com.dropdrage.simpleweather.weather.domain.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
@@ -32,11 +31,8 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-@BoundTo(supertype = WeatherRepository::class, component = SingletonComponent::class)
-internal class WeatherRepositoryImpl @Inject constructor(
+class WeatherRepositoryImpl @Inject internal constructor(
     private val api: WeatherApi,
     private val locationDao: LocationDao,
     private val dayWeatherDao: DayWeatherDao,

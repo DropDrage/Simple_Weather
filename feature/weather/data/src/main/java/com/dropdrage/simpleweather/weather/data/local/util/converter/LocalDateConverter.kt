@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.weather.data.local.util.converter
 import androidx.room.TypeConverter
 import java.time.LocalDate
 
-object LocalDateConverter {
+internal object LocalDateConverter {
 
     @TypeConverter
     fun fromLocalDate(localDate: LocalDate?): Long? = localDate?.toEpochDay()

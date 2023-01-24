@@ -3,9 +3,9 @@ package com.dropdrage.simpleweather.weather.presentation.ui.city.weather.city
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.common.presentation.util.toTextMessage
 import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
-import com.dropdrage.simpleweather.city_list.data.data.repository.CityRepository
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.common.domain.Resource
-import com.dropdrage.simpleweather.weather.data.repository.WeatherRepository
+import com.dropdrage.simpleweather.weather.domain.WeatherRepository
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.weather.presentation.ui.city.weather.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.weather.presentation.util.model_converter.CurrentDayWeatherConverter

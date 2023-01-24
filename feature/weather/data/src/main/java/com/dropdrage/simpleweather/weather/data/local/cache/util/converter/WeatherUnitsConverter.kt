@@ -22,7 +22,7 @@ private const val METER_TO_MILE_DIVIDER = 1609f
 
 private const val MM_TO_INCH_DIVIDER = 25.4f
 
-object WeatherUnitsConverter {
+internal object WeatherUnitsConverter {
 
     fun convertTemperature(temperatureCelsius: Float): Float = when (WeatherUnitsPreferences.temperatureUnit) {
         TemperatureUnit.CELSIUS -> temperatureCelsius

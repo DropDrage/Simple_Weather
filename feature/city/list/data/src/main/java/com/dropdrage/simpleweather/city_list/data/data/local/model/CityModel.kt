@@ -5,8 +5,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.dropdrage.simpleweather.city_list.data.domain.City
-import com.dropdrage.simpleweather.city_list.data.domain.Country
+import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city_list.domain.city.Country
 import com.dropdrage.simpleweather.core.domain.Location
 
 private const val NAME_FIELD = "name"
