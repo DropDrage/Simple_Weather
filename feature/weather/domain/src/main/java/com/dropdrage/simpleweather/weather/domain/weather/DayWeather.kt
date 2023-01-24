@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.weather.domain.weather
 
-import com.dropdrage.simpleweather.common.domain.Range
+import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import java.time.LocalDate
 import java.time.LocalDateTime

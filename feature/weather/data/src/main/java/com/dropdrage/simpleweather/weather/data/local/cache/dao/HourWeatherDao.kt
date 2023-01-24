@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.weather.data.local.cache.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.dropdrage.simpleweather.common.data.CrudDao
+import com.dropdrage.common.data.CrudDao
 import com.dropdrage.simpleweather.weather.data.local.cache.dto.CurrentWeatherDto
 import com.dropdrage.simpleweather.weather.data.local.cache.model.HourWeatherModel
 import java.time.LocalDateTime

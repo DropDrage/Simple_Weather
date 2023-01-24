@@ -11,8 +11,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
+import com.dropdrage.common.domain.Range
 import com.dropdrage.common.presentation.utils.CommonDimen
-import com.dropdrage.simpleweather.common.domain.Range
 import com.dropdrage.simpleweather.weather.presentation.R
 import com.dropdrage.simpleweather.weather.presentation.util.ViewUtils
 import com.dropdrage.simpleweather.weather.presentation.util.extension.calculateTextHeight

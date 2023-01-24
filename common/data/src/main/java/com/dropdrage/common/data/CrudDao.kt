@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.common.data
+package com.dropdrage.common.data
 
 import androidx.room.Delete
 import androidx.room.Insert

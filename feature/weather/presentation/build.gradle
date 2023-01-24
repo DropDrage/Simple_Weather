@@ -11,8 +11,8 @@ dependencies {
     implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
 
     implementation project(path: ':adapters')
-    implementation project(path: ':core:data')
     implementation project(path: ':core:domain')
+    implementation project(path: ':core:utils')
     implementation project(path: ':core:presentation')
     implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')

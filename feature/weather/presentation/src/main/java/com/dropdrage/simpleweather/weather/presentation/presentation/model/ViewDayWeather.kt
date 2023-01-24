@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.weather.presentation.model
 
 import com.dropdrage.adapters.differ.SameEquatable
-import com.dropdrage.simpleweather.common.domain.Range
+import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import java.time.LocalDate
 

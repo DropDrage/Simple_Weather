@@ -3,10 +3,10 @@ package com.dropdrage.simpleweather.city_search.presentation.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.city_search.presentation.model.ViewCitySearchResult
-import com.dropdrage.simpleweather.common.domain.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow

@@ -1,7 +1,7 @@
-package com.dropdrage.simpleweather.common.data.repository
+package com.dropdrage.common.data.repository
 
 import android.util.Log
-import com.dropdrage.simpleweather.common.domain.Resource
+import com.dropdrage.common.domain.Resource
 import kotlinx.coroutines.CancellationException
 
 abstract class SimpleRepository<T>(protected val tag: String) {

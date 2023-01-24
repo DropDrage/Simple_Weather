@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.weather.data.local.cache.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.dropdrage.simpleweather.common.data.CrudDao
+import com.dropdrage.common.data.CrudDao
 import com.dropdrage.simpleweather.weather.data.local.cache.model.LocationModel
 
 private const val POSITION_APPROXIMATION = 0.015f

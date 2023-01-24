@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.dropdrage.simpleweather.common.domain.Range
+import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import java.time.LocalDate
 import java.time.LocalDateTime

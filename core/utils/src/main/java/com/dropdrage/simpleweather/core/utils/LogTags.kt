@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.core.data
+package com.dropdrage.simpleweather.core.utils
 
 object LogTags {
     const val WEATHER = "Weather"

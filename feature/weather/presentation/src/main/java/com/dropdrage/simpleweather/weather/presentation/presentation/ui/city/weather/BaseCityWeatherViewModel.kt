@@ -3,10 +3,10 @@ package com.dropdrage.simpleweather.weather.presentation.ui.city.weather
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dropdrage.common.domain.CantObtainResourceException
+import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
-import com.dropdrage.simpleweather.common.domain.CantObtainResourceException
-import com.dropdrage.simpleweather.common.domain.Resource
 import com.dropdrage.simpleweather.weather.domain.weather.Weather
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCurrentDayWeather

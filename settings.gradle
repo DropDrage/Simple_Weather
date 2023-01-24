@@ -15,6 +15,18 @@ dependencyResolutionManagement {
 
     def coroutinesVersion = '1.6.4'
     versionCatalogs {
+        buildLibs {
+            def kotlinVersion = version('kotlin', '1.8.0')
+            plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').versionRef(kotlinVersion)
+            plugin('kotlin-android', 'org.jetbrains.kotlin.android').versionRef(kotlinVersion)
+            plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').versionRef(kotlinVersion)
+            library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').versionRef(kotlinVersion)
+
+            def kspVersion = version('ksp', '1.8.0-1.0.8')
+            library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').versionRef(kspVersion)
+            plugin('ksp', 'com.google.devtools.ksp').versionRef(kspVersion)
+        }
+
         kotlinLibs {
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-core').version(coroutinesVersion)
         }
@@ -38,11 +50,11 @@ dependencyResolutionManagement {
 
             def hiltVersion = version('hilt', '2.44.2')
             library('hilt', 'com.google.dagger', 'hilt-android').versionRef(hiltVersion)
-            library('hilt-kapt', 'com.google.dagger', 'hilt-compiler').versionRef(hiltVersion)
+            library('hilt-compiler', 'com.google.dagger', 'hilt-compiler').versionRef(hiltVersion)
             library('hilt-testing', 'com.google.dagger', 'hilt-android-testing').versionRef(hiltVersion)
             def hiltWorkVersion = version('hilt-work', '1.0.0')
             library('hilt-work', 'androidx.hilt', 'hilt-work').versionRef(hiltWorkVersion)
-            library('hilt-work-kapt', 'androidx.hilt', 'hilt-compiler').versionRef(hiltWorkVersion)
+            library('hilt-work-compiler', 'androidx.hilt', 'hilt-compiler').versionRef(hiltWorkVersion)
             library('gradle-plugin-hilt', 'com.google.dagger', 'hilt-android-gradle-plugin').versionRef(hiltVersion)
 
             library('services-location', 'com.google.android.gms', 'play-services-location').version('21.0.1')
@@ -53,7 +65,7 @@ dependencyResolutionManagement {
             library('room-ktx', 'androidx.room', 'room-ktx').versionRef(roomVersion)
             library('room-runtime', 'androidx.room', 'room-runtime').versionRef(roomVersion)
             library('room-common', 'androidx.room', 'room-common').versionRef(roomVersion)
-            library('room-kapt', 'androidx.room', 'room-compiler').versionRef(roomVersion)
+            library('room-compiler', 'androidx.room', 'room-compiler').versionRef(roomVersion)
             bundle('room', ['room-ktx', 'room-runtime'])
 
             def kotprefVersion = version('kotpref', '2.13.2')
@@ -68,7 +80,7 @@ dependencyResolutionManagement {
             library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').versionRef(retrofitVersion)
             def moshiVersion = version('moshi', '1.14.0')
             library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').versionRef(moshiVersion)
-            library('moshi-kapt', 'com.squareup.moshi', 'moshi-kotlin-codegen').versionRef(moshiVersion)
+            library('moshi-compiler', 'com.squareup.moshi', 'moshi-kotlin-codegen').versionRef(moshiVersion)
             bundle('moshi', ['moshi-core', 'moshi-kotlin'])
         }
 
@@ -88,7 +100,7 @@ rootProject.name = "Simple Weather"
 include ':app'
 include ':adapters'
 include ':core'
-include ':core:data'
+include ':core:utils'
 include ':core:domain'
 include ':core:presentation'
 include ':common'

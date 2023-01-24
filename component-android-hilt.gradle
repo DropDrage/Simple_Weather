@@ -3,5 +3,5 @@ apply plugin: 'com.google.dagger.hilt.android'
 
 dependencies {
     implementation androidLibs.hilt
-    kapt androidLibs.hilt.kapt
+    kapt androidLibs.hilt.compiler
 }

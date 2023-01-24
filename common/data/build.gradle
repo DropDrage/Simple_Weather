@@ -1,7 +1,7 @@
 apply from: import_androidEmptyLibrary
 
 android {
-    namespace 'com.dropdrage.simpleweather.common.data'
+    namespace 'com.dropdrage.common.data'
 }
 
 dependencies {

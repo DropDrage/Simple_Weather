@@ -1,12 +1,12 @@
 package com.dropdrage.simpleweather.city_search.data.repository
 
+import com.dropdrage.common.data.repository.SimpleRepository
+import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.city_list.domain.city.City
 import com.dropdrage.simpleweather.city_search.data.remote.SearchApi
 import com.dropdrage.simpleweather.city_search.data.remote.toDomainCities
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
-import com.dropdrage.simpleweather.common.data.repository.SimpleRepository
-import com.dropdrage.simpleweather.common.domain.Resource
-import com.dropdrage.simpleweather.core.data.LogTags
+import com.dropdrage.simpleweather.core.utils.LogTags
 import javax.inject.Inject
 
 class CitySearchRepositoryImpl @Inject internal constructor(private val api: SearchApi) :

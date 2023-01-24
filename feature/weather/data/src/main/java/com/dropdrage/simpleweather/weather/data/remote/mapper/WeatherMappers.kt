@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.data.weather.remote
 
+import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
-import com.dropdrage.simpleweather.common.domain.Range
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
 import com.dropdrage.simpleweather.weather.data.local.cache.dto.CurrentWeatherDto
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherTypeConverter

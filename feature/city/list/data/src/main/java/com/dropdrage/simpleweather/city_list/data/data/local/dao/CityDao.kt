@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.dropdrage.common.data.CrudDao
 import com.dropdrage.simpleweather.city_list.data.data.local.model.CityModel
-import com.dropdrage.simpleweather.common.data.CrudDao
 import kotlinx.coroutines.flow.Flow
 
 @Dao

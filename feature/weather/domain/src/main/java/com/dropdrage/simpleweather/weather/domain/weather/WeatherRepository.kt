@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.weather.domain.weather
 
-import com.dropdrage.simpleweather.common.domain.Resource
+import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.core.domain.Location
 import kotlinx.coroutines.flow.Flow
 

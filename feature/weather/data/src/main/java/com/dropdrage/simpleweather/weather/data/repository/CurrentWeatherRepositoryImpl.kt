@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.weather.data.repository
 
 import android.util.Log
+import com.dropdrage.common.data.LocalResource
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
-import com.dropdrage.simpleweather.common.data.LocalResource
-import com.dropdrage.simpleweather.core.data.LogTags
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.core.utils.LogTags
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.weather.remote.toDomain
 import com.dropdrage.simpleweather.data.weather.remote.toDomainCurrentWeather

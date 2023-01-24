@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.city_list.domain.city
 
-import com.dropdrage.simpleweather.common.domain.Resource
+import com.dropdrage.common.domain.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface CityRepository {

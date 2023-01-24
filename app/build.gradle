@@ -21,10 +21,8 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            kapt {
-                arguments {
-                    arg("dagger.fullBindingGraphValidation", "ERROR")
-                }
+            ksp {
+                arg("dagger.fullBindingGraphValidation", "ERROR")
             }
         }
     }
@@ -38,11 +36,11 @@ dependencies {
 
     //Hilt
     implementation androidLibs.hilt.work
-    kapt androidLibs.hilt.work.kapt
+    ksp androidLibs.hilt.work.compiler
 
     //Moshi
     implementation networkLibs.bundles.moshi
-    kapt networkLibs.moshi.kapt
+    ksp networkLibs.moshi.compiler
 //    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
@@ -54,9 +52,9 @@ dependencies {
 
     //Tests
     androidTestImplementation androidLibs.hilt.testing
-    kaptAndroidTest androidLibs.hilt.kapt
+    kspAndroidTest androidLibs.hilt.compiler
     testImplementation androidLibs.hilt.testing
-    kaptTest androidLibs.hilt.kapt
+    kspTest androidLibs.hilt.compiler
 
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
     implementation project(path: ':common:presentation') //ChangeableAppBar
@@ -70,8 +68,4 @@ dependencies {
     implementation project(path: ':feature:weather:location')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
-}
-
-kapt {
-    correctErrorTypes true
 }
