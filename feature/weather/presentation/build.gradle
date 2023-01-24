@@ -19,5 +19,4 @@ dependencies {
     implementation project(path: ':feature:settings:data')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:weather:domain')
-    implementation project(path: ':feature:weather:location')
 }

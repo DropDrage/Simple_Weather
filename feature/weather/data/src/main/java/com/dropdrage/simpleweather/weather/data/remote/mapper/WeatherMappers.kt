@@ -11,9 +11,9 @@ import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.Weath
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsConverter.convertTemperatureIfApiDontSupport
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsConverter.convertVisibilityIfApiDontSupport
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsConverter.convertWindSpeedIfApiDontSupport
-import com.dropdrage.simpleweather.weather.domain.DayWeather
-import com.dropdrage.simpleweather.weather.domain.HourWeather
-import com.dropdrage.simpleweather.weather.domain.Weather
+import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
+import com.dropdrage.simpleweather.weather.domain.weather.Weather
 
 private typealias DomainWeather = Weather
 private typealias DomainCurrentWeather = CurrentWeather

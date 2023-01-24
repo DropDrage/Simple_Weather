@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.location
+package com.dropdrage.simpleweather.weather.domain.location
 
 import kotlinx.coroutines.flow.Flow
 

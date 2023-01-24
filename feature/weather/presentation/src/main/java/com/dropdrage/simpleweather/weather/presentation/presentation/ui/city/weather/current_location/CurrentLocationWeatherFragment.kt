@@ -10,7 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
-import com.dropdrage.simpleweather.data.location.LocationResult
+import com.dropdrage.simpleweather.weather.domain.location.LocationResult
 import com.dropdrage.simpleweather.weather.presentation.ui.city.weather.BaseCityWeatherFragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest

@@ -6,9 +6,9 @@ import com.dropdrage.simpleweather.weather.data.local.cache.model.TemperatureRan
 import com.dropdrage.simpleweather.weather.data.local.cache.relation.DayToHourWeather
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsConverter
 import com.dropdrage.simpleweather.weather.data.local.cache.util.converter.WeatherUnitsDeconverter
-import com.dropdrage.simpleweather.weather.domain.DayWeather
-import com.dropdrage.simpleweather.weather.domain.HourWeather
-import com.dropdrage.simpleweather.weather.domain.Weather
+import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
+import com.dropdrage.simpleweather.weather.domain.weather.Weather
 
 private typealias DomainWeather = Weather
 private typealias DomainDayWeather = DayWeather

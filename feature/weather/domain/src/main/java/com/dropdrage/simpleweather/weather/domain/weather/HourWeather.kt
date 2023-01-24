@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.weather.domain
+package com.dropdrage.simpleweather.weather.domain.weather
 
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import java.time.LocalDateTime

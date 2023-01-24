@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.data.util.mapper
 
 import android.location.Location
-import com.dropdrage.simpleweather.data.location.LocationResult
+import com.dropdrage.simpleweather.weather.domain.location.LocationResult
 
 private typealias DomainLocation = com.dropdrage.simpleweather.core.domain.Location
 

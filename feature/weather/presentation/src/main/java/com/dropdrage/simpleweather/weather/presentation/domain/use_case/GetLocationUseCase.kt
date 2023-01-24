@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.weather.presentation.domain.use_case
 
-import com.dropdrage.simpleweather.data.location.LocationResult
-import com.dropdrage.simpleweather.data.location.LocationTracker
+import com.dropdrage.simpleweather.weather.domain.location.LocationResult
+import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject

@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation "com.google.android.gms:play-services-location:$location_version"
+
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -62,6 +64,7 @@ dependencies {
     implementation project(path: ':feature:city:search:data')
     implementation project(path: ':feature:city:search:domain')
     implementation project(path: ':feature:weather:data')
+    implementation project(path: ':feature:weather:location')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
 }

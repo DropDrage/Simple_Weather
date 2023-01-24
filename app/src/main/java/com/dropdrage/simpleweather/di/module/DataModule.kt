@@ -5,9 +5,11 @@ import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.city_search.data.repository.CitySearchRepositoryImpl
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
+import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
 import com.dropdrage.simpleweather.weather.data.repository.CurrentWeatherRepositoryImpl
 import com.dropdrage.simpleweather.weather.data.repository.WeatherRepositoryImpl
-import com.dropdrage.simpleweather.weather.domain.WeatherRepository
+import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
+import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,5 +35,9 @@ interface DataModule {
     @Binds
     @Singleton
     fun bindCitySearchRepository(weatherRepository: CitySearchRepositoryImpl): CitySearchRepository
+
+    @Binds
+    @Singleton
+    fun bindLocationTracker(weatherRepository: DefaultLocationTracker): LocationTracker
 
 }
