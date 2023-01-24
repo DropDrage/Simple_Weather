@@ -6,7 +6,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.fragment:fragment-ktx:1.5.5'
+    implementation androidLibs.fragment.ktx
 
     implementation project(path: ':core:domain')
     implementation project(path: ':feature:settings:data')

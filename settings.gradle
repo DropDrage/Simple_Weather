@@ -5,14 +5,86 @@ pluginManagement {
         mavenCentral()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
+
+    def coroutinesVersion = '1.6.4'
+    versionCatalogs {
+        kotlinLibs {
+            library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-core').version(coroutinesVersion)
+        }
+
+        androidLibs {
+            library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
+            library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
+            library('android-material', 'com.google.android.material', 'material').version('1.7.0')
+            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.5')
+            bundle('ui-core', ['androidx-core', 'androidx-appcompat', 'android-material'])
+
+            def lifecycleVersion = version('lifecycle', '2.5.1')
+            library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').versionRef(lifecycleVersion)
+            library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').versionRef(lifecycleVersion)
+
+            def navigationVersion = version('navigation', '2.5.3')
+            library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)
+            library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').versionRef(navigationVersion)
+            library('gradle-plugin-navigation-safeargs', 'androidx.navigation', 'navigation-safe-args-gradle-plugin').versionRef(navigationVersion)
+            bundle('navigation', ['navigation-fragment', 'navigation-ui'])
+
+            def hiltVersion = version('hilt', '2.44.2')
+            library('hilt', 'com.google.dagger', 'hilt-android').versionRef(hiltVersion)
+            library('hilt-kapt', 'com.google.dagger', 'hilt-compiler').versionRef(hiltVersion)
+            library('hilt-testing', 'com.google.dagger', 'hilt-android-testing').versionRef(hiltVersion)
+            def hiltWorkVersion = version('hilt-work', '1.0.0')
+            library('hilt-work', 'androidx.hilt', 'hilt-work').versionRef(hiltWorkVersion)
+            library('hilt-work-kapt', 'androidx.hilt', 'hilt-compiler').versionRef(hiltWorkVersion)
+            library('gradle-plugin-hilt', 'com.google.dagger', 'hilt-android-gradle-plugin').versionRef(hiltVersion)
+
+            library('services-location', 'com.google.android.gms', 'play-services-location').version('21.0.1')
+            library('services-play-coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-play-services').version(coroutinesVersion)
+            bundle('location', ['services-location', 'services-play-coroutines'])
+
+            def roomVersion = version('room', '2.4.3')
+            library('room-ktx', 'androidx.room', 'room-ktx').versionRef(roomVersion)
+            library('room-runtime', 'androidx.room', 'room-runtime').versionRef(roomVersion)
+            library('room-common', 'androidx.room', 'room-common').versionRef(roomVersion)
+            library('room-kapt', 'androidx.room', 'room-compiler').versionRef(roomVersion)
+            bundle('room', ['room-ktx', 'room-runtime'])
+
+            def kotprefVersion = version('kotpref', '2.13.2')
+            library('kotpref', 'com.chibatching.kotpref', 'kotpref').versionRef(kotprefVersion)
+            library('kotpref-enum', 'com.chibatching.kotpref', 'enum-support').versionRef(kotprefVersion)
+        }
+
+        networkLibs {
+            def retrofitVersion = version('retrofit', '2.9.0')
+            library('retrofit', 'com.squareup.retrofit2', 'retrofit').versionRef(retrofitVersion)
+
+            library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').versionRef(retrofitVersion)
+            def moshiVersion = version('moshi', '1.14.0')
+            library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').versionRef(moshiVersion)
+            library('moshi-kapt', 'com.squareup.moshi', 'moshi-kotlin-codegen').versionRef(moshiVersion)
+            bundle('moshi', ['moshi-core', 'moshi-kotlin'])
+        }
+
+        testLibs {
+            library('junit', 'junit', 'junit').version('4.13.2')
+            library('junit-ext', 'androidx.test.ext', 'junit').version('1.1.5')
+            library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
+
+            bundle('unit', ['junit'])
+            bundle('instrumental', ['junit-ext', 'espresso'])
+        }
+    }
 }
+
 rootProject.name = "Simple Weather"
+
 include ':app'
 include ':adapters'
 include ':core'

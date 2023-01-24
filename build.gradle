@@ -6,21 +6,11 @@ buildscript {
     }
 
     ext.kotlin_version = "1.8.0"
-    ext.hilt_version = "2.44.2"
-    ext.navigation_version = "2.5.3"
-    ext.coroutine_version = '1.6.4'
-    ext.room_version = '2.4.3'
-    ext.location_version = '21.0.1'
-
-    ext.retrofit_version = '2.9.0'
-    ext.moshi_version = '1.14.0'
-
-    ext.kotpref_version = "2.13.2"
 
     dependencies {
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath androidLibs.gradle.plugin.hilt//"com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
+        classpath androidLibs.gradle.plugin.navigation.safeargs
     }
 }
 

@@ -5,8 +5,8 @@ android {
 }
 
 dependencies {
-    implementation "androidx.room:room-common:$room_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation androidLibs.room.common
+    implementation kotlinLibs.coroutines
 
     implementation project(path: ':common:domain')
 }

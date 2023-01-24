@@ -44,7 +44,7 @@ internal object NetworkModule {
     }
 
     @[Provides Singleton]
-    fun provideMoshi() = Moshi.Builder()
+    fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
         .add(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())

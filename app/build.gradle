@@ -31,32 +31,35 @@ android {
 }
 
 dependencies {
-    implementation "com.google.android.gms:play-services-location:$location_version"
+    implementation androidLibs.services.location
 
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     //Hilt
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation androidLibs.hilt.work
+    kapt androidLibs.hilt.work.kapt
 
     //Moshi
+    implementation networkLibs.bundles.moshi
+    kapt networkLibs.moshi.kapt
+//    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
     //Utils
-    implementation "com.chibatching.kotpref:kotpref:$kotpref_version"
+    implementation androidLibs.kotpref
 
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     //Tests
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
+    androidTestImplementation androidLibs.hilt.testing
+    kaptAndroidTest androidLibs.hilt.kapt
+    testImplementation androidLibs.hilt.testing
+    kaptTest androidLibs.hilt.kapt
 
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:presentation')
+    implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
+    implementation project(path: ':common:presentation') //ChangeableAppBar
     implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:city:list:data')
     implementation project(path: ':feature:city:list:domain')
