@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Weather Types-->
+    <string name="weather_label_clear_sky">Clear sky</string>
+    <string name="weather_label_mainly_clear">Mainly clear</string>
+    <string name="weather_label_partly_cloudy">Partly cloudy</string>
+    <string name="weather_label_overcast">Overcast</string>
+    <string name="weather_label_foggy">Foggy</string>
+    <string name="weather_label_depositing_rime_fog">Depositing rime fog</string>
+    <string name="weather_label_light_drizzle">Light drizzle</string>
+    <string name="weather_label_moderate_drizzle">Moderate drizzle</string>
+    <string name="weather_label_dense_drizzle">Dense drizzle</string>
+    <string name="weather_label_slight_freezing_drizzle">Slight freezing drizzle</string>
+    <string name="weather_label_dense_freezing_drizzle">Dense freezing drizzle</string>
+    <string name="weather_label_slight_rain">Slight rain</string>
+    <string name="weather_label_rainy">Rainy</string>
+    <string name="weather_label_heavy_rain">Heavy rain</string>
+    <string name="weather_label_heavy_freezing_rain">Heavy freezing rain</string>
+    <string name="weather_label_slight_snow_fall">Slight snow fall</string>
+    <string name="weather_label_moderate_snow_fall">Moderate snow fall</string>
+    <string name="weather_label_heavy_snow_fall">Heavy snow fall</string>
+    <string name="weather_label_snow_grains">Snow grains</string>
+    <string name="weather_label_slight_rain_showers">Slight rain showers</string>
+    <string name="weather_label_moderate_rain_showers">Moderate rain showers</string>
+    <string name="weather_label_violent_rain_showers">Violent rain showers</string>
+    <string name="weather_label_light_snow_showers">Light snow showers</string>
+    <string name="weather_label_heavy_snow_showers">Heavy snow showers</string>
+    <string name="weather_label_moderate_thunderstorm">Moderate thunderstorm</string>
+    <string name="weather_label_thunderstorm_with_slight_hail">Thunderstorm with slight hail</string>
+    <string name="weather_label_thunderstorm_with_heavy_hail">Thunderstorm with heavy hail</string>
+
+
+    <string name="weather_unit_humidity">%1$s%%</string>
+</resources>

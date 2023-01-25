@@ -18,9 +18,4 @@
 
     <style name="Theme.SimpleWeather" parent="Base.Theme.SimpleWeather" />
 
-    <style name="Theme.AppBar.Primary" parent="ThemeOverlay.Material3.Light">
-        <item name="iconTint">?colorPrimary</item>
-        <item name="colorControlNormal">?colorPrimary</item>
-    </style>
-
 </resources>

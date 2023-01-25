@@ -1,0 +1,10 @@
+apply from: import_androidNoUiLibrary
+apply from: build_feature_buildConfig
+
+android {
+    namespace 'com.dropdrage.adapters'
+
+    buildFeatures {
+        viewBinding true
+    }
+}

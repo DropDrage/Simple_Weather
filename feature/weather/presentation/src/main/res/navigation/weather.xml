@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather"
+    app:startDestination="@id/citiesWeatherFragment">
+
+    <fragment
+        android:id="@+id/citiesWeatherFragment"
+        android:name="com.dropdrage.simpleweather.weather.presentation.ui.cities_weather.CitiesWeatherFragment"
+        android:label=""
+        tools:layout="@layout/fragment_cities_weather">
+
+        <action
+            android:id="@+id/navigate_CityList"
+            app:destination="@+id/city_list" />
+        <action
+            android:id="@+id/navigate_SettingsFragment"
+            app:destination="@+id/settingsFragment" />
+    </fragment>
+
+</navigation>

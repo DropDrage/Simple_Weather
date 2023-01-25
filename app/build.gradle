@@ -1,126 +1,77 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
-
-    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.devtools.ksp'
 }
+
+apply from: "$rootDir/android-build.gradle"
+apply from: component_retrofit
+apply from: build_feature_buildConfig
+apply from: build_feature_resValues
 
 android {
     namespace 'com.dropdrage.simpleweather'
-    compileSdk 33
-    buildToolsVersion '33.0.1'
 
     defaultConfig {
         applicationId "com.dropdrage.simpleweather"
-        minSdk 26
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        def WEATHER_URL = "WEATHER_URL"
-        def SEARCH_URL = "SEARCH_URL"
-
         debug {
             minifyEnabled false
-
-            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
-            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
         }
         release {
             minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
-            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
-
-            kapt {
-                arguments {
-                    arg("dagger.fullBindingGraphValidation", "ERROR")
-                }
+            ksp {
+                arg("dagger.fullBindingGraphValidation", "ERROR")
             }
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = '11'
-    }
-    buildFeatures {
-        viewBinding true
-    }
-    lint {
-        baseline file('lint-baseline.xml')
-        warningsAsErrors false
     }
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation androidLibs.services.location
 
-    //Ktx
-    def lifecycleKtx_version = '2.5.1'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtx_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    def coroutine_version = '1.6.4'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine_version"
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
-    //Room
-    def room_version = '2.4.3'
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
     //Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation androidLibs.hilt.work
+    ksp androidLibs.hilt.work.compiler
 
-    //Retrofit
-    def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    def moshi_version = "1.14.0"
-    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    //Moshi
+    implementation networkLibs.bundles.moshi
+    ksp networkLibs.moshi.compiler
+//    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
     //Utils
-    def kotpref_version = "2.13.2"
-    implementation "com.chibatching.kotpref:kotpref:$kotpref_version"
-    implementation "com.chibatching.kotpref:enum-support:$kotpref_version"
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
+    implementation androidLibs.kotpref
 
-    implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     //Tests
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
-}
+    androidTestImplementation androidLibs.hilt.testing
+    kspAndroidTest androidLibs.hilt.compiler
+    testImplementation androidLibs.hilt.testing
+    kspTest androidLibs.hilt.compiler
 
-kapt {
-    correctErrorTypes true
+    implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
+    implementation project(path: ':common:presentation') // ChangeableAppBar
+    implementation project(path: ':core:style')
+    implementation project(path: ':data:city')
+    implementation project(path: ':data:location')
+    implementation project(path: ':data:weather')
+    implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:city:list:presentation')
+//    implementation project(path: ':data:city')
+    implementation project(path: ':feature:city:search:domain')
+    implementation project(path: ':feature:settings:presentation')
+    implementation project(path: ':feature:weather:domain')
+    implementation project(path: ':feature:weather:presentation')
 }

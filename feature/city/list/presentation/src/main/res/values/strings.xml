@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="delete">Delete</string>
+
+    <string name="city_list_label">Cities</string>
+    <string name="city_list_add_city">Add city</string>
+</resources>

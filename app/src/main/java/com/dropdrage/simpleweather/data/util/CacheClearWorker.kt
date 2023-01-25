@@ -6,14 +6,14 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.dropdrage.simpleweather.data.repository.CacheRepository
+import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
 private const val TAG = "Worker_CacheClear"
 
 @HiltWorker
-class CacheClearWorker @AssistedInject constructor(
+internal class CacheClearWorker @AssistedInject constructor(
     @Assisted applicationContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val cacheRepository: CacheRepository,

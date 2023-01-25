@@ -1,0 +1,26 @@
+apply from: import_androidNetworkLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.city_search.data'
+
+    buildTypes {
+        def SEARCH_URL = "SEARCH_URL"
+
+        debug {
+            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
+        }
+        release {
+            buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
+        }
+    }
+}
+
+dependencies {
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:utils')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:city:search:domain')
+    implementation project(path: ':feature:city:domain')
+}

@@ -18,7 +18,7 @@ private val CACHE_CLEAR_PERIOD = Duration.ofDays(1)
 private val CACHE_CLEAR_INITIAL_DELAY = CACHE_CLEAR_PERIOD
 
 @HiltAndroidApp
-class WeatherApplication : Application(), Configuration.Provider {
+internal class WeatherApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory

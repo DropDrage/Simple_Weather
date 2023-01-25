@@ -1,0 +1,5 @@
+apply from: import_library
+
+dependencies {
+    implementation project(path: ':core:domain')
+}

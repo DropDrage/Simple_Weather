@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Theme.SimpleWeather.WeatherMetricView" parent="">
+        <item name="wm_textColor">?colorOnPrimaryContainer</item>
+        <item name="wm_iconColor">?colorOnPrimaryContainer</item>
+        <item name="wm_textSize">@dimen/text_size_16</item>
+        <item name="wm_iconSize">@dimen/size_weather_metric_icon</item>
+        <item name="wm_textDividerMargin">@dimen/small_150</item>
+        <item name="wm_textIconMargin">@dimen/medium_125</item>
+    </style>
+
+    <style name="Widget.Theme.SimpleWeather.WeatherMetricView.Spaced" parent="Widget.Theme.SimpleWeather.WeatherMetricView">
+        <item name="android:paddingVertical">@dimen/medium_100</item>
+        <item name="android:paddingStart">@dimen/small_100</item>
+        <item name="android:paddingEnd">@dimen/small_150</item>
+    </style>
+</resources>

@@ -1,29 +1,43 @@
 package com.dropdrage.simpleweather.di.module
 
-import android.content.Context
+import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
+import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
+import com.dropdrage.simpleweather.data.city.repository.CityRepositoryImpl
+import com.dropdrage.simpleweather.data.city.repository.CitySearchRepositoryImpl
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
-import com.dropdrage.simpleweather.domain.location.LocationTracker
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.dropdrage.simpleweather.data.weather.repository.CurrentWeatherRepositoryImpl
+import com.dropdrage.simpleweather.data.weather.repository.WeatherRepositoryImpl
+import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
+import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataProviderModule {
-    @[Provides Singleton]
-    fun provideLocationClient(@ApplicationContext context: Context): FusedLocationProviderClient =
-        LocationServices.getFusedLocationProviderClient(context)
-}
+internal interface DataModule {
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface DataBindModule {
-    @[Binds Singleton]
-    fun bindLocationTracker(defaultTracker: DefaultLocationTracker): LocationTracker
+    @Binds
+    @Singleton
+    fun bindCityRepository(cityRepository: CityRepositoryImpl): CityRepository
+
+    @Binds
+    @Singleton
+    fun bindWeatherRepository(weatherRepository: WeatherRepositoryImpl): WeatherRepository
+
+    @Binds
+    @Singleton
+    fun bindCurrentWeatherRepository(weatherRepository: CurrentWeatherRepositoryImpl): CurrentWeatherRepository
+
+    @Binds
+    @Singleton
+    fun bindCitySearchRepository(weatherRepository: CitySearchRepositoryImpl): CitySearchRepository
+
+    @Binds
+    @Singleton
+    fun bindLocationTracker(weatherRepository: DefaultLocationTracker): LocationTracker
+
 }

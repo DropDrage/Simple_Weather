@@ -1,0 +1,12 @@
+apply from: import_androidNoUiLibrary
+apply from: component_android_hilt
+apply from: component_android_location
+
+android {
+    namespace 'com.dropdrage.simpleweather.data.location'
+}
+
+dependencies {
+    implementation project(path: ':core:domain')
+    implementation project(path: ':feature:weather:domain')
+}

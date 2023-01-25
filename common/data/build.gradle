@@ -1,0 +1,12 @@
+apply from: import_androidEmptyLibrary
+
+android {
+    namespace 'com.dropdrage.common.data'
+}
+
+dependencies {
+    implementation androidLibs.room.common
+    implementation kotlinLibs.coroutines
+
+    implementation project(path: ':common:domain')
+}
