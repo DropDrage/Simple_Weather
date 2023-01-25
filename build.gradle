@@ -54,3 +54,13 @@ ext {
     build_feature_buildConfig = "$rootDir/build-feature-build_config.gradle"
     build_feature_resValues = "$rootDir/build-feature-res_values.gradle"
 }
+
+task cleanBaselines() {
+    def baselineFile = "/lint-baseline.xml"
+    rootProject.allprojects.forEach(project -> {
+        if (project.subprojects.size() == 0) {
+            println(project.projectDir.path)
+            delete project.projectDir.path + baselineFile
+        }
+    })
+}
