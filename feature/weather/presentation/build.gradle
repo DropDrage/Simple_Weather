@@ -13,13 +13,14 @@ dependencies {
     implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
 
     implementation project(path: ':adapters')
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:utils')
-    implementation project(path: ':core:presentation')
     implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:presentation')
+    implementation project(path: ':core:style')
+    implementation project(path: ':core:utils')
+    implementation project(path: ':data:settings')
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':data:settings')
     implementation project(path: ':feature:weather:domain')
 }

@@ -1,0 +1,2 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@style/TextAppearance.SimpleWeather*,@style/Layout.SimpleWeather.Root,@style/Theme.AppBar.Primary" />

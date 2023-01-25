@@ -1,94 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all"
-    version="7.4.0">
+<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all" version="7.4.0">
 
-    <issue id="InvalidNavigation" message="Invalid start destination @id/weather"
+    <issue
+        id="InvalidNavigation"
+        message="Invalid start destination @id/weather"
         errorLine1="    app:startDestination=&quot;@id/weather&quot;>"
         errorLine2="                          ~~~~~~~~~~~">
-        <location file="src/main/res/navigation/nav_graph.xml" line="5" column="27" />
+        <location
+            file="src/main/res/navigation/nav_graph.xml"
+            line="5"
+            column="27"/>
     </issue>
 
-    <issue id="UnusedResources" message="The resource `R.color.gray_400` appears to be unused"
-        errorLine1="    &lt;color name=&quot;gray_400&quot;>#FFBDBDBD&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/colors.xml" line="4" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.color.gray_600` appears to be unused"
-        errorLine1="    &lt;color name=&quot;gray_600&quot;>#FF757575&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/colors.xml" line="6" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.integer.font_weight_600` appears to be unused"
-        errorLine1="    &lt;integer name=&quot;font_weight_600&quot;>600&lt;/integer>"
-        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/integers.xml" line="5" column="14" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.style.Layout_SimpleWeather_Root` appears to be unused"
-        errorLine1="    &lt;style name=&quot;Layout.SimpleWeather.Root&quot; parent=&quot;&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="3" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.style.TextAppearance_HeadlineLarge` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.HeadlineLarge&quot; parent=&quot;TextAppearance.Material3.HeadlineLarge&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values-v28/styles.xml" line="14" column="12" />
-    </issue>
-
-    <issue id="UnusedResources"
-        message="The resource `R.style.TextAppearance_SimpleWeather_BodyLarge_Primary` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyLarge.Primary&quot; parent=&quot;TextAppearance.Material3.BodyLarge&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="31" column="12" />
-    </issue>
-
-    <issue id="UnusedResources"
-        message="The resource `R.style.TextAppearance_SimpleWeather_Dark_BodyMedium` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.Dark.BodyMedium&quot; parent=&quot;TextAppearance.Material3.BodyMedium&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="37" column="12" />
-    </issue>
-
-    <issue id="UnusedResources"
-        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium_Bold` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium.Bold&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="41" column="12" />
-    </issue>
-
-    <issue id="UnusedResources"
-        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium_Variant` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium.Variant&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="45" column="12" />
-    </issue>
-
-    <issue id="UnusedResources"
-        message="The resource `R.style.TextAppearance_SimpleWeather_LabelMedium_Variant` appears to be unused"
-        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.LabelMedium.Variant&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/styles.xml" line="49" column="12" />
-    </issue>
-
-    <issue id="UnusedResources" message="The resource `R.style.Theme_AppBar_Primary` appears to be unused"
-        errorLine1="    &lt;style name=&quot;Theme.AppBar.Primary&quot; parent=&quot;ThemeOverlay.Material3.Light&quot;>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/values/themes.xml" line="21" column="12" />
-    </issue>
-
-    <issue id="MonochromeLauncherIcon" message="The application adaptive icon is missing a monochrome tag"
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive icon is missing a monochrome tag"
         errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
         errorLine2="^">
-        <location file="src/main/res/mipmap/ic_launcher.xml" line="2" column="1" />
+        <location
+            file="src/main/res/mipmap/ic_launcher.xml"
+            line="2"
+            column="1"/>
     </issue>
 
-    <issue id="MonochromeLauncherIcon" message="The application adaptive roundIcon is missing a monochrome tag"
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive roundIcon is missing a monochrome tag"
         errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
         errorLine2="^">
-        <location file="src/main/res/mipmap/ic_launcher_round.xml" line="2" column="1" />
+        <location
+            file="src/main/res/mipmap/ic_launcher_round.xml"
+            line="2"
+            column="1"/>
     </issue>
 
 </issues>

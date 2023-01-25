@@ -1,39 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all"
-    version="7.4.0">
+<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all" version="7.4.0">
 
-    <issue id="VectorPath"
+    <issue
+        id="VectorPath"
         message="Very long vector path (909 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector."
         errorLine1="            android:pathData=&quot;M42.686,28.177H18.439C18.438,28.177 18.437,28.178 18.435,28.178C18.405,28.178 18.375,28.177 18.347,28.177C15.416,28.177 12.647,29.585 10.924,31.957C8.47,35.335 9.223,40.08 12.601,42.535C15.407,44.573 19.355,43.951 21.397,41.141C23.108,38.786 22.585,35.478 20.229,33.767C18.238,32.321 15.442,32.764 13.996,34.756C12.761,36.456 13.141,38.843 14.84,40.077C15.465,40.531 16.225,40.757 16.998,40.697C17.659,40.651 18.157,40.078 18.111,39.417C18.066,38.756 17.511,38.26 16.831,38.303C16.694,38.317 16.467,38.292 16.249,38.135C15.621,37.678 15.481,36.795 15.938,36.165C16.605,35.245 17.897,35.039 18.82,35.709C20.103,36.641 20.389,38.445 19.456,39.73C18.193,41.468 15.748,41.857 14.011,40.593C11.704,38.917 11.19,35.675 12.867,33.367C14.153,31.596 16.218,30.583 18.425,30.578H18.439C18.441,30.578 18.442,30.577 18.444,30.577H42.686C43.349,30.577 43.886,30.039 43.886,29.377C43.886,28.715 43.349,28.177 42.686,28.177Z&quot;"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/drawable/ic_wind_speed.xml" line="21" column="31" />
+        <location
+            file="src/main/res/drawable/ic_wind_speed.xml"
+            line="21"
+            column="31"/>
     </issue>
 
-    <issue id="VectorPath"
+    <issue
+        id="VectorPath"
         message="Very long vector path (1071 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector."
         errorLine1="            android:pathData=&quot;M29.476,19.402C30.138,19.402 30.676,18.864 30.676,18.202C30.676,17.539 30.138,17.002 29.476,17.002H8.963C8.961,17.002 8.96,17.001 8.958,17.001C8.927,17.003 8.896,17.003 8.865,17.002C6.7,17.002 4.656,15.962 3.385,14.212C1.709,11.904 2.222,8.662 4.53,6.985C5.372,6.374 6.404,6.127 7.431,6.29C8.46,6.453 9.364,7.007 9.975,7.849C10.908,9.133 10.621,10.937 9.337,11.87C8.417,12.539 7.125,12.333 6.456,11.413C6.001,10.785 6.139,9.902 6.766,9.444C6.767,9.444 6.768,9.444 6.769,9.444C6.868,9.372 6.977,9.322 7.096,9.295C7.741,9.148 8.147,8.505 8,7.859C7.873,7.302 7.378,6.924 6.83,6.924C6.742,6.924 6.654,6.934 6.564,6.954C6.128,7.054 5.722,7.237 5.359,7.501C5.357,7.502 5.356,7.504 5.354,7.506C3.659,8.742 3.281,11.125 4.514,12.823C5.962,14.815 8.758,15.257 10.748,13.813C13.103,12.101 13.627,8.793 11.917,6.439C10.929,5.077 9.468,4.183 7.808,3.92C7.474,3.866 7.139,3.84 6.808,3.84C5.489,3.84 4.208,4.255 3.12,5.044C-0.259,7.5 -1.011,12.244 1.443,15.621C3.166,17.993 5.935,19.402 8.865,19.402C8.894,19.402 8.924,19.401 8.954,19.401C8.955,19.401 8.957,19.402 8.958,19.402H29.476Z&quot;"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/res/drawable/ic_wind_speed.xml" line="24" column="31" />
+        <location
+            file="src/main/res/drawable/ic_wind_speed.xml"
+            line="24"
+            column="31"/>
     </issue>
 
-    <issue id="UnusedResources" message="The resource `R.navigation.weather` appears to be unused"
-        errorLine1="&lt;navigation xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;" errorLine2="^">
-        <location file="src/main/res/navigation/weather.xml" line="2" column="1" />
+    <issue
+        id="UnusedResources"
+        message="The resource `R.navigation.weather` appears to be unused"
+        errorLine1="&lt;navigation xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/navigation/weather.xml"
+            line="2"
+            column="1"/>
     </issue>
 
-    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
-        errorLine1="                &lt;ImageView" errorLine2="                 ~~~~~~~~~">
-        <location file="src/main/res/layout/fragment_city_weather.xml" line="34" column="18" />
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_city_weather.xml"
+            line="34"
+            column="18"/>
     </issue>
 
-    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
-        errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
-        <location file="src/main/res/layout/item_day_weather.xml" line="26" column="6" />
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_day_weather.xml"
+            line="26"
+            column="6"/>
     </issue>
 
-    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
-        errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
-        <location file="src/main/res/layout/item_hour_weather.xml" line="18" column="6" />
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_hour_weather.xml"
+            line="18"
+            column="6"/>
     </issue>
 
 </issues>

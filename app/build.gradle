@@ -22,6 +22,8 @@ android {
         }
         release {
             minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ksp {
@@ -61,6 +63,7 @@ dependencies {
 
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
     implementation project(path: ':common:presentation') // ChangeableAppBar
+    implementation project(path: ':core:style')
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
     implementation project(path: ':data:weather')

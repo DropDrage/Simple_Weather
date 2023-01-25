@@ -1,0 +1,9 @@
+apply from: import_androidEmptyLibrary
+
+android {
+    namespace 'com.dropdrage.simpleweather.core.style'
+}
+
+dependencies {
+    implementation project(path: ':common:presentation')
+}

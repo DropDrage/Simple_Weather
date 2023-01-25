@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all" version="7.4.0">
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_300` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_300&quot;>#FFE0E0E0&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_400` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_400&quot;>#FFBDBDBD&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="4"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_500&quot;>#FF9E9E9E&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="5"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_600` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_600&quot;>#FF757575&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="6"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_700` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_700&quot;>#FF666666&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.gray_900` appears to be unused"
+        errorLine1="    &lt;color name=&quot;gray_900&quot;>#FF2B2D2F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="8"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.font_weight_400` appears to be unused"
+        errorLine1="    &lt;integer name=&quot;font_weight_400&quot;>400&lt;/integer>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/integers.xml"
+            line="3"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.font_weight_500` appears to be unused"
+        errorLine1="    &lt;integer name=&quot;font_weight_500&quot;>500&lt;/integer>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/integers.xml"
+            line="4"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.font_weight_600` appears to be unused"
+        errorLine1="    &lt;integer name=&quot;font_weight_600&quot;>600&lt;/integer>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/integers.xml"
+            line="5"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Layout_SimpleWeather_Root` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Layout.SimpleWeather.Root&quot; parent=&quot;&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_HeadlineLarge` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.HeadlineLarge&quot; parent=&quot;TextAppearance.Material3.HeadlineLarge&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="8"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_TitleLarge` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.TitleLarge&quot; parent=&quot;TextAppearance.Material3.TitleLarge&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="13"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_HeadlineLarge` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.HeadlineLarge&quot; parent=&quot;TextAppearance.Material3.HeadlineLarge&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-v28/styles.xml"
+            line="14"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodySmall` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodySmall&quot; parent=&quot;TextAppearance.Material3.BodySmall&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="18"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium&quot; parent=&quot;TextAppearance.Material3.BodyMedium&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_LabelMedium` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.LabelMedium&quot; parent=&quot;TextAppearance.Material3.LabelMedium&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="26"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodyLarge_Primary` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyLarge.Primary&quot; parent=&quot;TextAppearance.Material3.BodyLarge&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="31"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_Dark_BodyMedium` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.Dark.BodyMedium&quot; parent=&quot;TextAppearance.Material3.BodyMedium&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="37"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium_Bold` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium.Bold&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="41"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_BodyMedium_Variant` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.BodyMedium.Variant&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="45"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_SimpleWeather_LabelMedium_Variant` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.SimpleWeather.LabelMedium.Variant&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="49"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_AppBar_Primary` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.AppBar.Primary&quot; parent=&quot;ThemeOverlay.Material3.Light&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="54"
+            column="12"/>
+    </issue>
+
+</issues>

@@ -7,5 +7,6 @@ android {
 dependencies {
     implementation project(path: ':adapters')
     implementation project(path: ':common:presentation')
+    implementation project(path: ':core:style')
     implementation project(path: ':data:settings')
 }

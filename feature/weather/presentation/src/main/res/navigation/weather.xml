@@ -13,10 +13,10 @@
 
         <action
             android:id="@+id/navigate_CityList"
-            app:destination="@id/city_list" />
+            app:destination="@+id/city_list" />
         <action
             android:id="@+id/navigate_SettingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@+id/settingsFragment" />
     </fragment>
 
 </navigation>

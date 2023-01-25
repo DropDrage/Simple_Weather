@@ -99,9 +99,10 @@ rootProject.name = "Simple Weather"
 
 include ':app'
 include ':adapters'
-include ':core:utils'
 include ':core:domain'
 include ':core:presentation'
+include ':core:style'
+include ':core:utils'
 include ':common:data'
 include ':common:domain'
 include ':common:presentation'

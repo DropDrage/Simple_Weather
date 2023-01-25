@@ -24,4 +24,5 @@
     <style name="TextAppearance.SimpleWeather.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textFontWeight">@integer/font_weight_400</item>
     </style>
+
 </resources>
