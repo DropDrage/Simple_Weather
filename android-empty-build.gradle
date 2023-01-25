@@ -18,7 +18,7 @@ android {
         jvmTarget = 11
     }
     lint {
-        baseline file('lint-baseline.xml')
+        baseline rootProject.file('lint-baseline.xml')
         warningsAsErrors false
     }
 }
