@@ -16,7 +16,8 @@ dependencies {
     implementation project(path: ':core:presentation')
     implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')
-    implementation project(path: ':feature:settings:data')
+    implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:settings:data')
     implementation project(path: ':feature:weather:domain')
 }

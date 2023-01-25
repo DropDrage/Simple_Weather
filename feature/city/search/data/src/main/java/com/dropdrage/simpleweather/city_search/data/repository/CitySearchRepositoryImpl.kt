@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.city_search.data.repository
 
 import com.dropdrage.common.data.repository.SimpleRepository
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city_search.data.remote.SearchApi
 import com.dropdrage.simpleweather.city_search.data.remote.toDomainCities
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository

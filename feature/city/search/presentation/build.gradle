@@ -9,6 +9,7 @@ dependencies {
     implementation project(path: ':core:domain')
     implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')
+    implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:domain')
 }

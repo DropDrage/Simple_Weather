@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.city_search.data.remote
 
-import com.dropdrage.simpleweather.city_list.domain.city.City
-import com.dropdrage.simpleweather.city_list.domain.city.Country
+import com.dropdrage.simpleweather.city.domain.City
+import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
 
 internal fun CitiesDto.toDomainCities(): List<City> = result.map(CityDto::toDomainCity)

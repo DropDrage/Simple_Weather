@@ -22,4 +22,5 @@ dependencies {
     implementation project(path: ':common:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:domain')
+    implementation project(path: ':feature:city:domain')
 }

@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.city_list.presentation.presentation.model
 
 import com.dropdrage.adapters.differ.SameEquatable
-import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 
 internal data class ViewCityCurrentWeather(

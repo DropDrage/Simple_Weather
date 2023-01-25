@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.weather.presentation.ui.cities_weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.weather.presentation.domain.use_case.UpdateAllCitiesWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

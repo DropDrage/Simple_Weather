@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.city_search.presentation.model
 
 import com.dropdrage.adapters.differ.SameEquatable
-import com.dropdrage.simpleweather.city_list.domain.city.City
+import com.dropdrage.simpleweather.city.domain.City
 
 internal data class ViewCitySearchResult(val city: City) :
     SameEquatable<ViewCitySearchResult> {

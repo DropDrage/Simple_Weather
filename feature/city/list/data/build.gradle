@@ -11,4 +11,5 @@ dependencies {
     implementation project(path: ':common:data')
     implementation project(path: ':common:domain')
     implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:city:domain')
 }

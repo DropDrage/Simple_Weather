@@ -12,4 +12,5 @@ dependencies {
     implementation project(path: ':core:presentation')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:presentation')
+    implementation project(path: ':feature:city:domain')
 }

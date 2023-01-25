@@ -61,7 +61,7 @@ dependencyResolutionManagement {
             library('services-play-coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-play-services').version(coroutinesVersion)
             bundle('location', ['services-location', 'services-play-coroutines'])
 
-            def roomVersion = version('room', '2.4.3')
+            def roomVersion = version('room', '2.5.0')
             library('room-ktx', 'androidx.room', 'room-ktx').versionRef(roomVersion)
             library('room-runtime', 'androidx.room', 'room-runtime').versionRef(roomVersion)
             library('room-common', 'androidx.room', 'room-common').versionRef(roomVersion)
@@ -125,3 +125,4 @@ include ':feature:weather:data'
 include ':feature:weather:location'
 include ':feature:weather:domain'
 include ':feature:weather:presentation'
+include ':feature:city:domain'
