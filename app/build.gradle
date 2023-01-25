@@ -1,10 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
 }
 
 apply from: "$rootDir/android-build.gradle"
 apply from: component_retrofit
+apply from: build_feature_buildConfig
+apply from: build_feature_resValues
 
 android {
     namespace 'com.dropdrage.simpleweather'
@@ -57,15 +60,15 @@ dependencies {
     kspTest androidLibs.hilt.compiler
 
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
-    implementation project(path: ':common:presentation') //ChangeableAppBar
-    implementation project(path: ':feature:settings:presentation')
-    implementation project(path: ':feature:city:list:data')
+    implementation project(path: ':common:presentation') // ChangeableAppBar
+    implementation project(path: ':data:city')
+    implementation project(path: ':data:location')
+    implementation project(path: ':data:weather')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:list:presentation')
-    implementation project(path: ':feature:city:search:data')
+//    implementation project(path: ':data:city')
     implementation project(path: ':feature:city:search:domain')
-    implementation project(path: ':feature:weather:data')
-    implementation project(path: ':feature:weather:location')
+    implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
 }

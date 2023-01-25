@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.settings.presentation.utils
 
 import android.content.Context
-import com.dropdrage.simpleweather.data.settings.DateFormat
-import com.dropdrage.simpleweather.data.settings.GeneralFormat
-import com.dropdrage.simpleweather.data.settings.TimeFormat
+import com.dropdrage.simpleweather.settings.DateFormat
+import com.dropdrage.simpleweather.settings.GeneralFormat
+import com.dropdrage.simpleweather.settings.TimeFormat
 import com.dropdrage.simpleweather.settings.presentation.model.AnySetting
 import com.dropdrage.simpleweather.settings.presentation.model.ViewDateFormat
 import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting

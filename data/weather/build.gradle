@@ -1,0 +1,27 @@
+apply from: import_androidDataLibrary
+apply from: component_android_hilt
+
+android {
+    namespace 'com.dropdrage.simpleweather.data.weather'
+
+    buildTypes {
+        def WEATHER_URL = "WEATHER_URL"
+
+        debug {
+            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
+        }
+        release {
+            buildConfigField "String", WEATHER_URL, '"https://api.open-meteo.com/v1/"'
+        }
+    }
+}
+
+dependencies {
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:utils')
+    implementation project(path: ':data:settings')
+    implementation project(path: ':feature:city:list:domain')
+    implementation project(path: ':feature:weather:domain')
+}

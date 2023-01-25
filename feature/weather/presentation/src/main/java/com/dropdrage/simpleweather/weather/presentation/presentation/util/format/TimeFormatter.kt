@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.weather.presentation.util.format
 
 import android.content.Context
-import com.dropdrage.simpleweather.data.settings.GeneralPreferences
+import com.dropdrage.simpleweather.settings.GeneralPreferences
 import com.dropdrage.simpleweather.weather.presentation.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDateTime

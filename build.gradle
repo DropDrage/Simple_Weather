@@ -38,9 +38,10 @@ ext {
     import_androidEmpty = "$rootDir/android-empty-build.gradle"
     import_androidEmptyLibrary = "$rootDir/android-empty-library-build.gradle"
     import_androidNoUiLibrary = "$rootDir/android-no-ui-library-build.gradle"
+    import_androidUiLibrary = "$rootDir/android-ui-library-build.gradle"
     import_android = "$rootDir/android-build.gradle"
     import_androidLibrary = "$rootDir/android-library-build.gradle"
-    import_androidNetworkLibrary = "$rootDir/android-network-library-build.gradle"
+    import_androidNetworkLibrary = "$rootDir/android-library-network-build.gradle"
     import_androidDataLibrary = "$rootDir/android-library-data-build.gradle"
 
     import_library = "$rootDir/library-build.gradle"
@@ -49,4 +50,7 @@ ext {
     component_android_hilt = "$rootDir/component-android-hilt.gradle"
     component_android_location = "$rootDir/component-android-location.gradle"
     component_retrofit = "$rootDir/component-retrofit.gradle"
+
+    build_feature_buildConfig = "$rootDir/build-feature-build_config.gradle"
+    build_feature_resValues = "$rootDir/build-feature-res_values.gradle"
 }

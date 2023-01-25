@@ -3,9 +3,9 @@ package com.dropdrage.simpleweather.settings.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dropdrage.simpleweather.data.settings.GeneralFormat
-import com.dropdrage.simpleweather.data.settings.GeneralPreferences
-import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.settings.GeneralFormat
+import com.dropdrage.simpleweather.settings.GeneralPreferences
+import com.dropdrage.simpleweather.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.settings.presentation.model.AnySetting
 import com.dropdrage.simpleweather.settings.presentation.model.ViewDateFormat
 import com.dropdrage.simpleweather.settings.presentation.model.ViewPrecipitationUnit

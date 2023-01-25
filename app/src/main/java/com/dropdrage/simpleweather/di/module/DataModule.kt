@@ -1,13 +1,13 @@
 package com.dropdrage.simpleweather.di.module
 
-import com.dropdrage.simpleweather.city_list.data.data.repository.CityRepositoryImpl
 import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
-import com.dropdrage.simpleweather.city_search.data.repository.CitySearchRepositoryImpl
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
+import com.dropdrage.simpleweather.data.city.repository.CityRepositoryImpl
+import com.dropdrage.simpleweather.data.city.repository.CitySearchRepositoryImpl
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
-import com.dropdrage.simpleweather.weather.data.repository.CurrentWeatherRepositoryImpl
-import com.dropdrage.simpleweather.weather.data.repository.WeatherRepositoryImpl
+import com.dropdrage.simpleweather.data.weather.repository.CurrentWeatherRepositoryImpl
+import com.dropdrage.simpleweather.data.weather.repository.WeatherRepositoryImpl
 import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
 import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import dagger.Binds

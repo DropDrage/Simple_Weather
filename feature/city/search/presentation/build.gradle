@@ -1,4 +1,4 @@
-apply from: import_androidLibrary
+apply from: import_androidUiLibrary
 
 android {
     namespace 'com.dropdrage.simpleweather.city_search.presentation'

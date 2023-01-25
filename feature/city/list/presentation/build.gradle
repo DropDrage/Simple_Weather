@@ -1,4 +1,6 @@
-apply from: import_androidLibrary
+apply from: import_androidUiLibrary
+
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     namespace 'com.dropdrage.simpleweather.city_list.presentation'

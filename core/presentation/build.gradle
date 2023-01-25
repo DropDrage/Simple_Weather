@@ -1,4 +1,5 @@
 apply from: import_androidNoUiLibrary
+apply from: build_feature_resValues
 
 android {
     namespace 'com.dropdrage.simpleweather.core.presentation'
@@ -9,5 +10,5 @@ dependencies {
     implementation androidLibs.hilt
 
     implementation project(path: ':core:domain')
-    implementation project(path: ':feature:settings:data')
+    implementation project(path: ':data:settings')
 }

@@ -1,4 +1,4 @@
-apply from: import_androidLibrary
+apply from: import_androidUiLibrary
 
 android {
     namespace 'com.dropdrage.simpleweather.settings.presentation'
@@ -7,5 +7,5 @@ android {
 dependencies {
     implementation project(path: ':adapters')
     implementation project(path: ':common:presentation')
-    implementation project(path: ':feature:settings:data')
+    implementation project(path: ':data:settings')
 }

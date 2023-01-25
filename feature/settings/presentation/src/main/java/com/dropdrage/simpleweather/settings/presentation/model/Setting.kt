@@ -1,13 +1,13 @@
 package com.dropdrage.simpleweather.settings.presentation.model
 
 import androidx.annotation.StringRes
-import com.dropdrage.simpleweather.data.settings.DateFormat
-import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.data.settings.PressureUnit
-import com.dropdrage.simpleweather.data.settings.TemperatureUnit
-import com.dropdrage.simpleweather.data.settings.TimeFormat
-import com.dropdrage.simpleweather.data.settings.VisibilityUnit
-import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
+import com.dropdrage.simpleweather.settings.DateFormat
+import com.dropdrage.simpleweather.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.settings.PressureUnit
+import com.dropdrage.simpleweather.settings.TemperatureUnit
+import com.dropdrage.simpleweather.settings.TimeFormat
+import com.dropdrage.simpleweather.settings.VisibilityUnit
+import com.dropdrage.simpleweather.settings.WindSpeedUnit
 import com.dropdrage.simpleweather.settings.presentation.R
 
 private typealias DataString = com.dropdrage.simpleweather.settings.data.R.string

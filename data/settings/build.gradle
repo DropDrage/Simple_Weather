@@ -1,0 +1,13 @@
+apply from: import_androidEmptyLibrary
+apply from: build_feature_resValues
+
+android {
+    namespace 'com.dropdrage.simpleweather.settings.data'
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.5.0'
+
+    api androidLibs.kotpref
+    implementation androidLibs.kotpref.enum
+}
