@@ -1,4 +1,4 @@
-# Simple Weather
+# Simple Weather (Cicerone Edition)
 
 Simple Weather app based on [Open Meteo](https://open-meteo.com/). Used for library tests (Cicerone, Compose, Ktor).  
 Uses your current approximate location to get the weather or you can add cities manually to monitor them.
