@@ -4,7 +4,7 @@ plugins {
     id 'com.google.devtools.ksp'
 }
 
-apply from: "$rootDir/android-build.gradle"
+apply from: import_android
 apply from: component_retrofit
 apply from: build_feature_buildConfig
 apply from: build_feature_resValues

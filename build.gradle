@@ -33,24 +33,31 @@ ext {
     versionName = '1.0'
 
     //imports
-    import_androidEmpty = "$rootDir/android-empty-build.gradle"
-    import_androidEmptyLibrary = "$rootDir/android-empty-library-build.gradle"
-    import_androidNoUiLibrary = "$rootDir/android-no-ui-library-build.gradle"
-    import_androidUiLibrary = "$rootDir/android-ui-library-build.gradle"
-    import_android = "$rootDir/android-build.gradle"
-    import_androidLibrary = "$rootDir/android-library-build.gradle"
-    import_androidNetworkLibrary = "$rootDir/android-library-network-build.gradle"
-    import_androidDataLibrary = "$rootDir/android-library-data-build.gradle"
+    def gradleDir = "$rootDir/gradle"
+    def baseDir = "$gradleDir/base"
+    import_androidEmpty = "$baseDir/android-empty-build.gradle"
+    import_android = "$baseDir/android-build.gradle"
 
-    import_library = "$rootDir/library-build.gradle"
+    def libraryDir = "$gradleDir/library"
+    def androidLibraryDir = "$gradleDir/library/android"
+    import_androidEmptyLibrary = "$androidLibraryDir/empty-build.gradle"
+    import_androidNoUiLibrary = "$androidLibraryDir/no-ui-build.gradle"
+    import_androidUiLibrary = "$androidLibraryDir/ui-build.gradle"
+    import_androidLibrary = "$androidLibraryDir/build.gradle"
+    import_androidNetworkLibrary = "$androidLibraryDir/network-build.gradle"
+    import_androidDataLibrary = "$androidLibraryDir/data-build.gradle"
 
-    component_android_room = "$rootDir/component-android-room.gradle"
-    component_android_hilt = "$rootDir/component-android-hilt.gradle"
-    component_android_location = "$rootDir/component-android-location.gradle"
-    component_retrofit = "$rootDir/component-retrofit.gradle"
+    import_library = "$libraryDir/java-kotlin/build.gradle"
 
-    build_feature_buildConfig = "$rootDir/build-feature-build_config.gradle"
-    build_feature_resValues = "$rootDir/build-feature-res_values.gradle"
+    def componentDir = "$gradleDir/component"
+    component_android_room = "$componentDir/android-room.gradle"
+    component_android_hilt = "$componentDir/android-hilt.gradle"
+    component_android_location = "$componentDir/android-location.gradle"
+    component_retrofit = "$componentDir/retrofit.gradle"
+
+    def buildFeatureDir = "$gradleDir/build-feature"
+    build_feature_buildConfig = "$buildFeatureDir/build_config.gradle"
+    build_feature_resValues = "$buildFeatureDir/res_values.gradle"
 }
 
 task cleanBaselines() {
