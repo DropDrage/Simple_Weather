@@ -34,8 +34,6 @@ android {
 }
 
 dependencies {
-    implementation androidLibs.services.location
-
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -67,9 +65,9 @@ dependencies {
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
     implementation project(path: ':data:weather')
+    implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:list:presentation')
-//    implementation project(path: ':data:city')
     implementation project(path: ':feature:city:search:domain')
     implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')

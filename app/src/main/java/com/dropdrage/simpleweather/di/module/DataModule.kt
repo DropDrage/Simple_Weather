@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.di.module
 
-import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city.domain.CityRepository
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.data.city.repository.CityRepositoryImpl

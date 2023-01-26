@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city.domain.CityRepository
 import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.city_search.presentation.model.ViewCitySearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel

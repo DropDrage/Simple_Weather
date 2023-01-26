@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.weather.presentation.domain.use_case
 
 import android.util.Log
-import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city.domain.CityRepository
 import com.dropdrage.simpleweather.core.utils.LogTags
 import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import kotlinx.coroutines.Dispatchers

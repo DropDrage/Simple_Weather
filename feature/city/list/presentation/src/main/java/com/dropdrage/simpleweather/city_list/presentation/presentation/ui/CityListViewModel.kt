@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.city_list.presentation.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dropdrage.simpleweather.city_list.domain.city.CityRepository
+import com.dropdrage.simpleweather.city.domain.CityRepository
 import com.dropdrage.simpleweather.city_list.presentation.domain.use_case.ObserveCitiesWithWeatherUseCase
 import com.dropdrage.simpleweather.city_list.presentation.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.city_list.presentation.presentation.utils.CityCurrentWeatherConverter
