@@ -11,8 +11,6 @@ buildscript {
         classpath buildLibs.gradle.plugin.kotlin
 
         classpath androidLibs.gradle.plugin.hilt
-
-        classpath androidLibs.gradle.plugin.navigation.safeargs
     }
 }
 

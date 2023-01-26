@@ -1,8 +1,6 @@
 apply from: import_androidUiLibrary
 apply from: component_android_location
 
-apply plugin: 'androidx.navigation.safeargs.kotlin'
-
 android {
     namespace 'com.dropdrage.simpleweather.weather.presentation'
 }
@@ -11,6 +9,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
+
+    implementation androidLibs.cicerone
 
     implementation project(path: ':adapters')
     implementation project(path: ':common:domain')
@@ -22,4 +22,6 @@ dependencies {
     implementation project(path: ':data:settings')
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:weather:domain')
+    implementation project(path: ':feature:city:list:presentation')
+    implementation project(path: ':feature:settings:presentation')
 }

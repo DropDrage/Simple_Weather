@@ -2,25 +2,29 @@ package com.dropdrage.simpleweather.city_list.presentation.presentation.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.dropdrage.common.presentation.ui.TitledFragment
 import com.dropdrage.common.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
 import com.dropdrage.simpleweather.city_list.presentation.R
 import com.dropdrage.simpleweather.city_list.presentation.databinding.FragmentCityListBinding
+import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class CityListFragment : Fragment(R.layout.fragment_city_list) {
+class CityListFragment : TitledFragment(R.layout.fragment_city_list, R.string.city_list_title) {
 
     private val binding by viewBinding(FragmentCityListBinding::bind)
     private val viewModel: CityListViewModel by viewModels()
 
     private lateinit var cityCurrentWeatherAdapter: CityCurrentWeatherAdapter
+
+    @Inject
+    internal lateinit var router: Router
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,9 +36,7 @@ class CityListFragment : Fragment(R.layout.fragment_city_list) {
     }
 
     private fun setOnClickListeners() = binding.apply {
-        addCity.setOnClickListener {
-            findNavController().navigate(CityListFragmentDirections.navigateCitySearch())
-        }
+        addCity.setOnClickListener { router.navigateTo(Screens.CitySearch()) }
     }
 
     private fun initCityList() = binding.cities.apply {

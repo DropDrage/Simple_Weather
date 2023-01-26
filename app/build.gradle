@@ -48,7 +48,7 @@ dependencies {
 
     //Utils
     implementation androidLibs.kotpref
-
+    implementation androidLibs.cicerone
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
@@ -66,9 +66,7 @@ dependencies {
     implementation project(path: ':data:weather')
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:list:presentation')
     implementation project(path: ':feature:city:search:domain')
-    implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
 }

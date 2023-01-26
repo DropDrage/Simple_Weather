@@ -42,11 +42,7 @@ dependencyResolutionManagement {
             library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').versionRef(lifecycleVersion)
             library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').versionRef(lifecycleVersion)
 
-            def navigationVersion = version('navigation', '2.5.3')
-            library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)
-            library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').versionRef(navigationVersion)
-            library('gradle-plugin-navigation-safeargs', 'androidx.navigation', 'navigation-safe-args-gradle-plugin').versionRef(navigationVersion)
-            bundle('navigation', ['navigation-fragment', 'navigation-ui'])
+            library('cicerone', 'com.github.terrakok', 'cicerone').version('7.1')
 
             def hiltVersion = version('hilt', '2.44.2')
             library('hilt', 'com.google.dagger', 'hilt-android').versionRef(hiltVersion)

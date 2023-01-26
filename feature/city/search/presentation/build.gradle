@@ -5,6 +5,8 @@ android {
 }
 
 dependencies {
+    implementation androidLibs.cicerone
+
     implementation project(path: ':adapters')
     implementation project(path: ':core:domain')
     implementation project(path: ':core:style')

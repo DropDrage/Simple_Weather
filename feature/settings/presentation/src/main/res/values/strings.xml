@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="settings_title">Settings</string>
+
     <string name="weather_unit_temperature_label">Temperature</string>
     <string name="weather_unit_pressure_label">Pressure</string>
     <string name="weather_unit_wind_speed_label">Wind speed</string>

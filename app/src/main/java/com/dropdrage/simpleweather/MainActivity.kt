@@ -4,23 +4,28 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.utils.ChangeableAppBar
+import com.dropdrage.common.presentation.utils.TitledAppBar
 import com.dropdrage.simpleweather.databinding.ActivityMainBinding
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-internal class MainActivity : AppCompatActivity(R.layout.activity_main), ChangeableAppBar {
+internal class MainActivity : AppCompatActivity(R.layout.activity_main), ChangeableAppBar, TitledAppBar {
 
     private val binding by viewBinding(ActivityMainBinding::bind)
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController: NavController
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    private val appNavigator = AppNavigator(this, R.id.fragmentContainer)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,31 +33,43 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main), Changea
         super.onCreate(savedInstanceState)
 
         setupAppBar()
+        router.newRootScreen(Screens.CitiesWeather())
     }
 
     private fun setupAppBar() {
         setSupportActionBar(binding.toolbar)
-
-        val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
-        navController = navHost.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onSupportNavigateUp(): Boolean =
-        navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    override fun onSupportNavigateUp(): Boolean {
+        router.exit()
+        return true
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(appNavigator)
+    }
+
+    override fun onPause() {
+        navigatorHolder.removeNavigator()
+        super.onPause()
+    }
 
 
-    override fun changeAppBar(toolbar: Toolbar) {
+    override fun changeAppBar(toolbar: Toolbar, enableHomeButton: Boolean) {
         supportActionBar?.hide()
         setSupportActionBar(toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        supportActionBar?.setDisplayHomeAsUpEnabled(enableHomeButton)
     }
 
     override fun restoreDefaultAppBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.show()
-        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun setTitle(title: String) {
+        supportActionBar?.title = title
     }
 
 }

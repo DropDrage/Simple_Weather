@@ -1,12 +1,12 @@
 apply from: import_androidUiLibrary
 
-apply plugin: 'androidx.navigation.safeargs.kotlin'
-
 android {
     namespace 'com.dropdrage.simpleweather.city_list.presentation'
 }
 
 dependencies {
+    implementation androidLibs.cicerone
+
     implementation project(path: ':adapters')
     implementation project(path: ':common:domain')
     implementation project(path: ':common:presentation')

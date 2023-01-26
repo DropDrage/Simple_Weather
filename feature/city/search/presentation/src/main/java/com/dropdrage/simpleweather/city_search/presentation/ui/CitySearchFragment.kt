@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.common.presentation.utils.ChangeableAppBar
@@ -13,7 +12,9 @@ import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
 import com.dropdrage.common.presentation.utils.focusEditText
 import com.dropdrage.simpleweather.city_search.presentation.R
 import com.dropdrage.simpleweather.city_search.presentation.databinding.FragmentCitySearchBinding
+import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
@@ -23,11 +24,14 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
 
     private lateinit var citySearchAdapter: CitySearchResultAdapter
 
+    @Inject
+    internal lateinit var router: Router
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
+        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar, true)
 
         initCities()
         observeViews()
@@ -50,7 +54,7 @@ class CitySearchFragment : Fragment(R.layout.fragment_city_search) {
 
     private fun observeViewModel() = viewModel.apply {
         collectWithViewLifecycle(searchResults, citySearchAdapter::submitList)
-        collectWithViewLifecycle(cityAddedEvent, { findNavController().navigateUp() })
+        collectWithViewLifecycle(cityAddedEvent, { router.exit() })
     }
 
 

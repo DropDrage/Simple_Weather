@@ -8,17 +8,19 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.utils.ChangeableAppBar
 import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
 import com.dropdrage.common.presentation.utils.viewLifecycleScope
 import com.dropdrage.simpleweather.weather.presentation.R
 import com.dropdrage.simpleweather.weather.presentation.databinding.FragmentCitiesWeatherBinding
+import com.dropdrage.simpleweather.weather.presentation.presentation.ui.Screens
+import com.github.terrakok.cicerone.Router
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
@@ -29,6 +31,9 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
 
     private lateinit var citiesAdapter: CitiesWeatherAdapter
     private var tabLayoutMediator: TabLayoutMediator? = null
+
+    @Inject
+    internal lateinit var router: Router
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,11 +113,11 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
             R.id.addCity -> {
-                findNavController().navigate(CitiesWeatherFragmentDirections.navigateCityList())
+                router.navigateTo(Screens.CityList())
                 true
             }
             R.id.settings -> {
-                findNavController().navigate(CitiesWeatherFragmentDirections.navigateSettingsFragment())
+                router.navigateTo(Screens.Settings())
                 true
             }
             else -> false

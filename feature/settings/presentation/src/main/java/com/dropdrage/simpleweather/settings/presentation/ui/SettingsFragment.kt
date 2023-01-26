@@ -2,9 +2,9 @@ package com.dropdrage.simpleweather.settings.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.dropdrage.common.presentation.ui.TitledFragment
 import com.dropdrage.common.presentation.util.extension.setLinearLayoutManager
 import com.dropdrage.simpleweather.settings.presentation.change_dialog.SettingChangeDialog
 import com.dropdrage.simpleweather.settings.presentation.change_dialog.SettingChangeViewModel
@@ -14,7 +14,7 @@ import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : TitledFragment(R.layout.fragment_settings, R.string.settings_title) {
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
     private val viewModel: SettingsViewModel by viewModels()
