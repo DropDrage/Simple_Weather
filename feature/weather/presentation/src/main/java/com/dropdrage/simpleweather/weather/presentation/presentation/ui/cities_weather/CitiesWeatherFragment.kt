@@ -38,7 +38,9 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
         observeViewModel()
         observeCityTitle()
 
-        requireActivity().addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
+        val activity = requireActivity()
+        (activity as ChangeableAppBar).changeAppBar(binding.toolbar)
+        activity.addMenuProvider(MainMenuProvider(), viewLifecycleOwner)
     }
 
     private fun initCitiesWeatherPager() {
@@ -87,7 +89,6 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as ChangeableAppBar).changeAppBar(binding.toolbar)
         viewModel.updateWeather()
     }
 
