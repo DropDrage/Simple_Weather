@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath buildLibs.gradle.plugin.kotlin
 
-        classpath androidLibs.gradle.plugin.hilt//"com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath androidLibs.gradle.plugin.hilt
 
         classpath androidLibs.gradle.plugin.navigation.safeargs
     }

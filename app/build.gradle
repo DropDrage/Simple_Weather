@@ -44,7 +44,6 @@ dependencies {
     //Moshi
     implementation networkLibs.bundles.moshi
     ksp networkLibs.moshi.compiler
-//    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
 
     //Utils
