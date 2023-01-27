@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.weather.local.cache.util.converter
+package com.dropdrage.simpleweather.data.weather.utils
 
 import android.util.Log
 import androidx.room.TypeConverter

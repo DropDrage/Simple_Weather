@@ -10,13 +10,13 @@ import com.dropdrage.simpleweather.data.weather.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.LocationModel
+import com.dropdrage.simpleweather.data.weather.local.cache.util.CacheUnits
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toNewModel
 import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDayModels
 import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.data.weather.local.util.mapper.toHourModels
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toNewModel
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
-import com.dropdrage.simpleweather.data.weather.remote.toDomainWeather
-import com.dropdrage.simpleweather.settings.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.data.weather.remote.WeatherResponseDto
 import com.dropdrage.simpleweather.weather.domain.weather.Weather
 import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import kotlinx.coroutines.Dispatchers
@@ -84,22 +84,26 @@ class WeatherRepositoryImpl @Inject internal constructor(
     private suspend fun updateLocalWeatherFromApi(location: Location, saveLocationId: Long?) {
         val remoteDomainWeather = api.getWeather(
             location.latitude, location.longitude,
-            WeatherUnitsPreferences.temperatureUnit,
-            WeatherUnitsPreferences.windSpeedUnit,
-            WeatherUnitsPreferences.precipitationUnit,
+            CacheUnits.TEMPERATURE,
+            CacheUnits.WIND_SPEED,
+            CacheUnits.PRECIPITATION,
             TimeZone.getDefault().id.toString(),
-        ).toDomainWeather()
+        )
 
         saveNewWeather(location, saveLocationId, remoteDomainWeather)
     }
 
-    private suspend fun saveNewWeather(location: Location, savedLocationId: Long?, remoteDomainWeather: Weather) {
+    private suspend fun saveNewWeather(
+        location: Location,
+        savedLocationId: Long?,
+        remoteDomainWeather: WeatherResponseDto,
+    ) {
         val locationId =
             if (savedLocationId == null) locationDao.insertAndGetId(location.toNewModel())
             else savedLocationId
 
-        weatherCacheDao.updateWeather(locationId, remoteDomainWeather.toDayModels(locationId)) { daysIds ->
-            remoteDomainWeather.toHourModels(daysIds)
+        weatherCacheDao.updateWeather(locationId, remoteDomainWeather.daily.toDayModels(locationId)) { daysIds ->
+            remoteDomainWeather.hourly.toHourModels(daysIds)
         }
     }
 

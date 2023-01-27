@@ -45,8 +45,4 @@ internal data class TemperatureRange(val start: Float, val end: Float) {
 
     fun toRange(): Range<Float> = Range(start, end)
 
-    companion object {
-        fun fromRange(range: Range<Float>) = TemperatureRange(range.start, range.end)
-    }
-
 }

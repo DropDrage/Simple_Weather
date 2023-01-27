@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.weather.local.util
+package com.dropdrage.simpleweather.data.weather.local.cache.util
 
 import java.time.LocalDateTime
 

@@ -10,9 +10,9 @@ import com.dropdrage.simpleweather.data.weather.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.LocationModel
-import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.WeatherTypeConverter
-import com.dropdrage.simpleweather.data.weather.local.util.converter.LocalDateConverter
-import com.dropdrage.simpleweather.data.weather.local.util.converter.LocalDateTimeConverter
+import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.LocalDateConverter
+import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.LocalDateTimeConverter
+import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 
 @Database(
     entities = [LocationModel::class, HourWeatherModel::class, DayWeatherModel::class],

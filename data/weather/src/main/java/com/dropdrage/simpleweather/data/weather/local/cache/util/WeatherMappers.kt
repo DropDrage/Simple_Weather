@@ -6,8 +6,11 @@ import com.dropdrage.simpleweather.data.weather.local.cache.model.DayWeatherMode
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.TemperatureRange
 import com.dropdrage.simpleweather.data.weather.local.cache.relation.DayToHourWeather
-import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.WeatherUnitsConverter
 import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.WeatherUnitsDeconverter
+import com.dropdrage.simpleweather.data.weather.remote.DailyWeatherDto
+import com.dropdrage.simpleweather.data.weather.remote.HourlyWeatherDto
+import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
+import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConverter
 import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.weather.domain.weather.Weather
@@ -16,6 +19,9 @@ private typealias DomainWeather = Weather
 private typealias DomainDayWeather = DayWeather
 private typealias DomainHourWeather = HourWeather
 private typealias DomainCurrentWeather = CurrentWeather
+
+private const val HOURS_IN_DAY = 24
+
 
 internal fun List<DayToHourWeather>.toDomainWeather(): DomainWeather = DomainWeather(
     this.map { it.day.toDomain(it.hours.map(HourWeatherModel::toDomain)) }
@@ -46,7 +52,7 @@ private fun DayWeatherModel.toDomain(weathersPerHour: List<DomainHourWeather>): 
     val temperatureRange = temperatureRange.toRange().map(WeatherUnitsConverter::convertTemperature)
     val apparentTemperatureRange = apparentTemperatureRange.toRange().map(WeatherUnitsConverter::convertTemperature)
     val precipitationSum = WeatherUnitsConverter.convertPrecipitation(precipitationSum)
-    val maxWindSpeed = maxWindSpeed
+    val maxWindSpeed = WeatherUnitsConverter.convertWindSpeed(maxWindSpeed)
     val sunrise = sunrise
     val sunset = sunset
 
@@ -64,19 +70,21 @@ private fun DayWeatherModel.toDomain(weathersPerHour: List<DomainHourWeather>): 
 }
 
 
-internal fun DomainWeather.toDayModels(locationId: Long): List<DayWeatherModel> = dailyWeather.map {
-    val date = it.date
-    val weatherType = it.weatherType
-    val temperatureRange = TemperatureRange.fromRange(
-        it.temperatureRange.map(WeatherUnitsDeconverter::deconvertTemperatureIfApiSupport)
+internal fun DailyWeatherDto.toDayModels(locationId: Long): List<DayWeatherModel> = dates.mapIndexed { index, date ->
+    val date = date
+    val weatherType = WeatherTypeConverter.toWeatherType(weatherCodes[index])
+    val temperatureRange = TemperatureRange(
+        WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(minTemperatures[index]),
+        WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(maxTemperatures[index])
     )
-    val apparentTemperatureRange = TemperatureRange.fromRange(
-        it.apparentTemperatureRange.map(WeatherUnitsDeconverter::deconvertTemperatureIfApiSupport)
+    val apparentTemperatureRange = TemperatureRange(
+        WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(apparentMinTemperatures[index]),
+        WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(apparentMaxTemperatures[index]),
     )
-    val precipitationSum = WeatherUnitsDeconverter.deconvertPrecipitationIfApiSupport(it.precipitationSum)
-    val maxWindSpeed = WeatherUnitsDeconverter.deconvertWindSpeedIfApiSupport(it.maxWindSpeed)
-    val sunrise = it.sunrise
-    val sunset = it.sunset
+    val precipitationSum = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(precipitationSums[index])
+    val maxWindSpeed = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(maxWindSpeeds[index])
+    val sunrise = sunrises[index]
+    val sunset = sunsets[index]
 
     DayWeatherModel(
         date = date,
@@ -91,32 +99,30 @@ internal fun DomainWeather.toDayModels(locationId: Long): List<DayWeatherModel> 
     )
 }
 
-internal fun DomainWeather.toHourModels(dayIds: List<Long>): List<HourWeatherModel> =
-    dailyWeather.flatMapIndexed { index, day ->
-        val dayId = dayIds[index]
-        day.weatherPerHour.map { it.toModel(dayId) }
+internal fun HourlyWeatherDto.toHourModels(dayIds: List<Long>): List<HourWeatherModel> = time.chunked(HOURS_IN_DAY)
+    .flatMapIndexed { dayIndex, times ->
+        times.mapIndexed { timeIndex, time ->
+            val index = dayIndex * HOURS_IN_DAY + timeIndex
+            val dateTime = time
+            val weatherType = WeatherTypeConverter.toWeatherType(weatherCodes[index])
+            val temperature = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(temperatures[index])
+            val pressure = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(pressures[index].toInt())
+            val windSpeed = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(windSpeeds[index])
+            val humidity = humidities[index]
+            val visibility = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(visibilities[index].toFloat())
+
+            HourWeatherModel(
+                dateTime = dateTime,
+                dayId = dayIds[dayIndex],
+                weatherType = weatherType,
+                temperature = temperature,
+                pressure = pressure,
+                windSpeed = windSpeed,
+                humidity = humidity,
+                visibility = visibility,
+            )
+        }
     }
-
-private fun DomainHourWeather.toModel(dayId: Long): HourWeatherModel {
-    val dateTime = dateTime
-    val weatherType = weatherType
-    val temperature = WeatherUnitsDeconverter.deconvertTemperatureIfApiSupport(temperature)
-    val pressure = WeatherUnitsDeconverter.deconvertPressureIfApiSupport(pressure)
-    val windSpeed = WeatherUnitsDeconverter.deconvertWindSpeedIfApiSupport(windSpeed)
-    val humidity = humidity
-    val visibility = WeatherUnitsDeconverter.deconvertVisibilityIfApiSupport(visibility)
-
-    return HourWeatherModel(
-        dateTime = dateTime,
-        dayId = dayId,
-        weatherType = weatherType,
-        temperature = temperature,
-        pressure = pressure,
-        windSpeed = windSpeed,
-        humidity = humidity,
-        visibility = visibility,
-    )
-}
 
 
 internal fun CurrentWeatherDto.toDomain(): DomainCurrentWeather = DomainCurrentWeather(

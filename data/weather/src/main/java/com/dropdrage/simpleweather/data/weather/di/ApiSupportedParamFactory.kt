@@ -5,7 +5,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type
 
-class ApiSupportedParamFactory : Converter.Factory() {
+internal class ApiSupportedParamFactory : Converter.Factory() {
 
     private val supportedType = ApiSupportedParam::class.java
 
