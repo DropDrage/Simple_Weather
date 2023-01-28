@@ -1,2 +1,3 @@
 apply from: import_androidLibrary
 apply from: build_feature_resValues
+apply from: component_compose

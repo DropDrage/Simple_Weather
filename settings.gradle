@@ -32,6 +32,7 @@ dependencyResolutionManagement {
         }
 
         androidLibs {
+            library('compose-bom', 'androidx.compose', 'compose-bom').version('2022.12.00')
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
             library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
             library('android-material', 'com.google.android.material', 'material').version('1.7.0')
@@ -41,6 +42,7 @@ dependencyResolutionManagement {
             def lifecycleVersion = version('lifecycle', '2.5.1')
             library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').versionRef(lifecycleVersion)
             library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').versionRef(lifecycleVersion)
+            library('lifecycle-viewmodel-compose', 'androidx.lifecycle', 'lifecycle-viewmodel-compose').versionRef(lifecycleVersion)
 
             def navigationVersion = version('navigation', '2.5.3')
             library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)

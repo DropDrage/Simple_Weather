@@ -56,10 +56,12 @@ ext {
     component_android_hilt = "$componentDir/android-hilt.gradle"
     component_android_location = "$componentDir/android-location.gradle"
     component_retrofit = "$componentDir/retrofit.gradle"
+    component_compose = "$componentDir/compose.gradle"
 
     def buildFeatureDir = "$gradleDir/build-feature"
     build_feature_buildConfig = "$buildFeatureDir/build_config.gradle"
     build_feature_resValues = "$buildFeatureDir/res_values.gradle"
+    build_feature_compose = "$buildFeatureDir/compose.gradle"
 }
 
 task cleanBaselines() {

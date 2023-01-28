@@ -1,7 +1,5 @@
 package com.dropdrage.simpleweather.settings.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dropdrage.simpleweather.settings.GeneralFormat
 import com.dropdrage.simpleweather.settings.GeneralPreferences
@@ -36,9 +34,6 @@ internal class SettingsViewModel @Inject constructor(
         generalFormatConverter.convertToViewSetting(GeneralPreferences.dateFormat),
     )
 
-    private val _settingChanged = MutableLiveData<ViewSetting>()
-    val settingChanged: LiveData<ViewSetting> = _settingChanged
-
 
     fun getCurrentValue(setting: AnySetting): AnySetting = when (setting) {
         is ViewTemperatureUnit -> weatherUnitConverter.convertToSetting(WeatherUnitsPreferences.temperatureUnit)
@@ -63,11 +58,7 @@ internal class SettingsViewModel @Inject constructor(
 
         val changedSettingIndex = settings.indexOfFirst { it.values.contains(setting) }
         settings[changedSettingIndex].currentValue =
-            if (setting is GeneralFormat) generalFormatConverter.convertToValue(
-                setting
-            )
+            if (setting is GeneralFormat) generalFormatConverter.convertToValue(setting)
             else weatherUnitConverter.convertToValue(setting)
-
-        _settingChanged.value = settings[changedSettingIndex]
     }
 }

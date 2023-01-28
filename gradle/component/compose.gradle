@@ -1,18 +1,13 @@
-apply from: import_androidEmptyLibrary
 apply from: build_feature_compose
 
-android {
-    namespace 'com.dropdrage.simpleweather.core.style'
-}
-
 dependencies {
-    debugImplementation androidLibs.androidx.core
-
     def composeBom = platform(androidLibs.compose.bom)
     implementation composeBom
     androidTestImplementation composeBom
 
     implementation 'androidx.compose.material3:material3'
+    implementation androidLibs.lifecycle.viewmodel.compose
 
-    implementation project(path: ':common:presentation')
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
 }
