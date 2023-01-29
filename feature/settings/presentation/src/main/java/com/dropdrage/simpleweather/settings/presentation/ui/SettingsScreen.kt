@@ -1,14 +1,12 @@
 package com.dropdrage.simpleweather.settings.presentation.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dropdrage.simpleweather.core.presentation.ui.TextWithSubtext
 import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
 import com.dropdrage.simpleweather.core.style.Medium100
 import com.dropdrage.simpleweather.core.style.Small150
@@ -24,7 +23,7 @@ import com.dropdrage.simpleweather.settings.presentation.SettingsViewModel
 import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen() {
     val viewModel = viewModel<SettingsViewModel>()
 
     var editSetting by remember { mutableStateOf<ViewSetting?>(null) }
@@ -33,14 +32,16 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
         editSetting = setting
     }
 
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = Medium100, vertical = Small150)
+    ) {
         items(viewModel.settings) {
             SettingItem(
                 setting = it,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onSettingClick(it) }
-                    .padding(horizontal = Medium100, vertical = Small150))
+                    .clickable { onSettingClick(it) })
         }
     }
     if (editSetting != null) {
@@ -55,14 +56,13 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SettingItem(setting: ViewSetting, modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Text(text = setting.label, style = MaterialTheme.typography.bodyLarge)
-        Text(
-            text = setting.currentValue,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
+    TextWithSubtext(
+        text = setting.label,
+        textStyle = MaterialTheme.typography.bodyLarge,
+        subtext = setting.currentValue,
+        subtextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+        modifier = modifier,
+    )
 }
 
 @Preview(showBackground = true)
