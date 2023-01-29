@@ -60,6 +60,7 @@ import com.dropdrage.simpleweather.core.style.Medium150
 import com.dropdrage.simpleweather.core.style.Small100
 import com.dropdrage.simpleweather.core.style.Small50
 
+@Suppress("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CityListScreen(openSearchScreen: () -> Unit) {
