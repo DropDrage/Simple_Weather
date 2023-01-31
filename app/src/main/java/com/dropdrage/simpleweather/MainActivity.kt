@@ -49,6 +49,10 @@ internal class MainActivity : AppCompatActivity(R.layout.activity_main), Changea
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
+    override fun hideAppBar() {
+        supportActionBar?.hide()
+    }
+
     override fun restoreDefaultAppBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.show()

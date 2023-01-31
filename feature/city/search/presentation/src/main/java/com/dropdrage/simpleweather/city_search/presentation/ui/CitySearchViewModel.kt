@@ -11,7 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +32,8 @@ internal class CitySearchViewModel @Inject constructor(
     private val _searchResults = MutableSharedFlow<List<ViewCitySearchResult>>()
     val searchResults: Flow<List<ViewCitySearchResult>> = _searchResults.asSharedFlow()
 
-    private val query = MutableSharedFlow<String>()
+    private val _query = MutableStateFlow("")
+    val query: Flow<String> = _query.asStateFlow()
 
     private val _cityAddedEvent = MutableSharedFlow<Unit>()
     val cityAddedEvent: Flow<Unit> = _cityAddedEvent.asSharedFlow()
@@ -44,7 +47,7 @@ internal class CitySearchViewModel @Inject constructor(
 
 
     fun updateQuery(newQuery: String) {
-        viewModelScope.launch { query.emit(newQuery) }
+        viewModelScope.launch { _query.emit(newQuery) }
     }
 
     private suspend fun loadCities(query: String) {

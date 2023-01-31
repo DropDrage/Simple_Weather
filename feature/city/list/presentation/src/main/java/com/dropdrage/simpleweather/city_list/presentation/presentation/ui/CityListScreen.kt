@@ -70,7 +70,7 @@ fun CityListScreen(openSearchScreen: () -> Unit) {
 
     var citiesCurrentWeather = remember { mutableStateListOf<ViewCityCurrentWeather>() }
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.citiesCurrentWeathers.collect {
             citiesCurrentWeather.clear()
             citiesCurrentWeather.addAll(it)
