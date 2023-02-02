@@ -10,8 +10,8 @@ internal data class ViewCurrentDayWeather(
     val apparentTemperatureRange: Range<String>,
     val precipitationSum: String,
     val maxWindSpeed: String,
-    val sunrise: LocalDateTime,
-    val sunset: LocalDateTime,
-    val sunriseTime: String,
-    val sunsetTime: String,
+    val sunriseTime: LocalDateTime,
+    val sunsetTime: LocalDateTime,
+    val sunriseFormatted: String,
+    val sunsetFormatted: String,
 )

@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="divider_thickness">1dp</dimen>
-
-    <dimen name="border_thin">1dp</dimen>
-
     <dimen name="width_city_tab">@dimen/small_150</dimen>
-
-    <dimen name="height_day_weather">160dp</dimen>
-    <dimen name="height_day_weather_item">@dimen/huge_200</dimen>
-    <dimen name="height_hour_weather">120dp</dimen>
-    <dimen name="height_hour_weather_item">@dimen/huge_137</dimen>
-
-    <dimen name="size_weather_icon">@dimen/huge_112</dimen>
-    <dimen name="size_weather_hour_icon">@dimen/large_100</dimen>
-    <dimen name="size_weather_metric_icon">@dimen/large_175</dimen>
 
     <dimen name="toolbar_expanded_margin_end">@dimen/huge_125</dimen>
 </resources>

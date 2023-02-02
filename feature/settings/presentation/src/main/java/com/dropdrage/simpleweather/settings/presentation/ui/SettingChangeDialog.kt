@@ -72,10 +72,9 @@ internal fun SettingChangeDialog(
             ) {
                 Text(
                     text = viewSetting.label,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(modifier = Modifier.height(Medium150))
                 Column(modifier = Modifier.fillMaxWidth()) {

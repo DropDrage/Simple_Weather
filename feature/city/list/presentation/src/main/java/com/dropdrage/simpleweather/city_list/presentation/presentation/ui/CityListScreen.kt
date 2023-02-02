@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +41,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.city_list.presentation.R
@@ -70,11 +70,9 @@ fun CityListScreen(openSearchScreen: () -> Unit) {
 
     var citiesCurrentWeather = remember { mutableStateListOf<ViewCityCurrentWeather>() }
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.citiesCurrentWeathers.collect {
-            citiesCurrentWeather.clear()
-            citiesCurrentWeather.addAll(it)
-        }
+    viewModel.citiesCurrentWeathers.collectInLaunchedEffect {
+        citiesCurrentWeather.clear()
+        citiesCurrentWeather.addAll(it)
     }
 
     Scaffold(
@@ -182,11 +180,11 @@ private fun CityItem(
                 modifier = Modifier.weight(1f),
             )
             WeatherWithTemperature(
-                weather = cityCurrentWeather.currentWeather.weatherType,
+                weatherType = cityCurrentWeather.currentWeather.weatherType,
                 temperature = cityCurrentWeather.currentWeather.temperature,
                 iconSize = Large150,
                 spacing = Small50,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                temperatureTextStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold
                 ),

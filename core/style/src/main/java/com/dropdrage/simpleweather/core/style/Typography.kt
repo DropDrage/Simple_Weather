@@ -4,39 +4,38 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 
 fun MyTypography(colors: ColorScheme): Typography = Typography(
     headlineLarge = TextStyle(
         color = colors.primary,
         fontWeight = FontWeight.Medium,
-        fontSize = 32.sp,
+        fontSize = Font32,
     ),
 
     titleLarge = TextStyle(
         color = colors.primary,
         fontWeight = FontWeight.Medium,
-        fontSize = 20.sp,
+        fontSize = Font20,
     ),
 
     bodySmall = TextStyle(
         color = colors.onSurface,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
+        fontSize = Font12,
     ),
     bodyMedium = TextStyle(
         color = colors.onSurface,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = Font14,
     ),
     bodyLarge = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = Font16,
     ),
 
     labelMedium = TextStyle(
         color = colors.onSurface,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = Font12
     )
 )

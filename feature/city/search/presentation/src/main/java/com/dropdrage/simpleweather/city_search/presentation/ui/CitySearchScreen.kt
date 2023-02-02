@@ -21,7 +21,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -33,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.city_search.presentation.R
@@ -54,9 +54,7 @@ fun CitySearchScreen(navigateBack: () -> Unit) {
     val query = viewModel.query.collectAsState(initial = "")
 
     val searchResults = viewModel.searchResults.collectAsState(initial = emptyList())
-    LaunchedEffect(key1 = Unit) {
-        viewModel.cityAddedEvent.collect { navigateBack() }
-    }
+    viewModel.cityAddedEvent.collectInLaunchedEffect { navigateBack() }
 
     Scaffold(
         topBar = {
@@ -109,8 +107,8 @@ private fun SearchBar(
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.city_search_hint),
-                        style = MaterialTheme.typography.bodyLarge
-                            .copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 },
                 trailingIcon = {

@@ -18,21 +18,21 @@ import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 
 @Composable
 fun WeatherWithTemperature(
-    weather: ViewWeatherType,
+    weatherType: ViewWeatherType,
     temperature: String,
     iconSize: Dp,
     spacing: Dp,
-    textStyle: TextStyle,
+    temperatureTextStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
-            painter = painterResource(id = weather.iconRes),
-            contentDescription = stringResource(id = weather.weatherDescriptionRes),
+            painter = painterResource(id = weatherType.iconRes),
+            contentDescription = stringResource(id = weatherType.weatherDescriptionRes),
             tint = Color.Unspecified,
             modifier = Modifier.size(iconSize),
         )
         Spacer(modifier = Modifier.height(spacing))
-        Text(text = temperature, style = textStyle)
+        Text(text = temperature, style = temperatureTextStyle)
     }
 }

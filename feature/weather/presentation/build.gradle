@@ -9,8 +9,15 @@ android {
 
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
+
+    def accompanist_version = "0.28.0"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+
+    implementation "androidx.activity:activity-compose"
 
     implementation project(path: ':adapters')
     implementation project(path: ':common:domain')

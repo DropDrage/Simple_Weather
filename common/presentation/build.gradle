@@ -1,5 +1,6 @@
 apply from: import_androidNoUiLibrary
 apply from: build_feature_resValues
+apply from: component_compose
 
 android {
     namespace 'com.dropdrage.common.presentation'

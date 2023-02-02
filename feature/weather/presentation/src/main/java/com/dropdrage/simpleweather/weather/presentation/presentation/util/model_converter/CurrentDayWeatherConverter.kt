@@ -24,9 +24,9 @@ internal class CurrentDayWeatherConverter @Inject constructor(
         ),
         precipitationSum = unitsFormatter.formatPrecipitation(dayWeather.precipitationSum),
         maxWindSpeed = unitsFormatter.formatWindSpeed(dayWeather.maxWindSpeed),
-        sunrise = dayWeather.sunrise,
-        sunset = dayWeather.sunset,
-        sunriseTime = timeFormatter.formatTime(dayWeather.sunrise),
-        sunsetTime = timeFormatter.formatTime(dayWeather.sunset),
+        sunriseTime = dayWeather.sunrise,
+        sunsetTime = dayWeather.sunset,
+        sunriseFormatted = timeFormatter.formatTime(dayWeather.sunrise),
+        sunsetFormatted = timeFormatter.formatTime(dayWeather.sunset),
     )
 }

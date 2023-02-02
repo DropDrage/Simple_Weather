@@ -5,7 +5,7 @@ import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import java.time.LocalDateTime
 
 internal data class ViewHourWeather(
-    private val dateTime: LocalDateTime,
+    val dateTime: LocalDateTime,
     val timeFormatted: String,
     val isNow: Boolean,
     val weatherType: ViewWeatherType,

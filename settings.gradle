@@ -32,7 +32,7 @@ dependencyResolutionManagement {
         }
 
         androidLibs {
-            library('compose-bom', 'androidx.compose', 'compose-bom').version('2022.12.00')
+            library('compose-bom', 'androidx.compose', 'compose-bom').version('2023.01.00')
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
             library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
             library('android-material', 'com.google.android.material', 'material').version('1.7.0')
