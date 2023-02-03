@@ -17,6 +17,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
 
+    implementation "me.onebone:toolbar-compose:2.3.5"
+
     implementation "androidx.activity:activity-compose"
 
     implementation project(path: ':adapters')

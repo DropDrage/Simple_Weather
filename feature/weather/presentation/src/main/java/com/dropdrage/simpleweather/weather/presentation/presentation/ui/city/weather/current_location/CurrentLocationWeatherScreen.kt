@@ -11,12 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.core.utils.LogTags
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
-import com.dropdrage.simpleweather.weather.presentation.presentation.ui.city.weather.CityWeatherScreen
+import com.dropdrage.simpleweather.weather.presentation.presentation.ui.city.weather.BaseCityWeatherScreen
+import com.dropdrage.simpleweather.weather.presentation.ui.cities_weather.CitiesSharedViewModel
 import com.dropdrage.simpleweather.weather.presentation.ui.city.weather.current_location.CurrentLocationWeatherViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -33,7 +33,7 @@ private const val REQUEST_INTERVAL = 5000L
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CurrentLocationWeatherScreen(citiesViewModelOwner: ViewModelStoreOwner) {
+internal fun CurrentLocationWeatherScreen(isVisible: Boolean, citiesSharedViewModel: CitiesSharedViewModel) {
     val localContext = LocalContext.current
 
     val viewModel = viewModel<CurrentLocationWeatherViewModel>()
@@ -112,5 +112,5 @@ fun CurrentLocationWeatherScreen(citiesViewModelOwner: ViewModelStoreOwner) {
     }
 
 
-    CityWeatherScreen(viewModel = viewModel, citiesViewModelOwner = citiesViewModelOwner)
+    BaseCityWeatherScreen(isVisible = isVisible, viewModel = viewModel, citiesSharedViewModel = citiesSharedViewModel)
 }

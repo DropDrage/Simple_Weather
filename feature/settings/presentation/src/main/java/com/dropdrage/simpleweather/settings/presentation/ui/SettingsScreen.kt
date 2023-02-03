@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.settings.presentation.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -32,16 +32,15 @@ fun SettingsScreen() {
         editSetting = setting
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = Medium100, vertical = Small150)
-    ) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(viewModel.settings) {
             SettingItem(
                 setting = it,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onSettingClick(it) })
+                    .clickable { onSettingClick(it) }
+                    .padding(horizontal = Medium100, vertical = Small150)
+            )
         }
     }
     if (editSetting != null) {

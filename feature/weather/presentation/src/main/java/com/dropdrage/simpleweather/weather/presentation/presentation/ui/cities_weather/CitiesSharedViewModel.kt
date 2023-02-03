@@ -1,12 +1,15 @@
 package com.dropdrage.simpleweather.weather.presentation.ui.cities_weather
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dropdrage.adapters.pool.PrefetchPlainViewPool
 import com.dropdrage.adapters.pool.ViewHolderProducer
 import com.dropdrage.simpleweather.weather.presentation.model.ViewCityTitle
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 private const val HOURLY_WEATHER_POOL_SIZE_PER_FRAGMENT = 8
 private const val HOURLY_WEATHER_POOL_INITIAL_SIZE: Int = (HOURLY_WEATHER_POOL_SIZE_PER_FRAGMENT * 2.5f).toInt()
@@ -17,13 +20,13 @@ private const val DAILY_WEATHER_POOL_INITIAL_SIZE: Int = DAILY_WEATHER_POOL_SIZE
 private const val DAILY_WEATHER_POOL_MAX_SIZE: Int = DAILY_WEATHER_POOL_SIZE_PER_FRAGMENT * 2
 
 internal interface ObservableCityTitle {
-    val currentCityTitle: LiveData<ViewCityTitle>
+    val currentCityTitle: Flow<ViewCityTitle>
 }
 
 internal class CitiesSharedViewModel : ViewModel(), ObservableCityTitle {
 
-    private val _currentCityTitle = MutableLiveData<ViewCityTitle>()
-    override val currentCityTitle: LiveData<ViewCityTitle> = _currentCityTitle
+    private val _currentCityTitle = MutableSharedFlow<ViewCityTitle>()
+    override val currentCityTitle: Flow<ViewCityTitle> = _currentCityTitle.asSharedFlow()
 
     lateinit var hourlyWeatherRecyclerPool: PrefetchPlainViewPool
         private set
@@ -65,7 +68,9 @@ internal class CitiesSharedViewModel : ViewModel(), ObservableCityTitle {
     }
 
     fun setCityTitle(city: ViewCityTitle) {
-        _currentCityTitle.value = city
+        viewModelScope.launch {
+            _currentCityTitle.emit(city)
+        }
     }
 
 

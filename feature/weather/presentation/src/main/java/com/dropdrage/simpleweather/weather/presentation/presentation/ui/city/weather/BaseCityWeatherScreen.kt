@@ -4,12 +4,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -18,6 +17,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dropdrage.common.domain.Range
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.common.presentation.utils.showToast
@@ -68,20 +67,18 @@ private val SIZE_WEATHER_METRIC_ICON = Large175
 private val SIZE_WEATHER_LIST_ICON = Large100
 
 @Composable
-internal fun <VM : BaseCityWeatherViewModel> CityWeatherScreen(
+internal fun <VM : BaseCityWeatherViewModel> BaseCityWeatherScreen(
+    isVisible: Boolean,
     viewModel: VM,
-    citiesViewModelOwner: ViewModelStoreOwner,
+    citiesSharedViewModel: CitiesSharedViewModel,
 ) {
     val localContext = LocalContext.current
 
-    val citiesSharedModel = viewModel<CitiesSharedViewModel>(viewModelStoreOwner = citiesViewModelOwner)
-
-    val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
 
     val hourlyWeatherListState = rememberLazyListState()
 
-    val currentHourWeather = viewModel.currentHourWeather.collectAsState(
+    val currentHourWeather by viewModel.currentHourWeather.collectAsState(
         initial = ViewCurrentHourWeather(
             weatherType = ViewWeatherType.ClearSky,
             temperature = "--/--",
@@ -91,7 +88,7 @@ internal fun <VM : BaseCityWeatherViewModel> CityWeatherScreen(
             "",
         )
     )
-    val currentDayWeather = viewModel.currentDayWeather.collectAsState(
+    val currentDayWeather by viewModel.currentDayWeather.collectAsState(
         initial = ViewCurrentDayWeather(
             weatherType = ViewWeatherType.ClearSky,
             temperatureRange = Range("", ""),
@@ -104,87 +101,111 @@ internal fun <VM : BaseCityWeatherViewModel> CityWeatherScreen(
             sunsetFormatted = "00:00"
         )
     )
-    val hourlyWeather = viewModel.hourlyWeather.collectAsState(initial = emptyList())
-    val dailyWeather = viewModel.dailyWeather.collectAsState(initial = emptyList())
+    val hourlyWeather by viewModel.hourlyWeather.collectAsState(initial = emptyList())
+    val dailyWeather by viewModel.dailyWeather.collectAsState(initial = emptyList())
+
 
     viewModel.error.collectInLaunchedEffect {
         if (it != null) {
             localContext.showToast(it.getMessage(localContext))
         }
     }
-    viewModel.cityTitle.collectInLaunchedEffect(citiesSharedModel::setCityTitle)
+    viewModel.cityTitle.collectInLaunchedEffect(citiesSharedViewModel::setCityTitle)
     viewModel.hourlyWeather.collectInLaunchedEffect {
         if (it.isNotEmpty()) {
             hourlyWeatherListState.scrollToItem(it.indexOfFirst { it.isNow })
         }
     }
 
-    Column(
+    key(isVisible) {
+        if (isVisible) {
+            viewModel.updateCityName()
+            viewModel.loadWeather()
+        } else {
+            viewModel.clearErrors()
+        }
+    }
+
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(Medium100)
-            .verticalScroll(state = scrollState)
     ) {
-        CurrentHourWeatherCard(currentHourWeather.value, modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(Medium150))
-
-        Title(title = stringResource(id = R.string.weather_today))
-        Spacer(modifier = Modifier.height(Medium100))
-        TodayWeatherMetrics(currentDayWeather.value)
-        Spacer(modifier = Modifier.height(Medium100))
-        Card(modifier = Modifier.fillMaxWidth()) {
-            SunTimes(
-                primaryColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                arcBackgroundColor = MaterialTheme.colorScheme.background,
-                arcThickness = Small100,
-                arcGroundEdgeMargin = Medium150,
-                timeTextTopMargin = Small100,
-                sunDrawableRes = R.drawable.ic_sun,
-                sunSize = Medium150,
-                sunriseTime = currentDayWeather.value.sunriseTime,
-                sunsetTime = currentDayWeather.value.sunsetTime,
-                sunriseFormatted = currentDayWeather.value.sunriseFormatted,
-                sunsetFormatted = currentDayWeather.value.sunsetFormatted,
-                modifier = Modifier.padding(Medium100)
-            )
+        item {
+            CurrentHourWeatherCard(currentHourWeather, modifier = Modifier.fillMaxWidth())
         }
-        Spacer(modifier = Modifier.height(Medium100))
-        Card(modifier = Modifier.fillMaxWidth()) {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(Medium100),
-                state = hourlyWeatherListState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Medium100, horizontal = Small100)
-            ) {
-                items(items = hourlyWeather.value, key = { it.dateTime.toString() }) {
-                    HourWeatherItem(
-                        weather = it,
-                        modifier = Modifier.clickable(interactionSource = interactionSource, indication = null) {
-                            localContext.showToast(it.weatherType.weatherDescriptionRes)
-                        }
-                    )
+
+        item {
+            Spacer(modifier = Modifier.height(Medium150))
+            Title(title = stringResource(id = R.string.weather_today))
+        }
+        item {
+            Spacer(modifier = Modifier.height(Medium100))
+            TodayWeatherMetrics(currentDayWeather)
+        }
+        item {
+            Spacer(modifier = Modifier.height(Medium100))
+            Card(modifier = Modifier.fillMaxWidth()) {
+                SunTimes(
+                    primaryColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    arcBackgroundColor = MaterialTheme.colorScheme.background,
+                    arcThickness = Small100,
+                    arcGroundEdgeMargin = Medium150,
+                    timeTextTopMargin = Small100,
+                    sunDrawableRes = R.drawable.ic_sun,
+                    sunSize = Medium150,
+                    sunriseTime = currentDayWeather.sunriseTime,
+                    sunsetTime = currentDayWeather.sunsetTime,
+                    sunriseFormatted = currentDayWeather.sunriseFormatted,
+                    sunsetFormatted = currentDayWeather.sunsetFormatted,
+                    modifier = Modifier.padding(Medium100)
+                )
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(Medium100))
+            Card(modifier = Modifier.fillMaxWidth()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(Medium100),
+                    state = hourlyWeatherListState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Medium100, horizontal = Small100)
+                ) {
+                    items(items = hourlyWeather, key = { it.dateTime.toString() }) {
+                        HourWeatherItem(
+                            weather = it,
+                            modifier = Modifier.clickable(interactionSource = interactionSource, indication = null) {
+                                localContext.showToast(it.weatherType.weatherDescriptionRes)
+                            }
+                        )
+                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(Medium150))
-        Title(title = stringResource(id = R.string.weather_daily_weather))
-        Spacer(modifier = Modifier.height(Medium100))
-        Card(modifier = Modifier.fillMaxWidth()) {
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(Medium100),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Medium100, horizontal = Small100)
-            ) {
-                items(items = dailyWeather.value, key = { it.dateFormatted }) {
-                    DayWeatherItem(
-                        weather = it,
-                        modifier = Modifier.clickable(interactionSource = interactionSource, indication = null) {
-                            localContext.showToast(it.weatherType.weatherDescriptionRes)
-                        }
-                    )
+        item {
+            Spacer(modifier = Modifier.height(Medium150))
+            Title(title = stringResource(id = R.string.weather_daily_weather))
+        }
+        item {
+            Spacer(modifier = Modifier.height(Medium100))
+            Card(modifier = Modifier.fillMaxWidth()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(Medium100),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Medium100, horizontal = Small100)
+                ) {
+                    items(items = dailyWeather, key = { it.dateFormatted }) {
+                        DayWeatherItem(
+                            weather = it,
+                            modifier = Modifier.clickable(interactionSource = interactionSource, indication = null) {
+                                localContext.showToast(it.weatherType.weatherDescriptionRes)
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -360,7 +381,7 @@ private fun WeatherMetric(
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(SIZE_WEATHER_METRIC_ICON)
         )
-        Column(modifier = Modifier.width(IntrinsicSize.Max)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(IntrinsicSize.Max)) {
             Text(
                 text = topText,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
