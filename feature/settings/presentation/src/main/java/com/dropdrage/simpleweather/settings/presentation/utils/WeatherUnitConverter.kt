@@ -1,7 +1,7 @@
 package com.dropdrage.simpleweather.settings.presentation.utils
 
 import android.content.Context
-import com.dropdrage.simpleweather.settings.WeatherUnit
+import com.dropdrage.simpleweather.data.settings.WeatherUnit
 import com.dropdrage.simpleweather.settings.presentation.model.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

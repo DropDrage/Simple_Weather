@@ -13,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,12 +22,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.whenStarted
 import com.dropdrage.simpleweather.core.presentation.ui.TextWithSubtext
 import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
 import com.dropdrage.simpleweather.core.style.Medium100
@@ -58,9 +61,10 @@ private const val difference = expanded - collapsed
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CitiesWeatherScreen(navigateCityList: () -> Unit, navigateSettings: () -> Unit) {
+    val localLifecycleOwner = LocalLifecycleOwner.current
 
-    val viewModel = viewModel<CitiesWeatherViewModel>()
-    val citiesSharedViewModel = viewModel<CitiesSharedViewModel>()
+    val viewModel = hiltViewModel<CitiesWeatherViewModel>()
+    val citiesSharedViewModel = hiltViewModel<CitiesSharedViewModel>()
 
     val cityTitle by citiesSharedViewModel.currentCityTitle.collectAsState(initial = ViewCityTitle("Default", "DF"))
     val cities by viewModel.cities.collectAsState(initial = emptyList())
@@ -69,6 +73,13 @@ fun CitiesWeatherScreen(navigateCityList: () -> Unit, navigateSettings: () -> Un
     val pagerState = rememberPagerState()
 
     val toolbarProgress = toolbarState.toolbarState.progress
+
+    LaunchedEffect(key1 = localLifecycleOwner) {
+        localLifecycleOwner.whenStarted {
+            println("Started")
+            viewModel.updateWeather()
+        }
+    }
 
     CollapsingToolbarScaffold(
         toolbar = {

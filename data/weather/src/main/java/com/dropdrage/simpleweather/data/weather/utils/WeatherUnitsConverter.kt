@@ -1,5 +1,12 @@
 package com.dropdrage.simpleweather.data.weather.utils
 
+import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.data.settings.PressureUnit
+import com.dropdrage.simpleweather.data.settings.TemperatureUnit
+import com.dropdrage.simpleweather.data.settings.VisibilityUnit
+import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
+import com.dropdrage.simpleweather.data.settings.utils.ApiSupportedUnits
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.CELSIUS_TO_FAHRENHEIT_MODIFIER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.CELSIUS_TO_FAHRENHEIT_OFFSET
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.HPA_TO_MM_HG_MODIFIER
@@ -9,13 +16,6 @@ import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModi
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_KM_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_MILE_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.MM_TO_INCH_DIVIDER
-import com.dropdrage.simpleweather.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.settings.PressureUnit
-import com.dropdrage.simpleweather.settings.TemperatureUnit
-import com.dropdrage.simpleweather.settings.VisibilityUnit
-import com.dropdrage.simpleweather.settings.WeatherUnitsPreferences
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
-import com.dropdrage.simpleweather.settings.utils.ApiSupportedUnits
 
 internal object WeatherUnitsConverter {
 

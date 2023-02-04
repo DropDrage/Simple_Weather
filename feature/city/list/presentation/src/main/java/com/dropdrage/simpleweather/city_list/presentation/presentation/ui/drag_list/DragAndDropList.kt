@@ -19,7 +19,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import com.dropdrage.adapters.differ.SameEquatable
+import com.dropdrage.simpleweather.city_list.presentation.presentation.ui.drag_list.SameEquatable
 import com.dropdrage.simpleweather.city_list.presentation.presentation.ui.drag_list.rememberDragDropListState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

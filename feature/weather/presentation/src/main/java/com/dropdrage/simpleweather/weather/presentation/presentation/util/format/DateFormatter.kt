@@ -1,6 +1,6 @@
 package com.dropdrage.simpleweather.weather.presentation.util.format
 
-import com.dropdrage.simpleweather.settings.GeneralPreferences
+import com.dropdrage.simpleweather.data.settings.GeneralPreferences
 import java.time.LocalDate
 import javax.inject.Inject
 

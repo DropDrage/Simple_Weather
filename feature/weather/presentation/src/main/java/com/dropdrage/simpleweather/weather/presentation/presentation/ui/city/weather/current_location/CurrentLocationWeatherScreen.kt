@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.core.utils.LogTags
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
@@ -36,7 +36,7 @@ private const val REQUEST_INTERVAL = 5000L
 internal fun CurrentLocationWeatherScreen(isVisible: Boolean, citiesSharedViewModel: CitiesSharedViewModel) {
     val localContext = LocalContext.current
 
-    val viewModel = viewModel<CurrentLocationWeatherViewModel>()
+    val viewModel = hiltViewModel<CurrentLocationWeatherViewModel>()
 
     val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_COARSE_LOCATION)
     val gpsActivationListener =

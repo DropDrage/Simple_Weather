@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.settings
+package com.dropdrage.simpleweather.data.settings
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumOrdinalPref

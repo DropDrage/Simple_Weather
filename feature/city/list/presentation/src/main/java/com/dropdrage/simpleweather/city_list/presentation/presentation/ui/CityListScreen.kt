@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city.domain.Country
@@ -66,7 +66,7 @@ import com.dropdrage.simpleweather.core.style.Small50
 fun CityListScreen(openSearchScreen: () -> Unit) {
     val localDensity = LocalDensity.current
 
-    val viewModel = viewModel<CityListViewModel>()
+    val viewModel = hiltViewModel<CityListViewModel>()
 
     var citiesCurrentWeather = remember { mutableStateListOf<ViewCityCurrentWeather>() }
 

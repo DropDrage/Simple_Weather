@@ -47,7 +47,6 @@ dependencyResolutionManagement {
             def navigationVersion = version('navigation', '2.5.3')
             library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)
             library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').versionRef(navigationVersion)
-            library('gradle-plugin-navigation-safeargs', 'androidx.navigation', 'navigation-safe-args-gradle-plugin').versionRef(navigationVersion)
             bundle('navigation', ['navigation-fragment', 'navigation-ui'])
 
             def hiltVersion = version('hilt', '2.44.2')
@@ -100,7 +99,7 @@ dependencyResolutionManagement {
 rootProject.name = "Simple Weather"
 
 include ':app'
-include ':adapters'
+//include ':adapters'
 include ':core:domain'
 include ':core:presentation'
 include ':core:style'

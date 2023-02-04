@@ -1,8 +1,0 @@
-<resources>
-
-    <style name="Theme.AppBar.Primary" parent="ThemeOverlay.Material3.Dark">
-        <item name="iconTint">?colorPrimary</item>
-        <item name="colorControlNormal">?colorPrimary</item>
-    </style>
-
-</resources>

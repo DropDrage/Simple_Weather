@@ -34,7 +34,7 @@ import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
 import com.dropdrage.simpleweather.core.style.Medium100
 import com.dropdrage.simpleweather.core.style.Medium150
 import com.dropdrage.simpleweather.core.style.Small100
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
 import com.dropdrage.simpleweather.settings.presentation.R
 import com.dropdrage.simpleweather.settings.presentation.model.AnySetting
 import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting

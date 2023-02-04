@@ -13,6 +13,4 @@ dependencies {
     androidTestImplementation composeBom
 
     implementation 'androidx.compose.material3:material3'
-
-    implementation project(path: ':common:presentation')
 }

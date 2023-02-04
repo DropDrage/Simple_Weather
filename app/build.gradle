@@ -6,6 +6,7 @@ plugins {
 
 apply from: import_android
 apply from: component_retrofit
+apply from: component_compose
 apply from: build_feature_buildConfig
 apply from: build_feature_resValues
 
@@ -34,6 +35,11 @@ android {
 }
 
 dependencies {
+    implementation "androidx.activity:activity-compose"
+
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -48,7 +54,7 @@ dependencies {
 
     //Utils
     implementation androidLibs.kotpref
-
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
@@ -59,7 +65,6 @@ dependencies {
     kspTest androidLibs.hilt.compiler
 
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
-    implementation project(path: ':common:presentation') // ChangeableAppBar
     implementation project(path: ':core:style')
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
@@ -68,6 +73,7 @@ dependencies {
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:list:presentation')
     implementation project(path: ':feature:city:search:domain')
+    implementation project(path: ':feature:city:search:presentation')
     implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')

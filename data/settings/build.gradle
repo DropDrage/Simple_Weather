@@ -2,7 +2,7 @@ apply from: import_androidEmptyLibrary
 apply from: build_feature_resValues
 
 android {
-    namespace 'com.dropdrage.simpleweather.settings.data'
+    namespace 'com.dropdrage.simpleweather.data.settings'
 }
 
 dependencies {

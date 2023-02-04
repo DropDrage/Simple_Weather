@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.simpleweather.core.presentation.ui.TextWithSubtext
 import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
 import com.dropdrage.simpleweather.core.style.Medium100
@@ -24,7 +24,7 @@ import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting
 
 @Composable
 fun SettingsScreen() {
-    val viewModel = viewModel<SettingsViewModel>()
+    val viewModel = hiltViewModel<SettingsViewModel>()
 
     var editSetting by remember { mutableStateOf<ViewSetting?>(null) }
 

@@ -32,7 +32,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city.domain.Country
@@ -48,7 +48,7 @@ import com.dropdrage.simpleweather.core.style.Small150
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CitySearchScreen(navigateBack: () -> Unit) {
-    val viewModel = viewModel<CitySearchViewModel>()
+    val viewModel = hiltViewModel<CitySearchViewModel>()
 
     val focusRequester = remember { FocusRequester() }
 

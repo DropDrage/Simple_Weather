@@ -1,20 +1,16 @@
 apply from: import_androidUiLibrary
 apply from: component_compose
 
-apply plugin: 'androidx.navigation.safeargs.kotlin'
-
 android {
     namespace 'com.dropdrage.simpleweather.city_list.presentation'
 }
 
 dependencies {
-    implementation project(path: ':adapters')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':common:presentation')
     implementation project(path: ':core:domain')
     implementation project(path: ':core:presentation')
     implementation project(path: ':core:style')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:search:presentation')
+    implementation project(path: ':common:domain')
+    implementation project(path: ':common:presentation')
     implementation project(path: ':feature:city:domain')
+    implementation project(path: ':feature:city:list:domain')
 }
