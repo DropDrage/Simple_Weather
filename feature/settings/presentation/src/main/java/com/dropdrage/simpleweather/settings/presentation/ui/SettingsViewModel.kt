@@ -1,11 +1,10 @@
 package com.dropdrage.simpleweather.settings.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dropdrage.simpleweather.settings.GeneralFormat
-import com.dropdrage.simpleweather.settings.GeneralPreferences
-import com.dropdrage.simpleweather.settings.WeatherUnitsPreferences
+import androidx.lifecycle.viewModelScope
+import com.dropdrage.simpleweather.data.settings.GeneralFormat
+import com.dropdrage.simpleweather.data.settings.GeneralPreferences
+import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.settings.presentation.model.AnySetting
 import com.dropdrage.simpleweather.settings.presentation.model.ViewDateFormat
 import com.dropdrage.simpleweather.settings.presentation.model.ViewPrecipitationUnit
@@ -18,6 +17,10 @@ import com.dropdrage.simpleweather.settings.presentation.model.ViewWindSpeedUnit
 import com.dropdrage.simpleweather.settings.presentation.utils.GeneralFormatConverter
 import com.dropdrage.simpleweather.settings.presentation.utils.WeatherUnitConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,8 +39,8 @@ internal class SettingsViewModel @Inject constructor(
         generalFormatConverter.convertToViewSetting(GeneralPreferences.dateFormat),
     )
 
-    private val _settingChanged = MutableLiveData<ViewSetting>()
-    val settingChanged: LiveData<ViewSetting> = _settingChanged
+    private val _settingChanged = MutableSharedFlow<ViewSetting>()
+    val settingChanged: Flow<ViewSetting> = _settingChanged.asSharedFlow()
 
 
     fun getCurrentValue(setting: AnySetting): AnySetting = when (setting) {
@@ -63,11 +66,11 @@ internal class SettingsViewModel @Inject constructor(
 
         val changedSettingIndex = settings.indexOfFirst { it.values.contains(setting) }
         settings[changedSettingIndex].currentValue =
-            if (setting is GeneralFormat) generalFormatConverter.convertToValue(
-                setting
-            )
+            if (setting is GeneralFormat) generalFormatConverter.convertToValue(setting)
             else weatherUnitConverter.convertToValue(setting)
 
-        _settingChanged.value = settings[changedSettingIndex]
+        viewModelScope.launch {
+            _settingChanged.emit(settings[changedSettingIndex])
+        }
     }
 }

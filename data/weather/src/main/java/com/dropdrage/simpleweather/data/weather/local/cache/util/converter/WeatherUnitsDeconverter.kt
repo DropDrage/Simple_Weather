@@ -1,6 +1,11 @@
 package com.dropdrage.simpleweather.data.weather.local.cache.util.converter
 
 import android.util.Log
+import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.data.settings.PressureUnit
+import com.dropdrage.simpleweather.data.settings.TemperatureUnit
+import com.dropdrage.simpleweather.data.settings.VisibilityUnit
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
 import com.dropdrage.simpleweather.data.weather.local.cache.util.CacheUnits
 import com.dropdrage.simpleweather.data.weather.remote.utils.ApiUnits
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.CELSIUS_TO_FAHRENHEIT_MODIFIER
@@ -12,11 +17,6 @@ import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModi
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_KM_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_MILE_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.MM_TO_INCH_DIVIDER
-import com.dropdrage.simpleweather.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.settings.PressureUnit
-import com.dropdrage.simpleweather.settings.TemperatureUnit
-import com.dropdrage.simpleweather.settings.VisibilityUnit
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
 
 private const val TAG = "Deconverter"
 

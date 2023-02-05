@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.data.weather.remote
 
+import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.data.settings.TemperatureUnit
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
 import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherResponseDto
-import com.dropdrage.simpleweather.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.settings.TemperatureUnit
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*

@@ -2,9 +2,9 @@ package com.dropdrage.simpleweather.core.presentation.utils
 
 import android.content.Context
 import com.dropdrage.simpleweather.core.presentation.R
-import com.dropdrage.simpleweather.settings.CanBePluralUnit
-import com.dropdrage.simpleweather.settings.WeatherUnit
-import com.dropdrage.simpleweather.settings.WeatherUnitsPreferences
+import com.dropdrage.simpleweather.data.settings.CanBePluralUnit
+import com.dropdrage.simpleweather.data.settings.WeatherUnit
+import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

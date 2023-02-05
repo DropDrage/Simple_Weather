@@ -17,10 +17,10 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:domain')
     implementation project(path: ':core:domain')
     implementation project(path: ':core:utils')
+    implementation project(path: ':common:data')
+    implementation project(path: ':common:domain')
     implementation project(path: ':data:settings')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:weather:domain')

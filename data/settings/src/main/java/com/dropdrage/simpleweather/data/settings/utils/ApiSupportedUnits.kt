@@ -1,10 +1,10 @@
-package com.dropdrage.simpleweather.settings.utils
+package com.dropdrage.simpleweather.data.settings.utils
 
-import com.dropdrage.simpleweather.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.settings.PressureUnit
-import com.dropdrage.simpleweather.settings.TemperatureUnit
-import com.dropdrage.simpleweather.settings.VisibilityUnit
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
+import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.data.settings.PressureUnit
+import com.dropdrage.simpleweather.data.settings.TemperatureUnit
+import com.dropdrage.simpleweather.data.settings.VisibilityUnit
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
 
 object ApiSupportedUnits {
     val isTemperatureSupported = TemperatureUnit::class.java.interfaces.contains(ApiSupportedParam::class.java)

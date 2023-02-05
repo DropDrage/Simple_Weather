@@ -12,13 +12,10 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.utils.ChangeableAppBar
 import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
-import com.dropdrage.common.presentation.utils.viewLifecycleScope
 import com.dropdrage.simpleweather.weather.presentation.R
 import com.dropdrage.simpleweather.weather.presentation.databinding.FragmentCitiesWeatherBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
@@ -65,10 +62,10 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
     }
 
     private fun observeViewModel() = viewModel.apply {
-        collectWithViewLifecycle(cities, {
+        collectWithViewLifecycle(cities) {
             citiesAdapter.citiesCount = it.size
             updateTabLayout()
-        })
+        }
     }
 
     private fun updateTabLayout() {
@@ -76,13 +73,11 @@ class CitiesWeatherFragment : Fragment(R.layout.fragment_cities_weather) {
         TabLayoutMediator(binding.tabs, binding.citiesWeather) { _, _ -> }.also { tabLayoutMediator = it }.attach()
     }
 
-    private fun observeCityTitle() = observableCityTitle.currentCityTitle.observe(viewLifecycleOwner) {
+    private fun observeCityTitle() = collectWithViewLifecycle(observableCityTitle.currentCityTitle) {
         val context = requireContext()
         binding.collapsingToolbar.apply {
-            viewLifecycleScope.launch(Dispatchers.Default) { //takes 20ms with profiler w/o coroutines
-                title = it.city.getMessage(context)
-                subtitle = it.countryCode.getMessage(context)
-            }
+            title = it.city.getMessage(context)
+            subtitle = it.countryCode.getMessage(context)
         }
     }
 

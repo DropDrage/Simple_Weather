@@ -1,12 +1,12 @@
 package com.dropdrage.simpleweather.data.weather.local.cache.util
 
+import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
+import com.dropdrage.simpleweather.data.settings.PressureUnit
+import com.dropdrage.simpleweather.data.settings.TemperatureUnit
+import com.dropdrage.simpleweather.data.settings.VisibilityUnit
+import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
+import com.dropdrage.simpleweather.data.settings.utils.ApiSupportedUnits
 import com.dropdrage.simpleweather.data.weather.remote.utils.ApiUnits
-import com.dropdrage.simpleweather.settings.PrecipitationUnit
-import com.dropdrage.simpleweather.settings.PressureUnit
-import com.dropdrage.simpleweather.settings.TemperatureUnit
-import com.dropdrage.simpleweather.settings.VisibilityUnit
-import com.dropdrage.simpleweather.settings.WindSpeedUnit
-import com.dropdrage.simpleweather.settings.utils.ApiSupportedUnits
 
 internal object CacheUnits {
     val TEMPERATURE = TemperatureUnit.CELSIUS

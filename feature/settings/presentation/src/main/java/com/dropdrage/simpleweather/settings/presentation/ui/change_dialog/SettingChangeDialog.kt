@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.util.extension.setLinearLayoutManager
+import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
 import com.dropdrage.simpleweather.settings.presentation.R
 import com.dropdrage.simpleweather.settings.presentation.databinding.DialogSettingChangeBinding
 import com.dropdrage.simpleweather.settings.presentation.model.AnySetting
@@ -52,13 +53,13 @@ internal class SettingChangeDialog(
     }
 
     private fun observeViewModel() = viewModel.apply {
-        title.observe(viewLifecycleOwner) {
+        collectWithViewLifecycle(title) {
             binding.title.text = it
         }
-        selectedSetting.observe(viewLifecycleOwner) {
+        collectWithViewLifecycle(selectedSetting) {
             settingAdapter.selectedSetting = it
         }
-        values.observe(viewLifecycleOwner) {
+        collectWithViewLifecycle(values) {
             settingAdapter.values = it
         }
     }

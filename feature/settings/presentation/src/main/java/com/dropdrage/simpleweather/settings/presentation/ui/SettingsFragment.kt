@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.dropdrage.common.presentation.util.extension.setLinearLayoutManager
+import com.dropdrage.common.presentation.utils.collectWithViewLifecycle
 import com.dropdrage.simpleweather.settings.presentation.change_dialog.SettingChangeDialog
 import com.dropdrage.simpleweather.settings.presentation.change_dialog.SettingChangeViewModel
 import com.dropdrage.simpleweather.settings.presentation.databinding.FragmentSettingsBinding
@@ -57,9 +58,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun observeViewModel() = viewModel.apply {
-        settingChanged.observe(viewLifecycleOwner) {
-            settingsAdapter.changeSetting(it)
-        }
+        collectWithViewLifecycle(settingChanged, settingsAdapter::changeSetting)
     }
 
 }
