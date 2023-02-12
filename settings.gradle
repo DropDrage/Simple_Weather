@@ -99,7 +99,6 @@ dependencyResolutionManagement {
 rootProject.name = "Simple Weather"
 
 include ':app'
-//include ':adapters'
 include ':core:domain'
 include ':core:presentation'
 include ':core:style'
