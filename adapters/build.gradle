@@ -4,7 +4,23 @@ apply from: build_feature_buildConfig
 android {
     namespace 'com.dropdrage.adapters'
 
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+    defaultConfig {
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
+    }
     buildFeatures {
         viewBinding true
     }
+}
+
+dependencies {
+    testImplementation testLibs.bundles.unit5
+    testImplementation testLibs.junit5.params
+    testRuntimeOnly testLibs.junit5.runtime
+
+    testImplementation "org.slf4j:slf4j-nop:2.0.6"
 }

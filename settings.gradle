@@ -89,8 +89,27 @@ dependencyResolutionManagement {
             library('junit-ext', 'androidx.test.ext', 'junit').version('1.1.5')
             library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
 
-            bundle('unit', ['junit'])
+            def junit5Version = version('junit5', '5.8.2')
+            library('junit5', 'org.junit.jupiter', 'junit-jupiter-api').versionRef(junit5Version)
+            library('junit5-runtime', 'org.junit.jupiter', 'junit-jupiter-engine').versionRef(junit5Version)
+            library('junit5-params', 'org.junit.jupiter', 'junit-jupiter-params').versionRef(junit5Version)
+
+            def junit5AndroidVersion = version('junit5-android', '1.3.0')
+            library('junit5-android', 'de.mannodermaus.junit5', 'android-test-core').versionRef(junit5AndroidVersion)
+            library('junit5-android-runtime', 'de.mannodermaus.junit5', 'android-test-runner').versionRef(junit5AndroidVersion)
+
+            library('truth', 'com.google.truth', 'truth').version('1.1.3')
+
+            def mockkVersion = version('mockk', '1.13.4')
+            library('mockk-android', 'io.mockk', 'mockk-android').versionRef(mockkVersion)
+            library('mockk-agent', 'io.mockk', 'mockk-agent').versionRef(mockkVersion)
+
+            bundle('unit', ['junit', 'truth', 'mockk-android', 'mockk-agent'])
+            bundle('unit5', ['junit5', 'truth', 'mockk-android', 'mockk-agent'])
             bundle('instrumental', ['junit-ext', 'espresso'])
+            bundle('instrumental5', ['junit5-android', 'espresso'])
+
+            plugin('junit5-android', 'de.mannodermaus.android-junit5').version('1.8.2.1')
         }
     }
 }

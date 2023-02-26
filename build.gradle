@@ -71,3 +71,7 @@ task cleanBaselines() {
         }
     })
 }
+
+test {
+    useJUnitPlatform()
+}
