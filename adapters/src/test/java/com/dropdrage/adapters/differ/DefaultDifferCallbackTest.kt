@@ -24,6 +24,7 @@ internal class DefaultDifferCallbackTest {
     fun `areItemsTheSame false`() {
         val a = FakeSameEquatable(0, 1)
         val b = FakeSameEquatable(1, 1)
+
         assertFalse(differ.areItemsTheSame(a, b))
     }
 

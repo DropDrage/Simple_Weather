@@ -55,6 +55,12 @@ dependencies {
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     //Tests
+    testImplementation testLibs.bundles.unit5
+    testImplementation testLibs.junit5.params
+    testRuntimeOnly testLibs.junit5.runtime
+
+    testImplementation testLibs.coroutines
+
     androidTestImplementation androidLibs.hilt.testing
     kspAndroidTest androidLibs.hilt.compiler
     testImplementation androidLibs.hilt.testing

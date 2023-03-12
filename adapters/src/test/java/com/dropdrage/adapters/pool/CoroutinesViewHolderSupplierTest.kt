@@ -1,6 +1,7 @@
 package com.dropdrage.adapters.pool
 
 import android.os.Handler
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -11,10 +12,14 @@ import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkConstructor
+import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkConstructor
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.isActive
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -47,11 +52,11 @@ internal class CoroutinesViewHolderSupplierTest {
 
         supplier.start()
 
-        assert(supplier.isActive)
+        assertTrue(supplier.isActive)
 
         supplier.stop()
 
-        assert(!supplier.isActive)
+        assertFalse(supplier.isActive)
 
         supplier.prefetch(VIEW_TYPE, 1)
 
@@ -65,6 +70,7 @@ internal class CoroutinesViewHolderSupplierTest {
 
         supplier.start()
         supplier.stop()
+
         assertThrows<IllegalStateException> { supplier.start() }
     }
 
@@ -117,9 +123,13 @@ internal class CoroutinesViewHolderSupplierTest {
     @Test
     fun onItemCreatedOutside() {
         val supplier = createSupplier()
+        mockkStatic(Log::class)
+        every { Log.w(any(), any<String>()) } returns 0
 
         assertDoesNotThrow { supplier.onItemCreatedOutside(VIEW_TYPE) }
         //does nothing noticeable outside so nothing to check
+
+        unmockkStatic(Log::class)
     }
 
 

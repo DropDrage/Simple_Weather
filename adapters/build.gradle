@@ -21,6 +21,4 @@ dependencies {
     testImplementation testLibs.bundles.unit5
     testImplementation testLibs.junit5.params
     testRuntimeOnly testLibs.junit5.runtime
-
-    testImplementation "org.slf4j:slf4j-nop:2.0.6"
 }
