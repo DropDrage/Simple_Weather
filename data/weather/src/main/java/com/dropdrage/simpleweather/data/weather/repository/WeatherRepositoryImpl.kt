@@ -37,7 +37,7 @@ class WeatherRepositoryImpl @Inject internal constructor(
     private val locationDao: LocationDao,
     private val dayWeatherDao: DayWeatherDao,
     private val weatherCacheDao: WeatherCacheDao,
-) : CachedRepository(LogTags.WEATHER), WeatherRepository {
+) : CachedRepository<Weather>(LogTags.WEATHER), WeatherRepository {
 
     override suspend fun getWeatherFromNow(location: Location): Resource<Weather> {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)

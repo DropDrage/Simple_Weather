@@ -56,7 +56,6 @@ dependencies {
 
     //Tests
     testImplementation testLibs.bundles.unit5
-    testImplementation testLibs.junit5.params
     testRuntimeOnly testLibs.junit5.runtime
 
     testImplementation testLibs.coroutines

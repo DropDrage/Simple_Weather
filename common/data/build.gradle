@@ -2,11 +2,22 @@ apply from: import_androidEmptyLibrary
 
 android {
     namespace 'com.dropdrage.common.data'
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
     implementation androidLibs.room.common
     implementation kotlinLibs.coroutines
+
+    testImplementation testLibs.bundles.unit5
+    testRuntimeOnly testLibs.junit5.runtime
+
+    testImplementation testLibs.coroutines
 
     implementation project(path: ':common:domain')
 }
