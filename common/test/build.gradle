@@ -1,10 +1,10 @@
 apply from: import_library
 
 dependencies {
-    testImplementation testLibs.mockk
-    testImplementation testLibs.mockk.agent
+    implementation testLibs.mockk
+    implementation testLibs.mockk.agent
 
-    testImplementation androidLibs.android
+    implementation androidLibs.android
 
-    testImplementation testLibs.coroutines
+    implementation testLibs.coroutines
 }

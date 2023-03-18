@@ -65,7 +65,7 @@ dependencies {
     implementation project(path: ':core:style')
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
     implementation project(path: ':common:presentation') // ChangeableAppBar
-    testImplementation project(path: ':common:test') // ChangeableAppBar
+    testImplementation project(path: ':common:test')
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
     implementation project(path: ':data:weather')
