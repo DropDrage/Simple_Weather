@@ -17,7 +17,8 @@ class CityRepositoryImpl @Inject internal constructor(
     private val dao: CityDao,
 ) : SimpleRepository<City>(LogTags.CITY), CityRepository {
 
-    override val orderedCities: Flow<List<City>> = dao.getAllOrderedList().map { it.map(CityModel::toDomain) }
+    override val orderedCities: Flow<List<City>>
+        get() = dao.getAllOrderedList().map { it.map(CityModel::toDomain) }
 
 
     override suspend fun addCity(city: City) {

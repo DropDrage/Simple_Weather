@@ -1,10 +1,10 @@
 package com.dropdrage.adapters.pool
 
 import android.os.Handler
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.test.util.mockLogW
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -12,10 +12,8 @@ import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkConstructor
-import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkConstructor
-import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.isActive
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -121,15 +119,11 @@ internal class CoroutinesViewHolderSupplierTest {
     }
 
     @Test
-    fun onItemCreatedOutside() {
+    fun onItemCreatedOutside() = mockLogW {
         val supplier = createSupplier()
-        mockkStatic(Log::class)
-        every { Log.w(any(), any<String>()) } returns 0
 
         assertDoesNotThrow { supplier.onItemCreatedOutside(VIEW_TYPE) }
         //does nothing noticeable outside so nothing to check
-
-        unmockkStatic(Log::class)
     }
 
 

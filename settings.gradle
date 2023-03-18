@@ -32,6 +32,7 @@ dependencyResolutionManagement {
         }
 
         androidLibs {
+            library('android', 'com.google.android', 'android').version('4.1.1.4')
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
             library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
             library('android-material', 'com.google.android.material', 'material').version('1.7.0')
@@ -85,8 +86,6 @@ dependencyResolutionManagement {
         }
 
         testLibs {
-            library('junit', 'junit', 'junit').version('4.13.2')
-            library('junit-ext', 'androidx.test.ext', 'junit').version('1.1.5')
             library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
 
             def junit5Version = version('junit5', '5.8.2')
@@ -103,14 +102,13 @@ dependencyResolutionManagement {
             library('robolectric', 'org.robolectric', 'robolectric').version('4.9.2')
 
             def mockkVersion = version('mockk', '1.13.4')
+            library('mockk', 'io.mockk', 'mockk').versionRef(mockkVersion)
             library('mockk-android', 'io.mockk', 'mockk-android').versionRef(mockkVersion)
             library('mockk-agent', 'io.mockk', 'mockk-agent').versionRef(mockkVersion)
 
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-test').version(coroutinesVersion)
 
-            bundle('unit', ['junit', 'truth', 'mockk-android', 'mockk-agent'])
             bundle('unit5', ['junit5', 'slf4j-nop', 'truth', 'mockk-android', 'mockk-agent'])
-            bundle('instrumental', ['junit-ext', 'espresso'])
             bundle('instrumental5', ['junit5-android', 'espresso'])
 
             plugin('junit5-android', 'de.mannodermaus.android-junit5').version('1.8.2.1')
@@ -129,6 +127,7 @@ include ':core:utils'
 include ':common:data'
 include ':common:domain'
 include ':common:presentation'
+include ':common:test'
 include ':data:weather'
 include ':data:location'
 include ':data:city'

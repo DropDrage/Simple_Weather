@@ -55,9 +55,6 @@ dependencies {
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     //Tests
-    testImplementation testLibs.bundles.unit5
-    testRuntimeOnly testLibs.junit5.runtime
-
     testImplementation testLibs.coroutines
 
     androidTestImplementation androidLibs.hilt.testing
@@ -65,9 +62,10 @@ dependencies {
     testImplementation androidLibs.hilt.testing
     kspTest androidLibs.hilt.compiler
 
+    implementation project(path: ':core:style')
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
     implementation project(path: ':common:presentation') // ChangeableAppBar
-    implementation project(path: ':core:style')
+    testImplementation project(path: ':common:test') // ChangeableAppBar
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
     implementation project(path: ':data:weather')

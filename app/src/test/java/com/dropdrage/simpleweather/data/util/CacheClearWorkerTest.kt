@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.data.util
 
-import android.util.Log
 import androidx.work.ListenableWorker.*
 import androidx.work.WorkManager
 import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
+import com.dropdrage.test.util.runTestWithMockLogE
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -66,16 +66,12 @@ internal class CacheClearWorkerTest {
     }
 
     @Test
-    fun `doWork throws exception`() = runTest {
+    fun `doWork throws exception`() = runTestWithMockLogE {
         coEvery { cacheRepository.clearOutdated() } throws Exception()
-        mockkStatic(Log::class)
-        every { Log.e(any(), any(), any()) } returns 0
 
         val result = worker.doWork()
 
         assertEquals(Result.failure(), result)
-
-        unmockkStatic(Log::class)
     }
 
 }

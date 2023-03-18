@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
-    testImplementation testLibs.bundles.unit
-    androidTestImplementation testLibs.bundles.instrumental
+    testImplementation testLibs.bundles.unit5
+    androidTestImplementation testLibs.bundles.instrumental5
+    testRuntimeOnly testLibs.junit5.runtime
 }

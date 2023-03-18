@@ -1,10 +1,7 @@
 package com.dropdrage.common.data.repository
 
-import android.util.Log
 import com.dropdrage.common.domain.Resource
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
+import com.dropdrage.test.util.mockLogE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -38,17 +35,13 @@ internal class SimpleRepositoryTest {
     }
 
     @Test
-    fun `simplyResourceWrap throws Exception`() {
+    fun `simplyResourceWrap throws Exception`() = mockLogE {
         val exception = Exception()
-        mockkStatic(Log::class)
-        every { Log.e(any(), any(), any()) } returns 0
 
         val result = repository.simplyResourceWrapFake { throw exception }
 
         assertTrue(result is Resource.Error)
         assertEquals(exception, (result as Resource.Error).exception)
-
-        unmockkStatic(Log::class)
     }
 
 }

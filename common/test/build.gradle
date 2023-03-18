@@ -1,0 +1,10 @@
+apply from: import_library
+
+dependencies {
+    testImplementation testLibs.mockk
+    testImplementation testLibs.mockk.agent
+
+    testImplementation androidLibs.android
+
+    testImplementation testLibs.coroutines
+}

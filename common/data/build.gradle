@@ -20,4 +20,5 @@ dependencies {
     testImplementation testLibs.coroutines
 
     implementation project(path: ':common:domain')
+    testImplementation project(path: ':common:test')
 }

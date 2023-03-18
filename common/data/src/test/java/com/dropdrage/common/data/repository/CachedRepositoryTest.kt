@@ -1,10 +1,8 @@
 package com.dropdrage.common.data.repository
 
-import android.util.Log
 import com.dropdrage.common.data.LocalResource
 import com.dropdrage.common.domain.Resource
-import io.mockk.every
-import io.mockk.mockkStatic
+import com.dropdrage.test.util.runTestWithMockLogE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -67,31 +65,23 @@ internal class CachedRepositoryTest {
 
 
     @Test
-    fun `processOrEmit throw IOException with LocalResource Success`() = runTest {
-        mockkStatic(Log::class) {
-            every { Log.e(any(), any(), any()) } returns 0
+    fun `processOrEmit throw IOException with LocalResource Success`() = runTestWithMockLogE {
+        val exception = IOException()
+        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
+            throw exception
+        }.firstOrNull()
 
-            val exception = IOException()
-            val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
-                throw exception
-            }.firstOrNull()
-
-            assertNull(result)
-        }
+        assertNull(result)
     }
 
     @Test
-    fun `processOrEmit throw IOException with LocalResource NotFound`() = runTest {
-        mockkStatic(Log::class) {
-            every { Log.e(any(), any(), any()) } returns 0
+    fun `processOrEmit throw IOException with LocalResource NotFound`() = runTestWithMockLogE {
+        val exception = IOException()
+        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+            throw exception
+        }.first()
 
-            val exception = IOException()
-            val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
-                throw exception
-            }.first()
-
-            assertTrue(result is Resource.CantObtainResource)
-        }
+        assertTrue(result is Resource.CantObtainResource)
     }
 
     @Test
@@ -106,32 +96,24 @@ internal class CachedRepositoryTest {
     }
 
     @Test
-    fun `processOrEmit throw Exception with LocalResource NotFound`() = runTest {
-        mockkStatic(Log::class) {
-            every { Log.e(any(), any(), any()) } returns 0
+    fun `processOrEmit throw Exception with LocalResource NotFound`() = runTestWithMockLogE {
+        val exception = Exception()
+        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
+            throw exception
+        }.firstOrNull()
 
-            val exception = Exception()
-            val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
-                throw exception
-            }.firstOrNull()
-
-            assertNull(result)
-        }
+        assertNull(result)
     }
 
     @Test
-    fun `processOrEmit throw Exception with LocalResource not Success`() = runTest {
-        mockkStatic(Log::class) {
-            every { Log.e(any(), any(), any()) } returns 0
+    fun `processOrEmit throw Exception with LocalResource not Success`() = runTestWithMockLogE {
+        val exception = Exception()
+        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+            throw exception
+        }.first()
 
-            val exception = Exception()
-            val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
-                throw exception
-            }.first()
-
-            assertTrue(result is Resource.Error)
-            assertEquals(exception, (result as Resource.Error).exception)
-        }
+        assertTrue(result is Resource.Error)
+        assertEquals(exception, (result as Resource.Error).exception)
     }
 
 }
