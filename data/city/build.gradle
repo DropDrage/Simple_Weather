@@ -14,25 +14,18 @@ android {
             buildConfigField "String", SEARCH_URL, '"https://geocoding-api.open-meteo.com/v1/"'
         }
     }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
 }
 
 dependencies {
-    testImplementation testLibs.junit5.params
-
     testImplementation testLibs.coroutines
 
     implementation project(path: ':core:domain')
     implementation project(path: ':core:utils')
     implementation project(path: ':common:data')
     implementation project(path: ':common:domain')
-    testImplementation project(path: ':common:test')
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:domain')
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }

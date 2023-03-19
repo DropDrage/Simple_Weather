@@ -3,12 +3,6 @@ apply from: build_feature_resValues
 
 android {
     namespace 'com.dropdrage.simpleweather.core.presentation'
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
 }
 
 dependencies {

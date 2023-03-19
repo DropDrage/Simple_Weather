@@ -1,10 +1,11 @@
 apply from: import_library
+apply plugin: "java-test-fixtures"
 
 dependencies {
-    implementation testLibs.mockk
-    implementation testLibs.mockk.agent
+    testFixturesImplementation testLibs.mockk
+    testFixturesImplementation testLibs.mockk.agent
 
-    implementation androidLibs.android
+    testFixturesCompileOnly androidLibs.android
 
-    implementation testLibs.coroutines
+    testFixturesImplementation testLibs.coroutines
 }
