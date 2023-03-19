@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.dropdrage.test.util.mockLogW
+import com.dropdrage.test.util.mockLooper
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -127,10 +128,14 @@ internal class CoroutinesViewHolderSupplierTest {
     }
 
 
-    private fun createSupplier(recordPrivateCalls: Boolean = false) = spyk(
-        CoroutinesViewHolderSupplier(mockk(), testUtilsClass::viewHolderProducer),
-        recordPrivateCalls = recordPrivateCalls
-    )
+    private fun createSupplier(recordPrivateCalls: Boolean = false): CoroutinesViewHolderSupplier {
+        mockLooper {
+            return spyk(
+                CoroutinesViewHolderSupplier(mockk(), testUtilsClass::viewHolderProducer),
+                recordPrivateCalls = recordPrivateCalls
+            )
+        }
+    }
 
     private fun createInitializedSupplier(recordPrivateCalls: Boolean = false) =
         createSupplier(recordPrivateCalls).apply {

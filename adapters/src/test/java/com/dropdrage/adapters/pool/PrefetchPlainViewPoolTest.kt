@@ -1,13 +1,19 @@
 package com.dropdrage.adapters.pool
 
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.test.util.mockLooper
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertNull
+import io.mockk.justRun
+import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.spyk
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -32,47 +38,37 @@ internal class PrefetchPlainViewPoolTest {
 
     @ParameterizedTest
     @ValueSource(ints = [-1, 0, 1, 2, 10])
-    fun `create pool with coroutines supplier with default prefetch`(maxRecycledViews: Int) {
-        mockkConstructor(CoroutinesViewHolderSupplier::class)
-        every { anyConstructed<CoroutinesViewHolderSupplier>().start() } just Runs
-        every { anyConstructed<CoroutinesViewHolderSupplier>().prefetch(any(), any()) } just Runs
-        every { anyConstructed<CoroutinesViewHolderSupplier>()["createItem"](any<Int>()) } just Awaits
+    fun `create pool with coroutines supplier with default prefetch`(maxRecycledViews: Int) = mockLooper {
+        mockSupplierConstructor {
+            val pool = spyk(
+                PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(mockk(), mockk(), maxRecycledViews),
+                recordPrivateCalls = true
+            )
 
-        val pool = spyk(
-            PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(mockk(), mockk(), maxRecycledViews),
-            recordPrivateCalls = true
-        )
-
-        val viewHolderSupplier = pool.getViewHolderSupplier()
-        assertEquals(maxRecycledViews, pool.getMaxRecycledViews())
-        verify { viewHolderSupplier.start() }
-        verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(maxRecycledViews)) }
-
-        unmockkConstructor(CoroutinesViewHolderSupplier::class)
+            val viewHolderSupplier = pool.getViewHolderSupplier()
+            assertEquals(maxRecycledViews, pool.getMaxRecycledViews())
+            verify { viewHolderSupplier.start() }
+            verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(maxRecycledViews)) }
+        }
     }
 
     @ParameterizedTest
     @ValueSource(ints = [1, 2, 10])
-    fun `create pool with coroutines supplier with custom prefetch`(prefetchCount: Int) {
-        mockkConstructor(CoroutinesViewHolderSupplier::class)
-        every { anyConstructed<CoroutinesViewHolderSupplier>().start() } just Runs
-        every { anyConstructed<CoroutinesViewHolderSupplier>().prefetch(any(), any()) } just Runs
-        every { anyConstructed<CoroutinesViewHolderSupplier>()["createItem"](any<Int>()) } just Awaits
+    fun `create pool with coroutines supplier with custom prefetch`(prefetchCount: Int) = mockLooper {
+        mockSupplierConstructor {
+            val maxRecycledViews = 5
+            val pool = PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(
+                mockk(),
+                mockk(),
+                maxRecycledViews,
+                prefetchCount
+            )
 
-        val maxRecycledViews = 5
-        val pool = PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(
-            mockk(),
-            mockk(),
-            maxRecycledViews,
-            prefetchCount
-        )
-
-        val viewHolderSupplier = pool.getViewHolderSupplier()
-        assertThat(pool.getMaxRecycledViews()).isAnyOf(prefetchCount, maxRecycledViews)
-        verify { viewHolderSupplier.start() }
-        verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
-
-        unmockkConstructor(CoroutinesViewHolderSupplier::class)
+            val viewHolderSupplier = pool.getViewHolderSupplier()
+            assertThat(pool.getMaxRecycledViews()).isAnyOf(prefetchCount, maxRecycledViews)
+            verify { viewHolderSupplier.start() }
+            verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
+        }
     }
 
     @ParameterizedTest
@@ -82,7 +78,7 @@ internal class PrefetchPlainViewPoolTest {
 
         val prefetchCount = 1
         pool.prefetch(prefetchCount)
-        assert(pool.getMaxRecycledViews() >= prefetchCount)
+        assertThat(pool.getMaxRecycledViews()).isAtLeast(prefetchCount)
         verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
     }
 
@@ -92,7 +88,7 @@ internal class PrefetchPlainViewPoolTest {
         val maxRecycledViews = 5
         val pool = createMockViewPool(5)
 
-        assert(pool.getRecycledViewCount(DEFAULT_VIEW_TYPE) == 0)
+        assertEquals(0, pool.getRecycledViewCount(DEFAULT_VIEW_TYPE))
 
         repeat(viewsToPut) {
             val view = mockk<RecyclerView.ViewHolder>(relaxed = true) {
@@ -165,5 +161,14 @@ internal class PrefetchPlainViewPoolTest {
 
     private fun createMockViewPool(maxRecycledViews: Int, recordPrivateCalls: Boolean = false) =
         spyk(createViewPool(maxRecycledViews), recordPrivateCalls = recordPrivateCalls)
+
+    private inline fun mockSupplierConstructor(block: () -> Unit) =
+        mockkConstructor(CoroutinesViewHolderSupplier::class) {
+            justRun { anyConstructed<CoroutinesViewHolderSupplier>().start() }
+            justRun { anyConstructed<CoroutinesViewHolderSupplier>().prefetch(any(), any()) }
+            justRun { anyConstructed<CoroutinesViewHolderSupplier>()["createItem"](any<Int>()) }
+
+            block()
+        }
 
 }
