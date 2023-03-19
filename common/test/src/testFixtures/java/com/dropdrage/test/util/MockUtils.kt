@@ -52,7 +52,7 @@ inline fun mockLooper(block: () -> Unit) {
     }
 
     mockkStatic(Looper::class) {
-        every { Looper.getMainLooper() } returns mockk()
+        justMock { Looper.getMainLooper() }
 
         block()
     }
@@ -61,7 +61,7 @@ inline fun mockLooper(block: () -> Unit) {
 @OptIn(ExperimentalCoroutinesApi::class)
 inline fun runTestWithMockLooper(crossinline block: suspend () -> Unit) = runTest {
     mockkStatic(Looper::class) {
-        every { Looper.getMainLooper() } returns mockk()
+        justMock { Looper.getMainLooper() }
 
         block()
     }

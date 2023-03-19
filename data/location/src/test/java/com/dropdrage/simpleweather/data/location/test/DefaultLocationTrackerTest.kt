@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
 import com.dropdrage.simpleweather.data.location.util.mockLocation
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
+import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.mockLooper
 import com.dropdrage.test.util.runTestWithMockLooper
+import com.dropdrage.test.util.setSdkSuspend
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
@@ -33,8 +35,6 @@ import org.junit.Assert.assertSame
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 private const val TASK_KT = "kotlinx.coroutines.tasks.TasksKt"
 private const val CHECK_LOCATION_AVAILABILITY_METHOD = "checkLocationAvailability"
@@ -73,7 +73,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location unavailable due to gps disabled with SDK P`() =
         runContextCompatPermissionTest {
-            setSdk(Build.VERSION_CODES.P) {
+            setSdkSuspend(Build.VERSION_CODES.P) {
                 val locationManager = mockk<LocationManager> {
                     every { isLocationEnabled } returns false
                 }
@@ -118,7 +118,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location unavailable due to gps disabled both providers with SDK O`() =
         runContextCompatPermissionTest {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(false, false)
 
                 val result = locationTracker.getCurrentLocation()
@@ -130,7 +130,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by network provider with SDK O but NoLocation`() = runTest {
         mockTaskKt {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(true, false)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 coEvery { locationClient.lastLocation.await() } returns null
@@ -145,7 +145,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by network provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(true, false)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -167,7 +167,7 @@ class DefaultLocationTrackerTest {
     fun `getCurrentLocation but location available with gps by gps provider with SDK O but NoLocation`() =
         runContextCompatPermissionTest {
             mockTaskKt {
-                setSdk(Build.VERSION_CODES.O) {
+                setSdkSuspend(Build.VERSION_CODES.O) {
                     mockLocationManager(false, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     coEvery { locationClient.lastLocation.await() } returns null
@@ -182,7 +182,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by gps provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(false, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -203,7 +203,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by both provider with SDK O but NoLocation`() = runTest {
         mockTaskKt {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(true, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 coEvery { locationClient.lastLocation.await() } returns null
@@ -218,7 +218,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by both provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(true, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -254,7 +254,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `requestLocationUpdate but location unavailable due to gps disabled with SDK P`() =
         runContextCompatPermissionTest {
-            setSdk(Build.VERSION_CODES.P) {
+            setSdkSuspend(Build.VERSION_CODES.P) {
                 val locationManager = mockk<LocationManager> {
                     every { isLocationEnabled } returns false
                 }
@@ -292,7 +292,7 @@ class DefaultLocationTrackerTest {
     @Test
     fun `requestLocationUpdate but location unavailable due to gps disabled both providers with SDK O`() =
         runContextCompatPermissionTest {
-            setSdk(Build.VERSION_CODES.O) {
+            setSdkSuspend(Build.VERSION_CODES.O) {
                 mockLocationManager(false, false)
 
                 val result = locationTracker.requestLocationUpdate().first()
@@ -305,7 +305,7 @@ class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by network provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdk(Build.VERSION_CODES.O) {
+                setSdkSuspend(Build.VERSION_CODES.O) {
                     mockLocationManager(true, false)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -330,7 +330,7 @@ class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by gps provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdk(Build.VERSION_CODES.O) {
+                setSdkSuspend(Build.VERSION_CODES.O) {
                     mockLocationManager(false, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -355,7 +355,7 @@ class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by both provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdk(Build.VERSION_CODES.O) {
+                setSdkSuspend(Build.VERSION_CODES.O) {
                     mockLocationManager(true, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -405,35 +405,9 @@ class DefaultLocationTrackerTest {
 
     private inline suspend fun mockLocationRequestBuilder(crossinline block: suspend () -> Unit) =
         mockkConstructor(LocationRequest.Builder::class) {
-            every { anyConstructed<LocationRequest.Builder>().build() } returns mockk()
+            justMock { anyConstructed<LocationRequest.Builder>().build() }
 
             block()
         }
-
-    private suspend inline fun setSdk(sdk: Int, crossinline block: suspend () -> Unit) {
-        val realSdk = Build.VERSION.SDK_INT
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), sdk)
-        block()
-        resetFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), realSdk)
-    }
-
-    private fun setFinalStatic(field: Field, newValue: Any?) {
-        field.isAccessible = true
-        val modifiersField: Field = Field::class.java.getDeclaredField("modifiers")
-        modifiersField.isAccessible = true
-        modifiersField.setInt(field, field.getModifiers() and Modifier.FINAL.inv())
-        field.set(null, newValue)
-    }
-
-    private fun resetFinalStatic(field: Field, oldValue: Any?) {
-        field.isAccessible = true
-        val modifiersField: Field = Field::class.java.getDeclaredField("modifiers")
-        modifiersField.setAccessible(true)
-        modifiersField.setInt(field, field.getModifiers() and Modifier.FINAL.inv())
-        field.set(null, oldValue)
-        modifiersField.setInt(field, field.getModifiers() and Modifier.FINAL)
-        modifiersField.isAccessible = false
-        field.isAccessible = false
-    }
 
 }
