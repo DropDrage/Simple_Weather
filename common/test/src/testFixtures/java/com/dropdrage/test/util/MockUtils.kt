@@ -2,6 +2,7 @@ package com.dropdrage.test.util
 
 import android.os.Looper
 import android.util.Log
+import io.mockk.MockKMatcherScope
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -64,4 +65,19 @@ inline fun runTestWithMockLooper(crossinline block: suspend () -> Unit) = runTes
 
         block()
     }
+}
+
+
+inline fun <reified T : Any> justMock(noinline stubBlock: MockKMatcherScope.() -> T) {
+    every(stubBlock) returns mockk()
+}
+
+inline fun <reified T : Any> justMock(noinline stubBlock: MockKMatcherScope.() -> T, mockInit: T.() -> Unit = {}) {
+    every(stubBlock) returns mockk(block = mockInit)
+}
+
+inline fun <reified T : Any> justMockAndGet(noinline stubBlock: MockKMatcherScope.() -> T): T {
+    val mock = mockk<T>()
+    every(stubBlock) returns mock
+    return mock
 }
