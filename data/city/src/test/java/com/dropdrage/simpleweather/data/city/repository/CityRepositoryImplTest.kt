@@ -7,17 +7,18 @@ import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.dao.CityDao
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
+import com.dropdrage.test.util.coVerifyNever
+import com.dropdrage.test.util.coVerifyOnce
 import com.dropdrage.test.util.runTestWithMockLogE
+import com.dropdrage.test.util.verifyOnce
 import com.google.common.truth.Truth.assertThat
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coJustRun
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.slot
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -55,7 +56,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.orderedCities.first()
 
-        verify { dao.getAllOrderedList() }
+        verifyOnce { dao.getAllOrderedList() }
         assertThat(result).isEmpty()
     }
 
@@ -71,7 +72,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.orderedCities.first()
 
-        verify { dao.getAllOrderedList() }
+        verifyOnce { dao.getAllOrderedList() }
         assertThat(result).containsExactlyElementsIn(orderedCitiesDomain)
     }
 
@@ -84,8 +85,10 @@ internal class CityRepositoryImplTest {
 
         repository.addCity(city)
 
-        coVerify { dao.getLastOrder() }
-        coVerify { dao.insert(any()) }
+        coVerifyOnce {
+            dao.getLastOrder()
+            dao.insert(any())
+        }
         assertEquals(city.name, insertedCity.captured.name)
         assertEquals(city.location, insertedCity.captured.location)
         assertEquals(city.country, insertedCity.captured.country)
@@ -102,8 +105,10 @@ internal class CityRepositoryImplTest {
 
         repository.addCity(city)
 
-        coVerify { dao.getLastOrder() }
-        coVerify { dao.insert(any()) }
+        coVerifyOnce {
+            dao.getLastOrder()
+            dao.insert(any())
+        }
         assertEquals(city.name, insertedCity.captured.name)
         assertEquals(city.location, insertedCity.captured.location)
         assertEquals(city.country, insertedCity.captured.country)
@@ -118,7 +123,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.getCityWithOrder(order)
 
-        coVerify { dao.getWithOrder(eq(order)) }
+        coVerifyOnce { dao.getWithOrder(eq(order)) }
         assertThat(result).isInstanceOf(Resource.Success::class.java)
         val resultData = (result as Resource.Success<City>).data
         assertEquals(cityModelWithOrder.name, resultData.name)
@@ -133,7 +138,7 @@ internal class CityRepositoryImplTest {
 
         assertThrows<CancellationException> { repository.getCityWithOrder(order) }
 
-        coVerify { dao.getWithOrder(eq(order)) }
+        coVerifyOnce { dao.getWithOrder(eq(order)) }
     }
 
     @Test
@@ -144,7 +149,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.getCityWithOrder(order)
 
-        coVerify { dao.getWithOrder(eq(order)) }
+        coVerifyOnce { dao.getWithOrder(eq(order)) }
         assertThat(result).isInstanceOf(Resource.Error::class.java)
         val resultError = (result as Resource.Error<City>)
         assertNull(resultError.message)
@@ -160,7 +165,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.getCityWithOrder(order)
 
-        coVerify { dao.getWithOrder(eq(order)) }
+        coVerifyOnce { dao.getWithOrder(eq(order)) }
         assertThat(result).isInstanceOf(Resource.Error::class.java)
         val resultError = (result as Resource.Error<City>)
         assertEquals(exceptionMessage, resultError.message)
@@ -174,7 +179,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.getAllCitiesOrdered()
 
-        coVerify { dao.getAllOrdered() }
+        coVerifyOnce { dao.getAllOrdered() }
         assertThat(result).isEmpty()
     }
 
@@ -190,7 +195,7 @@ internal class CityRepositoryImplTest {
 
         val result = repository.getAllCitiesOrdered()
 
-        coVerify { dao.getAllOrdered() }
+        coVerifyOnce { dao.getAllOrdered() }
         assertThat(result).containsExactlyElementsIn(orderedCitiesDomain)
     }
 
@@ -203,8 +208,10 @@ internal class CityRepositoryImplTest {
 
         repository.updateCitiesOrders(cities)
 
-        coVerify { dao.getAll() }
-        coVerify { dao.updateOrders(any()) }
+        coVerifyOnce {
+            dao.getAll()
+            dao.updateOrders(any())
+        }
         assertThat(updatedCities.captured).isEmpty()
     }
 
@@ -222,8 +229,10 @@ internal class CityRepositoryImplTest {
 
         repository.updateCitiesOrders(cities)
 
-        coVerify { dao.getAll() }
-        coVerify { dao.updateOrders(any()) }
+        coVerifyOnce {
+            dao.getAll()
+            dao.updateOrders(any())
+        }
         assertThat(updatedCities.captured).containsExactlyElementsIn(cityModelsReordered)
     }
 
@@ -244,9 +253,11 @@ internal class CityRepositoryImplTest {
 
         repository.deleteCity(city)
 
-        coVerify { dao.delete(any(), any(), any(), any()) }
-        coVerify { dao.getAllOrdered() }
-        coVerify(inverse = true) { dao.updateOrders(any()) }
+        coVerifyOnce {
+            dao.delete(any(), any(), any(), any())
+            dao.getAllOrdered()
+        }
+        coVerifyNever { dao.updateOrders(any()) }
     }
 
     @Test
@@ -272,7 +283,11 @@ internal class CityRepositoryImplTest {
 
         repository.deleteCity(city)
 
-        verifyDaoDeleteInternalMethods()
+        coVerifyOnce {
+            dao.delete(any(), any(), any(), any())
+            dao.getAllOrdered()
+            dao.updateOrders(any())
+        }
         assertThat(updatedCities.captured).containsExactlyElementsIn(cityModelsReordered)
     }
 
@@ -299,7 +314,11 @@ internal class CityRepositoryImplTest {
 
         repository.deleteCity(city)
 
-        verifyDaoDeleteInternalMethods()
+        coVerifyOnce {
+            dao.delete(any(), any(), any(), any())
+            dao.getAllOrdered()
+            dao.updateOrders(any())
+        }
         assertThat(updatedCities.captured).containsExactlyElementsIn(cityModelsReordered)
     }
 
@@ -326,7 +345,11 @@ internal class CityRepositoryImplTest {
 
         repository.deleteCity(city)
 
-        verifyDaoDeleteInternalMethods()
+        coVerifyOnce {
+            dao.delete(any(), any(), any(), any())
+            dao.getAllOrdered()
+            dao.updateOrders(any())
+        }
         assertThat(updatedCities.captured).containsExactlyElementsIn(cityModelsReordered)
     }
 
@@ -335,12 +358,6 @@ internal class CityRepositoryImplTest {
         val slot = slot<List<CityModel>>()
         coJustRun { dao.updateOrders(capture(slot)) }
         return slot
-    }
-
-    private fun verifyDaoDeleteInternalMethods() {
-        coVerify { dao.delete(any(), any(), any(), any()) }
-        coVerify { dao.getAllOrdered() }
-        coVerify { dao.updateOrders(any()) }
     }
 
 }

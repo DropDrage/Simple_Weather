@@ -22,7 +22,7 @@ import java.util.*
 
 private const val LANGUAGE_COUNTRY_DELIMITER = '-'
 
-class UserDefaultFormatHelpersTest {
+internal class UserDefaultFormatHelpersTest {
 
     @Test
     fun `isLocaleMetric measurement not SI for SDK P`() = setSdk(Build.VERSION_CODES.P) {

@@ -33,7 +33,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit success`() = runTest {
         val data = Any()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
             emit(Resource.Success(data))
         }.first()
 
@@ -44,7 +44,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit error Exception`() = runTest {
         val exception = Exception()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
             emit(Resource.Error(exception))
         }.first()
 
@@ -55,7 +55,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit error CancellationException`() = runTest {
         val exception = CancellationException()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
             emit(Resource.Error(exception))
         }.first()
 
@@ -67,7 +67,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit throw IOException with LocalResource Success`() = runTestWithMockLogE {
         val exception = IOException()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.Success(Any())) {
             throw exception
         }.firstOrNull()
 
@@ -77,7 +77,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit throw IOException with LocalResource NotFound`() = runTestWithMockLogE {
         val exception = IOException()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
             throw exception
         }.first()
 
@@ -89,7 +89,7 @@ internal class CachedRepositoryTest {
         val exception = CancellationException()
 
         assertThrows<CancellationException> {
-            repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+            repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
                 throw exception
             }.first()
         }
@@ -98,7 +98,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit throw Exception with LocalResource NotFound`() = runTestWithMockLogE {
         val exception = Exception()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.Success(Any())) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.Success(Any())) {
             throw exception
         }.firstOrNull()
 
@@ -108,7 +108,7 @@ internal class CachedRepositoryTest {
     @Test
     fun `processOrEmit throw Exception with LocalResource not Success`() = runTestWithMockLogE {
         val exception = Exception()
-        val result = repository.tryProcessRemoteResourceOrEmitErrorFake(LocalResource.NotFound<Any>()) {
+        val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
             throw exception
         }.first()
 
@@ -119,8 +119,8 @@ internal class CachedRepositoryTest {
 }
 
 private class FakeCachedRepository<T>(tag: String) : CachedRepository<T>(tag) {
-    suspend fun tryProcessRemoteResourceOrEmitErrorFake(
+    suspend fun tryProcessRemoteResourceOrEmitErrorExposed(
         localResourceResult: LocalResource<*>,
         remoteResourceAction: suspend FlowCollector<Resource<T>>.() -> Unit,
-    ) = flow { tryProcessRemoteResourceOrEmitError<T>(localResourceResult, remoteResourceAction) }
+    ) = flow { tryProcessRemoteResourceOrEmitError(localResourceResult, remoteResourceAction) }
 }

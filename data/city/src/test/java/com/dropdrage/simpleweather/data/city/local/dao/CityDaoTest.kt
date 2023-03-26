@@ -3,6 +3,8 @@ package com.dropdrage.simpleweather.data.city.local.dao
 import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
+import com.dropdrage.test.util.coVerifyOnce
+import com.dropdrage.test.util.coVerifyTwice
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun
@@ -37,6 +39,8 @@ internal class CityDaoTest {
 
         dao.updateOrders(citiesCopy)
 
+        coVerifyOnce { dao.updateOrders(any()) }
+        coVerifyTwice { dao.updateAll(any()) }
         assertThat(updatedCities.captured).containsExactlyElementsIn(cities)
     }
 
@@ -49,6 +53,8 @@ internal class CityDaoTest {
 
         dao.updateOrders(cities)
 
+        coVerifyOnce { dao.updateOrders(any()) }
+        coVerifyTwice { dao.updateAll(any()) }
         assertThat(updatedCities.captured).isEmpty()
     }
 

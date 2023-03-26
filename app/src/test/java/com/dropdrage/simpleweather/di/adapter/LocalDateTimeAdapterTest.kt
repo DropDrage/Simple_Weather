@@ -1,25 +1,21 @@
 package com.dropdrage.simpleweather.di.adapter
 
+import com.dropdrage.test.util.justMock
+import com.dropdrage.test.util.verifyNever
+import com.dropdrage.test.util.verifyOnce
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
-import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 internal class LocalDateTimeAdapterTest : BaseJsonAdapterTest() {
 
-    private lateinit var dateTimeAdapter: LocalDateTimeAdapter
-
-
-    @BeforeEach
-    fun setUp() {
-        dateTimeAdapter = LocalDateTimeAdapter()
-    }
+    private val dateTimeAdapter: LocalDateTimeAdapter = LocalDateTimeAdapter()
 
 
     @Test
@@ -28,39 +24,45 @@ internal class LocalDateTimeAdapterTest : BaseJsonAdapterTest() {
 
     @Test
     fun `toJson null value`() {
-        val writer = mockk<JsonWriter>(relaxed = true)
+        val writer = mockk<JsonWriter>()
 
         dateTimeAdapter.toJson(writer, null)
 
-        verify(inverse = true) { writer.value(any<String>()) }
+        verifyNever { writer.value(any<String>()) }
     }
 
     @Test
     fun `toJson not null value`() {
-        val writer = mockk<JsonWriter>(relaxed = true)
-
+        val writer = mockk<JsonWriter> {
+            justMock { value(any<String>()) }
+        }
         val date = LocalDateTime.now()
+
         dateTimeAdapter.toJson(writer, date)
 
-        verify { writer.value(date.format(LocalDateTimeAdapter.FORMATTER)) }
+        verifyOnce { writer.value(date.format(LocalDateTimeAdapter.FORMATTER)) }
     }
 
     @Test
     fun `fromJson peek NULL`() {
         val reader = createReaderWithPeekMock(JsonReader.Token.NULL)
+        justRun { reader.nextNull<Any>() }
 
-        assertNull(dateTimeAdapter.fromJson(reader))
-        verify(exactly = 1) { reader.nextNull<Any>() }
+        val result = dateTimeAdapter.fromJson(reader)
+
+        verifyOnce { reader.nextNull<Any>() }
+        assertNull(result)
     }
 
     @Test
     fun `fromJson peek not STRING`() {
         val reader = createReaderWithPeekMock(JsonReader.Token.NUMBER)
+        justRun { reader.nextNull<Any>() }
 
         val result = dateTimeAdapter.fromJson(reader)
 
+        verifyOnce { reader.nextNull<Any>() }
         assertNull(result)
-        verify(exactly = 1) { reader.nextNull<Any>() }
     }
 
     @Test
@@ -72,8 +74,8 @@ internal class LocalDateTimeAdapterTest : BaseJsonAdapterTest() {
 
         val result = dateTimeAdapter.fromJson(reader)
 
+        verifyNever { reader.nextNull<Any>() }
         assertEquals(date, result)
-        verify(inverse = true) { reader.nextNull<Any>() }
     }
 
 }

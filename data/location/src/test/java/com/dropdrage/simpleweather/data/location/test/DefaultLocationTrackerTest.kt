@@ -14,6 +14,8 @@ import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.mockLooper
 import com.dropdrage.test.util.runTestWithMockLooper
 import com.dropdrage.test.util.setSdkSuspend
+import com.dropdrage.test.util.verifyNever
+import com.dropdrage.test.util.verifyOnce
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
@@ -65,6 +67,10 @@ internal class DefaultLocationTrackerTest {
         runContextCompatPermissionTest(PERMISSION_DENIED) {
             val result = locationTracker.getCurrentLocation()
 
+            verifyNever {
+                locationClient.lastLocation
+                locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+            }
             assertThat(result).isInstanceOf(LocationResult.NoPermission::class.java)
             val resultPermission = (result as LocationResult.NoPermission).permission
             assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, resultPermission)
@@ -81,6 +87,10 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever {
+                    locationClient.lastLocation
+                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                }
                 assertSame(LocationResult.GpsDisabled, result)
             }
         }
@@ -93,6 +103,8 @@ internal class DefaultLocationTrackerTest {
 
             val result = locationTracker.getCurrentLocation()
 
+            verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+            verifyOnce { locationClient.lastLocation }
             assertSame(LocationResult.NoLocation, result)
         }
     }
@@ -108,6 +120,8 @@ internal class DefaultLocationTrackerTest {
 
             val result = locationTracker.getCurrentLocation()
 
+            verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+            verifyOnce { locationClient.lastLocation }
             assertThat(result).isInstanceOf(LocationResult.Success::class.java)
             val resultLocation = (result as LocationResult.Success).location
             assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -123,6 +137,10 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever {
+                    locationClient.lastLocation
+                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                }
                 assertSame(LocationResult.GpsDisabled, result)
             }
         }
@@ -137,6 +155,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                verifyOnce { locationClient.lastLocation }
                 assertSame(LocationResult.NoLocation, result)
             }
         }
@@ -155,6 +175,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                verifyOnce { locationClient.lastLocation }
                 assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                 val resultLocation = (result as LocationResult.Success).location
                 assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -174,6 +196,8 @@ internal class DefaultLocationTrackerTest {
 
                     val result = locationTracker.getCurrentLocation()
 
+                    verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                    verifyOnce { locationClient.lastLocation }
                     assertSame(LocationResult.NoLocation, result)
                 }
             }
@@ -192,6 +216,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                verifyOnce { locationClient.lastLocation }
                 assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                 val resultLocation = (result as LocationResult.Success).location
                 assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -210,6 +236,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                verifyOnce { locationClient.lastLocation }
                 assertSame(LocationResult.NoLocation, result)
             }
         }
@@ -228,6 +256,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.getCurrentLocation()
 
+                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                verifyOnce { locationClient.lastLocation }
                 assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                 val resultLocation = (result as LocationResult.Success).location
                 assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -246,6 +276,10 @@ internal class DefaultLocationTrackerTest {
         runContextCompatPermissionTest(PERMISSION_DENIED) {
             val result = locationTracker.requestLocationUpdate().first()
 
+            verifyNever {
+                locationClient.lastLocation
+                locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+            }
             assertThat(result).isInstanceOf(LocationResult.NoPermission::class.java)
             val resultPermission = (result as LocationResult.NoPermission).permission
             assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, resultPermission)
@@ -262,6 +296,10 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.requestLocationUpdate().first()
 
+                verifyNever {
+                    locationClient.lastLocation
+                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                }
                 assertSame(LocationResult.GpsDisabled, result)
             }
         }
@@ -281,6 +319,8 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.requestLocationUpdate().first()
 
+                verifyNever { locationClient.lastLocation }
+                verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                 assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                 val resultLocation = (result as LocationResult.Success).location
                 assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -297,6 +337,10 @@ internal class DefaultLocationTrackerTest {
 
                 val result = locationTracker.requestLocationUpdate().first()
 
+                verifyNever {
+                    locationClient.lastLocation
+                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                }
                 assertSame(LocationResult.GpsDisabled, result)
             }
         }
@@ -318,6 +362,8 @@ internal class DefaultLocationTrackerTest {
 
                     val result = locationTracker.requestLocationUpdate().first()
 
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                     assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                     val resultLocation = (result as LocationResult.Success).location
                     assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -343,6 +389,8 @@ internal class DefaultLocationTrackerTest {
 
                     val result = locationTracker.requestLocationUpdate().first()
 
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                     assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                     val resultLocation = (result as LocationResult.Success).location
                     assertEquals(latitude.toFloat(), resultLocation.latitude)
@@ -368,6 +416,8 @@ internal class DefaultLocationTrackerTest {
 
                     val result = locationTracker.requestLocationUpdate().first()
 
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                     assertThat(result).isInstanceOf(LocationResult.Success::class.java)
                     val resultLocation = (result as LocationResult.Success).location
                     assertEquals(latitude.toFloat(), resultLocation.latitude)

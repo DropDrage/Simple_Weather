@@ -10,7 +10,7 @@ import java.io.IOException
 abstract class CachedRepository<T>(protected val tag: String) {
     protected suspend inline fun <T> FlowCollector<Resource<T>>.tryProcessRemoteResourceOrEmitError(
         localResourceResult: LocalResource<*>,
-        remoteResourceAction: suspend FlowCollector<Resource<T>>.() -> Unit,
+        remoteResourceAction: suspend FlowCollector<Resource<T>>.() -> Unit, //suspend for testing
     ) {
         try {
             remoteResourceAction()

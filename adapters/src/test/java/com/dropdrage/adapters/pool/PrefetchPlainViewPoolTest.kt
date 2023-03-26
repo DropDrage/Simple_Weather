@@ -2,6 +2,8 @@ package com.dropdrage.adapters.pool
 
 import androidx.recyclerview.widget.RecyclerView
 import com.dropdrage.test.util.mockLooper
+import com.dropdrage.test.util.verifyNever
+import com.dropdrage.test.util.verifyOnce
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -31,8 +33,8 @@ internal class PrefetchPlainViewPoolTest {
     fun `create pool`(maxRecycledViews: Int) {
         val pool = createViewPool(maxRecycledViews)
 
+        verifyOnce { viewHolderSupplier.start() }
         assertEquals(maxRecycledViews, pool.getMaxRecycledViews())
-        verify { viewHolderSupplier.start() }
         assertEquals(0, pool.getRecycledViewCount(DEFAULT_VIEW_TYPE))
     }
 
@@ -46,9 +48,11 @@ internal class PrefetchPlainViewPoolTest {
             )
 
             val viewHolderSupplier = pool.getViewHolderSupplier()
+            verifyOnce {
+                viewHolderSupplier.start()
+                viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(maxRecycledViews))
+            }
             assertEquals(maxRecycledViews, pool.getMaxRecycledViews())
-            verify { viewHolderSupplier.start() }
-            verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(maxRecycledViews)) }
         }
     }
 
@@ -65,9 +69,11 @@ internal class PrefetchPlainViewPoolTest {
             )
 
             val viewHolderSupplier = pool.getViewHolderSupplier()
+            verifyOnce {
+                viewHolderSupplier.start()
+                viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount))
+            }
             assertThat(pool.getMaxRecycledViews()).isAnyOf(prefetchCount, maxRecycledViews)
-            verify { viewHolderSupplier.start() }
-            verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
         }
     }
 
@@ -75,11 +81,12 @@ internal class PrefetchPlainViewPoolTest {
     @ValueSource(ints = [-1, 0, 2, 10])
     fun prefetch(maxRecycledViews: Int) {
         val pool = createViewPool(maxRecycledViews)
-
         val prefetchCount = 1
+
         pool.prefetch(prefetchCount)
+
+        verifyOnce { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
         assertThat(pool.getMaxRecycledViews()).isAtLeast(prefetchCount)
-        verify { viewHolderSupplier.prefetch(eq(DEFAULT_VIEW_TYPE), eq(prefetchCount)) }
     }
 
     @ParameterizedTest
@@ -98,7 +105,7 @@ internal class PrefetchPlainViewPoolTest {
         }
 
         val poolMaxRecycledViews = pool.getMaxRecycledViews()
-        verify { pool.setMaxRecycledViews(eq(DEFAULT_VIEW_TYPE), eq(poolMaxRecycledViews)) }
+        verify(exactly = viewsToPut) { pool.setMaxRecycledViews(eq(DEFAULT_VIEW_TYPE), eq(poolMaxRecycledViews)) }
         assertThat(pool.getRecycledViewCount(DEFAULT_VIEW_TYPE)).isAnyOf(viewsToPut, maxRecycledViews)
     }
 
@@ -110,10 +117,10 @@ internal class PrefetchPlainViewPoolTest {
             every { itemViewType } returns DEFAULT_VIEW_TYPE
         }
         pool.putRecycledView(view)
-        val returnedView = pool.getRecycledView(DEFAULT_VIEW_TYPE)
 
+        verifyNever { viewHolderSupplier.onItemCreatedOutside(any()) }
+        val returnedView = pool.getRecycledView(DEFAULT_VIEW_TYPE)
         assertNotNull(returnedView)
-        verify(inverse = true) { viewHolderSupplier.onItemCreatedOutside(any()) }
     }
 
     @Test
@@ -122,8 +129,8 @@ internal class PrefetchPlainViewPoolTest {
 
         val returnedView = pool.getRecycledView(DEFAULT_VIEW_TYPE)
 
+        verifyOnce { viewHolderSupplier.onItemCreatedOutside(any()) }
         assertNull(returnedView)
-        verify { viewHolderSupplier.onItemCreatedOutside(any()) }
     }
 
     @Test
@@ -132,8 +139,8 @@ internal class PrefetchPlainViewPoolTest {
 
         pool.clear()
 
+        verifyOnce { viewHolderSupplier.stop() }
         assertEquals(0, pool.getRecycledViewCount(DEFAULT_VIEW_TYPE))
-        verify { viewHolderSupplier.stop() }
     }
 
     @Test
@@ -152,8 +159,8 @@ internal class PrefetchPlainViewPoolTest {
 
         pool.clear()
 
+        verifyOnce { viewHolderSupplier.stop() }
         assertEquals(0, pool.getRecycledViewCount(DEFAULT_VIEW_TYPE))
-        verify { viewHolderSupplier.stop() }
     }
 
 

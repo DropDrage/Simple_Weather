@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.dropdrage.test.util.mockLogW
 import com.dropdrage.test.util.mockLooper
+import com.dropdrage.test.util.verifyNever
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -14,7 +15,6 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.spyk
-import io.mockk.unmockkConstructor
 import io.mockk.verify
 import kotlinx.coroutines.isActive
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -50,17 +50,15 @@ internal class CoroutinesViewHolderSupplierTest {
         val supplier = createSupplier()
 
         supplier.start()
-
         assertTrue(supplier.isActive)
-
         supplier.stop()
-
         assertFalse(supplier.isActive)
-
         supplier.prefetch(VIEW_TYPE, 1)
 
         verify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verify(inverse = true) { viewHolderConsumer(any()) }
+        verifyNever { viewHolderConsumer(any()) }
+
+        supplier.stop()
     }
 
     @Test
@@ -80,15 +78,14 @@ internal class CoroutinesViewHolderSupplierTest {
         supplier.prefetch(VIEW_TYPE, 0)
 
         coVerify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verify(inverse = true) { viewHolderConsumer(any()) }
+        verifyNever { viewHolderConsumer(any()) }
 
         supplier.stop()
     }
 
     @ParameterizedTest
     @ValueSource(ints = [1, 10])
-    fun `prefetch positive count`(count: Int) {
-        mockkConstructor(FrameLayout::class, Handler::class)
+    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
         every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
             (firstArg() as Runnable).run()
             true
@@ -102,7 +99,6 @@ internal class CoroutinesViewHolderSupplierTest {
         verify(exactly = count, timeout = 1500) { viewHolderConsumer(any()) }
 
         supplier.stop()
-        unmockkConstructor(FrameLayout::class, Handler::class)
     }
 
 
@@ -114,7 +110,7 @@ internal class CoroutinesViewHolderSupplierTest {
         supplier.prefetch(VIEW_TYPE, count)
 
         coVerify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verify(inverse = true) { viewHolderConsumer(any()) }
+        verifyNever { viewHolderConsumer(any()) }
 
         supplier.stop()
     }

@@ -3,15 +3,15 @@ package com.dropdrage.simpleweather.data.util
 import androidx.work.ListenableWorker.*
 import androidx.work.WorkManager
 import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
+import com.dropdrage.test.util.coVerifyOnce
+import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.runTestWithMockLogE
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -45,24 +45,31 @@ internal class CacheClearWorkerTest {
 
         val result = worker.doWork()
 
+        coVerifyOnce {
+            cacheRepository.clearOutdated()
+            cacheRepository.hasCache()
+        }
         assertEquals(Result.success(), result)
-        coVerify { cacheRepository.clearOutdated() }
     }
 
     @Test
     fun `doWork no cache`() = runTest {
-        coEvery { cacheRepository.hasCache() } returns false
-        mockkStatic(WorkManager::class)
-        val mockWorkManager = mockk<WorkManager>(relaxed = true)
-        every { WorkManager.getInstance(eq(worker.applicationContext)) } returns mockWorkManager
+        mockkStatic(WorkManager::class) {
+            coEvery { cacheRepository.hasCache() } returns false
+            val mockWorkManager = mockk<WorkManager> {
+                justMock { cancelWorkById(eq(worker.id)) }
+            }
+            every { WorkManager.getInstance(eq(worker.applicationContext)) } returns mockWorkManager
 
-        val result = worker.doWork()
+            val result = worker.doWork()
 
-        assertEquals(Result.success(), result)
-        coVerify { mockWorkManager.cancelWorkById(eq(worker.id)) }
-        coVerify { cacheRepository.clearOutdated() }
-
-        unmockkStatic(WorkManager::class)
+            coVerifyOnce {
+                cacheRepository.clearOutdated()
+                cacheRepository.hasCache()
+                mockWorkManager.cancelWorkById(eq(worker.id))
+            }
+            assertEquals(Result.success(), result)
+        }
     }
 
     @Test
@@ -71,6 +78,7 @@ internal class CacheClearWorkerTest {
 
         val result = worker.doWork()
 
+        coVerifyOnce { cacheRepository.clearOutdated() }
         assertEquals(Result.failure(), result)
     }
 

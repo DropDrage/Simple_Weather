@@ -7,10 +7,10 @@ import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.remote.CitiesDto
 import com.dropdrage.simpleweather.data.city.remote.CityDto
 import com.dropdrage.simpleweather.data.city.remote.SearchApi
+import com.dropdrage.test.util.coVerifyOnce
 import com.dropdrage.test.util.runTestWithMockLogE
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,7 +47,7 @@ internal class CitySearchRepositoryImplTest {
 
         val result = repository.searchCities(query)
 
-        coVerify { api.searchCities(eq(query)) }
+        coVerifyOnce { api.searchCities(eq(query)) }
         assertThat(result).isInstanceOf(Resource.Success::class.java)
         val resultData = (result as Resource.Success<List<City>>).data
         assertThat(resultData).isEmpty()
@@ -68,7 +68,7 @@ internal class CitySearchRepositoryImplTest {
 
         val result = repository.searchCities(query)
 
-        coVerify { api.searchCities(eq(query)) }
+        coVerifyOnce { api.searchCities(eq(query)) }
         assertThat(result).isInstanceOf(Resource.Success::class.java)
         val resultData = (result as Resource.Success<List<City>>).data
         assertThat(resultData).containsExactlyElementsIn(cities)
@@ -81,7 +81,7 @@ internal class CitySearchRepositoryImplTest {
 
         assertThrows<CancellationException> { repository.searchCities(query) }
 
-        coVerify { api.searchCities(eq(query)) }
+        coVerifyOnce { api.searchCities(eq(query)) }
     }
 
     @Test
@@ -92,7 +92,7 @@ internal class CitySearchRepositoryImplTest {
 
         val result = repository.searchCities(query)
 
-        coVerify { api.searchCities(eq(query)) }
+        coVerifyOnce { api.searchCities(eq(query)) }
         assertThat(result).isInstanceOf(Resource.Error::class.java)
         val resultError = result as Resource.Error<List<City>>
         assertNull(resultError.message)
@@ -108,7 +108,7 @@ internal class CitySearchRepositoryImplTest {
 
         val result = repository.searchCities(query)
 
-        coVerify { api.searchCities(eq(query)) }
+        coVerifyOnce { api.searchCities(eq(query)) }
         assertThat(result).isInstanceOf(Resource.Error::class.java)
         val resultError = result as Resource.Error<List<City>>
         assertEquals(exceptionMessage, resultError.message)
