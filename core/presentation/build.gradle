@@ -9,8 +9,8 @@ dependencies {
     implementation androidLibs.fragment.ktx
     implementation androidLibs.hilt
 
-    testImplementation testLibs.junit5.params
-
     implementation project(path: ':core:domain')
     implementation project(path: ':data:settings')
+
+    testImplementation testLibs.junit5.params
 }

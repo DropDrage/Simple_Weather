@@ -7,10 +7,10 @@ android {
 }
 
 dependencies {
-    testImplementation testLibs.coroutines
-
     implementation project(path: ':core:domain')
     implementation project(path: ':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
 
     testImplementation testFixtures(project(path: ':common:test'))
 }

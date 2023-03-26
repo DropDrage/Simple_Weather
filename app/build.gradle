@@ -51,16 +51,7 @@ dependencies {
     //Utils
     implementation androidLibs.kotpref
 
-
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
-
-    //Tests
-    testImplementation testLibs.coroutines
-
-    androidTestImplementation androidLibs.hilt.testing
-    kspAndroidTest androidLibs.hilt.compiler
-    testImplementation androidLibs.hilt.testing
-    kspTest androidLibs.hilt.compiler
 
     implementation project(path: ':core:style')
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
@@ -75,6 +66,14 @@ dependencies {
     implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
+
+    //Tests
+    testImplementation testLibs.coroutines
+
+    androidTestImplementation androidLibs.hilt.testing
+    kspAndroidTest androidLibs.hilt.compiler
+    testImplementation androidLibs.hilt.testing
+    kspTest androidLibs.hilt.compiler
 
     testImplementation testFixtures(project(path: ':common:test'))
 }

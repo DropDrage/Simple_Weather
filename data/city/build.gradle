@@ -17,8 +17,6 @@ android {
 }
 
 dependencies {
-    testImplementation testLibs.coroutines
-
     implementation project(path: ':core:domain')
     implementation project(path: ':core:utils')
     implementation project(path: ':common:data')
@@ -26,6 +24,8 @@ dependencies {
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:domain')
+
+    testImplementation testLibs.coroutines
 
     testImplementation testFixtures(project(path: ':common:test'))
 }

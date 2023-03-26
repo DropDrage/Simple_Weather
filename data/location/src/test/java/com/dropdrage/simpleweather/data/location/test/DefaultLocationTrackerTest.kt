@@ -41,7 +41,7 @@ private const val CHECK_LOCATION_AVAILABILITY_METHOD = "checkLocationAvailabilit
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
-class DefaultLocationTrackerTest {
+internal class DefaultLocationTrackerTest {
 
     @MockK
     lateinit var locationClient: FusedLocationProviderClient

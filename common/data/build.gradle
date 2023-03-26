@@ -8,9 +8,9 @@ dependencies {
     implementation androidLibs.room.common
     implementation kotlinLibs.coroutines
 
-    testImplementation testLibs.coroutines
-
     implementation project(path: ':common:domain')
+
+    testImplementation testLibs.coroutines
 
     testImplementation testFixtures(project(path: ':common:test'))
 }
