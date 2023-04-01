@@ -87,7 +87,7 @@ internal class CoroutinesViewHolderSupplierTest {
     @ValueSource(ints = [1, 10])
     fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
         every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
-            (firstArg() as Runnable).run()
+            firstArg<Runnable>().run()
             true
         }
 

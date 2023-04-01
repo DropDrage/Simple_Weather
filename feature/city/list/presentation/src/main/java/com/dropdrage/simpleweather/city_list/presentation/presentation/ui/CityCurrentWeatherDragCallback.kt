@@ -46,8 +46,6 @@ internal class CityCurrentWeatherDragCallback(private val onDragEnd: () -> Unit)
         onDragEnd()
     }
 
-    override fun isLongPressDragEnabled(): Boolean {
-        return false
-    }
+    override fun isLongPressDragEnabled(): Boolean = false
 
 }

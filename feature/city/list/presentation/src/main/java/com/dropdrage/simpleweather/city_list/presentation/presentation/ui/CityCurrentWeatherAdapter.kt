@@ -37,7 +37,7 @@ internal class CityCurrentWeatherAdapter(
 
 
     override fun onBindViewHolder(holder: CityCurrentWeatherViewHolder, position: Int, payloads: MutableList<Any?>) {
-        if (payloads.isEmpty() || payloads[0] !is ViewCurrentWeather) {
+        if (payloads.isEmpty() || payloads.first() !is ViewCurrentWeather) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
             val firstPayload = payloads.first()

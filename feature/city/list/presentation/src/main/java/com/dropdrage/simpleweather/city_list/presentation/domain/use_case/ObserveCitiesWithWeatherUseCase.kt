@@ -32,8 +32,8 @@ internal class ObserveCitiesWithWeatherUseCase @Inject constructor(
                 .map { cities -> cities.map { CityCurrentWeather(it, null) } }
                 .flatMapLatest { allCitiesNoWeather ->
                     val allLocations = allCitiesNoWeather.map { it.city.location }
-                    val currentWeatherFlow = currentWeatherRepository.getCurrentWeather(allLocations)
-                    currentWeatherFlow.take(2)
+                    currentWeatherRepository.getCurrentWeather(allLocations)
+                        .take(2)
                         .catch {
                             Log.e(TAG, it.message, it)
                             channel.close()

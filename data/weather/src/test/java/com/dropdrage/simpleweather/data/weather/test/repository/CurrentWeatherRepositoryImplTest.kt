@@ -110,7 +110,7 @@ internal class CurrentWeatherRepositoryImplTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                    LocationModel(id++, firstArg() as Float, secondArg() as Float)
+                    LocationModel(id++, firstArg(), secondArg())
                 }
                 coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns null
                 val temperature = 1f
@@ -145,7 +145,7 @@ internal class CurrentWeatherRepositoryImplTest {
         mockTemperatureConversion {
             var id = 0L
             coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                LocationModel(id++, firstArg() as Float, secondArg() as Float)
+                LocationModel(id++, firstArg(), secondArg())
             }
             val localTemperature = 10f
             val localWeatherType = WeatherType.Foggy
@@ -187,7 +187,7 @@ internal class CurrentWeatherRepositoryImplTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                    LocationModel(id++, firstArg() as Float, secondArg() as Float)
+                    LocationModel(id++, firstArg(), secondArg())
                 }
                 val localTemperature = 10f
                 val localWeatherType = WeatherType.Foggy
@@ -221,7 +221,7 @@ internal class CurrentWeatherRepositoryImplTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                    LocationModel(id++, firstArg() as Float, secondArg() as Float)
+                    LocationModel(id++, firstArg(), secondArg())
                 }
                 val localTemperature = 10f
                 val localWeatherType = WeatherType.Foggy

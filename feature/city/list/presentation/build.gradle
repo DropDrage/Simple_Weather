@@ -16,4 +16,9 @@ dependencies {
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:presentation')
     implementation project(path: ':feature:city:domain')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }
