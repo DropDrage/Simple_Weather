@@ -49,9 +49,7 @@ internal class CitySearchViewModel @Inject constructor(
 
     private suspend fun loadCities(query: String) {
         when (val result = searchRepository.searchCities(query)) {
-            is Resource.Success -> _searchResults.emit(result.data.map {
-                ViewCitySearchResult(it)
-            })
+            is Resource.Success -> _searchResults.emit(result.data.map(::ViewCitySearchResult))
             is Resource.Error -> Log.e(TAG, result.message, result.exception)
         }
     }

@@ -73,211 +73,205 @@ internal class ObserveCitiesWithWeatherUseCaseTest {
     }
 
     @Test
-    fun `invoke but getCurrentWeather throws then nothing returned`() =
-        runTestWithMockLogE {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            coEvery { currentWeatherRepository.getCurrentWeather(any()).collect() } throws IOException()
+    fun `invoke but getCurrentWeather throws then nothing returned`() = runTestWithMockLogE {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        coEvery { currentWeatherRepository.getCurrentWeather(any()).collect() } throws IOException()
 
-            var citiesWithWeather: List<CityCurrentWeather>? = emptyList()
-            assertDoesNotThrow { citiesWithWeather = useCase().firstOrNull() }
+        var citiesWithWeather: List<CityCurrentWeather>? = emptyList()
+        assertDoesNotThrow { citiesWithWeather = useCase().firstOrNull() }
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            assertNull(citiesWithWeather)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        assertNull(citiesWithWeather)
+    }
 
     @Test
-    fun `invoke getCurrentWeather emits 1 item then 1 returned`() =
-        runTest {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            val currentWeathers = listOf(
-                CurrentWeather(1f, WeatherType.Foggy),
-                CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
-                CurrentWeather(-1f, WeatherType.DenseDrizzle),
-            )
-            coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(currentWeathers)
+    fun `invoke getCurrentWeather emits 1 item then 1 returned`() = runTest {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        val currentWeathers = listOf(
+            CurrentWeather(1f, WeatherType.Foggy),
+            CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
+            CurrentWeather(-1f, WeatherType.DenseDrizzle),
+        )
+        coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(currentWeathers)
 
-            var citiesWithWeather = useCase().toList()
+        var citiesWithWeather = useCase().toList()
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            val cityCurrentWeathers = cities.mapIndexed { i, city -> CityCurrentWeather(city, currentWeathers[i]) }
-            assertThat(citiesWithWeather).hasSize(1)
-            assertThat(citiesWithWeather[0]).containsExactlyElementsIn(cityCurrentWeathers)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        val cityCurrentWeathers = cities.mapIndexed { i, city -> CityCurrentWeather(city, currentWeathers[i]) }
+        assertThat(citiesWithWeather).hasSize(1)
+        assertThat(citiesWithWeather[0]).containsExactlyElementsIn(cityCurrentWeathers)
+    }
 
     @Test
-    fun `invoke getCurrentWeather emits 2 but some old null item then 2 returned`() =
-        runTest {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            val oldCurrentWeathers = listOf(
-                CurrentWeather(1f, WeatherType.Foggy),
-                null,
-                null,
-            )
-            val newCurrentWeathers = listOf(
-                CurrentWeather(0f, WeatherType.DenseDrizzle),
-                CurrentWeather(6f, WeatherType.LightDrizzle),
-                CurrentWeather(-10f, WeatherType.ModerateRain),
-            )
-            coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
-                oldCurrentWeathers, newCurrentWeathers
-            )
+    fun `invoke getCurrentWeather emits 2 but some old null item then 2 returned`() = runTest {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        val oldCurrentWeathers = listOf(
+            CurrentWeather(1f, WeatherType.Foggy),
+            null,
+            null,
+        )
+        val newCurrentWeathers = listOf(
+            CurrentWeather(0f, WeatherType.DenseDrizzle),
+            CurrentWeather(6f, WeatherType.LightDrizzle),
+            CurrentWeather(-10f, WeatherType.ModerateRain),
+        )
+        coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
+            oldCurrentWeathers, newCurrentWeathers
+        )
 
-            var citiesWithWeather = useCase().toList()
+        var citiesWithWeather = useCase().toList()
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            assertThat(citiesWithWeather).hasSize(2)
-            val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, oldCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
-            val newCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, newCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        assertThat(citiesWithWeather).hasSize(2)
+        val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, oldCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
+        val newCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, newCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+    }
 
     @Test
-    fun `invoke getCurrentWeather emits 2 but some new null item then 2 returned`() =
-        runTest {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            val oldCurrentWeathers = listOf(
-                CurrentWeather(1f, WeatherType.Foggy),
-                CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
-                CurrentWeather(-1f, WeatherType.DenseDrizzle),
-            )
-            val newCurrentWeathers = listOf(
-                CurrentWeather(0f, WeatherType.DenseDrizzle),
-                null,
-                null,
-            )
-            coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
-                oldCurrentWeathers, newCurrentWeathers
-            )
+    fun `invoke getCurrentWeather emits 2 but some new null item then 2 returned`() = runTest {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        val oldCurrentWeathers = listOf(
+            CurrentWeather(1f, WeatherType.Foggy),
+            CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
+            CurrentWeather(-1f, WeatherType.DenseDrizzle),
+        )
+        val newCurrentWeathers = listOf(
+            CurrentWeather(0f, WeatherType.DenseDrizzle),
+            null,
+            null,
+        )
+        coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
+            oldCurrentWeathers, newCurrentWeathers
+        )
 
-            var citiesWithWeather = useCase().toList()
+        var citiesWithWeather = useCase().toList()
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            assertThat(citiesWithWeather).hasSize(2)
-            val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, oldCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
-            val newCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, newCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        assertThat(citiesWithWeather).hasSize(2)
+        val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, oldCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
+        val newCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, newCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+    }
 
     @Test
-    fun `invoke getCurrentWeather emits 2 but some of both null item then 2 returned`() =
-        runTest {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            val oldCurrentWeathers = listOf(
-                null,
-                null,
-                CurrentWeather(-1f, WeatherType.DenseDrizzle),
-            )
-            val newCurrentWeathers = listOf(
-                CurrentWeather(0f, WeatherType.DenseDrizzle),
-                null,
-                null,
-            )
-            coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
-                oldCurrentWeathers, newCurrentWeathers
-            )
+    fun `invoke getCurrentWeather emits 2 but some of both null item then 2 returned`() = runTest {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        val oldCurrentWeathers = listOf(
+            null,
+            null,
+            CurrentWeather(-1f, WeatherType.DenseDrizzle),
+        )
+        val newCurrentWeathers = listOf(
+            CurrentWeather(0f, WeatherType.DenseDrizzle),
+            null,
+            null,
+        )
+        coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
+            oldCurrentWeathers, newCurrentWeathers
+        )
 
-            var citiesWithWeather = useCase().toList()
+        var citiesWithWeather = useCase().toList()
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            assertThat(citiesWithWeather).hasSize(2)
-            val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, oldCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
-            val newCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, newCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        assertThat(citiesWithWeather).hasSize(2)
+        val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, oldCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
+        val newCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, newCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+    }
 
     @Test
-    fun `invoke getCurrentWeather emits 2 item then 2 returned`() =
-        runTest {
-            val cities = listOf(
-                City("City1", Location(1f, 2f), Country("Country1", "CY")),
-                City("City3", Location(2f, 2f), Country("Country2", "CY")),
-                City("City2", Location(3f, 4f), Country("Country1", "RY")),
-            )
-            coEvery { cityRepository.orderedCities } returns flowOf(cities)
-            val oldCurrentWeathers = listOf(
-                CurrentWeather(1f, WeatherType.Foggy),
-                CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
-                CurrentWeather(-1f, WeatherType.DenseDrizzle),
-            )
-            val newCurrentWeathers = listOf(
-                CurrentWeather(0f, WeatherType.DenseDrizzle),
-                CurrentWeather(6f, WeatherType.LightDrizzle),
-                CurrentWeather(-10f, WeatherType.ModerateRain),
-            )
-            coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
-                oldCurrentWeathers, newCurrentWeathers
-            )
+    fun `invoke getCurrentWeather emits 2 item then 2 returned`() = runTest {
+        val cities = listOf(
+            City("City1", Location(1f, 2f), Country("Country1", "CY")),
+            City("City3", Location(2f, 2f), Country("Country2", "CY")),
+            City("City2", Location(3f, 4f), Country("Country1", "RY")),
+        )
+        coEvery { cityRepository.orderedCities } returns flowOf(cities)
+        val oldCurrentWeathers = listOf(
+            CurrentWeather(1f, WeatherType.Foggy),
+            CurrentWeather(10f, WeatherType.HeavyHailThunderstorm),
+            CurrentWeather(-1f, WeatherType.DenseDrizzle),
+        )
+        val newCurrentWeathers = listOf(
+            CurrentWeather(0f, WeatherType.DenseDrizzle),
+            CurrentWeather(6f, WeatherType.LightDrizzle),
+            CurrentWeather(-10f, WeatherType.ModerateRain),
+        )
+        coEvery { currentWeatherRepository.getCurrentWeather(any()) } returns flowOf(
+            oldCurrentWeathers, newCurrentWeathers
+        )
 
-            var citiesWithWeather = useCase().toList()
+        var citiesWithWeather = useCase().toList()
 
-            coVerifyOnce {
-                cityRepository.orderedCities
-                currentWeatherRepository.getCurrentWeather(any())
-            }
-            assertThat(citiesWithWeather).hasSize(2)
-            val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, oldCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
-            val newCityCurrentWeathers = cities.mapIndexed { i, city ->
-                CityCurrentWeather(city, newCurrentWeathers[i])
-            }
-            assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+        coVerifyOnce {
+            cityRepository.orderedCities
+            currentWeatherRepository.getCurrentWeather(any())
         }
+        assertThat(citiesWithWeather).hasSize(2)
+        val oldCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, oldCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[0]).containsExactlyElementsIn(oldCityCurrentWeathers)
+        val newCityCurrentWeathers = cities.mapIndexed { i, city ->
+            CityCurrentWeather(city, newCurrentWeathers[i])
+        }
+        assertThat(citiesWithWeather[1]).containsExactlyElementsIn(newCityCurrentWeathers)
+    }
 
 }

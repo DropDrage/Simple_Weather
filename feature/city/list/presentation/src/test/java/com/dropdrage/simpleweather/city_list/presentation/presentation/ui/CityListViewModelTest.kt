@@ -43,13 +43,11 @@ internal class CityListViewModelTest {
     @MockK
     lateinit var cityRepository: CityRepository
 
-    private lateinit var viewModel: CityListViewModel
-
 
     @Test
     fun `citiesCurrentWeathers no value then emits empty list`() = runTestViewModelScope {
         every { observeCitiesWithWeather() } returns emptyFlow()
-        viewModel = CityListViewModel(observeCitiesWithWeather, cityCurrentWeatherConverter, cityRepository)
+        val viewModel = CityListViewModel(observeCitiesWithWeather, cityCurrentWeatherConverter, cityRepository)
 
         viewModel.citiesCurrentWeathers.test {
             assertThat(awaitItem()).isEmpty()
@@ -85,14 +83,14 @@ internal class CityListViewModelTest {
         )
         val cityCurrentWeatherFlow = MutableSharedFlow<List<CityCurrentWeather>>()
         every { observeCitiesWithWeather() } returns cityCurrentWeatherFlow
-        viewModel = CityListViewModel(observeCitiesWithWeather, cityCurrentWeatherConverter, cityRepository)
+        val viewModel = CityListViewModel(observeCitiesWithWeather, cityCurrentWeatherConverter, cityRepository)
 
         viewModel.citiesCurrentWeathers.test {
             cityCurrentWeatherFlow.emit(cityCurrentWeathers)
 
             val firstItem = awaitItem()
             val secondItem = awaitItem()
-            cancelAndConsumeRemainingEvents()
+            cancel()
 
             verify(exactly = cityCurrentWeathers.size) { cityCurrentWeatherConverter.convertToView(any()) }
             assertThat(firstItem).isEmpty()
@@ -105,7 +103,7 @@ internal class CityListViewModelTest {
     @Test
     fun `saveOrder empty list`() = runTestViewModelScope {
         coJustRun { cityRepository.updateCitiesOrders(eq(emptyList())) }
-        viewModel = createViewModelNotForTestCitiesCurrentWeathers()
+        val viewModel = createViewModelNotForTestCitiesCurrentWeathers()
 
         viewModel.saveOrder(emptyList())
 
@@ -123,7 +121,7 @@ internal class CityListViewModelTest {
         val orderedCities = createListIndexed(cities.size) {
             mockk<ViewCityCurrentWeather> { every { city } returns cities[it] }
         }
-        viewModel = createViewModelNotForTestCitiesCurrentWeathers()
+        val viewModel = createViewModelNotForTestCitiesCurrentWeathers()
 
         viewModel.saveOrder(orderedCities)
 
@@ -138,7 +136,7 @@ internal class CityListViewModelTest {
         val viewCityCurrentWeather = mockk<ViewCityCurrentWeather> {
             every { this@mockk.city } returns city
         }
-        viewModel = createViewModelNotForTestCitiesCurrentWeathers()
+        val viewModel = createViewModelNotForTestCitiesCurrentWeathers()
 
         viewModel.deleteCity(viewCityCurrentWeather)
 
