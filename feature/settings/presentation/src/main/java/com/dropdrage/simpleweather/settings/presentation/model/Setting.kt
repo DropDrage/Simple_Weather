@@ -12,7 +12,7 @@ import com.dropdrage.simpleweather.settings.presentation.R
 
 private typealias DataString = com.dropdrage.simpleweather.data.settings.R.string
 
-internal typealias AnySetting = Setting<*, *>
+internal typealias AnySetting = Setting<*, *> //ToDo rename to ViewSetting?
 
 internal sealed interface Setting<out T : Setting<T, D>, out D> {
     @get:StringRes

@@ -31,9 +31,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.UnknownHostException
-
-private typealias LocalCurrentWeatherDto = com.dropdrage.simpleweather.data.weather.local.cache.dto.CurrentWeatherDto
-private typealias RemoteCurrentWeatherDto = com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherDto
+import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherDto as RemoteCurrentWeatherDto
+import com.dropdrage.simpleweather.data.weather.local.cache.dto.CurrentWeatherDto as LocalCurrentWeatherDto
 
 @ExtendWith(MockKExtension::class)
 @OptIn(ExperimentalCoroutinesApi::class)

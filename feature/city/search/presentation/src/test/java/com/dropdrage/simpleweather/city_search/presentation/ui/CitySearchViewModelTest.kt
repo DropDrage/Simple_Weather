@@ -91,7 +91,7 @@ internal class CitySearchViewModelTest {
     }
 
     @Test
-    fun `addCity success`() = runTestViewModelScope {
+    fun `addCity success and emit cityAddedEvent`() = runTestViewModelScope {
         val cityResult = ViewCitySearchResult(City("City1", Location(1f, 2f), Country("Country1", "CY")))
         coJustRun { cityRepository.addCity(cityResult.city) }
         val viewModel = createViewModel()

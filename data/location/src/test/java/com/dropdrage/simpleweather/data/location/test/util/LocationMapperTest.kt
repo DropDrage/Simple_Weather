@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.location.test.util
 
+import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.location.util.mockLocation
 import com.dropdrage.simpleweather.data.util.mapper.toDomainLocation
 import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
@@ -8,8 +9,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.jupiter.api.Test
-
-private typealias DomainLocation = com.dropdrage.simpleweather.core.domain.Location
 
 internal class LocationMapperTest {
 
@@ -21,7 +20,7 @@ internal class LocationMapperTest {
 
         val result = location.toDomainLocation()
 
-        assertThat(result).isInstanceOf(DomainLocation::class.java)
+        assertThat(result).isInstanceOf(Location::class.java)
         assertEquals(latitude.toFloat(), result.latitude)
         assertEquals(longitude.toFloat(), result.longitude)
     }

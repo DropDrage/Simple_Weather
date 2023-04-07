@@ -118,6 +118,11 @@ inline fun <reified T : Any> justMockAndGet(noinline stubBlock: MockKMatcherScop
 }
 
 
+fun <T> justCallOriginal(stubBlock: MockKMatcherScope.() -> T) {
+    every(stubBlock) answers { callOriginal() }
+}
+
+
 fun verifyNever(block: MockKVerificationScope.() -> Unit) = verify(exactly = 0, verifyBlock = block)
 
 fun verifyOnce(block: MockKVerificationScope.() -> Unit) = verify(exactly = 1, verifyBlock = block)

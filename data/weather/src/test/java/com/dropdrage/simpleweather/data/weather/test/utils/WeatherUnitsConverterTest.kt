@@ -406,15 +406,13 @@ internal class WeatherUnitsConverterTest {
         @BeforeAll
         @JvmStatic
         fun setUp() {
-            mockkObject(ApiSupportedUnits)
-            mockkObject(WeatherUnitsPreferences)
+            mockkObject(ApiSupportedUnits, WeatherUnitsPreferences)
         }
 
         @AfterAll
         @JvmStatic
         fun tearDown() {
-            unmockkObject(WeatherUnitsPreferences)
-            unmockkObject(ApiSupportedUnits)
+            unmockkObject(ApiSupportedUnits, WeatherUnitsPreferences)
         }
     }
 
