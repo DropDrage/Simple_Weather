@@ -7,7 +7,10 @@ plugins {
 }
 
 apply from: import_android
+
 apply from: component_retrofit
+apply from: component_tests
+
 apply from: build_feature_buildConfig
 apply from: build_feature_resValues
 

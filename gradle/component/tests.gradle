@@ -1,0 +1,10 @@
+android {
+    testOptions.unitTests.all {
+        useJUnitPlatform()
+    }
+}
+
+dependencies {
+    testImplementation testLibs.bundles.unit5
+    testRuntimeOnly testLibs.junit5.runtime
+}

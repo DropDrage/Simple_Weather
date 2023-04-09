@@ -1,5 +1,0 @@
-apply from: import_androidEmptyLibrary
-
-android {
-    namespace 'com.dropdrage.simpleweather.style'
-}

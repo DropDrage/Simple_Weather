@@ -1,4 +1,5 @@
 apply from: import_androidUiLibrary
+apply from: component_tests
 
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 

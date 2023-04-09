@@ -1,4 +1,5 @@
 apply from: import_androidEmptyLibrary
+apply from: component_tests
 
 android {
     namespace 'com.dropdrage.common.data'

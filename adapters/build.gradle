@@ -1,14 +1,9 @@
 apply from: import_androidNoUiLibrary
+apply from: component_tests
 apply from: build_feature_buildConfig
 
 android {
     namespace 'com.dropdrage.adapters'
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
     defaultConfig {
         testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
     }

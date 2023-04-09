@@ -21,16 +21,8 @@ android {
         baseline rootProject.file('lint-baseline.xml')
         warningsAsErrors false
     }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
 }
 
 dependencies {
-    testImplementation testLibs.bundles.unit5
     androidTestImplementation testLibs.bundles.instrumental5
-    testRuntimeOnly testLibs.junit5.runtime
 }

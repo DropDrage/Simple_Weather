@@ -1,6 +1,7 @@
 apply from: import_androidNoUiLibrary
 apply from: component_android_hilt
 apply from: component_android_location
+apply from: component_tests
 
 android {
     namespace 'com.dropdrage.simpleweather.data.location'

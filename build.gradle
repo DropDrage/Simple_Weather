@@ -56,6 +56,7 @@ ext {
     component_android_hilt = "$componentDir/android-hilt.gradle"
     component_android_location = "$componentDir/android-location.gradle"
     component_retrofit = "$componentDir/retrofit.gradle"
+    component_tests = "$componentDir/tests.gradle"
 
     def buildFeatureDir = "$gradleDir/build-feature"
     build_feature_buildConfig = "$buildFeatureDir/build_config.gradle"
