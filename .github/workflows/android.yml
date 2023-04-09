@@ -30,4 +30,4 @@ jobs:
       - name: Lint
         run: ./gradlew lintDebug
       - name: Tests
-        run: ./gradlew cleanTestDebugUnitTest testDebugUnitTest
+        run: ./gradlew cleanTestDebugUnitTest testDebugUnitTest --info
