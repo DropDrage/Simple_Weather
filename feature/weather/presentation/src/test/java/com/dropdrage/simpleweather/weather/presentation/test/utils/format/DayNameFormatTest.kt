@@ -61,6 +61,7 @@ internal class DayNameFormatTest {
 
 
     private companion object {
+
         @JvmStatic
         fun provideOffsetWithRes() = Stream.of(
             Arguments.of(0, R.string.day_today_short),
@@ -77,6 +78,7 @@ internal class DayNameFormatTest {
             Arguments.of(DayOfWeek.SATURDAY, R.string.week_day_saturday_short),
             Arguments.of(DayOfWeek.SUNDAY, R.string.week_day_sunday_short),
         )
+
     }
 
 }

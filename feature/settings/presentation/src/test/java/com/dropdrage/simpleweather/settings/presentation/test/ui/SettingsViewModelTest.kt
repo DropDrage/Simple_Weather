@@ -8,6 +8,7 @@ import com.dropdrage.simpleweather.settings.presentation.model.*
 import com.dropdrage.simpleweather.settings.presentation.util.matchEnumsAsArguments
 import com.dropdrage.simpleweather.settings.presentation.utils.GeneralFormatConverter
 import com.dropdrage.simpleweather.settings.presentation.utils.WeatherUnitConverter
+import com.dropdrage.test.util.justArgToString
 import com.dropdrage.test.util.justCallOriginal
 import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.runTestViewModelScope
@@ -98,9 +99,7 @@ internal class SettingsViewModelTest {
     @ParameterizedTest
     @MethodSource("provideWeatherAnySettingMatched")
     fun `changeSetting WeatherUnit success`(setting: AnySetting, expectedUnit: WeatherUnit) = runTestViewModelScope {
-        every { weatherUnitConverter.convertToValue(any()) } answers {
-            firstArg<AnySetting>().toString()
-        }
+        justArgToString { weatherUnitConverter.convertToValue(any()) }
         val weatherUnitSlots = hashMapOf<KClass<out WeatherUnit>, CapturingSlot<out WeatherUnit>>()
         val newTemperatureUnitSlot = slot<TemperatureUnit>().also { weatherUnitSlots[TemperatureUnit::class] = it }
         justRun { WeatherUnitsPreferences.temperatureUnit = capture(newTemperatureUnitSlot) }
@@ -122,6 +121,8 @@ internal class SettingsViewModelTest {
 
             val changedSetting = awaitItem()
 
+            cancel()
+
             assertEquals(expectedChangedSetting, changedSetting)
             assertEquals(expectedCurrentValue, changedSetting.currentValue)
         }
@@ -133,9 +134,7 @@ internal class SettingsViewModelTest {
     @MethodSource("provideGeneralAnySettingMatched")
     fun `changeSetting GeneralFormat success`(setting: AnySetting, expectedFormat: GeneralFormat) =
         runTestViewModelScope {
-            every { weatherUnitConverter.convertToValue(any()) } answers {
-                firstArg<AnySetting>().toString()
-            }
+            justArgToString { weatherUnitConverter.convertToValue(any()) }
             val weatherUnitSlots = hashMapOf<KClass<out GeneralFormat>, CapturingSlot<out GeneralFormat>>()
             val newTimeFormatSlot = slot<TimeFormat>().also { weatherUnitSlots[TimeFormat::class] = it }
             justRun { GeneralPreferences.timeFormat = capture(newTimeFormatSlot) }
@@ -149,6 +148,8 @@ internal class SettingsViewModelTest {
                 viewModel.changeSetting(setting)
 
                 val changedSetting = awaitItem()
+
+                cancel()
 
                 assertEquals(expectedChangedSetting, changedSetting)
                 assertEquals(expectedCurrentValue, changedSetting.currentValue)
@@ -267,10 +268,11 @@ internal class SettingsViewModelTest {
     //endregion
 
 
-    companion object {
+    private companion object {
+
         @BeforeAll
         @JvmStatic
-        fun setUp() {
+        fun setUpAll() {
             Kotpref.init(mockk { justMock({ applicationContext }, { justMock { applicationContext } }) })
             mockkStatic(AndroidDateFormat::class) {
                 every { AndroidDateFormat.is24HourFormat(any()) } returns true
@@ -282,7 +284,7 @@ internal class SettingsViewModelTest {
 
         @AfterAll
         @JvmStatic
-        fun tearDown() {
+        fun tearDownAll() {
             unmockkObject(WeatherUnitsPreferences, GeneralPreferences)
         }
 

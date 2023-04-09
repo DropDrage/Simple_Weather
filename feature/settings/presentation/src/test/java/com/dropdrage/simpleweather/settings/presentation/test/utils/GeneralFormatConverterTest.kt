@@ -10,9 +10,9 @@ import com.dropdrage.simpleweather.settings.presentation.model.ViewSetting
 import com.dropdrage.simpleweather.settings.presentation.model.ViewTimeFormat
 import com.dropdrage.simpleweather.settings.presentation.util.matchEnumsAsArguments
 import com.dropdrage.simpleweather.settings.presentation.utils.GeneralFormatConverter
+import com.dropdrage.test.util.justArgToString
 import com.dropdrage.test.util.verifyOnce
 import com.dropdrage.test.util.verifyTwice
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -48,7 +48,7 @@ internal class GeneralFormatConverterTest {
     @ParameterizedTest
     @MethodSource("provideGeneralFormatsWithView")
     fun `convertToViewSetting success`(format: GeneralFormat, expectedSetting: AnySetting) {
-        every { context.getString(any()) } answers { firstArg<Int>().toString() }
+        justArgToString { context.getString(any()) }
         val expectedViewSetting = ViewSetting(
             label = expectedSetting.labelResId.toString(),
             currentValue = expectedSetting.unitResId.toString(),
@@ -64,7 +64,7 @@ internal class GeneralFormatConverterTest {
     @ParameterizedTest
     @MethodSource("provideGeneralFormats")
     fun `convertToValue success`(format: AnySetting) {
-        every { context.getString(any()) } answers { firstArg<Int>().toString() }
+        justArgToString { context.getString(any()) }
 
         val value = converter.convertToValue(format)
 
@@ -73,7 +73,7 @@ internal class GeneralFormatConverterTest {
     }
 
 
-    companion object {
+    private companion object {
 
         @JvmStatic
         fun provideGeneralFormatsWithView() = Stream.of(

@@ -37,7 +37,8 @@ internal class WeatherTypeConverterTest {
     }
 
 
-    companion object {
+    private companion object {
+
         @JvmStatic
         fun provideWeatherCodeWithType() = Stream.of(
             Arguments.of(0, WeatherType.ClearSky),
@@ -100,6 +101,7 @@ internal class WeatherTypeConverterTest {
             Arguments.of(WeatherType.SlightHailThunderstorm, 96),
             Arguments.of(WeatherType.HeavyHailThunderstorm, 99),
         )
+
     }
 
 }

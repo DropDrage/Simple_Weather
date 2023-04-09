@@ -10,6 +10,7 @@ import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.test.util.justArgToString
 import com.dropdrage.test.util.verifyNever
 import com.dropdrage.test.util.verifyOnce
 import io.mockk.every
@@ -42,9 +43,7 @@ internal class CityCurrentWeatherConverterTest {
             City("City1", Location(1f, 2f), Country("Country1", "CY")),
             weather,
         )
-        every { unitsFormatter.formatTemperature(eq(weather.temperature)) } answers {
-            firstArg<Float>().toString()
-        }
+        justArgToString { unitsFormatter.formatTemperature(eq(weather.temperature)) }
 
         val viewCityCurrentWeather = converter.convertToView(cityCurrentWeather)
 

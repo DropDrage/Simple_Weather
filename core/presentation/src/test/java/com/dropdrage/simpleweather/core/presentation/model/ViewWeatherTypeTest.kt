@@ -18,7 +18,7 @@ internal class ViewWeatherTypeTest {
     }
 
 
-    companion object {
+    private companion object {
         @JvmStatic
         fun provideWeatherTypeWithView() = Stream.of(
             Arguments.of(WeatherType.ClearSky, ViewWeatherType.ClearSky),

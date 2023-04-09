@@ -16,11 +16,11 @@ import com.dropdrage.simpleweather.settings.presentation.model.ViewVisibilityUni
 import com.dropdrage.simpleweather.settings.presentation.model.ViewWindSpeedUnit
 import com.dropdrage.simpleweather.settings.presentation.util.matchEnumsAsArguments
 import com.dropdrage.simpleweather.settings.presentation.utils.WeatherUnitConverter
+import com.dropdrage.test.util.justArgToString
 import com.dropdrage.test.util.verifyOnce
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -47,14 +47,14 @@ internal class WeatherUnitConverterTest {
     fun `convertToSetting success`(weatherUnit: WeatherUnit, expectedSetting: AnySetting) {
         val setting = converter.convertToSetting(weatherUnit)
 
-        Assertions.assertEquals(expectedSetting, setting)
+        assertEquals(expectedSetting, setting)
     }
 
     @ParameterizedTest
     @MethodSource("provideWeatherUnitsWithView")
     fun `convertToViewSetting success`(weatherUnit: WeatherUnit, expectedSetting: AnySetting) {
-        every { context.getString(any()) } answers { firstArg<Int>().toString() }
-        every { context.getString(any(), any()) } answers { firstArg<Int>().toString() }
+        justArgToString { context.getString(any()) }
+        justArgToString { context.getString(any(), any()) }
         val expectedViewSetting = ViewSetting(
             label = expectedSetting.labelResId.toString(),
             currentValue = expectedSetting.unitResId.toString(),
@@ -67,22 +67,22 @@ internal class WeatherUnitConverterTest {
             context.getString(any())
             context.getString(any(), any())
         }
-        Assertions.assertEquals(expectedViewSetting, viewSetting)
+        assertEquals(expectedViewSetting, viewSetting)
     }
 
     @ParameterizedTest
     @MethodSource("provideWeatherUnits")
     fun `convertToValue success`(weatherUnit: AnySetting) {
-        every { context.getString(any(), any()) } answers { firstArg<Int>().toString() }
+        justArgToString { context.getString(any(), any()) }
 
         val value = converter.convertToValue(weatherUnit)
 
         verifyOnce { context.getString(any(), any()) }
-        Assertions.assertEquals(weatherUnit.unitResId.toString(), value)
+        assertEquals(weatherUnit.unitResId.toString(), value)
     }
 
 
-    companion object {
+    private companion object {
 
         @JvmStatic
         fun provideWeatherUnitsWithView() = Stream.of(

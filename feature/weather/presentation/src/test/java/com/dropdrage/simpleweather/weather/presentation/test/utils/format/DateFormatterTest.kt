@@ -37,6 +37,7 @@ internal class DateFormatterTest {
 
 
     private companion object {
+
         @BeforeAll
         @JvmStatic
         fun setUpAll() {
@@ -54,6 +55,7 @@ internal class DateFormatterTest {
         fun tearDownAll() {
             unmockkObject(GeneralPreferences)
         }
+
     }
 
 }

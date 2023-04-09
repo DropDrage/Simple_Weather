@@ -54,14 +54,16 @@ internal class CitySearchViewModelTest {
 
     @Test
     fun `updateQuery debounce search success with empty list`() = runTestViewModelScope {
-        val viewModel = createViewModel()
         val query = "query"
         coEvery { searchRepository.searchCities(query) } returns Resource.Success(emptyList())
+        val viewModel = createViewModel()
 
-        viewModel.updateQuery(query)
         viewModel.searchResults.test {
+            viewModel.updateQuery(query)
+
             val searchResults = awaitItem()
-            cancelAndConsumeRemainingEvents()
+
+            cancel()
 
             coVerifyOnce { searchRepository.searchCities(query) }
             assertThat(searchResults).isEmpty()

@@ -77,6 +77,7 @@ internal class TimeFormatterTest {
 
 
     private companion object {
+
         @BeforeAll
         @JvmStatic
         fun setUpAll() {
@@ -94,6 +95,7 @@ internal class TimeFormatterTest {
         fun tearDownAll() {
             unmockkObject(GeneralPreferences)
         }
+
     }
 
 }

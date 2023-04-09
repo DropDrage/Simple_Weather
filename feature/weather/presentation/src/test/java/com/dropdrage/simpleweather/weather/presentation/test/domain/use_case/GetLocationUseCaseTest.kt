@@ -65,6 +65,7 @@ internal class GetLocationUseCaseTest {
 
 
     private companion object {
+
         @JvmStatic
         fun provideLocationResults() = Stream.of(
             LocationResult.NoLocation,
@@ -79,6 +80,7 @@ internal class GetLocationUseCaseTest {
             LocationResult.NoPermission("permission"),
             LocationResult.Success(Location(1f, 2f)),
         )
+
     }
 
 }

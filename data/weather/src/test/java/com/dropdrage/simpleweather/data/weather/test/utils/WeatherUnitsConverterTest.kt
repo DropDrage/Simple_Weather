@@ -402,18 +402,20 @@ internal class WeatherUnitsConverterTest {
     //endregion
 
 
-    companion object {
+    private companion object {
+
         @BeforeAll
         @JvmStatic
-        fun setUp() {
+        fun setUpAll() {
             mockkObject(ApiSupportedUnits, WeatherUnitsPreferences)
         }
 
         @AfterAll
         @JvmStatic
-        fun tearDown() {
+        fun tearDownAll() {
             unmockkObject(ApiSupportedUnits, WeatherUnitsPreferences)
         }
+
     }
 
 }

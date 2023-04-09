@@ -332,18 +332,20 @@ internal class WeatherUnitsDeconverterTest {
     //endregion
 
 
-    companion object {
+    private companion object {
+
         @BeforeAll
         @JvmStatic
-        fun setUp() {
+        fun setUpAll() {
             mockkObject(CacheUnits)
         }
 
         @AfterAll
         @JvmStatic
-        fun tearDown() {
+        fun tearDownAll() {
             unmockkObject(CacheUnits)
         }
+
     }
 
 }

@@ -90,6 +90,7 @@ internal class CityListViewModelTest {
 
             val firstItem = awaitItem()
             val secondItem = awaitItem()
+
             cancel()
 
             verify(exactly = cityCurrentWeathers.size) { cityCurrentWeatherConverter.convertToView(any()) }
