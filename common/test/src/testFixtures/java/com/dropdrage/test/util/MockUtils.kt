@@ -103,13 +103,10 @@ inline fun runTestWithMockLooper(crossinline block: suspend () -> Unit) = runTes
 }
 
 
-inline fun <reified T : Any> justMock(noinline stubBlock: MockKMatcherScope.() -> T) {
-    every(stubBlock) returns mockk()
-}
+inline fun <reified T : Any> justMock(noinline block: MockKMatcherScope.() -> T) = every(block) returns mockk()
 
-inline fun <reified T : Any> justMock(noinline stubBlock: MockKMatcherScope.() -> T, mockInit: T.() -> Unit = {}) {
-    every(stubBlock) returns mockk(block = mockInit)
-}
+inline fun <reified T : Any> justMock(noinline block: MockKMatcherScope.() -> T, mockInit: T.() -> Unit = {}) =
+    every(block) returns mockk(block = mockInit)
 
 inline fun <reified T : Any> justMockAndGet(noinline stubBlock: MockKMatcherScope.() -> T): T {
     val mock = mockk<T>()
@@ -118,9 +115,7 @@ inline fun <reified T : Any> justMockAndGet(noinline stubBlock: MockKMatcherScop
 }
 
 
-fun <T> justCallOriginal(stubBlock: MockKMatcherScope.() -> T) {
-    every(stubBlock) answers { callOriginal() }
-}
+fun <T> justCallOriginal(block: MockKMatcherScope.() -> T) = every(block) answers { callOriginal() }
 
 
 fun verifyNever(block: MockKVerificationScope.() -> Unit) = verify(exactly = 0, verifyBlock = block)
@@ -135,3 +130,6 @@ fun coVerifyNever(block: suspend MockKVerificationScope.() -> Unit) = coVerify(e
 fun coVerifyOnce(block: suspend MockKVerificationScope.() -> Unit) = coVerify(exactly = 1, verifyBlock = block)
 
 fun coVerifyTwice(block: suspend MockKVerificationScope.() -> Unit) = coVerify(exactly = 2, verifyBlock = block)
+
+
+fun justArgToString(block: MockKMatcherScope.() -> String) = every(block) answers { firstArg<Any>().toString() }

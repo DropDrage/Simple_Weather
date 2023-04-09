@@ -23,7 +23,7 @@ internal class CitiesWeatherViewModel @Inject constructor(
 
 
     fun updateWeather() {
-        viewModelScope.launch { updateAllCitiesWeather.invoke() }
+        viewModelScope.launch { updateAllCitiesWeather() }
     }
 
 }

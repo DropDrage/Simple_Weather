@@ -22,4 +22,10 @@ dependencies {
     implementation project(path: ':data:settings')
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.junit5.params
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }

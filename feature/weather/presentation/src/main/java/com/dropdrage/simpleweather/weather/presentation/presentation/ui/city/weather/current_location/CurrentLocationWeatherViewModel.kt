@@ -1,6 +1,5 @@
 package com.dropdrage.simpleweather.weather.presentation.ui.city.weather.current_location
 
-import androidx.lifecycle.viewModelScope
 import com.dropdrage.common.presentation.util.ResourceMessage
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.simpleweather.weather.domain.location.LocationErrorResult
@@ -16,9 +15,8 @@ import com.dropdrage.simpleweather.weather.presentation.util.model_converter.Dai
 import com.dropdrage.simpleweather.weather.presentation.util.model_converter.HourWeatherConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,8 +34,8 @@ internal class CurrentLocationWeatherViewModel @Inject constructor(
     dailyWeatherConverter
 ) {
 
-    private val _locationObtainError = MutableStateFlow<LocationErrorResult?>(null)
-    val locationObtainingError: Flow<LocationErrorResult?> = _locationObtainError.asStateFlow()
+    private val _locationObtainError = MutableSharedFlow<LocationErrorResult?>()
+    val locationObtainingError: Flow<LocationErrorResult?> = _locationObtainError.asSharedFlow()
 
 
     override suspend fun getCity(): ViewCityTitle =
@@ -59,12 +57,6 @@ internal class CurrentLocationWeatherViewModel @Inject constructor(
                 else -> _error.emit(ResourceMessage(R.string.error_location_no_location))
             }
         }
-    }
-
-
-    override fun clearErrors() {
-        super.clearErrors()
-        viewModelScope.launch { _locationObtainError.emit(null) }
     }
 
 }
