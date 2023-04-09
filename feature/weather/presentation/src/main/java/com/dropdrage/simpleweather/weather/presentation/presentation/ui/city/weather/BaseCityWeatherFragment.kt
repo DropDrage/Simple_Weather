@@ -166,11 +166,6 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         viewModel.updateCityName()
     }
 
-    override fun onStop() {
-        super.onStop()
-        viewModel.clearErrors()
-    }
-
 
     protected companion object {
         const val TAG = "Weather"

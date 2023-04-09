@@ -51,7 +51,7 @@ internal class CurrentLocationWeatherViewModel @Inject constructor(
                     _error.emit(ResourceMessage(R.string.error_location_no_permission))
                 }
                 is LocationResult.GpsDisabled -> {
-                    _locationObtainError.value = it
+                    _locationObtainError.emit(it)
                     _error.emit(ResourceMessage(R.string.error_location_gps_disabled))
                 }
                 else -> _error.emit(ResourceMessage(R.string.error_location_no_location))
