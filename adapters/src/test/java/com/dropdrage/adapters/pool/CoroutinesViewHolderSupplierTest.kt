@@ -1,6 +1,5 @@
 package com.dropdrage.adapters.pool
 
-import android.os.Handler
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,7 @@ import com.dropdrage.test.util.mockLooper
 import com.dropdrage.test.util.verifyNever
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -23,18 +22,21 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
 private const val VIEW_TYPE = 0
 
+@Execution(ExecutionMode.SAME_THREAD)
 @ExtendWith(MockKExtension::class)
 internal class CoroutinesViewHolderSupplierTest {
 
     @SpyK
     private var testUtilsClass: Utils = Utils()
 
-    @MockK(relaxed = true)
+    @RelaxedMockK
     lateinit var viewHolderConsumer: ViewHolderConsumer
 
 
@@ -85,12 +87,7 @@ internal class CoroutinesViewHolderSupplierTest {
 
     @ParameterizedTest
     @ValueSource(ints = [1, 10])
-    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
-        every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
-            firstArg<Runnable>().run()
-            true
-        }
-
+    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class) {
         val supplier = createInitializedSupplier()
 
         supplier.prefetch(VIEW_TYPE, count)

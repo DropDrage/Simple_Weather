@@ -109,7 +109,7 @@ dependencyResolutionManagement {
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-test').version(coroutinesVersion)
             library('turbine', 'app.cash.turbine', 'turbine').version('0.12.3')
 
-            bundle('unit5', ['junit5', 'slf4j', 'truth', 'mockk-android', 'mockk-agent'])
+            bundle('unit5', ['junit5', 'slf4j', 'truth', 'mockk', 'mockk-android', 'mockk-agent'])
             bundle('instrumental5', ['junit5-android', 'espresso'])
 
             plugin('junit5-android', 'de.mannodermaus.android-junit5').version('1.8.2.1')

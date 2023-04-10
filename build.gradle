@@ -24,6 +24,8 @@ plugins {
     alias(buildLibs.plugins.kotlin.android) apply false
     alias(buildLibs.plugins.kotlin.kapt) apply false
     alias(buildLibs.plugins.ksp)
+
+    alias(testLibs.plugins.junit5.android) apply false
 }
 
 ext {
