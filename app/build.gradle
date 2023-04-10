@@ -2,10 +2,15 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
+
+    alias(testLibs.plugins.junit5.android)
 }
 
 apply from: import_android
+
 apply from: component_retrofit
+apply from: component_tests
+
 apply from: build_feature_buildConfig
 apply from: build_feature_resValues
 
@@ -49,18 +54,11 @@ dependencies {
     //Utils
     implementation androidLibs.kotpref
 
-
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    //Tests
-    androidTestImplementation androidLibs.hilt.testing
-    kspAndroidTest androidLibs.hilt.compiler
-    testImplementation androidLibs.hilt.testing
-    kspTest androidLibs.hilt.compiler
-
+    implementation project(path: ':core:style')
     implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
     implementation project(path: ':common:presentation') // ChangeableAppBar
-    implementation project(path: ':core:style')
     implementation project(path: ':data:city')
     implementation project(path: ':data:location')
     implementation project(path: ':data:weather')
@@ -71,4 +69,14 @@ dependencies {
     implementation project(path: ':feature:settings:presentation')
     implementation project(path: ':feature:weather:domain')
     implementation project(path: ':feature:weather:presentation')
+
+    //Tests
+    testImplementation testLibs.coroutines
+
+    androidTestImplementation androidLibs.hilt.testing
+    kspAndroidTest androidLibs.hilt.compiler
+    testImplementation androidLibs.hilt.testing
+    kspTest androidLibs.hilt.compiler
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }

@@ -13,6 +13,6 @@ abstract class SimpleViewHolder<T, VB : ViewBinding>(
         bindData(value)
     }
 
-    abstract fun bindData(value: T)
+    protected abstract fun bindData(value: T)
 
 }

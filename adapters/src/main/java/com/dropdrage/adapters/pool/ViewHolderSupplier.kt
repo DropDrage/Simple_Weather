@@ -11,7 +11,7 @@ import com.dropdrage.adapters.BuildConfig
 import java.util.concurrent.atomic.AtomicInteger
 
 typealias ViewHolderProducer = (parent: ViewGroup, viewType: Int) -> RecyclerView.ViewHolder
-typealias ViewHolderConsumer = (viewHolder: RecyclerView.ViewHolder) -> Unit
+internal typealias ViewHolderConsumer = (viewHolder: RecyclerView.ViewHolder) -> Unit
 
 private const val TAG = "ViewHolderSupplier"
 
@@ -28,7 +28,7 @@ internal abstract class ViewHolderSupplier(context: Context, private val viewHol
 
     abstract fun start()
 
-    abstract fun enqueueItemCreation(viewType: Int)
+    protected abstract fun enqueueItemCreation(viewType: Int)
 
     abstract fun stop()
 

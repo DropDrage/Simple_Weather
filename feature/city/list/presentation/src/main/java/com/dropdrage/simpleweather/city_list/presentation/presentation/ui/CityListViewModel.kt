@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class CityListViewModel @Inject constructor(
     observeCitiesWithWeather: ObserveCitiesWithWeatherUseCase,
-    private val cityCurrentWeatherConverter: CityCurrentWeatherConverter,
+    cityCurrentWeatherConverter: CityCurrentWeatherConverter,
     private val cityRepository: CityRepository,
 ) : ViewModel() {
 

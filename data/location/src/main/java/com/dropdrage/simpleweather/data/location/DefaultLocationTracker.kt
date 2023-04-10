@@ -3,6 +3,7 @@ package com.dropdrage.simpleweather.data.location
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
@@ -36,7 +37,7 @@ class DefaultLocationTracker @Inject constructor(
         }
 
         //noinspection MissingPermission
-        val lastLocation = locationClient.lastLocation.await()
+        val lastLocation: Location? = locationClient.lastLocation.await()
         return lastLocation.toLocationResult()
     }
 
@@ -82,4 +83,5 @@ class DefaultLocationTracker @Inject constructor(
         else locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
             locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
+
 }

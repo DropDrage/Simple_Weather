@@ -16,7 +16,7 @@ abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : Recyc
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
         createViewHolder(LayoutInflater.from(parent.context), parent)
 
-    abstract fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
+    protected abstract fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 
     @CallSuper
     override fun onBindViewHolder(holder: VH, position: Int) {

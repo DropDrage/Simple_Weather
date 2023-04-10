@@ -101,6 +101,7 @@ internal fun DailyWeatherDto.toDayModels(locationId: Long): List<DayWeatherModel
 
 internal fun HourlyWeatherDto.toHourModels(dayIds: List<Long>): List<HourWeatherModel> = time.chunked(HOURS_IN_DAY)
     .flatMapIndexed { dayIndex, times ->
+        val dayId = dayIds[dayIndex]
         times.mapIndexed { timeIndex, time ->
             val index = dayIndex * HOURS_IN_DAY + timeIndex
             val dateTime = time
@@ -113,7 +114,7 @@ internal fun HourlyWeatherDto.toHourModels(dayIds: List<Long>): List<HourWeather
 
             HourWeatherModel(
                 dateTime = dateTime,
-                dayId = dayIds[dayIndex],
+                dayId = dayId,
                 weatherType = weatherType,
                 temperature = temperature,
                 pressure = pressure,

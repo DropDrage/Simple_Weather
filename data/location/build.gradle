@@ -1,6 +1,7 @@
 apply from: import_androidNoUiLibrary
 apply from: component_android_hilt
 apply from: component_android_location
+apply from: component_tests
 
 android {
     namespace 'com.dropdrage.simpleweather.data.location'
@@ -9,4 +10,8 @@ android {
 dependencies {
     implementation project(path: ':core:domain')
     implementation project(path: ':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }

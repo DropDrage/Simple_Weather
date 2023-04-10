@@ -1,10 +1,13 @@
 package com.dropdrage.adapters.pool
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
+import org.jetbrains.annotations.TestOnly
 import java.lang.Integer.max
 
-private const val DEFAULT_VIEW_TYPE = 0
+@VisibleForTesting
+internal const val DEFAULT_VIEW_TYPE = 0
 
 class PrefetchPlainViewPool internal constructor(
     private val defaultMaxRecycledViews: Int,
@@ -63,5 +66,12 @@ class PrefetchPlainViewPool internal constructor(
             }
         }
     }
+
+
+    @TestOnly
+    internal fun getViewHolderSupplier() = viewHolderSupplier
+
+    @TestOnly
+    internal fun getMaxRecycledViews() = maxRecycledViews
 
 }

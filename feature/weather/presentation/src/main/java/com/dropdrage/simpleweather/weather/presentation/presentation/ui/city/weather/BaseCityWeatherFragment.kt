@@ -111,7 +111,7 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         collectWithViewLifecycle(hourlyWeather, ::updateHourlyWeather)
         collectWithViewLifecycle(dailyWeather, ::updateDailyWeather)
 
-        collectWithViewLifecycle(error, ::toastTextMessage)
+        collectWithViewLifecycle(error, ::showErrorMessage)
     }
 
     private fun setCityTitle(title: ViewCityTitle) {
@@ -148,8 +148,8 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
         dailyWeatherAdapter.submitList(dailyWeatherList)
     }
 
-    private fun toastTextMessage(message: TextMessage?) {
-        message?.let {
+    private fun showErrorMessage(message: TextMessage) {
+        message.let {
             val context = requireContext()
             Toast.makeText(context, it.getMessage(context), Toast.LENGTH_SHORT).show()
         }
@@ -164,11 +164,6 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.updateCityName()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.clearErrors()
     }
 
 

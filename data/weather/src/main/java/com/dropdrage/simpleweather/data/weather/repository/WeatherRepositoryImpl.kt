@@ -37,7 +37,7 @@ class WeatherRepositoryImpl @Inject internal constructor(
     private val locationDao: LocationDao,
     private val dayWeatherDao: DayWeatherDao,
     private val weatherCacheDao: WeatherCacheDao,
-) : CachedRepository(LogTags.WEATHER), WeatherRepository {
+) : CachedRepository<Weather>(LogTags.WEATHER), WeatherRepository {
 
     override suspend fun getWeatherFromNow(location: Location): Resource<Weather> {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
@@ -49,25 +49,23 @@ class WeatherRepositoryImpl @Inject internal constructor(
         }
     }
 
-    override suspend fun getUpdatedWeatherFromNow(location: Location): Flow<Resource<Weather>> =
-        flow {
-            val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
-            val localWeatherResult = getLocalWeatherResult(savedLocationModel)
-            if (localWeatherResult is LocalResource.Success) {
-                emit(Resource.Success(localWeatherResult.data))
-            }
+    override suspend fun getUpdatedWeatherFromNow(location: Location): Flow<Resource<Weather>> = flow {
+        val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
+        val localWeatherResult = getLocalWeatherResult(savedLocationModel)
+        if (localWeatherResult is LocalResource.Success) {
+            emit(Resource.Success(localWeatherResult.data))
 
-            if (isUpdateNotRequired(savedLocationModel?.updateTime)) {
+            if (isUpdateNotRequired(savedLocationModel!!.updateTime!!)) {
                 currentCoroutineContext().cancel()
                 return@flow
             }
+        }
 
-            @Suppress("RemoveExplicitTypeArguments")
-            tryProcessRemoteResourceOrEmitError<Weather>(localWeatherResult) {
-                updateLocalWeatherFromApi(location, savedLocationModel?.id)
-                emitUpdatedLocalWeather(savedLocationModel, location)
-            }
-        }.flowOn(Dispatchers.IO)
+        tryProcessRemoteResourceOrEmitError(localWeatherResult) {
+            updateLocalWeatherFromApi(location, savedLocationModel?.id)
+            emitUpdatedLocalWeather(savedLocationModel, location)
+        }
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun getLocalWeatherResult(locationModel: LocationModel?): LocalResource<Weather> {
         if (locationModel == null) return LocalResource.NotFound()
@@ -78,8 +76,8 @@ class WeatherRepositoryImpl @Inject internal constructor(
         else LocalResource.NotFound()
     }
 
-    private fun isUpdateNotRequired(updateTime: LocalDateTime?): Boolean =
-        updateTime != null && ChronoUnit.HOURS.between(updateTime, LocalDateTime.now()) < 1
+    private fun isUpdateNotRequired(updateTime: LocalDateTime): Boolean =
+        ChronoUnit.HOURS.between(updateTime, LocalDateTime.now()) < 1
 
     private suspend fun updateLocalWeatherFromApi(location: Location, saveLocationId: Long?) {
         val remoteDomainWeather = api.getWeather(
@@ -99,8 +97,8 @@ class WeatherRepositoryImpl @Inject internal constructor(
         remoteDomainWeather: WeatherResponseDto,
     ) {
         val locationId =
-            if (savedLocationId == null) locationDao.insertAndGetId(location.toNewModel())
-            else savedLocationId
+            if (savedLocationId != null) savedLocationId
+            else locationDao.insertAndGetId(location.toNewModel())
 
         weatherCacheDao.updateWeather(locationId, remoteDomainWeather.daily.toDayModels(locationId)) { daysIds ->
             remoteDomainWeather.hourly.toHourModels(daysIds)
@@ -112,9 +110,8 @@ class WeatherRepositoryImpl @Inject internal constructor(
         location: Location,
     ) {
         val locationModel: LocationModel =
-            if (savedLocationModel == null)
-                locationDao.getLocationApproximately(location.latitude, location.longitude)!!
-            else savedLocationModel
+            if (savedLocationModel != null) savedLocationModel
+            else locationDao.getLocationApproximately(location.latitude, location.longitude)!!
 
         val updatedLocalWeatherResult = getLocalWeatherResult(locationModel)
         if (updatedLocalWeatherResult is LocalResource.Success) {
@@ -128,11 +125,11 @@ class WeatherRepositoryImpl @Inject internal constructor(
 
     override suspend fun updateWeather(location: Location) {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
-        if (isUpdateNotRequired(savedLocationModel?.updateTime)) {
+        if (savedLocationModel == null || isUpdateNotRequired(savedLocationModel.updateTime!!)) {
             return
         }
 
-        updateLocalWeatherFromApi(location, savedLocationModel?.id)
+        updateLocalWeatherFromApi(location, savedLocationModel.id)
     }
 
 }

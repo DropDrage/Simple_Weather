@@ -1,6 +1,5 @@
 package com.dropdrage.simpleweather.weather.presentation.ui.city.weather
 
-import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.common.domain.CantObtainResourceException
@@ -54,8 +53,8 @@ internal abstract class BaseCityWeatherViewModel constructor(
     private val _dailyWeather = MutableSharedFlow<List<ViewDayWeather>>()
     val dailyWeather: Flow<List<ViewDayWeather>> = _dailyWeather.asSharedFlow()
 
-    protected val _error = MutableStateFlow<TextMessage?>(null)
-    val error: Flow<TextMessage?> = _error.asStateFlow()
+    protected val _error = MutableSharedFlow<TextMessage>()
+    val error: Flow<TextMessage> = _error.asSharedFlow()
 
 
     fun updateCityName() {
@@ -112,14 +111,6 @@ internal abstract class BaseCityWeatherViewModel constructor(
 
         _dailyWeather.emit(viewDailyWeather.await())
         _hourlyWeather.emit(viewHourlyWeather.await())
-    }
-
-
-    @CallSuper
-    open fun clearErrors() {
-        viewModelScope.launch {
-            _error.emit(null)
-        }
     }
 
 }

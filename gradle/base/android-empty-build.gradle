@@ -9,6 +9,7 @@ android {
         versionName project.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -21,9 +22,14 @@ android {
         baseline rootProject.file('lint-baseline.xml')
         warningsAsErrors false
     }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/ASL2.0', 'META-INF/LICENSE*', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/MANIFEST.MF']
+        }
+    }
 }
 
 dependencies {
-    testImplementation testLibs.bundles.unit
-    androidTestImplementation testLibs.bundles.instrumental
+    androidTestImplementation testLibs.bundles.instrumental5
+    androidTestRuntimeOnly testLibs.junit5.android.runtime
 }

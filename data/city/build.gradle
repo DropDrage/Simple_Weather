@@ -1,5 +1,6 @@
 apply from: import_androidDataLibrary
 apply from: component_android_hilt
+apply from: component_tests
 
 android {
     namespace 'com.dropdrage.simpleweather.data.city'
@@ -24,4 +25,8 @@ dependencies {
     implementation project(path: ':feature:city:domain')
     implementation project(path: ':feature:city:list:domain')
     implementation project(path: ':feature:city:search:domain')
+
+    testImplementation testLibs.coroutines
+
+    testImplementation testFixtures(project(path: ':common:test'))
 }

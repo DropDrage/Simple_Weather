@@ -1,4 +1,5 @@
 apply from: import_androidEmptyLibrary
+apply from: component_tests
 apply from: build_feature_resValues
 
 android {
@@ -10,4 +11,7 @@ dependencies {
 
     api androidLibs.kotpref
     implementation androidLibs.kotpref.enum
+
+    testImplementation testLibs.junit5.params
+    testImplementation testFixtures(project(path: ':common:test'))
 }

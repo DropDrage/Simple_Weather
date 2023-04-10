@@ -1,4 +1,5 @@
 apply from: import_androidNoUiLibrary
+apply from: component_tests
 apply from: build_feature_resValues
 
 android {
@@ -11,4 +12,6 @@ dependencies {
 
     implementation project(path: ':core:domain')
     implementation project(path: ':data:settings')
+
+    testImplementation testLibs.junit5.params
 }

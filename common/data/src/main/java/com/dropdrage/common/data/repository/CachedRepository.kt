@@ -7,10 +7,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.FlowCollector
 import java.io.IOException
 
-abstract class CachedRepository(protected val tag: String) {
+abstract class CachedRepository<T>(protected val tag: String) {
     protected suspend inline fun <T> FlowCollector<Resource<T>>.tryProcessRemoteResourceOrEmitError(
         localResourceResult: LocalResource<*>,
-        remoteResourceAction: () -> Unit,
+        remoteResourceAction: suspend FlowCollector<Resource<T>>.() -> Unit, //suspend for testing
     ) {
         try {
             remoteResourceAction()

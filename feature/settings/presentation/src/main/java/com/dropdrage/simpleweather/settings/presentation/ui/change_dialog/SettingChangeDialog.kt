@@ -47,9 +47,7 @@ internal class SettingChangeDialog(
 
     private fun initSettingsList() = binding.settings.apply {
         setLinearLayoutManager()
-        adapter = SettingChangeAdapter {
-            onSettingChanged(it)
-        }.also { settingAdapter = it }
+        adapter = SettingChangeAdapter(onSettingChanged).also { settingAdapter = it }
     }
 
     private fun observeViewModel() = viewModel.apply {
