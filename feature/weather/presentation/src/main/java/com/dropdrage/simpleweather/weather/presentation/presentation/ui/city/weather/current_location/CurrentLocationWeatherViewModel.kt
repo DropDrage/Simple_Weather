@@ -14,6 +14,7 @@ import com.dropdrage.simpleweather.weather.presentation.util.model_converter.Cur
 import com.dropdrage.simpleweather.weather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.weather.presentation.util.model_converter.HourWeatherConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -34,13 +35,14 @@ internal class CurrentLocationWeatherViewModel @Inject constructor(
     dailyWeatherConverter
 ) {
 
-    private val _locationObtainError = MutableSharedFlow<LocationErrorResult?>()
+    private val _locationObtainError = MutableSharedFlow<LocationErrorResult?>(replay = 1)
     val locationObtainingError: Flow<LocationErrorResult?> = _locationObtainError.asSharedFlow()
 
 
     override suspend fun getCity(): ViewCityTitle =
         ViewCityTitle(ResourceMessage(R.string.city_name_current_location), TextMessage.EmptyMessage)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun tryLoadWeather() {
         getLocation().collect {
             when (it) {
@@ -57,6 +59,11 @@ internal class CurrentLocationWeatherViewModel @Inject constructor(
                 else -> _error.emit(ResourceMessage(R.string.error_location_no_location))
             }
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun clearError() {
+        _locationObtainError.resetReplayCache()
     }
 
 }
