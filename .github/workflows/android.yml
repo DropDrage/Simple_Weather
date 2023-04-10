@@ -29,5 +29,8 @@ jobs:
         run: ./gradlew assembleDebug
       #      - name: Lint
       #        run: ./gradlew lintDebug
-      - name: Tests
-        run: ./gradlew cleanTestDebugUnitTest testDebugUnitTest
+      - name: Unit Tests
+        run: ./gradlew testDebugUnitTest
+      - name: Android Test Report Action
+        uses: asadmansr/android-test-report-action@v1.2.0
+        if: ${{ always() }}
