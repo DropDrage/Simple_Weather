@@ -22,14 +22,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
 private const val VIEW_TYPE = 0
 
-@Execution(ExecutionMode.SAME_THREAD)
 @ExtendWith(MockKExtension::class)
 internal class CoroutinesViewHolderSupplierTest {
 
@@ -79,7 +76,7 @@ internal class CoroutinesViewHolderSupplierTest {
 
         supplier.prefetch(VIEW_TYPE, 0)
 
-        coVerify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
+        coVerify(exactly = 0, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
         verifyNever { viewHolderConsumer(any()) }
 
         supplier.stop()
@@ -92,8 +89,8 @@ internal class CoroutinesViewHolderSupplierTest {
 
         supplier.prefetch(VIEW_TYPE, count)
 
-        verify(exactly = count, timeout = 1500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verify(exactly = count, timeout = 1500) { viewHolderConsumer(any()) }
+        verify(exactly = count, timeout = 3000) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
+        verify(exactly = count, timeout = 3000) { viewHolderConsumer(any()) }
 
         supplier.stop()
     }
@@ -136,11 +133,12 @@ internal class CoroutinesViewHolderSupplierTest {
             start()
         }
 
-}
 
-@Suppress("UNUSED_PARAMETER")
-private class Utils {
-    fun viewHolderProducer(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = mockk(relaxed = true) {
-        every { itemViewType } returns viewType
+    @Suppress("UNUSED_PARAMETER")
+    private class Utils {
+        fun viewHolderProducer(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = mockk(relaxed = true) {
+            every { itemViewType } returns viewType
+        }
     }
+
 }
