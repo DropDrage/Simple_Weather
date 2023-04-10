@@ -125,11 +125,11 @@ class WeatherRepositoryImpl @Inject internal constructor(
 
     override suspend fun updateWeather(location: Location) {
         val savedLocationModel = locationDao.getLocationApproximately(location.latitude, location.longitude)
-        if (savedLocationModel == null || isUpdateNotRequired(savedLocationModel.updateTime!!)) {
+        if (savedLocationModel != null && isUpdateNotRequired(savedLocationModel.updateTime!!)) {
             return
         }
 
-        updateLocalWeatherFromApi(location, savedLocationModel.id)
+        updateLocalWeatherFromApi(location, savedLocationModel?.id)
     }
 
 }

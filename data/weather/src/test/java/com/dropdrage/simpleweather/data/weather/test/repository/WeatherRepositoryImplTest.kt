@@ -332,22 +332,7 @@ internal class WeatherRepositoryImplTest {
     //region updateWeather
 
     @Test
-    fun `updateWeather update not required due to no location in db`() = runTest {
-        val location = Location(1f, 2f)
-        coEvery { locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude)) } returns null
-
-        repository.updateWeather(location)
-
-        coVerifyNever {
-            locationDao.insertAndGetId(any())
-            api.getWeather(any(), any(), any(), any(), any(), any())
-            weatherCacheDao.updateWeather(any(), any(), any())
-        }
-        coVerifyOnce { locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude)) }
-    }
-
-    @Test
-    fun `updateWeather update not required due to time`() = runTest {
+    fun `updateWeather update not required due to time then nothing`() = runTest {
         val locationId = 2L
         val location = Location(1f, 2f)
         val locationModel = LocationModel(locationId, location.latitude, location.longitude)
@@ -366,7 +351,27 @@ internal class WeatherRepositoryImplTest {
     }
 
     @Test
-    fun `updateWeather update required`() = runTest {
+    fun `updateWeather update required but no location in db then add and update`() = runTest {
+        val location = Location(1f, 2f)
+        coEvery { locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude)) } returns null
+        val weatherResponse = createWeatherResponseDto(0, 0)
+        coEvery { api.getWeather(any(), any(), any(), any(), any(), any()) } returns weatherResponse
+        val locationId = 2L
+        coEvery { locationDao.insertAndGetId(any()) } returns locationId
+        coJustRun { weatherCacheDao.updateWeather(eq(locationId), any(), any()) }
+
+        repository.updateWeather(location)
+
+        coVerifyOnce {
+            locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude))
+            api.getWeather(any(), any(), any(), any(), any(), any())
+            locationDao.insertAndGetId(any())
+            weatherCacheDao.updateWeather(any(), any(), any())
+        }
+    }
+
+    @Test
+    fun `updateWeather update required due to time then update`() = runTest {
         val locationId = 2L
         val location = Location(1f, 2f)
         val locationModel = LocationModel(locationId, location.latitude, location.longitude, LocalDateTime.MIN)
