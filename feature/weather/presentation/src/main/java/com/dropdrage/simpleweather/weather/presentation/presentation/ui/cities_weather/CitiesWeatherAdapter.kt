@@ -36,4 +36,5 @@ internal class CitiesWeatherAdapter(fragment: Fragment) : FragmentStateAdapter(f
 
 
     override fun getItemCount(): Int = fragmentsCount
+
 }

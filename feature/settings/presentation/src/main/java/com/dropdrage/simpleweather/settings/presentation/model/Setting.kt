@@ -9,8 +9,7 @@ import com.dropdrage.simpleweather.data.settings.TimeFormat
 import com.dropdrage.simpleweather.data.settings.VisibilityUnit
 import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
 import com.dropdrage.simpleweather.settings.presentation.R
-
-private typealias DataString = com.dropdrage.simpleweather.data.settings.R.string
+import com.dropdrage.simpleweather.data.settings.R.string as DataString
 
 internal typealias AnySetting = Setting<*, *> //ToDo rename to ViewSetting?
 

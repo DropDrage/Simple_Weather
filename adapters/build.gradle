@@ -15,5 +15,5 @@ android {
 dependencies {
     testImplementation testLibs.junit5.params
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

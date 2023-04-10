@@ -87,7 +87,7 @@ internal abstract class BaseCityWeatherViewModel constructor(
     protected suspend fun processWeatherResult(result: Resource<Weather>) {
         when (result) {
             is Resource.Success -> updateWeather(result.data)
-            //ToDo don't pass exception messages to view
+            // ToDo don't pass exception messages to view
             is Resource.Error -> _error.emit(when (result.exception) {
                 is CantObtainResourceException -> TextMessage.NoDataAvailableErrorMessage
                 else -> result.message.toTextMessageOrUnknownErrorMessage()

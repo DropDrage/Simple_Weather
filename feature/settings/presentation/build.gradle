@@ -6,14 +6,14 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':adapters')
-    implementation project(path: ':core:style')
-    implementation project(path: ':common:presentation')
-    implementation project(path: ':data:settings')
+    implementation project(':adapters')
+    implementation project(':core:style')
+    implementation project(':common:presentation')
+    implementation project(':data:settings')
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
     testImplementation testLibs.turbine
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

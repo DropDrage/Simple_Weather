@@ -7,7 +7,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.inject.Inject
 
-class DayNameFormat @Inject constructor(@ApplicationContext private val context: Context) {
+internal class DayNameFormat @Inject constructor(@ApplicationContext private val context: Context) {
     fun formatFromStartDay(day: LocalDate, startDay: LocalDate): String {
         val dayOffset = (day.toEpochDay() - startDay.toEpochDay()).toInt()
         return when (dayOffset) {

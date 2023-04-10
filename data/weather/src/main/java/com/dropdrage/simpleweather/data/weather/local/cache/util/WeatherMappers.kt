@@ -1,6 +1,5 @@
 package com.dropdrage.simpleweather.data.weather.local.util.mapper
 
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.data.weather.local.cache.dto.CurrentWeatherDto
 import com.dropdrage.simpleweather.data.weather.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
@@ -11,14 +10,10 @@ import com.dropdrage.simpleweather.data.weather.remote.DailyWeatherDto
 import com.dropdrage.simpleweather.data.weather.remote.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConverter
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.Weather
-
-private typealias DomainWeather = Weather
-private typealias DomainDayWeather = DayWeather
-private typealias DomainHourWeather = HourWeather
-private typealias DomainCurrentWeather = CurrentWeather
+import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather as DomainCurrentWeather
+import com.dropdrage.simpleweather.weather.domain.weather.DayWeather as DomainDayWeather
+import com.dropdrage.simpleweather.weather.domain.weather.HourWeather as DomainHourWeather
+import com.dropdrage.simpleweather.weather.domain.weather.Weather as DomainWeather
 
 private const val HOURS_IN_DAY = 24
 

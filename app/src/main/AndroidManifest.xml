@@ -26,7 +26,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="userPortrait"
             android:theme="@style/Theme.SimpleWeather"
             tools:ignore="LockedOrientationActivity">
 

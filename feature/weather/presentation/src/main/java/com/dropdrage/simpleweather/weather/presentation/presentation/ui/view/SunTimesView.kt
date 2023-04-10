@@ -40,8 +40,7 @@ internal class SunTimesView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-) :
-    View(context, attrs, defStyle) {
+) : View(context, attrs, defStyle) {
 
     private var _sunIntrinsicWidth: Int = 0
     private var _sunIntrinsicHeight: Int = 0

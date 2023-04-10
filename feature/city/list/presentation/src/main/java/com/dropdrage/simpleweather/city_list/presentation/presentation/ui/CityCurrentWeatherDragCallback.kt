@@ -18,8 +18,8 @@ internal class CityCurrentWeatherDragCallback(private val onDragEnd: () -> Unit)
         target: RecyclerView.ViewHolder,
     ): Boolean {
         val adapter = recyclerView.adapter as ItemsMovable
-        val from = viewHolder.bindingAdapterPosition
-        val to = target.bindingAdapterPosition
+        val from = viewHolder.adapterPosition
+        val to = target.adapterPosition
         adapter.moveItem(from, to)
 
         return true

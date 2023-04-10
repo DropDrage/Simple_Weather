@@ -40,11 +40,11 @@ internal class CityCurrentWeatherDragCallbackTest {
     fun `onMove moveItem invoked`() {
         val viewHolderPosition = 10
         val viewHolder = mockk<RecyclerView.ViewHolder> {
-            every { bindingAdapterPosition } returns viewHolderPosition
+            every { adapterPosition } returns viewHolderPosition
         }
         val targetPosition = 5
         val target = mockk<RecyclerView.ViewHolder> {
-            every { bindingAdapterPosition } returns targetPosition
+            every { adapterPosition } returns targetPosition
         }
         val adapter = mockk<RecyclerView.Adapter<*>>(moreInterfaces = arrayOf(ItemsMovable::class)) {
             justRun { (this@mockk as ItemsMovable).moveItem(eq(viewHolderPosition), eq(targetPosition)) }

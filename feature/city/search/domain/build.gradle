@@ -1,6 +1,6 @@
 apply from: import_library
 
 dependencies {
-    implementation project(path: ':common:domain')
-    implementation project(path: ':feature:city:domain')
+    implementation project(':common:domain')
+    implementation project(':feature:city:domain')
 }

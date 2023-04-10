@@ -18,16 +18,16 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:utils')
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':data:settings')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:weather:domain')
+    implementation project(':core:domain')
+    implementation project(':core:utils')
+    implementation project(':common:data')
+    implementation project(':common:domain')
+    implementation project(':data:settings')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:weather:domain')
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

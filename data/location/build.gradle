@@ -8,10 +8,10 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:domain')
-    implementation project(path: ':feature:weather:domain')
+    implementation project(':core:domain')
+    implementation project(':feature:weather:domain')
 
     testImplementation testLibs.coroutines
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

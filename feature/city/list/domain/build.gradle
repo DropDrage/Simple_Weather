@@ -3,5 +3,5 @@ apply from: import_library
 dependencies {
     implementation kotlinLibs.coroutines
 
-    implementation project(path: ':core:domain')
+    implementation project(':core:domain')
 }

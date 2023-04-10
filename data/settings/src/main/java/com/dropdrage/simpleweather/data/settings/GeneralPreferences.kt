@@ -3,8 +3,7 @@ package com.dropdrage.simpleweather.data.settings
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumOrdinalPref
 import com.dropdrage.simpleweather.settings.data.util.isDateFormatStraight
-
-private typealias AndroidDateFormat = android.text.format.DateFormat
+import android.text.format.DateFormat as AndroidDateFormat
 
 object GeneralPreferences : KotprefModel() {
 

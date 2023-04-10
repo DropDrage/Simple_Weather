@@ -4,6 +4,6 @@ import com.dropdrage.simpleweather.data.settings.GeneralPreferences
 import java.time.LocalDate
 import javax.inject.Inject
 
-class DateFormatter @Inject constructor() {
+internal class DateFormatter @Inject constructor() {
     fun formatDayMonth(date: LocalDate): String = date.format(GeneralPreferences.dateFormat.formatter)
 }

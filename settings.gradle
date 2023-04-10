@@ -14,17 +14,29 @@ dependencyResolutionManagement {
     }
 
     def coroutinesVersion = '1.6.4'
+    def navigationVersion = '2.5.3'
+    def hiltVersion = '2.45'
     versionCatalogs {
         buildLibs {
-            def kotlinVersion = version('kotlin', '1.8.0')
-            plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').versionRef(kotlinVersion)
-            plugin('kotlin-android', 'org.jetbrains.kotlin.android').versionRef(kotlinVersion)
-            plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').versionRef(kotlinVersion)
-            library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').versionRef(kotlinVersion)
+            def gradleVersion = '7.4.2'
+            plugin('android-application', 'com.android.application').version(gradleVersion)
+            plugin('android-library', 'com.android.library').version(gradleVersion)
 
-            def kspVersion = version('ksp', '1.8.0-1.0.8')
-            library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').versionRef(kspVersion)
-            plugin('ksp', 'com.google.devtools.ksp').versionRef(kspVersion)
+            def kotlinVersion = '1.8.10'
+            plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').version(kotlinVersion)
+            plugin('kotlin-android', 'org.jetbrains.kotlin.android').version(kotlinVersion)
+            plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').version(kotlinVersion)
+            library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').version(kotlinVersion)
+
+            def kspVersion = "$kotlinVersion-1.0.9"
+            library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').version(kspVersion)
+            plugin('ksp', 'com.google.devtools.ksp').version(kspVersion)
+
+            plugin('navigation-safeargs', 'androidx.navigation.safeargs.kotlin').version(navigationVersion)
+
+            plugin('hilt', 'com.google.dagger.hilt.android').version(hiltVersion)
+
+            plugin('gradle-versions', 'com.github.ben-manes.versions').version('0.46.0')
         }
 
         kotlinLibs {
@@ -33,78 +45,84 @@ dependencyResolutionManagement {
 
         androidLibs {
             library('android', 'com.google.android', 'android').version('4.1.1.4')
-            library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
-            library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
-            library('android-material', 'com.google.android.material', 'material').version('1.7.0')
-            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.5')
+            library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.0')
+            library('androidx-annotation', 'androidx.annotation', 'annotation').version('1.6.0')
+            library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.1')
+            library('android-material', 'com.google.android.material', 'material').version('1.8.0')
+            library('androidx-constraintlayout', 'androidx.constraintlayout', 'constraintlayout').version('2.1.4')
+            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.6')
             bundle('ui-core', ['androidx-core', 'androidx-appcompat', 'android-material'])
 
-            def lifecycleVersion = version('lifecycle', '2.5.1')
-            library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').versionRef(lifecycleVersion)
-            library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').versionRef(lifecycleVersion)
+            def lifecycleVersion = '2.6.1'
+            library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').version(lifecycleVersion)
+            library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').version(lifecycleVersion)
 
-            def navigationVersion = version('navigation', '2.5.3')
-            library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)
-            library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').versionRef(navigationVersion)
-            library('gradle-plugin-navigation-safeargs', 'androidx.navigation', 'navigation-safe-args-gradle-plugin').versionRef(navigationVersion)
+            library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').version(navigationVersion)
+            library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').version(navigationVersion)
             bundle('navigation', ['navigation-fragment', 'navigation-ui'])
 
-            def hiltVersion = version('hilt', '2.44.2')
-            library('hilt', 'com.google.dagger', 'hilt-android').versionRef(hiltVersion)
-            library('hilt-compiler', 'com.google.dagger', 'hilt-compiler').versionRef(hiltVersion)
-            library('hilt-testing', 'com.google.dagger', 'hilt-android-testing').versionRef(hiltVersion)
-            def hiltWorkVersion = version('hilt-work', '1.0.0')
-            library('hilt-work', 'androidx.hilt', 'hilt-work').versionRef(hiltWorkVersion)
-            library('hilt-work-compiler', 'androidx.hilt', 'hilt-compiler').versionRef(hiltWorkVersion)
-            library('gradle-plugin-hilt', 'com.google.dagger', 'hilt-android-gradle-plugin').versionRef(hiltVersion)
+            library('hilt', 'com.google.dagger', 'hilt-android').version(hiltVersion)
+            library('hilt-compiler', 'com.google.dagger', 'hilt-compiler').version(hiltVersion)
+            library('hilt-testing', 'com.google.dagger', 'hilt-android-testing').version(hiltVersion)
+            library('gradle-plugin-hilt', 'com.google.dagger', 'hilt-android-gradle-plugin').version(hiltVersion)
+            def hiltWorkVersion = '1.0.0'
+            library('hilt-work', 'androidx.hilt', 'hilt-work').version(hiltWorkVersion)
+            library('hilt-work-compiler', 'androidx.hilt', 'hilt-compiler').version(hiltWorkVersion)
+
+            library('work', 'androidx.work', 'work-runtime-ktx').version('2.8.1')
 
             library('services-location', 'com.google.android.gms', 'play-services-location').version('21.0.1')
             library('services-play-coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-play-services').version(coroutinesVersion)
             bundle('location', ['services-location', 'services-play-coroutines'])
 
-            def roomVersion = version('room', '2.5.0')
-            library('room-ktx', 'androidx.room', 'room-ktx').versionRef(roomVersion)
-            library('room-runtime', 'androidx.room', 'room-runtime').versionRef(roomVersion)
-            library('room-common', 'androidx.room', 'room-common').versionRef(roomVersion)
-            library('room-compiler', 'androidx.room', 'room-compiler').versionRef(roomVersion)
+            def roomVersion = '2.5.1'
+            library('room-ktx', 'androidx.room', 'room-ktx').version(roomVersion)
+            library('room-runtime', 'androidx.room', 'room-runtime').version(roomVersion)
+            library('room-common', 'androidx.room', 'room-common').version(roomVersion)
+            library('room-compiler', 'androidx.room', 'room-compiler').version(roomVersion)
             bundle('room', ['room-ktx', 'room-runtime'])
 
-            def kotprefVersion = version('kotpref', '2.13.2')
-            library('kotpref', 'com.chibatching.kotpref', 'kotpref').versionRef(kotprefVersion)
-            library('kotpref-enum', 'com.chibatching.kotpref', 'enum-support').versionRef(kotprefVersion)
+            def kotprefVersion = '2.13.2'
+            library('kotpref', 'com.chibatching.kotpref', 'kotpref').version(kotprefVersion)
+            library('kotpref-enum', 'com.chibatching.kotpref', 'enum-support').version(kotprefVersion)
+
+            library('viewBinding', 'com.github.kirich1409', 'viewbindingpropertydelegate-noreflection').version('1.5.9')
+
+            library('collapsingtoolbarlayout-subtitle', 'com.hendraanggrian.material', 'collapsingtoolbarlayout-subtitle').version('1.5.0')
         }
 
         networkLibs {
-            def retrofitVersion = version('retrofit', '2.9.0')
-            library('retrofit', 'com.squareup.retrofit2', 'retrofit').versionRef(retrofitVersion)
+            def retrofitVersion = '2.9.0'
+            library('retrofit', 'com.squareup.retrofit2', 'retrofit').version(retrofitVersion)
+            library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').version(retrofitVersion)
+            library('logging-interceptor', 'com.squareup.okhttp3', 'logging-interceptor').version('5.0.0-alpha.10')
 
-            library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').versionRef(retrofitVersion)
-            def moshiVersion = version('moshi', '1.14.0')
-            library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').versionRef(moshiVersion)
-            library('moshi-compiler', 'com.squareup.moshi', 'moshi-kotlin-codegen').versionRef(moshiVersion)
+            def moshiVersion = '1.14.0'
+            library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').version(moshiVersion)
+            library('moshi-compiler', 'com.squareup.moshi', 'moshi-kotlin-codegen').version(moshiVersion)
             bundle('moshi', ['moshi-core', 'moshi-kotlin'])
         }
 
         testLibs {
             library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
 
-            def junit5Version = version('junit5', '5.8.2')
-            library('junit5', 'org.junit.jupiter', 'junit-jupiter-api').versionRef(junit5Version)
-            library('junit5-runtime', 'org.junit.jupiter', 'junit-jupiter-engine').versionRef(junit5Version)
-            library('junit5-params', 'org.junit.jupiter', 'junit-jupiter-params').versionRef(junit5Version)
-            library('slf4j', 'org.slf4j', 'slf4j-simple').version('2.0.6')
+            def junit5Version = '5.9.2'
+            library('junit5', 'org.junit.jupiter', 'junit-jupiter-api').version(junit5Version)
+            library('junit5-runtime', 'org.junit.jupiter', 'junit-jupiter-engine').version(junit5Version)
+            library('junit5-params', 'org.junit.jupiter', 'junit-jupiter-params').version(junit5Version)
+            library('slf4j', 'org.slf4j', 'slf4j-simple').version('2.0.7')
 
             library('truth', 'com.google.truth', 'truth').version('1.1.3')
 
-            def junit5AndroidVersion = version('junit5-android', '1.3.0')
-            library('junit5-android', 'de.mannodermaus.junit5', 'android-test-core').versionRef(junit5AndroidVersion)
-            library('junit5-android-runtime', 'de.mannodermaus.junit5', 'android-test-runner').versionRef(junit5AndroidVersion)
+            def junit5AndroidVersion = '1.3.0'
+            library('junit5-android', 'de.mannodermaus.junit5', 'android-test-core').version(junit5AndroidVersion)
+            library('junit5-android-runtime', 'de.mannodermaus.junit5', 'android-test-runner').version(junit5AndroidVersion)
             library('robolectric', 'org.robolectric', 'robolectric').version('4.9.2')
 
-            def mockkVersion = version('mockk', '1.13.4')
-            library('mockk', 'io.mockk', 'mockk').versionRef(mockkVersion)
-            library('mockk-android', 'io.mockk', 'mockk-android').versionRef(mockkVersion)
-            library('mockk-agent', 'io.mockk', 'mockk-agent').versionRef(mockkVersion)
+            def mockkVersion = '1.13.4'
+            library('mockk', 'io.mockk', 'mockk').version(mockkVersion)
+            library('mockk-android', 'io.mockk', 'mockk-android').version(mockkVersion)
+            library('mockk-agent', 'io.mockk', 'mockk-agent').version(mockkVersion)
 
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-test').version(coroutinesVersion)
             library('turbine', 'app.cash.turbine', 'turbine').version('0.12.3')

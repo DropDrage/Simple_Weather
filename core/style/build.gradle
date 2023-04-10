@@ -5,5 +5,5 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':common:presentation')
+    implementation project(':common:presentation')
 }

@@ -3,6 +3,6 @@ apply from: import_library
 dependencies {
     implementation kotlinLibs.coroutines
 
-    implementation project(path: ':core:domain')
-    implementation project(path: ':common:domain')
+    implementation project(':core:domain')
+    implementation project(':common:domain')
 }

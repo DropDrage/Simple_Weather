@@ -8,18 +8,18 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':adapters')
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:presentation')
-    implementation project(path: ':core:style')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':common:presentation')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:search:presentation')
-    implementation project(path: ':feature:city:domain')
+    implementation project(':adapters')
+    implementation project(':core:domain')
+    implementation project(':core:presentation')
+    implementation project(':core:style')
+    implementation project(':common:domain')
+    implementation project(':common:presentation')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:search:presentation')
+    implementation project(':feature:city:domain')
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.turbine
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

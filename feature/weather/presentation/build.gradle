@@ -9,24 +9,24 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation androidLibs.androidx.constraintlayout
 
-    implementation "com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0"
+    implementation androidLibs.collapsingtoolbarlayout.subtitle
 
-    implementation project(path: ':adapters')
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:presentation')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':common:presentation')
-    implementation project(path: ':core:style')
-    implementation project(path: ':core:utils')
-    implementation project(path: ':data:settings')
-    implementation project(path: ':feature:city:domain')
-    implementation project(path: ':feature:weather:domain')
+    implementation project(':adapters')
+    implementation project(':core:domain')
+    implementation project(':core:presentation')
+    implementation project(':common:domain')
+    implementation project(':common:presentation')
+    implementation project(':core:style')
+    implementation project(':core:utils')
+    implementation project(':data:settings')
+    implementation project(':feature:city:domain')
+    implementation project(':feature:weather:domain')
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
     testImplementation testLibs.turbine
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

@@ -16,11 +16,11 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:utils')
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:search:domain')
-    implementation project(path: ':feature:city:domain')
+    implementation project(':core:domain')
+    implementation project(':core:utils')
+    implementation project(':common:data')
+    implementation project(':common:domain')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:search:domain')
+    implementation project(':feature:city:domain')
 }

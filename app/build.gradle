@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp'
+    alias(buildLibs.plugins.ksp)
 
     alias(testLibs.plugins.junit5.android)
 }
@@ -39,8 +39,7 @@ android {
 }
 
 dependencies {
-    def work_version = "2.7.1"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation androidLibs.work
 
     //Hilt
     implementation androidLibs.hilt.work
@@ -49,26 +48,26 @@ dependencies {
     //Moshi
     implementation networkLibs.bundles.moshi
     ksp networkLibs.moshi.compiler
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
+    implementation networkLibs.logging.interceptor
 
     //Utils
     implementation androidLibs.kotpref
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    implementation project(path: ':core:style')
-    implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
-    implementation project(path: ':common:presentation') // ChangeableAppBar
-    implementation project(path: ':data:city')
-    implementation project(path: ':data:location')
-    implementation project(path: ':data:weather')
-    implementation project(path: ':feature:city:domain')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:list:presentation')
-    implementation project(path: ':feature:city:search:domain')
-    implementation project(path: ':feature:settings:presentation')
-    implementation project(path: ':feature:weather:domain')
-    implementation project(path: ':feature:weather:presentation')
+    implementation project(':core:style')
+    implementation project(':common:data'), { because "SimpleRepository Hilt resolve" }
+    implementation project(':common:presentation'), { because "ChangeableAppBar" }
+    implementation project(':data:city')
+    implementation project(':data:location')
+    implementation project(':data:weather')
+    implementation project(':feature:city:domain')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:list:presentation')
+    implementation project(':feature:city:search:domain')
+    implementation project(':feature:settings:presentation')
+    implementation project(':feature:weather:domain')
+    implementation project(':feature:weather:presentation')
 
     //Tests
     testImplementation testLibs.coroutines
@@ -78,5 +77,5 @@ dependencies {
     testImplementation androidLibs.hilt.testing
     kspTest androidLibs.hilt.compiler
 
-    testImplementation testFixtures(project(path: ':common:test'))
+    testImplementation testFixtures(project(':common:test'))
 }

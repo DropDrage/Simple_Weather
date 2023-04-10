@@ -64,13 +64,13 @@ internal class SettingsViewModel @Inject constructor(
             is ViewDateFormat -> GeneralPreferences.dateFormat = setting.toData()
         }
 
-        val changedSettingIndex = settings.indexOfFirst { it.values.contains(setting) }
-        settings[changedSettingIndex].currentValue =
+        val changedSetting = settings.first { it.values.contains(setting) }
+        changedSetting.currentValue =
             if (setting is GeneralFormat) generalFormatConverter.convertToValue(setting)
             else weatherUnitConverter.convertToValue(setting)
 
         viewModelScope.launch {
-            _settingChanged.emit(settings[changedSettingIndex])
+            _settingChanged.emit(changedSetting)
         }
     }
 }

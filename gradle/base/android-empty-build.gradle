@@ -10,6 +10,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+
+        resConfigs "en"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11

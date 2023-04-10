@@ -1,31 +1,17 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    ext.kotlin_version = "1.8.0"
-
-    dependencies {
-        classpath buildLibs.gradle.plugin.kotlin
-
-        classpath androidLibs.gradle.plugin.hilt
-
-        classpath androidLibs.gradle.plugin.navigation.safeargs
-    }
-}
-
 plugins {
-    id 'com.android.application' version '7.4.1' apply false
-    id 'com.android.library' version '7.4.1' apply false
+    alias(buildLibs.plugins.android.application) apply false
+    alias(buildLibs.plugins.android.library) apply false
 
     alias(buildLibs.plugins.kotlin.jvm)
     alias(buildLibs.plugins.kotlin.android) apply false
     alias(buildLibs.plugins.kotlin.kapt) apply false
     alias(buildLibs.plugins.ksp)
 
+    alias(buildLibs.plugins.hilt) apply false
+    alias(buildLibs.plugins.navigation.safeargs) apply false
     alias(testLibs.plugins.junit5.android) apply false
+
+    alias(buildLibs.plugins.gradle.versions)
 }
 
 ext {
@@ -65,10 +51,10 @@ ext {
     build_feature_resValues = "$buildFeatureDir/res_values.gradle"
 }
 
-task cleanBaselines() {
+tasks.register("cleanBaselines") {
     def baselineFile = "/lint-baseline.xml"
     rootProject.allprojects.forEach(project -> {
-        if (project.subprojects.size() == 0) {
+        if (project.subprojects.isEmpty()) {//size() == 0) {
             println(project.projectDir.path)
             delete project.projectDir.path + baselineFile
         }
@@ -77,4 +63,17 @@ task cleanBaselines() {
 
 test {
     useJUnitPlatform()
+}
+
+
+static def isNonStable(String version) {
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
 }
