@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.weather.test.repository
 
+import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.DayWeatherDao
@@ -35,9 +36,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDateTime
 
@@ -183,7 +184,7 @@ internal class WeatherRepositoryImplTest {
         }
 
     @Test
-    fun `getUpdatedWeatherFromNow and location in db but no weather from api and db then CantObtainResource`() =
+    fun `getUpdatedWeatherFromNow location in db but no weather from api and db then CantObtainResource`() =
         runTestWithMockLogEShort {
             val locationId = 2L
             val location = Location(1f, 2f)
@@ -210,41 +211,44 @@ internal class WeatherRepositoryImplTest {
         }
 
     @Test
-    fun `getUpdatedWeatherFromNow and location in db and no update required then Success`() = runTestWithMockLogEShort {
-        mockDayToHourWeatherToDomainWeather {
-            val locationId = 2L
-            val location = Location(1f, 2f)
-            val locationModel = LocationModel(locationId, location.latitude, location.longitude)
-            coEvery {
-                locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude))
-            } returns locationModel
-            val weatherForDay = listOf(
-                createDayToHourWeather(0),
-                createDayToHourWeather(0),
-                createDayToHourWeather(0),
-            )
-            coEvery { dayWeatherDao.getWeatherForLocationFromDay(eq(locationId), any()) } returns weatherForDay
+    fun `getUpdatedWeatherFromNow location in db and no update required then Success and cancel`() =
+        runTestWithMockLogEShort {
+            mockDayToHourWeatherToDomainWeather {
+                val locationId = 2L
+                val location = Location(1f, 2f)
+                val locationModel = LocationModel(locationId, location.latitude, location.longitude)
+                coEvery {
+                    locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude))
+                } returns locationModel
+                val weatherForDay = listOf(
+                    createDayToHourWeather(0),
+                    createDayToHourWeather(0),
+                    createDayToHourWeather(0),
+                )
+                coEvery { dayWeatherDao.getWeatherForLocationFromDay(eq(locationId), any()) } returns weatherForDay
 
-            val result = ArrayList<Resource<Weather>>(1)
-            assertThrows<CancellationException> {
-                repository.getUpdatedWeatherFromNow(location).toList(result)
-            }
+                repository.getUpdatedWeatherFromNow(location).test {
+                    val first = awaitItem()
+                    val error = awaitError()
 
-            coVerifyNever {
-                locationDao.insertAndGetId(any())
-                api.getWeather(any(), any(), any(), any(), any(), any())
-                weatherCacheDao.updateWeather(any(), any(), any())
+                    cancel()
+
+                    coVerifyNever {
+                        locationDao.insertAndGetId(any())
+                        api.getWeather(any(), any(), any(), any(), any(), any())
+                        weatherCacheDao.updateWeather(any(), any(), any())
+                    }
+                    coVerifyOnce {
+                        locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude))
+                        dayWeatherDao.getWeatherForLocationFromDay(eq(locationId), any())
+                    }
+                    assertInstanceOf(CancellationException::class.java, error)
+                    assertInstanceOf(Resource.Success::class.java, first)
+                    val resultData = (first as Resource.Success<Weather>).data
+                    assertEquals(weatherForDay.simplyToDomainWeather(), resultData)
+                }
             }
-            coVerifyOnce {
-                locationDao.getLocationApproximately(eq(location.latitude), eq(location.longitude))
-                dayWeatherDao.getWeatherForLocationFromDay(eq(locationId), any())
-            }
-            assertThat(result).hasSize(1)
-            assertThat(result.first()).isInstanceOf(Resource.Success::class.java)
-            val resultData = (result.first() as Resource.Success<Weather>).data
-            assertEquals(weatherForDay.simplyToDomainWeather(), resultData)
         }
-    }
 
     @Test
     fun `getUpdatedWeatherFromNow and location in db and update required then Success and CantObtainResource`() =

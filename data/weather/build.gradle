@@ -28,6 +28,7 @@ dependencies {
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
+    testImplementation testLibs.turbine
 
     testImplementation testFixtures(project(':common:test'))
 }
