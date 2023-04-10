@@ -1,5 +1,6 @@
 package com.dropdrage.adapters.pool
 
+import android.os.Handler
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -84,7 +85,12 @@ internal class CoroutinesViewHolderSupplierTest {
 
     @ParameterizedTest
     @ValueSource(ints = [1, 10])
-    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class) {
+    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
+        every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
+            firstArg<Runnable>().run()
+            true
+        }
+
         val supplier = createInitializedSupplier()
 
         supplier.prefetch(VIEW_TYPE, count)
