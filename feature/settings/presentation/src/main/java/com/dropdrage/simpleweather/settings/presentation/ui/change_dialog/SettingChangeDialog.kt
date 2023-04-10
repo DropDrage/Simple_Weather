@@ -34,7 +34,7 @@ internal class SettingChangeDialog(
     }
 
     private fun applyStyle() {
-        dialog!!.window!!.apply {
+        requireDialog().window!!.apply {
             setGravity(Gravity.BOTTOM)
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             setBackgroundDrawableResource(R.drawable.background_dialog)

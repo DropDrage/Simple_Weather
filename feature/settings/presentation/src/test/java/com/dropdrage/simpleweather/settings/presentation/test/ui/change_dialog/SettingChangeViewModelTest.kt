@@ -37,9 +37,15 @@ internal class SettingChangeViewModelTest {
         val valuesFlow = viewModel.values.testIn(backgroundScope)
 
         viewModel.changeTargetSetting(title, values)
+        val defaultTitle = titleFlow.awaitItem()
+        val changedTitle = titleFlow.awaitItem()
+        val defaultValues = valuesFlow.awaitItem()
+        val restValues = valuesFlow.cancelAndConsumeRemainingEvents()
 
-        assertEquals(title, titleFlow.awaitItem())
-        assertThat(valuesFlow.awaitItem()).isEmpty()
+        assertThat(defaultTitle).isEmpty()
+        assertEquals(title, changedTitle)
+        assertThat(defaultValues).isEmpty()
+        assertThat(restValues).isEmpty()
     }
 
     @Test
@@ -50,9 +56,16 @@ internal class SettingChangeViewModelTest {
         val valuesFlow = viewModel.values.testIn(backgroundScope)
 
         viewModel.changeTargetSetting(title, values)
+        viewModel.changeTargetSetting(title, values)
+        val defaultTitle = titleFlow.awaitItem()
+        val changedTitle = titleFlow.awaitItem()
+        val defaultValues = valuesFlow.awaitItem()
+        val changedValues = valuesFlow.awaitItem()
 
-        assertEquals(title, titleFlow.awaitItem())
-        assertThat(valuesFlow.awaitItem()).containsExactlyElementsIn(values)
+        assertThat(defaultTitle).isEmpty()
+        assertEquals(title, changedTitle)
+        assertThat(defaultValues).isEmpty()
+        assertThat(changedValues).containsExactlyElementsIn(values)
     }
 
 }
