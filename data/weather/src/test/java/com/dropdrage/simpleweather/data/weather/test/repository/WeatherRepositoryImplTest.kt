@@ -240,8 +240,8 @@ internal class WeatherRepositoryImplTest {
                 dayWeatherDao.getWeatherForLocationFromDay(eq(locationId), any())
             }
             assertThat(result).hasSize(1)
-            assertThat(result[0]).isInstanceOf(Resource.Success::class.java)
-            val resultData = (result[0] as Resource.Success<Weather>).data
+            assertThat(result.first()).isInstanceOf(Resource.Success::class.java)
+            val resultData = (result.first() as Resource.Success<Weather>).data
             assertEquals(weatherForDay.simplyToDomainWeather(), resultData)
         }
     }
