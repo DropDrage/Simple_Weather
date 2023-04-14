@@ -18,17 +18,17 @@ dependencyResolutionManagement {
     def hiltVersion = '2.45'
     versionCatalogs {
         buildLibs {
-            def gradleVersion = '7.4.2'
+            def gradleVersion = '8.0.0'
             plugin('android-application', 'com.android.application').version(gradleVersion)
             plugin('android-library', 'com.android.library').version(gradleVersion)
 
-            def kotlinVersion = '1.8.10'
+            def kotlinVersion = '1.8.20'
             plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').version(kotlinVersion)
             plugin('kotlin-android', 'org.jetbrains.kotlin.android').version(kotlinVersion)
             plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').version(kotlinVersion)
             library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').version(kotlinVersion)
 
-            def kspVersion = "$kotlinVersion-1.0.9"
+            def kspVersion = "$kotlinVersion-1.0.10"
             library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').version(kspVersion)
             plugin('ksp', 'com.google.devtools.ksp').version(kspVersion)
 
@@ -119,7 +119,7 @@ dependencyResolutionManagement {
             library('junit5-android-runtime', 'de.mannodermaus.junit5', 'android-test-runner').version(junit5AndroidVersion)
             library('robolectric', 'org.robolectric', 'robolectric').version('4.9.2')
 
-            def mockkVersion = '1.13.4'
+            def mockkVersion = '1.13.5'
             library('mockk', 'io.mockk', 'mockk').version(mockkVersion)
             library('mockk-android', 'io.mockk', 'mockk-android').version(mockkVersion)
             library('mockk-agent', 'io.mockk', 'mockk-agent').version(mockkVersion)
