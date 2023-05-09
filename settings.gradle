@@ -13,23 +13,20 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    def coroutinesVersion = '1.6.4'
+    def coroutinesVersion = '1.7.0'
     def navigationVersion = '2.5.3'
-    def hiltVersion = '2.45'
+    def hiltVersion = '2.46'
     versionCatalogs {
         buildLibs {
-            def gradleVersion = '8.0.0'
+            def gradleVersion = '8.0.1'
             plugin('android-application', 'com.android.application').version(gradleVersion)
             plugin('android-library', 'com.android.library').version(gradleVersion)
 
-            def kotlinVersion = '1.8.20'
+            def kotlinVersion = '1.8.21'
             plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').version(kotlinVersion)
             plugin('kotlin-android', 'org.jetbrains.kotlin.android').version(kotlinVersion)
-            plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').version(kotlinVersion)
-            library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').version(kotlinVersion)
 
-            def kspVersion = "$kotlinVersion-1.0.10"
-            library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').version(kspVersion)
+            def kspVersion = "$kotlinVersion-1.0.11"
             plugin('ksp', 'com.google.devtools.ksp').version(kspVersion)
 
             plugin('navigation-safeargs', 'androidx.navigation.safeargs.kotlin').version(navigationVersion)
@@ -48,9 +45,9 @@ dependencyResolutionManagement {
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.0')
             library('androidx-annotation', 'androidx.annotation', 'annotation').version('1.6.0')
             library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.1')
-            library('android-material', 'com.google.android.material', 'material').version('1.8.0')
+            library('android-material', 'com.google.android.material', 'material').version('1.9.0')
             library('androidx-constraintlayout', 'androidx.constraintlayout', 'constraintlayout').version('2.1.4')
-            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.6')
+            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.7')
             bundle('ui-core', ['androidx-core', 'androidx-appcompat', 'android-material'])
 
             def lifecycleVersion = '2.6.1'
@@ -106,7 +103,7 @@ dependencyResolutionManagement {
         testLibs {
             library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
 
-            def junit5Version = '5.9.2'
+            def junit5Version = '5.9.3'
             library('junit5', 'org.junit.jupiter', 'junit-jupiter-api').version(junit5Version)
             library('junit5-runtime', 'org.junit.jupiter', 'junit-jupiter-engine').version(junit5Version)
             library('junit5-params', 'org.junit.jupiter', 'junit-jupiter-params').version(junit5Version)
@@ -147,10 +144,10 @@ include ':common:data'
 include ':common:domain'
 include ':common:presentation'
 include ':common:test'
-include ':data:weather'
 include ':data:location'
 include ':data:city'
 include ':data:settings'
+include ':data:weather'
 include ':feature:city:domain'
 include ':feature:city:list:domain'
 include ':feature:city:list:presentation'

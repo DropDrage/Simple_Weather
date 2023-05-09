@@ -14,9 +14,9 @@ dependencies {
     implementation project(':core:style')
     implementation project(':common:domain')
     implementation project(':common:presentation')
+    implementation project(':feature:city:domain')
     implementation project(':feature:city:list:domain')
     implementation project(':feature:city:search:presentation')
-    implementation project(':feature:city:domain')
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.turbine

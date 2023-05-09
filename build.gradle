@@ -4,8 +4,7 @@ plugins {
 
     alias(buildLibs.plugins.kotlin.jvm)
     alias(buildLibs.plugins.kotlin.android) apply false
-    alias(buildLibs.plugins.kotlin.kapt) apply false
-    alias(buildLibs.plugins.ksp)
+    alias(buildLibs.plugins.ksp) apply false
 
     alias(buildLibs.plugins.hilt) apply false
     alias(buildLibs.plugins.navigation.safeargs) apply false
@@ -66,14 +65,14 @@ test {
 }
 
 
-static def isNonStable(String version) {
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
 tasks.named("dependencyUpdates").configure {
     rejectVersionIf {
         isNonStable(it.candidate.version)
     }
+}
+
+static def isNonStable(String version) {
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
 }

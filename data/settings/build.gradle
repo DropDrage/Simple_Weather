@@ -13,5 +13,6 @@ dependencies {
     implementation androidLibs.kotpref.enum
 
     testImplementation testLibs.junit5.params
+
     testImplementation testFixtures(project(':common:test'))
 }
