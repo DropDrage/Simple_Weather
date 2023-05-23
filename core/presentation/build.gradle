@@ -1,6 +1,8 @@
-apply from: import_androidNoUiLibrary
-apply from: component_tests
-apply from: build_feature_resValues
+androidLibrary(
+    project,
+    component_tests,
+    buildFeature_resValues,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.core.presentation'
@@ -8,6 +10,7 @@ android {
 
 dependencies {
     implementation androidLibs.fragment.ktx
+    implementation androidLibs.android.material
     implementation androidLibs.hilt
 
     implementation project(':core:domain')

@@ -1,4 +1,0 @@
-dependencies {
-    implementation networkLibs.retrofit
-    implementation networkLibs.moshi.kotlin
-}

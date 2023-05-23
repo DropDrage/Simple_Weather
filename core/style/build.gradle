@@ -1,4 +1,4 @@
-apply from: import_androidEmptyLibrary
+androidLibrary(project)
 
 android {
     namespace 'com.dropdrage.simpleweather.core.style'

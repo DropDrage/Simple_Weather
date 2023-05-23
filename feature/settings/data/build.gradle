@@ -1,11 +1,11 @@
-apply from: import_androidEmptyLibrary
+androidLibrary(project)
 
 android {
     namespace 'com.dropdrage.simpleweather.settings.data'
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation androidLibs.androidx.annotation
 
     api androidLibs.kotpref
     implementation androidLibs.kotpref.enum

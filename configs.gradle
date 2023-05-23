@@ -1,0 +1,79 @@
+def javaVersion = JavaVersion.VERSION_17
+
+ext.javaLibrary = { Project project ->
+    project.apply plugin: 'java-library'
+    project.apply plugin: 'org.jetbrains.kotlin.jvm'
+
+    project.java {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+}
+
+
+ext.androidLibrary = { Project project, Closure<Project>... modifiers ->
+    project.apply plugin: 'com.android.library'
+    project.apply plugin: 'org.jetbrains.kotlin.android'
+
+    configAndroid(project, modifiers)
+
+    project.android {
+        defaultConfig {
+            consumerProguardFiles "consumer-rules.pro"
+        }
+    }
+}
+
+ext.configAndroid = { Project project, Closure<Project>... modifiers ->
+    project.android {
+        compileSdk sdk
+        buildToolsVersion buildTools
+
+        defaultConfig {
+            minSdk project.minSdk
+            targetSdk project.sdk
+            versionCode project.versionCode
+            versionName project.versionName
+
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+
+            resConfigs "en"
+        }
+        buildTypes {
+            debug {
+                minifyEnabled false
+            }
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility javaVersion
+            targetCompatibility javaVersion
+        }
+        kotlinOptions {
+            jvmTarget = javaVersion.toString()
+        }
+
+        lint {
+            baseline rootProject.file('lint-baseline.xml')
+            warningsAsErrors false
+        }
+        packagingOptions {
+            resources {
+                excludes += ['META-INF/ASL2.0', 'META-INF/LICENSE*', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/MANIFEST.MF']
+            }
+        }
+    }
+    project.dependencies {
+        androidTestImplementation testLibs.bundles.instrumental5
+        androidTestRuntimeOnly testLibs.junit5.android.runtime
+    }
+
+    for (final def modifier in modifiers) {
+        modifier(project)
+    }
+}

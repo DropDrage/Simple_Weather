@@ -1,6 +1,8 @@
-apply from: import_androidDataLibrary
-apply from: component_android_hilt
-apply from: component_tests
+androidLibrary(
+    project,
+    bundle_data,
+    component_tests,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.data.city'

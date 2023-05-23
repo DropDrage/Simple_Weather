@@ -1,18 +1,19 @@
-apply from: import_androidNoUiLibrary
-apply from: component_tests
-apply from: build_feature_buildConfig
+androidLibrary(
+    project,
+    component_tests,
+    buildFeature_buildConfig, buildFeature_viewBinding,
+)
 
 android {
     namespace 'com.dropdrage.adapters'
     defaultConfig {
         testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
+    implementation androidLibs.android.material
+
     testImplementation testLibs.junit5.params
 
     testImplementation testFixtures(project(':common:test'))

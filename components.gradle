@@ -1,0 +1,43 @@
+ext.component_retrofit = { Project project ->
+    project.dependencies {
+        implementation networkLibs.retrofit
+        implementation networkLibs.moshi.kotlin
+    }
+}
+
+ext.component_android_viewBinding = { Project project ->
+    buildFeature_viewBinding(project)
+    project.dependencies {
+        implementation androidLibs.viewBinding
+    }
+}
+ext.component_android_hilt = { Project project ->
+    project.apply plugin: 'kotlin-kapt'
+    project.apply plugin: 'com.google.dagger.hilt.android'
+
+    project.dependencies {
+        implementation androidLibs.hilt
+        kapt androidLibs.hilt.compiler
+    }
+}
+ext.component_android_room = { Project project ->
+    project.apply plugin: 'com.google.devtools.ksp'
+
+    project.dependencies {
+        implementation androidLibs.bundles.room
+        ksp androidLibs.room.compiler
+    }
+}
+
+ext.component_tests = { Project project ->
+    project.android {
+        testOptions.unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    project.dependencies {
+        testImplementation testLibs.bundles.unit5
+        testRuntimeOnly testLibs.junit5.runtime
+    }
+}

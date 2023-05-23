@@ -1,0 +1,23 @@
+ext.buildFeature_buildConfig = { Project project ->
+    project.android {
+        buildFeatures {
+            buildConfig true
+        }
+    }
+}
+
+ext.buildFeature_resValues = { Project project ->
+    project.android {
+        buildFeatures {
+            resValues true
+        }
+    }
+}
+
+ext.buildFeature_viewBinding = { Project project ->
+    project.android {
+        buildFeatures {
+            viewBinding true
+        }
+    }
+}

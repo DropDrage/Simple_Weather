@@ -1,6 +1,0 @@
-apply plugin: 'com.google.devtools.ksp'
-
-dependencies {
-    implementation androidLibs.bundles.room
-    ksp androidLibs.room.compiler
-}

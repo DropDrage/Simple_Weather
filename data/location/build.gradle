@@ -1,13 +1,15 @@
-apply from: import_androidNoUiLibrary
-apply from: component_android_hilt
-apply from: component_android_location
-apply from: component_tests
+androidLibrary(
+    project,
+    component_android_hilt, component_tests,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.data.location'
 }
 
 dependencies {
+    implementation androidLibs.bundles.location
+
     implementation project(':core:domain')
     implementation project(':feature:weather:domain')
 

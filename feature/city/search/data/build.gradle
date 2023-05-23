@@ -1,4 +1,7 @@
-apply from: import_androidNetworkLibrary
+androidLibrary(
+    project,
+    bundle_network,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.city_search.data'

@@ -6,13 +6,11 @@ plugins {
     alias(testLibs.plugins.junit5.android)
 }
 
-apply from: import_android
-
-apply from: component_retrofit
-apply from: component_tests
-
-apply from: build_feature_buildConfig
-apply from: build_feature_resValues
+configAndroid(
+    project,
+    bundle_uiScreen, component_retrofit, component_tests,
+    buildFeature_buildConfig,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather'
@@ -22,14 +20,8 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-        }
         release {
-            minifyEnabled true
             shrinkResources true
-
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ksp {
                 arg("dagger.fullBindingGraphValidation", "ERROR")

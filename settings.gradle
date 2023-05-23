@@ -13,9 +13,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    def coroutinesVersion = '1.7.0'
+    def coroutinesVersion = '1.7.1'
     def navigationVersion = '2.5.3'
-    def hiltVersion = '2.46'
+    def hiltVersion = '2.46.1'
     versionCatalogs {
         buildLibs {
             def gradleVersion = '8.0.1'
@@ -42,7 +42,7 @@ dependencyResolutionManagement {
 
         androidLibs {
             library('android', 'com.google.android', 'android').version('4.1.1.4')
-            library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.0')
+            library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.1')
             library('androidx-annotation', 'androidx.annotation', 'annotation').version('1.6.0')
             library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.1')
             library('android-material', 'com.google.android.material', 'material').version('1.9.0')
@@ -94,7 +94,7 @@ dependencyResolutionManagement {
             library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').version(retrofitVersion)
             library('logging-interceptor', 'com.squareup.okhttp3', 'logging-interceptor').version('5.0.0-alpha.10')
 
-            def moshiVersion = '1.14.0'
+            def moshiVersion = '1.15.0'
             library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').version(moshiVersion)
             library('moshi-compiler', 'com.squareup.moshi', 'moshi-kotlin-codegen').version(moshiVersion)
             bundle('moshi', ['moshi-core', 'moshi-kotlin'])
@@ -122,12 +122,12 @@ dependencyResolutionManagement {
             library('mockk-agent', 'io.mockk', 'mockk-agent').version(mockkVersion)
 
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-test').version(coroutinesVersion)
-            library('turbine', 'app.cash.turbine', 'turbine').version('0.12.3')
+            library('turbine', 'app.cash.turbine', 'turbine').version('0.13.0')
 
             bundle('unit5', ['junit5', 'slf4j', 'truth', 'mockk', 'mockk-android', 'mockk-agent'])
             bundle('instrumental5', ['junit5-android', 'espresso'])
 
-            plugin('junit5-android', 'de.mannodermaus.android-junit5').version('1.8.2.1')
+            plugin('junit5-android', 'de.mannodermaus.android-junit5').version('1.9.3.0')
         }
     }
 }

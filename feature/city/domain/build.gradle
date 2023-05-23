@@ -1,4 +1,4 @@
-apply from: import_library
+javaLibrary(project)
 
 dependencies {
     implementation kotlinLibs.coroutines
