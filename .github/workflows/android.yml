@@ -26,8 +26,24 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew assembleDebug
+
+  lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        
+    steps:
       - name: Lint
         run: ./gradlew lintDebug
+  
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    
+    steps:
       - name: Unit Tests
         run: ./gradlew testDebugUnitTest --info
       - name: Android Test Report Action
