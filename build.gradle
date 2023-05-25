@@ -27,16 +27,6 @@ ext {
     versionName = '1.0'
 }
 
-tasks.register("cleanBaselines") {
-    def baselineFile = "/lint-baseline.xml"
-    rootProject.allprojects.forEach(project -> {
-        if (project.subprojects.isEmpty()) {//size() == 0) {
-            println(project.projectDir.path)
-            delete project.projectDir.path + baselineFile
-        }
-    })
-}
-
 test {
     useJUnitPlatform()
 }

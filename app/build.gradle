@@ -28,6 +28,13 @@ android {
             }
         }
     }
+
+    lint {
+        checkDependencies true
+
+        baseline project.rootProject.file('lint-baseline.xml')
+        warningsAsErrors true
+    }
 }
 
 dependencies {

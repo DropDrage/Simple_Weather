@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation androidLibs.androidx.annotation
+
     testFixturesImplementation testLibs.mockk
     testFixturesImplementation testLibs.mockk.agent
 }

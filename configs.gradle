@@ -3,6 +3,7 @@ def javaVersion = JavaVersion.VERSION_17
 ext.javaLibrary = { Project project ->
     project.apply plugin: 'java-library'
     project.apply plugin: 'org.jetbrains.kotlin.jvm'
+    project.apply plugin: 'com.android.lint'
 
     project.java {
         sourceCompatibility = javaVersion
@@ -59,8 +60,7 @@ ext.configAndroid = { Project project, Closure<Project>... modifiers ->
         }
 
         lint {
-            baseline rootProject.file('lint-baseline.xml')
-            warningsAsErrors false
+            htmlReport false
         }
         packagingOptions {
             resources {
