@@ -28,6 +28,7 @@ jobs:
         run: ./gradlew assembleDebug
 
   lint:
+    needs: [ build ]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -38,6 +39,7 @@ jobs:
         run: ./gradlew lintDebug
   
   test:
+    needs: [ build ]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
