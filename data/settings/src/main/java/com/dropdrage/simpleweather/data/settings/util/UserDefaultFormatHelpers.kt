@@ -1,14 +1,15 @@
-package com.dropdrage.simpleweather.settings.data.util
+package com.dropdrage.simpleweather.data.settings.util
 
 import android.content.Context
 import android.icu.util.LocaleData
 import android.icu.util.ULocale
 import android.os.Build
 import android.text.format.DateFormat
-import java.util.*
+import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
+import java.util.Locale
 
 internal fun isLocaleMetric() =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+    if (isSdkVersionGreaterOrEquals(Build.VERSION_CODES.P))
         LocaleData.getMeasurementSystem(ULocale.getDefault()) == LocaleData.MeasurementSystem.SI
     else Locale.getDefault().isLocaleMetric()
 

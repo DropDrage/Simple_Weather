@@ -2,12 +2,11 @@ package com.dropdrage.simpleweather.settings.utils
 
 import android.icu.util.LocaleData
 import android.icu.util.ULocale
-import android.os.Build
 import android.text.format.DateFormat
-import com.dropdrage.simpleweather.settings.data.util.isDateFormatStraight
-import com.dropdrage.simpleweather.settings.data.util.isLocaleMetric
+import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
+import com.dropdrage.simpleweather.data.settings.util.isDateFormatStraight
+import com.dropdrage.simpleweather.data.settings.util.isLocaleMetric
 import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.setSdk
 import com.dropdrage.test.util.setStaticFields
 import io.mockk.every
 import io.mockk.mockk
@@ -18,34 +17,32 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import java.util.*
+import java.util.Locale
 
 private const val LANGUAGE_COUNTRY_DELIMITER = '-'
 
 internal class UserDefaultFormatHelpersTest {
 
     @Test
-    fun `isLocaleMetric measurement not SI for SDK P`() = setSdk(Build.VERSION_CODES.P) {
-        mockkStatic(LocaleData::class, ULocale::class) {
-            setStaticFields<LocaleData.MeasurementSystem>(
-                arrayOf(
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("UK"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("US"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("SI"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                )
-            ) {
+    fun `isLocaleMetric measurement not SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
+        setStaticFields<LocaleData.MeasurementSystem>(
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("UK"),
+                LocaleData.MeasurementSystem.UK,
+                mockk()
+            ),
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("US"),
+                LocaleData.MeasurementSystem.UK,
+                mockk()
+            ),
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("SI"),
+                LocaleData.MeasurementSystem.UK,
+                mockk()
+            ),
+        ) {
+            mockSdkGreaterCheck(true) {
                 justMock { ULocale.getDefault() }
                 every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.UK
 
@@ -58,27 +55,25 @@ internal class UserDefaultFormatHelpersTest {
     }
 
     @Test
-    fun `isLocaleMetric measurement SI for SDK P`() = setSdk(Build.VERSION_CODES.P) {
-        mockkStatic(LocaleData::class, ULocale::class) {
-            setStaticFields<LocaleData.MeasurementSystem>(
-                arrayOf(
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("UK"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("US"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                    Triple(
-                        LocaleData.MeasurementSystem::class.java.getField("SI"),
-                        LocaleData.MeasurementSystem.UK,
-                        mockk()
-                    ),
-                )
-            ) {
+    fun `isLocaleMetric measurement SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
+        setStaticFields<LocaleData.MeasurementSystem>(
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("UK"),
+                LocaleData.MeasurementSystem.UK,
+                mockk(),
+            ),
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("US"),
+                LocaleData.MeasurementSystem.UK,
+                mockk(),
+            ),
+            Triple(
+                LocaleData.MeasurementSystem::class.java.getField("SI"),
+                LocaleData.MeasurementSystem.UK,
+                mockk(),
+            ),
+        ) {
+            mockSdkGreaterCheck(true) {
                 justMock { ULocale.getDefault() }
                 every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.SI
 
@@ -98,7 +93,7 @@ internal class UserDefaultFormatHelpersTest {
             "en${LANGUAGE_COUNTRY_DELIMITER}MM"
         ]
     )
-    fun `isLocaleMetric measurement not SI for SDK O`(languageCountry: String) = setSdk(Build.VERSION_CODES.O) {
+    fun `isLocaleMetric measurement not SI for SDK O`(languageCountry: String) = mockSdkGreaterCheck(false) {
         val languageCode = languageCountry.substringBefore(LANGUAGE_COUNTRY_DELIMITER)
         val countryCode = languageCountry.substringAfter(LANGUAGE_COUNTRY_DELIMITER)
         setLocale(languageCode, countryCode) {
@@ -109,7 +104,7 @@ internal class UserDefaultFormatHelpersTest {
     }
 
     @Test
-    fun `isLocaleMetric measurement SI for SDK O`() = setSdk(Build.VERSION_CODES.O) {
+    fun `isLocaleMetric measurement SI for SDK O`() = mockSdkGreaterCheck(false) {
         setLocale(Locale.UK) {
             val result = isLocaleMetric()
 
@@ -146,5 +141,12 @@ internal class UserDefaultFormatHelpersTest {
         block()
         Locale.setDefault(defaultLocale)
     }
+
+    // ToDo temporary until Android testFixtures
+    private inline fun mockSdkGreaterCheck(isGreater: Boolean, block: () -> Unit) =
+        mockkStatic(::isSdkVersionGreaterOrEquals) {
+            every { isSdkVersionGreaterOrEquals(any()) } returns isGreater
+            block()
+        }
 
 }

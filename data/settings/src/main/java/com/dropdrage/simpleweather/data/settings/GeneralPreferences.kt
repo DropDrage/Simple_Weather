@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.data.settings
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumOrdinalPref
-import com.dropdrage.simpleweather.settings.data.util.isDateFormatStraight
+import com.dropdrage.simpleweather.data.settings.util.isDateFormatStraight
 import android.text.format.DateFormat as AndroidDateFormat
 
 object GeneralPreferences : KotprefModel() {

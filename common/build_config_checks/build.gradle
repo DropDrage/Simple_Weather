@@ -1,0 +1,14 @@
+androidLibrary(project)
+
+android {
+    namespace 'com.dropdrage.common.build_config_checks'
+
+    testFixtures {
+        enable = true
+    }
+}
+
+dependencies {
+    testFixturesImplementation testLibs.mockk
+    testFixturesImplementation testLibs.mockk.agent
+}

@@ -22,7 +22,7 @@ inline fun mockLogD(block: () -> Unit) {
     }
 
     mockkStatic(Log::class) {
-        every { Log.d(any<String>(), any<String>()) } returns 0
+        every { Log.d(any(), any()) } returns 0
         block()
     }
 }
@@ -34,7 +34,7 @@ inline fun mockLogW(block: () -> Unit) {
     }
 
     mockkStatic(Log::class) {
-        every { Log.w(any<String>(), any<String>()) } returns 0
+        every { Log.w(any(), any<String>()) } returns 0
         block()
     }
 }

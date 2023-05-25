@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Looper
 import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
+import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
 import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
 import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
@@ -78,7 +79,7 @@ class DefaultLocationTracker @Inject constructor(
 
     private fun isGpsEnabled(): Boolean {
         val locationManager = context.getSystemService(LocationManager::class.java)
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        return if (isSdkVersionGreaterOrEquals(Build.VERSION_CODES.P))
             locationManager.isLocationEnabled
         else locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
             locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)

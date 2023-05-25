@@ -18,7 +18,7 @@ dependencyResolutionManagement {
     def hiltVersion = '2.46.1'
     versionCatalogs {
         buildLibs {
-            def gradleVersion = '8.0.1'
+            def gradleVersion = '8.0.2'
             plugin('android-application', 'com.android.application').version(gradleVersion)
             plugin('android-library', 'com.android.library').version(gradleVersion)
 
@@ -143,6 +143,7 @@ include ':core:utils'
 include ':common:data'
 include ':common:domain'
 include ':common:presentation'
+include ':common:build_config_checks'
 include ':common:test'
 include ':data:location'
 include ':data:city'

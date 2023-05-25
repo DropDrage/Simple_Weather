@@ -4,10 +4,8 @@ import android.content.Context
 import com.dropdrage.simpleweather.weather.presentation.R
 import com.dropdrage.simpleweather.weather.presentation.util.format.DayNameFormat
 import com.dropdrage.test.util.justArgToString
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
@@ -49,9 +47,7 @@ internal class DayNameFormatTest {
     @MethodSource("provideDayWeekWithRes")
     fun `formatFromStartDay with dayWeek`(dayOfWeek: DayOfWeek, expectedRes: Int) {
         justArgToString { context.getString(expectedRes) }
-        val day = spyk(LocalDate.ofEpochDay(10)) {
-            every { getDayOfWeek() } returns dayOfWeek
-        }
+        val day = LocalDate.ofEpochDay(10).with(dayOfWeek)
         val startDay = LocalDate.ofEpochDay(0)
 
         val formatResult = format.formatFromStartDay(day, startDay)

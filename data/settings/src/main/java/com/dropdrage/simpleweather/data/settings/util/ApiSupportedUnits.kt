@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.data.settings.utils
+package com.dropdrage.simpleweather.data.settings.util
 
 import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
 import com.dropdrage.simpleweather.data.settings.PressureUnit

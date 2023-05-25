@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.data.settings
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumOrdinalPref
-import com.dropdrage.simpleweather.settings.data.util.isLocaleMetric
+import com.dropdrage.simpleweather.data.settings.util.isLocaleMetric
 
 object WeatherUnitsPreferences : KotprefModel() {
 

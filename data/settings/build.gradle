@@ -10,6 +10,8 @@ dependencies {
     api androidLibs.kotpref
     implementation androidLibs.kotpref.enum
 
+    implementation project(':common:build_config_checks')
+
     testImplementation testLibs.junit5.params
 
     testImplementation testFixtures(project(':common:test'))

@@ -6,7 +6,7 @@ import com.dropdrage.simpleweather.data.settings.TemperatureUnit
 import com.dropdrage.simpleweather.data.settings.VisibilityUnit
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
-import com.dropdrage.simpleweather.data.settings.utils.ApiSupportedUnits
+import com.dropdrage.simpleweather.data.settings.util.ApiSupportedUnits
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.CELSIUS_TO_FAHRENHEIT_MODIFIER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.CELSIUS_TO_FAHRENHEIT_OFFSET
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.HPA_TO_MM_HG_MODIFIER

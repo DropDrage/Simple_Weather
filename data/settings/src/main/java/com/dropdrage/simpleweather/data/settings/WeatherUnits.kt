@@ -2,7 +2,7 @@ package com.dropdrage.simpleweather.data.settings
 
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
-import com.dropdrage.simpleweather.data.settings.utils.ApiSupportedParam
+import com.dropdrage.simpleweather.data.settings.util.ApiSupportedParam
 
 sealed interface WeatherUnit {
     @get:StringRes

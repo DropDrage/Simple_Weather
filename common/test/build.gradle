@@ -1,11 +1,11 @@
 javaLibrary(project)
-apply plugin: "java-test-fixtures"
+apply plugin: 'java-test-fixtures'
 
 dependencies {
+    testFixturesCompileOnly androidLibs.android
+
     testFixturesImplementation testLibs.mockk
     testFixturesImplementation testLibs.mockk.agent
-
-    testFixturesCompileOnly androidLibs.android
 
     testFixturesImplementation testLibs.coroutines
 }

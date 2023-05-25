@@ -5,15 +5,14 @@ import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.LocationManager
-import android.os.Build
 import androidx.core.content.ContextCompat
+import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
 import com.dropdrage.simpleweather.data.location.util.mockLocation
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
 import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.mockLooper
 import com.dropdrage.test.util.runTestWithMockLooper
-import com.dropdrage.test.util.setSdkSuspend
 import com.dropdrage.test.util.verifyNever
 import com.dropdrage.test.util.verifyOnce
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -79,7 +78,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location unavailable due to gps disabled with SDK P`() =
         runContextCompatPermissionTest {
-            setSdkSuspend(Build.VERSION_CODES.P) {
+            mockSdkGreaterCheck(true) {
                 val locationManager = mockk<LocationManager> {
                     every { isLocationEnabled } returns false
                 }
@@ -132,7 +131,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location unavailable due to gps disabled both providers with SDK O`() =
         runContextCompatPermissionTest {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(false, false)
 
                 val result = locationTracker.getCurrentLocation()
@@ -148,7 +147,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by network provider with SDK O but NoLocation`() = runTest {
         mockTaskKt {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(true, false)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 coEvery { locationClient.lastLocation.await() } returns null
@@ -165,7 +164,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by network provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(true, false)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -189,7 +188,7 @@ internal class DefaultLocationTrackerTest {
     fun `getCurrentLocation but location available with gps by gps provider with SDK O but NoLocation`() =
         runContextCompatPermissionTest {
             mockTaskKt {
-                setSdkSuspend(Build.VERSION_CODES.O) {
+                mockSdkGreaterCheck(false) {
                     mockLocationManager(false, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     coEvery { locationClient.lastLocation.await() } returns null
@@ -206,7 +205,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by gps provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(false, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -229,7 +228,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by both provider with SDK O but NoLocation`() = runTest {
         mockTaskKt {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(true, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 coEvery { locationClient.lastLocation.await() } returns null
@@ -246,7 +245,7 @@ internal class DefaultLocationTrackerTest {
     @Test
     fun `getCurrentLocation but location available with gps by both provider with SDK O and Success`() = runTest {
         mockTaskKt {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+            mockSdkGreaterCheck(false) {
                 mockLocationManager(true, true)
                 every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                 val latitude = 1.0
@@ -287,8 +286,8 @@ internal class DefaultLocationTrackerTest {
 
     @Test
     fun `requestLocationUpdate but location unavailable due to gps disabled with SDK P`() =
-        runContextCompatPermissionTest {
-            setSdkSuspend(Build.VERSION_CODES.P) {
+        mockSdkGreaterCheck(true) {
+            runContextCompatPermissionTest {
                 val locationManager = mockk<LocationManager> {
                     every { isLocationEnabled } returns false
                 }
@@ -331,8 +330,8 @@ internal class DefaultLocationTrackerTest {
 
     @Test
     fun `requestLocationUpdate but location unavailable due to gps disabled both providers with SDK O`() =
-        runContextCompatPermissionTest {
-            setSdkSuspend(Build.VERSION_CODES.O) {
+        mockSdkGreaterCheck(false) {
+            runContextCompatPermissionTest {
                 mockLocationManager(false, false)
 
                 val result = locationTracker.requestLocationUpdate().first()
@@ -349,7 +348,7 @@ internal class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by network provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdkSuspend(Build.VERSION_CODES.O) {
+                mockSdkGreaterCheck(false) {
                     mockLocationManager(true, false)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -376,7 +375,7 @@ internal class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by gps provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdkSuspend(Build.VERSION_CODES.O) {
+                mockSdkGreaterCheck(false) {
                     mockLocationManager(false, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -403,7 +402,7 @@ internal class DefaultLocationTrackerTest {
     fun `requestLocationUpdate but location available with gps by both provider with SDK O and Success`() =
         runContextCompatPermissionTest {
             mockLooper {
-                setSdkSuspend(Build.VERSION_CODES.O) {
+                mockSdkGreaterCheck(false) {
                     mockLocationManager(true, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
@@ -442,7 +441,7 @@ internal class DefaultLocationTrackerTest {
         }
     }
 
-    private inline suspend fun mockTaskKt(crossinline block: suspend () -> Unit) = mockkStatic(TASK_KT) {
+    private suspend inline fun mockTaskKt(crossinline block: suspend () -> Unit) = mockkStatic(TASK_KT) {
         block()
     }
 
@@ -453,10 +452,17 @@ internal class DefaultLocationTrackerTest {
         }
     }
 
-    private inline suspend fun mockLocationRequestBuilder(crossinline block: suspend () -> Unit) =
+    private suspend inline fun mockLocationRequestBuilder(crossinline block: suspend () -> Unit) =
         mockkConstructor(LocationRequest.Builder::class) {
             justMock { anyConstructed<LocationRequest.Builder>().build() }
 
+            block()
+        }
+
+    // ToDo temporary until Android testFixtures
+    private inline fun mockSdkGreaterCheck(isGreater: Boolean, block: () -> Unit) =
+        mockkStatic(::isSdkVersionGreaterOrEquals) {
+            every { isSdkVersionGreaterOrEquals(any()) } returns isGreater
             block()
         }
 
