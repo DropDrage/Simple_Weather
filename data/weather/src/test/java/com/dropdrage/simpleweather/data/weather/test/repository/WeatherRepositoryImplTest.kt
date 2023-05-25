@@ -231,8 +231,6 @@ internal class WeatherRepositoryImplTest {
                     val first = awaitItem()
                     val error = awaitError()
 
-                    cancel()
-
                     coVerifyNever {
                         locationDao.insertAndGetId(any())
                         api.getWeather(any(), any(), any(), any(), any(), any())
