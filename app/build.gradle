@@ -8,7 +8,8 @@ plugins {
 
 configAndroid(
     project,
-    bundle_uiScreen, component_retrofit, component_tests,
+    bundle_uiScreen,
+    component_retrofit, component_tests,
     buildFeature_buildConfig,
 )
 
@@ -17,6 +18,9 @@ android {
 
     defaultConfig {
         applicationId "com.dropdrage.simpleweather"
+
+        versionCode project.versionCode
+        versionName project.versionName
     }
 
     buildTypes {
@@ -38,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation androidLibs.navigation.ui
+
     implementation androidLibs.work
 
     //Hilt

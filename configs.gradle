@@ -1,13 +1,13 @@
 def javaVersion = JavaVersion.VERSION_17
 
-ext.javaLibrary = { Project project ->
+ext.kotlinLibrary = { Project project ->
     project.apply plugin: 'java-library'
     project.apply plugin: 'org.jetbrains.kotlin.jvm'
     project.apply plugin: 'com.android.lint'
 
     project.java {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
     }
 }
 
@@ -33,11 +33,6 @@ ext.configAndroid = { Project project, Closure<Project>... modifiers ->
         defaultConfig {
             minSdk project.minSdk
             targetSdk project.sdk
-            versionCode project.versionCode
-            versionName project.versionName
-
-            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-            testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
             resConfigs "en"
         }
@@ -67,10 +62,6 @@ ext.configAndroid = { Project project, Closure<Project>... modifiers ->
                 excludes += ['META-INF/ASL2.0', 'META-INF/LICENSE*', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/MANIFEST.MF']
             }
         }
-    }
-    project.dependencies {
-        androidTestImplementation testLibs.bundles.instrumental5
-        androidTestRuntimeOnly testLibs.junit5.android.runtime
     }
 
     for (final def modifier in modifiers) {

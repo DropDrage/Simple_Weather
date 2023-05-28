@@ -41,14 +41,13 @@ dependencyResolutionManagement {
         }
 
         androidLibs {
-            library('android', 'com.google.android', 'android').version('4.1.1.4')
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.1')
             library('androidx-annotation', 'androidx.annotation', 'annotation').version('1.6.0')
-            library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.1')
-            library('android-material', 'com.google.android.material', 'material').version('1.9.0')
             library('androidx-constraintlayout', 'androidx.constraintlayout', 'constraintlayout').version('2.1.4')
-            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.7')
-            bundle('ui-core', ['androidx-core', 'androidx-appcompat', 'android-material'])
+            library('androidx-fragment', 'androidx.fragment', 'fragment-ktx').version('1.5.7')
+            library('android', 'com.google.android', 'android').version('4.1.1.4')
+            library('android-material', 'com.google.android.material', 'material').version('1.9.0')
+            bundle('ui-core', ['androidx-core', 'android-material'])
 
             def lifecycleVersion = '2.6.1'
             library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').version(lifecycleVersion)
@@ -56,7 +55,6 @@ dependencyResolutionManagement {
 
             library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').version(navigationVersion)
             library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').version(navigationVersion)
-            bundle('navigation', ['navigation-fragment', 'navigation-ui'])
 
             library('hilt', 'com.google.dagger', 'hilt-android').version(hiltVersion)
             library('hilt-compiler', 'com.google.dagger', 'hilt-compiler').version(hiltVersion)
@@ -101,8 +99,6 @@ dependencyResolutionManagement {
         }
 
         testLibs {
-            library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
-
             def junit5Version = '5.9.3'
             library('junit5', 'org.junit.jupiter', 'junit-jupiter-api').version(junit5Version)
             library('junit5-runtime', 'org.junit.jupiter', 'junit-jupiter-engine').version(junit5Version)
@@ -115,6 +111,7 @@ dependencyResolutionManagement {
             library('junit5-android', 'de.mannodermaus.junit5', 'android-test-core').version(junit5AndroidVersion)
             library('junit5-android-runtime', 'de.mannodermaus.junit5', 'android-test-runner').version(junit5AndroidVersion)
             library('robolectric', 'org.robolectric', 'robolectric').version('4.9.2')
+            library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
 
             def mockkVersion = '1.13.5'
             library('mockk', 'io.mockk', 'mockk').version(mockkVersion)

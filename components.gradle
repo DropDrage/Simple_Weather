@@ -4,6 +4,18 @@ ext.component_retrofit = { Project project ->
         implementation networkLibs.moshi.kotlin
     }
 }
+ext.component_tests = { Project project ->
+    project.android {
+        testOptions.unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    project.dependencies {
+        testImplementation testLibs.bundles.unit5
+        testRuntimeOnly testLibs.junit5.runtime
+    }
+}
 
 ext.component_android_viewBinding = { Project project ->
     buildFeature_viewBinding(project)
@@ -28,16 +40,16 @@ ext.component_android_room = { Project project ->
         ksp androidLibs.room.compiler
     }
 }
-
-ext.component_tests = { Project project ->
+ext.component_android_test = { Project project ->
     project.android {
-        testOptions.unitTests.all {
-            useJUnitPlatform()
+        defaultConfig {
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         }
     }
 
     project.dependencies {
-        testImplementation testLibs.bundles.unit5
-        testRuntimeOnly testLibs.junit5.runtime
+        androidTestImplementation testLibs.bundles.instrumental5
+        androidTestRuntimeOnly testLibs.junit5.android.runtime
     }
 }

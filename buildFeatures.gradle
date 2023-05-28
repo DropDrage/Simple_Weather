@@ -5,7 +5,6 @@ ext.buildFeature_buildConfig = { Project project ->
         }
     }
 }
-
 ext.buildFeature_resValues = { Project project ->
     project.android {
         buildFeatures {

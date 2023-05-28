@@ -1,14 +1,15 @@
 ext.bundle_uiScreen = { Project project ->
     component_android_viewBinding(project)
     component_android_hilt(project)
+    component_android_test(project)
     buildFeature_resValues(project)
 
     project.dependencies {
         implementation androidLibs.bundles.ui.core
+        implementation androidLibs.androidx.fragment
         implementation androidLibs.lifecycle.viewmodel
-        implementation androidLibs.bundles.navigation
 
-        implementation androidLibs.fragment.ktx
+        implementation androidLibs.navigation.fragment
     }
 }
 

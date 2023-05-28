@@ -1,4 +1,4 @@
-javaLibrary(project)
+kotlinLibrary(project)
 
 dependencies {
     implementation project(':common:domain')

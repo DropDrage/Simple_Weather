@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation androidLibs.fragment.ktx
+    implementation androidLibs.androidx.fragment
     implementation androidLibs.android.material
     implementation androidLibs.hilt
 
