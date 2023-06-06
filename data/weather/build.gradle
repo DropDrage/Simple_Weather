@@ -1,7 +1,7 @@
 androidLibrary(
     project,
     bundle_data,
-    component_tests,
+    component_android_unitTests,
 )
 
 android {

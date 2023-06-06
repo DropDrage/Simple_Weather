@@ -1,6 +1,6 @@
 androidLibrary(
     project,
-    component_tests,
+    component_android_unitTests,
     buildFeature_buildConfig, buildFeature_viewBinding,
 )
 

@@ -16,6 +16,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -39,47 +40,52 @@ internal class CacheClearWorkerTest {
     fun create() {
     }
 
-    @Test
-    fun `doWork with cache`() = runTest {
-        coEvery { cacheRepository.hasCache() } returns true
+    @Nested
+    inner class doWork {
 
-        val result = worker.doWork()
-
-        coVerifyOnce {
-            cacheRepository.clearOutdated()
-            cacheRepository.hasCache()
-        }
-        assertEquals(Result.success(), result)
-    }
-
-    @Test
-    fun `doWork no cache`() = runTest {
-        mockkStatic(WorkManager::class) {
-            coEvery { cacheRepository.hasCache() } returns false
-            val mockWorkManager = mockk<WorkManager> {
-                justMock { cancelWorkById(eq(worker.id)) }
-            }
-            every { WorkManager.getInstance(eq(worker.applicationContext)) } returns mockWorkManager
+        @Test
+        fun `with cache`() = runTest {
+            coEvery { cacheRepository.hasCache() } returns true
 
             val result = worker.doWork()
 
             coVerifyOnce {
                 cacheRepository.clearOutdated()
                 cacheRepository.hasCache()
-                mockWorkManager.cancelWorkById(eq(worker.id))
             }
             assertEquals(Result.success(), result)
         }
-    }
 
-    @Test
-    fun `doWork throws exception`() = runTestWithMockLogE {
-        coEvery { cacheRepository.clearOutdated() } throws Exception()
+        @Test
+        fun `no cache`() = runTest {
+            mockkStatic(WorkManager::class) {
+                coEvery { cacheRepository.hasCache() } returns false
+                val mockWorkManager = mockk<WorkManager> {
+                    justMock { cancelWorkById(eq(worker.id)) }
+                }
+                every { WorkManager.getInstance(eq(worker.applicationContext)) } returns mockWorkManager
 
-        val result = worker.doWork()
+                val result = worker.doWork()
 
-        coVerifyOnce { cacheRepository.clearOutdated() }
-        assertEquals(Result.failure(), result)
+                coVerifyOnce {
+                    cacheRepository.clearOutdated()
+                    cacheRepository.hasCache()
+                    mockWorkManager.cancelWorkById(eq(worker.id))
+                }
+                assertEquals(Result.success(), result)
+            }
+        }
+
+        @Test
+        fun `throws exception`() = runTestWithMockLogE {
+            coEvery { cacheRepository.clearOutdated() } throws Exception()
+
+            val result = worker.doWork()
+
+            coVerifyOnce { cacheRepository.clearOutdated() }
+            assertEquals(Result.failure(), result)
+        }
+
     }
 
 }

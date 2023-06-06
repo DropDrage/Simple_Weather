@@ -13,17 +13,9 @@ import com.dropdrage.test.util.justCallOriginal
 import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.runTestViewModelScope
 import com.google.common.truth.Truth.assertThat
-import io.mockk.CapturingSlot
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.justRun
-import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.mockkStatic
-import io.mockk.slot
-import io.mockk.unmockkObject
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,11 +23,14 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.util.*
 import java.util.stream.Stream
 import kotlin.reflect.KClass
@@ -56,7 +51,6 @@ internal class SettingsViewModelTest {
 
     @BeforeEach
     fun setUpEach() {
-        mockPreferences()
         mockConversionsToViewSetting()
         viewModel = SettingsViewModel(weatherUnitConverter, generalFormatConverter)
     }
@@ -72,104 +66,107 @@ internal class SettingsViewModelTest {
         assertThat(settings).containsExactlyElementsIn(viewSettings)
     }
 
-    @ParameterizedTest
-    @MethodSource("provideWeatherAnySettingsCombined")
-    fun `getCurrentValue WeatherUnit success`(anySetting: AnySetting, expectedUnit: WeatherUnit) {
-        mockWeatherPreference(expectedUnit)
-        justCallOriginal { weatherUnitConverter.convertToSetting(any()) }
+    @Nested
+    inner class getCurrentValue {
 
-        val currentSetting = viewModel.getCurrentValue(anySetting)
-
-        val expectedSetting = convertToSetting(expectedUnit)
-        assertEquals(expectedSetting, currentSetting)
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideGeneralAnySettingsCombined")
-    fun `getCurrentValue GeneralFormat success`(anySetting: AnySetting, expectedUnit: GeneralFormat) {
-        mockGeneralPreference(expectedUnit)
-        justCallOriginal { generalFormatConverter.convertToSetting(any()) }
-
-        val currentSetting = viewModel.getCurrentValue(anySetting)
-
-        val expectedSetting = convertToSetting(expectedUnit)
-        assertEquals(expectedSetting, currentSetting)
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideWeatherAnySettingMatched")
-    fun `changeSetting WeatherUnit success`(setting: AnySetting, expectedUnit: WeatherUnit) = runTestViewModelScope {
-        justArgToString { weatherUnitConverter.convertToValue(any()) }
-        val weatherUnitSlots = hashMapOf<KClass<out WeatherUnit>, CapturingSlot<out WeatherUnit>>()
-        val newTemperatureUnitSlot = slot<TemperatureUnit>().also { weatherUnitSlots[TemperatureUnit::class] = it }
-        justRun { WeatherUnitsPreferences.temperatureUnit = capture(newTemperatureUnitSlot) }
-        val newPressureUnitSlot = slot<PressureUnit>().also { weatherUnitSlots[PressureUnit::class] = it }
-        justRun { WeatherUnitsPreferences.pressureUnit = capture(newPressureUnitSlot) }
-        val newWindSpeedUnitSlot = slot<WindSpeedUnit>().also { weatherUnitSlots[WindSpeedUnit::class] = it }
-        justRun { WeatherUnitsPreferences.windSpeedUnit = capture(newWindSpeedUnitSlot) }
-        val newVisibilityUnitSlot = slot<VisibilityUnit>().also { weatherUnitSlots[VisibilityUnit::class] = it }
-        justRun { WeatherUnitsPreferences.visibilityUnit = capture(newVisibilityUnitSlot) }
-        val newPrecipitationUnitSlot =
-            slot<PrecipitationUnit>().also { weatherUnitSlots[PrecipitationUnit::class] = it }
-        justRun { WeatherUnitsPreferences.precipitationUnit = capture(newPrecipitationUnitSlot) }
-
-        viewModel.settingChanged.test {
-            val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
-            val expectedCurrentValue = setting.toString()
-
-            viewModel.changeSetting(setting)
-
-            val changedSetting = awaitItem()
-
-            cancel()
-
-            assertEquals(expectedChangedSetting, changedSetting)
-            assertEquals(expectedCurrentValue, changedSetting.currentValue)
+        @BeforeEach
+        fun setUp() {
+            mockkObject(WeatherUnitsPreferences, GeneralPreferences)
         }
 
-        assertExpectedValueCapturedAndOthersNot(expectedUnit, weatherUnitSlots)
+        @ParameterizedTest
+        @ArgumentsSource(Companion.WeatherAnySettingsCombinedProvider::class)
+        fun `WeatherUnit success`(anySetting: AnySetting, expectedUnit: WeatherUnit) {
+            mockWeatherPreference(expectedUnit)
+            val conversionResult = mockk<AnySetting>()
+            every { weatherUnitConverter.convertToSetting(any()) } returns conversionResult
+
+            val currentSetting = viewModel.getCurrentValue(anySetting)
+
+            assertEquals(conversionResult, currentSetting)
+        }
+
+        @ParameterizedTest
+        @ArgumentsSource(Companion.GeneralAnySettingsCombinedProvider::class)
+        fun `GeneralFormat success`(anySetting: AnySetting, expectedUnit: GeneralFormat) {
+            mockGeneralPreference(expectedUnit)
+            justCallOriginal { generalFormatConverter.convertToSetting(any()) }
+
+            val currentSetting = viewModel.getCurrentValue(anySetting)
+
+            val expectedSetting = convertToSetting(expectedUnit)
+            assertEquals(expectedSetting, currentSetting)
+        }
+
     }
 
-    @ParameterizedTest
-    @MethodSource("provideGeneralAnySettingMatched")
-    fun `changeSetting GeneralFormat success`(setting: AnySetting, expectedFormat: GeneralFormat) =
-        runTestViewModelScope {
-            justArgToString { weatherUnitConverter.convertToValue(any()) }
-            val weatherUnitSlots = hashMapOf<KClass<out GeneralFormat>, CapturingSlot<out GeneralFormat>>()
-            val newTimeFormatSlot = slot<TimeFormat>().also { weatherUnitSlots[TimeFormat::class] = it }
-            justRun { GeneralPreferences.timeFormat = capture(newTimeFormatSlot) }
-            val newDateFormatSlot = slot<DateFormat>().also { weatherUnitSlots[DateFormat::class] = it }
-            justRun { GeneralPreferences.dateFormat = capture(newDateFormatSlot) }
+    @Nested
+    inner class changeSetting {
 
-            viewModel.settingChanged.test {
-                val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
-                val expectedCurrentValue = setting.toString()
+        @ParameterizedTest
+        @ArgumentsSource(WeatherAnySettingMatchedProvider::class)
+        fun `WeatherUnit success`(setting: AnySetting, expectedUnit: WeatherUnit) =
+            runTestViewModelScope {
+                justArgToString { weatherUnitConverter.convertToValue(any()) }
+                val weatherUnitSlots = hashMapOf<KClass<out WeatherUnit>, CapturingSlot<out WeatherUnit>>()
+                val newTemperatureUnitSlot =
+                    slot<TemperatureUnit>().also { weatherUnitSlots[TemperatureUnit::class] = it }
+                justRun { WeatherUnitsPreferences.temperatureUnit = capture(newTemperatureUnitSlot) }
+                val newPressureUnitSlot = slot<PressureUnit>().also { weatherUnitSlots[PressureUnit::class] = it }
+                justRun { WeatherUnitsPreferences.pressureUnit = capture(newPressureUnitSlot) }
+                val newWindSpeedUnitSlot = slot<WindSpeedUnit>().also { weatherUnitSlots[WindSpeedUnit::class] = it }
+                justRun { WeatherUnitsPreferences.windSpeedUnit = capture(newWindSpeedUnitSlot) }
+                val newVisibilityUnitSlot = slot<VisibilityUnit>().also { weatherUnitSlots[VisibilityUnit::class] = it }
+                justRun { WeatherUnitsPreferences.visibilityUnit = capture(newVisibilityUnitSlot) }
+                val newPrecipitationUnitSlot =
+                    slot<PrecipitationUnit>().also { weatherUnitSlots[PrecipitationUnit::class] = it }
+                justRun { WeatherUnitsPreferences.precipitationUnit = capture(newPrecipitationUnitSlot) }
 
-                viewModel.changeSetting(setting)
+                viewModel.settingChanged.test {
+                    val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
+                    val expectedCurrentValue = setting.toString()
 
-                val changedSetting = awaitItem()
+                    viewModel.changeSetting(setting)
 
-                cancel()
+                    val changedSetting = awaitItem()
 
-                assertEquals(expectedChangedSetting, changedSetting)
-                assertEquals(expectedCurrentValue, changedSetting.currentValue)
+                    assertEquals(expectedChangedSetting, changedSetting)
+                    assertEquals(expectedCurrentValue, changedSetting.currentValue)
+                }
+
+                assertExpectedValueCapturedAndOthersNot(expectedUnit, weatherUnitSlots)
             }
 
-            assertExpectedValueCapturedAndOthersNot(expectedFormat, weatherUnitSlots)
-        }
+        @ParameterizedTest
+        @ArgumentsSource(GeneralAnySettingMatchedProvider::class)
+        fun `GeneralFormat success`(setting: AnySetting, expectedFormat: GeneralFormat) =
+            runTestViewModelScope {
+                justArgToString { weatherUnitConverter.convertToValue(any()) }
+                val weatherUnitSlots = hashMapOf<KClass<out GeneralFormat>, CapturingSlot<out GeneralFormat>>()
+                val newTimeFormatSlot = slot<TimeFormat>().also { weatherUnitSlots[TimeFormat::class] = it }
+                justRun { GeneralPreferences.timeFormat = capture(newTimeFormatSlot) }
+                val newDateFormatSlot = slot<DateFormat>().also { weatherUnitSlots[DateFormat::class] = it }
+                justRun { GeneralPreferences.dateFormat = capture(newDateFormatSlot) }
+
+                viewModel.settingChanged.test {
+                    val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
+                    val expectedCurrentValue = setting.toString()
+
+                    viewModel.changeSetting(setting)
+
+                    val changedSetting = awaitItem()
+
+                    assertEquals(expectedChangedSetting, changedSetting)
+                    assertEquals(expectedCurrentValue, changedSetting.currentValue)
+                }
+
+                assertExpectedValueCapturedAndOthersNot(expectedFormat, weatherUnitSlots)
+            }
+
+    }
 
 
     //region Utils
-
-    private fun mockPreferences() {
-        every { WeatherUnitsPreferences.temperatureUnit } returns TemperatureUnit.CELSIUS
-        every { WeatherUnitsPreferences.pressureUnit } returns PressureUnit.MM_HG
-        every { WeatherUnitsPreferences.windSpeedUnit } returns WindSpeedUnit.KM_H
-        every { WeatherUnitsPreferences.visibilityUnit } returns VisibilityUnit.K_METER
-        every { WeatherUnitsPreferences.precipitationUnit } returns PrecipitationUnit.MM
-        every { GeneralPreferences.timeFormat } returns TimeFormat.H_24
-        every { GeneralPreferences.dateFormat } returns DateFormat.STRAIGHT
-    }
 
     private fun mockConversionsToViewSetting() {
         every { weatherUnitConverter.convertToViewSetting(any()) } answers {
@@ -273,13 +270,31 @@ internal class SettingsViewModelTest {
         @BeforeAll
         @JvmStatic
         fun setUpAll() {
-            Kotpref.init(mockk { justMock({ applicationContext }, { justMock { applicationContext } }) })
+            Kotpref.init(mockk {
+                justMock({ applicationContext }) {
+                    justMock({ applicationContext }) {
+                        every { getSharedPreferences(any(), any()) } returns mockk(relaxed = true)
+                    }
+                }
+            })
+
             mockkStatic(AndroidDateFormat::class) {
                 every { AndroidDateFormat.is24HourFormat(any()) } returns true
                 every { AndroidDateFormat.getDateFormatOrder(any()) } returns charArrayOf('d', 'M')
 
                 mockkObject(WeatherUnitsPreferences, GeneralPreferences)
             }
+            mockPreferences()
+        }
+
+        private fun mockPreferences() {
+            every { WeatherUnitsPreferences.temperatureUnit } returns TemperatureUnit.CELSIUS
+            every { WeatherUnitsPreferences.pressureUnit } returns PressureUnit.MM_HG
+            every { WeatherUnitsPreferences.windSpeedUnit } returns WindSpeedUnit.KM_H
+            every { WeatherUnitsPreferences.visibilityUnit } returns VisibilityUnit.K_METER
+            every { WeatherUnitsPreferences.precipitationUnit } returns PrecipitationUnit.MM
+            every { GeneralPreferences.timeFormat } returns TimeFormat.H_24
+            every { GeneralPreferences.dateFormat } returns DateFormat.STRAIGHT
         }
 
         @AfterAll
@@ -289,38 +304,43 @@ internal class SettingsViewModelTest {
         }
 
 
-        @JvmStatic
-        fun provideWeatherAnySettingsCombined() = Stream.of(
-            *combineEnumsAsArguments(ViewTemperatureUnit.values(), TemperatureUnit.values()),
-            *combineEnumsAsArguments(ViewPressureUnit.values(), PressureUnit.values()),
-            *combineEnumsAsArguments(ViewWindSpeedUnit.values(), WindSpeedUnit.values()),
-            *combineEnumsAsArguments(ViewVisibilityUnit.values(), VisibilityUnit.values()),
-            *combineEnumsAsArguments(ViewPrecipitationUnit.values(), PrecipitationUnit.values()),
-        )
+        private object WeatherAnySettingsCombinedProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                *combineEnumsAsArguments(ViewTemperatureUnit.values(), TemperatureUnit.values()),
+                *combineEnumsAsArguments(ViewPressureUnit.values(), PressureUnit.values()),
+                *combineEnumsAsArguments(ViewWindSpeedUnit.values(), WindSpeedUnit.values()),
+                *combineEnumsAsArguments(ViewVisibilityUnit.values(), VisibilityUnit.values()),
+                *combineEnumsAsArguments(ViewPrecipitationUnit.values(), PrecipitationUnit.values()),
+            )
+        }
 
-        @JvmStatic
-        fun provideGeneralAnySettingsCombined() = Stream.of(
-            *combineEnumsAsArguments(ViewTimeFormat.values(), TimeFormat.values()),
-            *combineEnumsAsArguments(ViewDateFormat.values(), DateFormat.values()),
-        )
+        private object GeneralAnySettingsCombinedProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                *combineEnumsAsArguments(ViewTimeFormat.values(), TimeFormat.values()),
+                *combineEnumsAsArguments(ViewDateFormat.values(), DateFormat.values()),
+            )
+        }
 
         private fun combineEnumsAsArguments(enums: Array<*>, combinedEnums: Array<*>): Array<Arguments> =
             enums.flatMap { view -> combinedEnums.map { unit -> Arguments.of(view, unit) } }.toTypedArray()
 
-        @JvmStatic
-        fun provideWeatherAnySettingMatched() = Stream.of(
-            *matchEnumsAsArguments(ViewTemperatureUnit.values(), TemperatureUnit.values()),
-            *matchEnumsAsArguments(ViewPressureUnit.values(), PressureUnit.values()),
-            *matchEnumsAsArguments(ViewWindSpeedUnit.values(), WindSpeedUnit.values()),
-            *matchEnumsAsArguments(ViewVisibilityUnit.values(), VisibilityUnit.values()),
-            *matchEnumsAsArguments(ViewPrecipitationUnit.values(), PrecipitationUnit.values()),
-        )
 
-        @JvmStatic
-        fun provideGeneralAnySettingMatched() = Stream.of(
-            *matchEnumsAsArguments(ViewTimeFormat.values(), TimeFormat.values()),
-            *matchEnumsAsArguments(ViewDateFormat.values(), DateFormat.values()),
-        )
+        private object WeatherAnySettingMatchedProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                *matchEnumsAsArguments(ViewTemperatureUnit.values(), TemperatureUnit.values()),
+                *matchEnumsAsArguments(ViewPressureUnit.values(), PressureUnit.values()),
+                *matchEnumsAsArguments(ViewWindSpeedUnit.values(), WindSpeedUnit.values()),
+                *matchEnumsAsArguments(ViewVisibilityUnit.values(), VisibilityUnit.values()),
+                *matchEnumsAsArguments(ViewPrecipitationUnit.values(), PrecipitationUnit.values()),
+            )
+        }
+
+        private object GeneralAnySettingMatchedProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                *matchEnumsAsArguments(ViewTimeFormat.values(), TimeFormat.values()),
+                *matchEnumsAsArguments(ViewDateFormat.values(), DateFormat.values()),
+            )
+        }
 
     }
 

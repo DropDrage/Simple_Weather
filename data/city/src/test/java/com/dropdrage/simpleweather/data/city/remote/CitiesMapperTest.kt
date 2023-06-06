@@ -23,6 +23,7 @@ internal class CitiesMapperTest {
         assertThat(result).containsExactlyElementsIn(cityDomains)
     }
 
+
     private fun toDomainCity(dto: CityDto): City = City(
         name = dto.name,
         location = Location(dto.latitude, dto.longitude),

@@ -28,6 +28,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.UnknownHostException
@@ -56,56 +57,58 @@ internal class CurrentWeatherRepositoryImplTest {
     }
 
 
-    @Test
-    fun `getCurrentWeather locations empty then empty lists`() = runTest {
-        val location = emptyList<Location>()
+    @Nested
+    inner class getCurrentWeather {
 
-        val result = repository.getCurrentWeather(location).toList()
-
-        coVerifyNever {
-            locationDao.getLocationApproximately(any(), any())
-            hourWeatherDao.getCurrentWeather(any(), any())
-            api.getCurrentWeather(any(), any(), any())
-        }
-        assertThat(result).hasSize(2)
-        assertThat(result[0]).isEmpty()
-        assertThat(result[1]).isEmpty()
-    }
-
-    @Test
-    fun `getCurrentWeather locations filled but not in db and api then two list of nulls`() = runTest {
-        mockTemperatureConversion {
-            coEvery { locationDao.getLocationApproximately(any(), any()) } returns null
-            val temperature = 1f
-            val weatherCode = 1
-            coEvery { api.getCurrentWeather(any(), any(), any()) } returns CurrentWeatherResponseDto(
-                RemoteCurrentWeatherDto(temperature, weatherCode)
-            )
-            val location = listOf(
-                Location(1f, 2f),
-                Location(3f, 2f),
-                Location(4f, 2f),
-            )
-            val weatherType = WeatherTypeConverter.toWeatherType(weatherCode)
+        @Test
+        fun `locations empty then empty lists`() = runTest {
+            val location = emptyList<Location>()
 
             val result = repository.getCurrentWeather(location).toList()
 
-            coVerify(exactly = location.size) {
+            coVerifyNever {
                 locationDao.getLocationApproximately(any(), any())
+                hourWeatherDao.getCurrentWeather(any(), any())
                 api.getCurrentWeather(any(), any(), any())
             }
-            coVerifyNever { hourWeatherDao.getCurrentWeather(any(), any()) }
             assertThat(result).hasSize(2)
-            assertThat(result[0]).containsExactlyElementsIn(createList(location.size) { null })
-            assertThat(result[1]).containsExactlyElementsIn(createList(location.size) {
-                CurrentWeather(temperature, weatherType)
-            })
+            assertThat(result[0]).isEmpty()
+            assertThat(result[1]).isEmpty()
         }
-    }
 
-    @Test
-    fun `getCurrentWeather locations filled but weather empty in db then first nulls and second not nulls`() =
-        runTest {
+        @Test
+        fun `locations filled but not in db and api then two list of nulls`() = runTest {
+            mockTemperatureConversion {
+                coEvery { locationDao.getLocationApproximately(any(), any()) } returns null
+                val temperature = 1f
+                val weatherCode = 1
+                coEvery { api.getCurrentWeather(any(), any(), any()) } returns CurrentWeatherResponseDto(
+                    RemoteCurrentWeatherDto(temperature, weatherCode)
+                )
+                val location = listOf(
+                    Location(1f, 2f),
+                    Location(3f, 2f),
+                    Location(4f, 2f),
+                )
+                val weatherType = WeatherTypeConverter.toWeatherType(weatherCode)
+
+                val result = repository.getCurrentWeather(location).toList()
+
+                coVerify(exactly = location.size) {
+                    locationDao.getLocationApproximately(any(), any())
+                    api.getCurrentWeather(any(), any(), any())
+                }
+                coVerifyNever { hourWeatherDao.getCurrentWeather(any(), any()) }
+                assertThat(result).hasSize(2)
+                assertThat(result[0]).containsExactlyElementsIn(createList(location.size) { null })
+                assertThat(result[1]).containsExactlyElementsIn(createList(location.size) {
+                    CurrentWeather(temperature, weatherType)
+                })
+            }
+        }
+
+        @Test
+        fun `locations filled but weather empty in db then first nulls and second not nulls`() = runTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
@@ -139,50 +142,8 @@ internal class CurrentWeatherRepositoryImplTest {
             }
         }
 
-    @Test
-    fun `getCurrentWeather locations filled and weather in db and api then two list of nulls`() = runTest {
-        mockTemperatureConversion {
-            var id = 0L
-            coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                LocationModel(id++, firstArg(), secondArg())
-            }
-            val localTemperature = 10f
-            val localWeatherType = WeatherType.Foggy
-            coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns LocalCurrentWeatherDto(
-                localTemperature, localWeatherType
-            )
-            val remoteTemperature = 1f
-            val remoteWeatherCode = 1
-            val remoteWeatherType = WeatherTypeConverter.toWeatherType(remoteWeatherCode)
-            coEvery { api.getCurrentWeather(any(), any(), any()) } returns CurrentWeatherResponseDto(
-                RemoteCurrentWeatherDto(remoteTemperature, remoteWeatherCode)
-            )
-            val location = listOf(
-                Location(1f, 2f),
-                Location(3f, 2f),
-                Location(4f, 2f),
-            )
-
-            val result = repository.getCurrentWeather(location).toList()
-
-            coVerify(exactly = location.size) {
-                locationDao.getLocationApproximately(any(), any())
-                hourWeatherDao.getCurrentWeather(any(), any())
-                api.getCurrentWeather(any(), any(), any())
-            }
-            assertThat(result).hasSize(2)
-            assertThat(result[0]).containsExactlyElementsIn(createList(location.size) {
-                CurrentWeather(localTemperature, localWeatherType)
-            })
-            assertThat(result[1]).containsExactlyElementsIn(createList(location.size) {
-                CurrentWeather(remoteTemperature, remoteWeatherType)
-            })
-        }
-    }
-
-    @Test
-    fun `getCurrentWeather locations filled and weather in db but api throws UnknownHost then only first list`() =
-        runTestWithMockLogE {
+        @Test
+        fun `locations filled and weather in db and api then two list of nulls`() = runTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
@@ -193,7 +154,12 @@ internal class CurrentWeatherRepositoryImplTest {
                 coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns LocalCurrentWeatherDto(
                     localTemperature, localWeatherType
                 )
-                coEvery { api.getCurrentWeather(any(), any(), any()) } throws UnknownHostException()
+                val remoteTemperature = 1f
+                val remoteWeatherCode = 1
+                val remoteWeatherType = WeatherTypeConverter.toWeatherType(remoteWeatherCode)
+                coEvery { api.getCurrentWeather(any(), any(), any()) } returns CurrentWeatherResponseDto(
+                    RemoteCurrentWeatherDto(remoteTemperature, remoteWeatherCode)
+                )
                 val location = listOf(
                     Location(1f, 2f),
                     Location(3f, 2f),
@@ -205,18 +171,54 @@ internal class CurrentWeatherRepositoryImplTest {
                 coVerify(exactly = location.size) {
                     locationDao.getLocationApproximately(any(), any())
                     hourWeatherDao.getCurrentWeather(any(), any())
+                    api.getCurrentWeather(any(), any(), any())
                 }
-                coVerifyOnce { api.getCurrentWeather(any(), any(), any()) }
-                assertThat(result).hasSize(1)
+                assertThat(result).hasSize(2)
                 assertThat(result[0]).containsExactlyElementsIn(createList(location.size) {
                     CurrentWeather(localTemperature, localWeatherType)
+                })
+                assertThat(result[1]).containsExactlyElementsIn(createList(location.size) {
+                    CurrentWeather(remoteTemperature, remoteWeatherType)
                 })
             }
         }
 
-    @Test
-    fun `getCurrentWeather locations filled and weather in db but api throws Exception then only first list`() =
-        runTestWithMockLogE {
+        @Test
+        fun `locations filled and weather in db but api throws UnknownHost then only first list`() =
+            runTestWithMockLogE {
+                mockTemperatureConversion {
+                    var id = 0L
+                    coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
+                        LocationModel(id++, firstArg(), secondArg())
+                    }
+                    val localTemperature = 10f
+                    val localWeatherType = WeatherType.Foggy
+                    coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns LocalCurrentWeatherDto(
+                        localTemperature, localWeatherType
+                    )
+                    coEvery { api.getCurrentWeather(any(), any(), any()) } throws UnknownHostException()
+                    val location = listOf(
+                        Location(1f, 2f),
+                        Location(3f, 2f),
+                        Location(4f, 2f),
+                    )
+
+                    val result = repository.getCurrentWeather(location).toList()
+
+                    coVerify(exactly = location.size) {
+                        locationDao.getLocationApproximately(any(), any())
+                        hourWeatherDao.getCurrentWeather(any(), any())
+                    }
+                    coVerifyOnce { api.getCurrentWeather(any(), any(), any()) }
+                    assertThat(result).hasSize(1)
+                    assertThat(result[0]).containsExactlyElementsIn(createList(location.size) {
+                        CurrentWeather(localTemperature, localWeatherType)
+                    })
+                }
+            }
+
+        @Test
+        fun `locations filled and weather in db but api throws Exception then only first list`() = runTestWithMockLogE {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
@@ -247,6 +249,8 @@ internal class CurrentWeatherRepositoryImplTest {
                 })
             }
         }
+
+    }
 
 
     private inline fun mockTemperatureConversion(block: () -> Unit) =

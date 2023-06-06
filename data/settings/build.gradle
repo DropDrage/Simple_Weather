@@ -1,4 +1,4 @@
-androidLibrary(project, component_tests, buildFeature_resValues)
+androidLibrary(project, component_android_unitTests, buildFeature_resValues)
 
 android {
     namespace 'com.dropdrage.simpleweather.data.settings'

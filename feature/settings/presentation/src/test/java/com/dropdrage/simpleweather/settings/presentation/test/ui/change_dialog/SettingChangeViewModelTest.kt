@@ -11,6 +11,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -29,43 +30,48 @@ internal class SettingChangeViewModelTest {
         }
     }
 
-    @Test
-    fun `changeTargetSetting returns title and empty list`() = runTestViewModelScope {
-        val title = "Title"
-        val values = emptyList<AnySetting>()
-        val titleFlow = viewModel.title.testIn(backgroundScope)
-        val valuesFlow = viewModel.values.testIn(backgroundScope)
+    @Nested
+    inner class changeTargetSetting {
 
-        viewModel.changeTargetSetting(title, values)
-        val defaultTitle = titleFlow.awaitItem()
-        val changedTitle = titleFlow.awaitItem()
-        val defaultValues = valuesFlow.awaitItem()
-        val restValues = valuesFlow.cancelAndConsumeRemainingEvents()
+        @Test
+        fun `returns title and empty list`() = runTestViewModelScope {
+            val title = "Title"
+            val values = emptyList<AnySetting>()
+            val titleFlow = viewModel.title.testIn(backgroundScope)
+            val valuesFlow = viewModel.values.testIn(backgroundScope)
 
-        assertThat(defaultTitle).isEmpty()
-        assertEquals(title, changedTitle)
-        assertThat(defaultValues).isEmpty()
-        assertThat(restValues).isEmpty()
-    }
+            viewModel.changeTargetSetting(title, values)
+            val defaultTitle = titleFlow.awaitItem()
+            val changedTitle = titleFlow.awaitItem()
+            val defaultValues = valuesFlow.awaitItem()
+            val restValues = valuesFlow.cancelAndConsumeRemainingEvents()
 
-    @Test
-    fun `changeTargetSetting returns title and filled list`() = runTestViewModelScope {
-        val title = "Title"
-        val values = ViewTemperatureUnit.CELSIUS.values
-        val titleFlow = viewModel.title.testIn(backgroundScope)
-        val valuesFlow = viewModel.values.testIn(backgroundScope)
+            assertThat(defaultTitle).isEmpty()
+            assertEquals(title, changedTitle)
+            assertThat(defaultValues).isEmpty()
+            assertThat(restValues).isEmpty()
+        }
 
-        viewModel.changeTargetSetting(title, values)
-        viewModel.changeTargetSetting(title, values)
-        val defaultTitle = titleFlow.awaitItem()
-        val changedTitle = titleFlow.awaitItem()
-        val defaultValues = valuesFlow.awaitItem()
-        val changedValues = valuesFlow.awaitItem()
+        @Test
+        fun `returns title and filled list`() = runTestViewModelScope {
+            val title = "Title"
+            val values = ViewTemperatureUnit.CELSIUS.values
+            val titleFlow = viewModel.title.testIn(backgroundScope)
+            val valuesFlow = viewModel.values.testIn(backgroundScope)
 
-        assertThat(defaultTitle).isEmpty()
-        assertEquals(title, changedTitle)
-        assertThat(defaultValues).isEmpty()
-        assertThat(changedValues).containsExactlyElementsIn(values)
+            viewModel.changeTargetSetting(title, values)
+            viewModel.changeTargetSetting(title, values)
+            val defaultTitle = titleFlow.awaitItem()
+            val changedTitle = titleFlow.awaitItem()
+            val defaultValues = valuesFlow.awaitItem()
+            val changedValues = valuesFlow.awaitItem()
+
+            assertThat(defaultTitle).isEmpty()
+            assertEquals(title, changedTitle)
+            assertThat(defaultValues).isEmpty()
+            assertThat(changedValues).containsExactlyElementsIn(values)
+        }
+
     }
 
 }

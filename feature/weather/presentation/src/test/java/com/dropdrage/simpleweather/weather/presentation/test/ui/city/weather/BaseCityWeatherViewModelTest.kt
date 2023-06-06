@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
@@ -85,102 +86,107 @@ internal class BaseCityWeatherViewModelTest {
         }
     }
 
-    @Test
-    fun `loadWeather isLoading false true false`() = runTestViewModelScope {
-        viewModel.tryLoadWeatherFake = { delay(300L) }
+    @Nested
+    inner class loadWeather {
 
-        viewModel.isLoading.test {
-            val beforeLoad = awaitItem()
+        @Test
+        fun `returns isLoading false true false`() = runTestViewModelScope {
+            viewModel.tryLoadWeatherFake = { delay(300L) }
+
+            viewModel.isLoading.test {
+                val beforeLoad = awaitItem()
+                viewModel.loadWeather()
+                val duringLoad = awaitItem()
+                delay(300L)
+                val afterLoad = awaitItem()
+
+                cancel()
+
+                assertFalse(beforeLoad)
+                assertTrue(duringLoad)
+                assertFalse(afterLoad)
+            }
+        }
+
+        @Test
+        fun `returns error CantObtainResourceException`() = runTestViewModelScope {
+            viewModel.weatherResult = Resource.Error(CantObtainResourceException())
+
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
+
+                cancel()
+
+                assertSame(TextMessage.NoDataAvailableErrorMessage, error)
+            }
+        }
+
+        @Test
+        fun `returns error IOException without message then UnknownMessage`() = runTestViewModelScope {
+            viewModel.weatherResult = Resource.Error(IOException())
+
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
+
+                cancel()
+
+                assertSame(TextMessage.UnknownErrorMessage, error)
+            }
+        }
+
+        @Test
+        fun `returns error IOException with message`() = runTestViewModelScope {
+            val message = "Error Message"
+            viewModel.weatherResult = Resource.Error(IOException(message))
+
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
+
+                cancel()
+
+                assertEquals(message, error.getMessage(mockk()))
+            }
+        }
+
+        @Test
+        fun `returns success`() = runTestViewModelScope {
+            mockConverters(
+                currentHourWeatherConverter,
+                currentDayWeatherConverter,
+                hourWeatherConverter,
+                dailyWeatherConverter
+            )
+            val daysCount = 3
+            val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
+            val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
+            val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
+            val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
+            val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
+            val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
+            val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
+            val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
+            val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
+            viewModel.weatherResult = Resource.Success(weather)
+
             viewModel.loadWeather()
-            val duringLoad = awaitItem()
-            delay(300L)
-            val afterLoad = awaitItem()
 
-            cancel()
-
-            assertFalse(beforeLoad)
-            assertTrue(duringLoad)
-            assertFalse(afterLoad)
+            verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
+            coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
+                hourWeatherConverter.convertToView(any(), any())
+            }
+            verifyOnce {
+                currentDayWeatherConverter.convertToView(any())
+                currentHourWeatherConverter.convertToView(any())
+            }
+            assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
+            assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
+            assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
+            assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
         }
-    }
 
-    @Test
-    fun `loadWeather error CantObtainResourceException`() = runTestViewModelScope {
-        viewModel.weatherResult = Resource.Error(CantObtainResourceException())
-
-        viewModel.error.test {
-            viewModel.loadWeather()
-            val error = awaitItem()
-
-            cancel()
-
-            assertSame(TextMessage.NoDataAvailableErrorMessage, error)
-        }
-    }
-
-    @Test
-    fun `loadWeather error IOException without message then UnknownMessage`() = runTestViewModelScope {
-        viewModel.weatherResult = Resource.Error(IOException())
-
-        viewModel.error.test {
-            viewModel.loadWeather()
-            val error = awaitItem()
-
-            cancel()
-
-            assertSame(TextMessage.UnknownErrorMessage, error)
-        }
-    }
-
-    @Test
-    fun `loadWeather error IOException with message`() = runTestViewModelScope {
-        val message = "Error Message"
-        viewModel.weatherResult = Resource.Error(IOException(message))
-
-        viewModel.error.test {
-            viewModel.loadWeather()
-            val error = awaitItem()
-
-            cancel()
-
-            assertEquals(message, error.getMessage(mockk()))
-        }
-    }
-
-    @Test
-    fun `loadWeather success`() = runTestViewModelScope {
-        mockConverters(
-            currentHourWeatherConverter,
-            currentDayWeatherConverter,
-            hourWeatherConverter,
-            dailyWeatherConverter
-        )
-        val daysCount = 3
-        val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
-        val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
-        val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
-        val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
-        val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
-        val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
-        val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
-        val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
-        val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
-        viewModel.weatherResult = Resource.Success(weather)
-
-        viewModel.loadWeather()
-
-        verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
-        coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
-            hourWeatherConverter.convertToView(any(), any())
-        }
-        verifyOnce {
-            currentDayWeatherConverter.convertToView(any())
-            currentHourWeatherConverter.convertToView(any())
-        }
-        assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
-        assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
-        assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
-        assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
     }
 
 

@@ -19,6 +19,7 @@ import io.mockk.verify
 import kotlinx.coroutines.isActive
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -71,48 +72,54 @@ internal class CoroutinesViewHolderSupplierTest {
         assertThrows<IllegalStateException> { supplier.start() }
     }
 
-    @Test
-    fun `prefetch 0 count`() {
-        val supplier = createInitializedSupplier()
 
-        supplier.prefetch(VIEW_TYPE, 0)
+    @Nested
+    inner class prefetch {
 
-        coVerify(exactly = 0, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verifyNever { viewHolderConsumer(any()) }
+        @Test
+        fun `0 count`() {
+            val supplier = createInitializedSupplier()
 
-        supplier.stop()
-    }
+            supplier.prefetch(VIEW_TYPE, 0)
 
-    @ParameterizedTest
-    @ValueSource(ints = [1, 10])
-    fun `prefetch positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
-        every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
-            firstArg<Runnable>().run()
-            true
+            coVerify(exactly = 0, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
+            verifyNever { viewHolderConsumer(any()) }
+
+            supplier.stop()
         }
 
-        val supplier = createInitializedSupplier()
+        @ParameterizedTest
+        @ValueSource(ints = [1, 10])
+        fun `positive count`(count: Int) = mockkConstructor(FrameLayout::class, Handler::class) {
+            every { anyConstructed<Handler>().postAtFrontOfQueue(any()) } answers {
+                firstArg<Runnable>().run()
+                true
+            }
 
-        supplier.prefetch(VIEW_TYPE, count)
+            val supplier = createInitializedSupplier()
 
-        verify(exactly = count, timeout = 3000) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verify(exactly = count, timeout = 3000) { viewHolderConsumer(any()) }
+            supplier.prefetch(VIEW_TYPE, count)
 
-        supplier.stop()
-    }
+            verify(exactly = count, timeout = 3000) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
+            verify(exactly = count, timeout = 3000) { viewHolderConsumer(any()) }
+
+            supplier.stop()
+        }
 
 
-    @ParameterizedTest
-    @ValueSource(ints = [-1, -10])
-    fun `prefetch negative count`(count: Int) {
-        val supplier = createInitializedSupplier()
+        @ParameterizedTest
+        @ValueSource(ints = [-1, -10])
+        fun `negative count`(count: Int) {
+            val supplier = createInitializedSupplier()
 
-        supplier.prefetch(VIEW_TYPE, count)
+            supplier.prefetch(VIEW_TYPE, count)
 
-        coVerify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
-        verifyNever { viewHolderConsumer(any()) }
+            coVerify(inverse = true, timeout = 500) { testUtilsClass.viewHolderProducer(any(), eq(VIEW_TYPE)) }
+            verifyNever { viewHolderConsumer(any()) }
 
-        supplier.stop()
+            supplier.stop()
+        }
+
     }
 
     @Test

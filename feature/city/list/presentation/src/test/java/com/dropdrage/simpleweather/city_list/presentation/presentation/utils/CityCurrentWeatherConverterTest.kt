@@ -18,6 +18,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -36,42 +37,47 @@ internal class CityCurrentWeatherConverterTest {
     }
 
 
-    @Test
-    fun `convertToView weather not null`() {
-        val weather = CurrentWeather(1f, WeatherType.Foggy)
-        val cityCurrentWeather = CityCurrentWeather(
-            City("City1", Location(1f, 2f), Country("Country1", "CY")),
-            weather,
-        )
-        justArgToString { unitsFormatter.formatTemperature(eq(weather.temperature)) }
+    @Nested
+    inner class convertToView {
 
-        val viewCityCurrentWeather = converter.convertToView(cityCurrentWeather)
+        @Test
+        fun `weather not null`() {
+            val weather = CurrentWeather(1f, WeatherType.Foggy)
+            val cityCurrentWeather = CityCurrentWeather(
+                City("City1", Location(1f, 2f), Country("Country1", "CY")),
+                weather,
+            )
+            justArgToString { unitsFormatter.formatTemperature(eq(weather.temperature)) }
 
-        verifyOnce { unitsFormatter.formatTemperature(eq(weather.temperature)) }
-        val expectedViewCityCurrentWeather = ViewCityCurrentWeather(
-            cityCurrentWeather.city,
-            ViewCurrentWeather(weather.temperature.toString(), ViewWeatherType.fromWeatherType(weather.weatherType))
-        )
-        assertEquals(expectedViewCityCurrentWeather, viewCityCurrentWeather)
-    }
+            val viewCityCurrentWeather = converter.convertToView(cityCurrentWeather)
 
-    @Test
-    fun `convertToView weather null`() {
-        val noTemperature = "No temperature"
-        every { unitsFormatter.noTemperature } returns noTemperature
-        val cityCurrentWeather = CityCurrentWeather(
-            City("City1", Location(1f, 2f), Country("Country1", "CY")),
-            null,
-        )
+            verifyOnce { unitsFormatter.formatTemperature(eq(weather.temperature)) }
+            val expectedViewCityCurrentWeather = ViewCityCurrentWeather(
+                cityCurrentWeather.city,
+                ViewCurrentWeather(weather.temperature.toString(), ViewWeatherType.fromWeatherType(weather.weatherType))
+            )
+            assertEquals(expectedViewCityCurrentWeather, viewCityCurrentWeather)
+        }
 
-        val viewCityCurrentWeather = converter.convertToView(cityCurrentWeather)
+        @Test
+        fun `weather null`() {
+            val noTemperature = "No temperature"
+            every { unitsFormatter.noTemperature } returns noTemperature
+            val cityCurrentWeather = CityCurrentWeather(
+                City("City1", Location(1f, 2f), Country("Country1", "CY")),
+                null,
+            )
 
-        verifyNever { unitsFormatter.formatTemperature(any()) }
-        val expectedViewCityCurrentWeather = ViewCityCurrentWeather(
-            cityCurrentWeather.city,
-            ViewCurrentWeather(noTemperature, ViewWeatherType.ClearSky)
-        )
-        assertEquals(expectedViewCityCurrentWeather, viewCityCurrentWeather)
+            val viewCityCurrentWeather = converter.convertToView(cityCurrentWeather)
+
+            verifyNever { unitsFormatter.formatTemperature(any()) }
+            val expectedViewCityCurrentWeather = ViewCityCurrentWeather(
+                cityCurrentWeather.city,
+                ViewCurrentWeather(noTemperature, ViewWeatherType.ClearSky)
+            )
+            assertEquals(expectedViewCityCurrentWeather, viewCityCurrentWeather)
+        }
+
     }
 
 }

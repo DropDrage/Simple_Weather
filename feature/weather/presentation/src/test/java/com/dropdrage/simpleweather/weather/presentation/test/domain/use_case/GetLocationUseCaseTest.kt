@@ -15,9 +15,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.util.stream.Stream
 
 @ExtendWith(MockKExtension::class)
@@ -36,50 +40,57 @@ internal class GetLocationUseCaseTest {
     }
 
 
-    @ParameterizedTest
-    @MethodSource("provideLocationResults")
-    fun `invoke NoLocation returns location update`(locationUpdateResult: LocationResult) = runTest {
-        coEvery { locationTracker.getCurrentLocation() } returns LocationResult.NoLocation
-        coEvery { locationTracker.requestLocationUpdate() } returns flowOf(locationUpdateResult)
+    @Nested
+    inner class invoke {
 
-        val location = getLocation().first()
+        @ParameterizedTest
+        @ArgumentsSource(LocationResultsProvider::class)
+        fun `NoLocation returns location update`(locationUpdateResult: LocationResult) = runTest {
+            coEvery { locationTracker.getCurrentLocation() } returns LocationResult.NoLocation
+            coEvery { locationTracker.requestLocationUpdate() } returns flowOf(locationUpdateResult)
 
-        coVerifyOnce {
-            locationTracker.getCurrentLocation()
-            locationTracker.requestLocationUpdate()
+            val location = getLocation().first()
+
+            coVerifyOnce {
+                locationTracker.getCurrentLocation()
+                locationTracker.requestLocationUpdate()
+            }
+            assertEquals(locationUpdateResult, location)
         }
-        assertEquals(locationUpdateResult, location)
-    }
 
-    @ParameterizedTest
-    @MethodSource("provideLocationResultsWithoutNoLocation")
-    fun `invoke not NoLocation success`(locationUpdateResult: LocationResult) = runTest {
-        coEvery { locationTracker.getCurrentLocation() } returns locationUpdateResult
+        @ParameterizedTest
+        @ArgumentsSource(LocationResultsWithoutNoLocationProvider::class)
+        fun `not NoLocation success`(locationUpdateResult: LocationResult) = runTest {
+            coEvery { locationTracker.getCurrentLocation() } returns locationUpdateResult
 
-        val location = getLocation().first()
+            val location = getLocation().first()
 
-        coVerifyNever { locationTracker.requestLocationUpdate() }
-        coVerifyOnce { locationTracker.getCurrentLocation() }
-        assertEquals(locationUpdateResult, location)
+            coVerifyNever { locationTracker.requestLocationUpdate() }
+            coVerifyOnce { locationTracker.getCurrentLocation() }
+            assertEquals(locationUpdateResult, location)
+        }
+
     }
 
 
     private companion object {
 
-        @JvmStatic
-        fun provideLocationResults() = Stream.of(
-            LocationResult.NoLocation,
-            LocationResult.GpsDisabled,
-            LocationResult.NoPermission("permission"),
-            LocationResult.Success(Location(1f, 2f)),
-        )
+        private object LocationResultsWithoutNoLocationProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                Arguments.of(LocationResult.GpsDisabled),
+                Arguments.of(LocationResult.NoPermission("permission")),
+                Arguments.of(LocationResult.Success(Location(1f, 2f))),
+            )
+        }
 
-        @JvmStatic
-        fun provideLocationResultsWithoutNoLocation() = Stream.of(
-            LocationResult.GpsDisabled,
-            LocationResult.NoPermission("permission"),
-            LocationResult.Success(Location(1f, 2f)),
-        )
+        private object LocationResultsProvider : ArgumentsProvider {
+            override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
+                Arguments.of(LocationResult.NoLocation),
+                Arguments.of(LocationResult.GpsDisabled),
+                Arguments.of(LocationResult.NoPermission("permission")),
+                Arguments.of(LocationResult.Success(Location(1f, 2f))),
+            )
+        }
 
     }
 

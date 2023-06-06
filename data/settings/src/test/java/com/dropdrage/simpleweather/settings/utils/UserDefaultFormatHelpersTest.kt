@@ -14,6 +14,7 @@ import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -23,111 +24,121 @@ private const val LANGUAGE_COUNTRY_DELIMITER = '-'
 
 internal class UserDefaultFormatHelpersTest {
 
-    @Test
-    fun `isLocaleMetric measurement not SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
-        setStaticFields<LocaleData.MeasurementSystem>(
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("UK"),
-                LocaleData.MeasurementSystem.UK,
-                mockk()
-            ),
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("US"),
-                LocaleData.MeasurementSystem.UK,
-                mockk()
-            ),
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("SI"),
-                LocaleData.MeasurementSystem.UK,
-                mockk()
-            ),
-        ) {
-            mockSdkGreaterCheck(true) {
-                justMock { ULocale.getDefault() }
-                every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.UK
+    @Nested
+    inner class `isLocaleMetric measurement` {
 
+        @Test
+        fun `not SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
+            setStaticFields<LocaleData.MeasurementSystem>(
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("UK"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk()
+                ),
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("US"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk()
+                ),
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("SI"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk()
+                ),
+            ) {
+                mockSdkGreaterCheck(true) {
+                    justMock { ULocale.getDefault() }
+                    every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.UK
+
+                    val result = isLocaleMetric()
+
+                    verify { LocaleData.getMeasurementSystem(any()) }
+                    assertFalse(result)
+                }
+            }
+        }
+
+        @Test
+        fun `SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
+            setStaticFields<LocaleData.MeasurementSystem>(
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("UK"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk(),
+                ),
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("US"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk(),
+                ),
+                Triple(
+                    LocaleData.MeasurementSystem::class.java.getField("SI"),
+                    LocaleData.MeasurementSystem.UK,
+                    mockk(),
+                ),
+            ) {
+                mockSdkGreaterCheck(true) {
+                    justMock { ULocale.getDefault() }
+                    every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.SI
+
+                    val result = isLocaleMetric()
+
+                    verify { LocaleData.getMeasurementSystem(any()) }
+                    assertTrue(result)
+                }
+            }
+        }
+
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "en${LANGUAGE_COUNTRY_DELIMITER}US",
+                "en${LANGUAGE_COUNTRY_DELIMITER}LR",
+                "en${LANGUAGE_COUNTRY_DELIMITER}MM"
+            ]
+        )
+        fun `not SI for SDK O`(languageCountry: String) = mockSdkGreaterCheck(false) {
+            val languageCode = languageCountry.substringBefore(LANGUAGE_COUNTRY_DELIMITER)
+            val countryCode = languageCountry.substringAfter(LANGUAGE_COUNTRY_DELIMITER)
+            setLocale(languageCode, countryCode) {
                 val result = isLocaleMetric()
 
-                verify { LocaleData.getMeasurementSystem(any()) }
                 assertFalse(result)
             }
         }
-    }
 
-    @Test
-    fun `isLocaleMetric measurement SI for SDK P`() = mockkStatic(LocaleData::class, ULocale::class) {
-        setStaticFields<LocaleData.MeasurementSystem>(
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("UK"),
-                LocaleData.MeasurementSystem.UK,
-                mockk(),
-            ),
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("US"),
-                LocaleData.MeasurementSystem.UK,
-                mockk(),
-            ),
-            Triple(
-                LocaleData.MeasurementSystem::class.java.getField("SI"),
-                LocaleData.MeasurementSystem.UK,
-                mockk(),
-            ),
-        ) {
-            mockSdkGreaterCheck(true) {
-                justMock { ULocale.getDefault() }
-                every { LocaleData.getMeasurementSystem(any()) } returns LocaleData.MeasurementSystem.SI
-
+        @Test
+        fun `SI for SDK O`() = mockSdkGreaterCheck(false) {
+            setLocale(Locale.UK) {
                 val result = isLocaleMetric()
 
-                verify { LocaleData.getMeasurementSystem(any()) }
                 assertTrue(result)
             }
         }
+
     }
 
-    @ParameterizedTest
-    @ValueSource(
-        strings = [
-            "en${LANGUAGE_COUNTRY_DELIMITER}US",
-            "en${LANGUAGE_COUNTRY_DELIMITER}LR",
-            "en${LANGUAGE_COUNTRY_DELIMITER}MM"
-        ]
-    )
-    fun `isLocaleMetric measurement not SI for SDK O`(languageCountry: String) = mockSdkGreaterCheck(false) {
-        val languageCode = languageCountry.substringBefore(LANGUAGE_COUNTRY_DELIMITER)
-        val countryCode = languageCountry.substringAfter(LANGUAGE_COUNTRY_DELIMITER)
-        setLocale(languageCode, countryCode) {
-            val result = isLocaleMetric()
+    @Nested
+    inner class isDateFormatStraight {
+
+        @Test
+        fun `month first`() = mockkStatic(DateFormat::class) {
+            every { DateFormat.getDateFormatOrder(any()) } returns charArrayOf('M', 'M', 'd', 'd', 'y', 'y', 'y', 'y')
+
+            val result = isDateFormatStraight(mockk())
 
             assertFalse(result)
         }
-    }
 
-    @Test
-    fun `isLocaleMetric measurement SI for SDK O`() = mockSdkGreaterCheck(false) {
-        setLocale(Locale.UK) {
-            val result = isLocaleMetric()
+        @Test
+        fun `day first`() = mockkStatic(DateFormat::class) {
+            every { DateFormat.getDateFormatOrder(any()) } returns charArrayOf('d', 'd', 'M', 'M', 'y', 'y', 'y', 'y')
+
+            val result = isDateFormatStraight(mockk())
 
             assertTrue(result)
         }
-    }
 
-    @Test
-    fun `isDateFormatStraight month first`() = mockkStatic(DateFormat::class) {
-        every { DateFormat.getDateFormatOrder(any()) } returns charArrayOf('M', 'M', 'd', 'd', 'y', 'y', 'y', 'y')
-
-        val result = isDateFormatStraight(mockk())
-
-        assertFalse(result)
-    }
-
-    @Test
-    fun `isDateFormatStraight day first`() = mockkStatic(DateFormat::class) {
-        every { DateFormat.getDateFormatOrder(any()) } returns charArrayOf('d', 'd', 'M', 'M', 'y', 'y', 'y', 'y')
-
-        val result = isDateFormatStraight(mockk())
-
-        assertTrue(result)
     }
 
 

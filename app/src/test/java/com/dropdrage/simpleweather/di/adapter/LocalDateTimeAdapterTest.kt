@@ -10,6 +10,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
@@ -22,60 +23,70 @@ internal class LocalDateTimeAdapterTest : BaseJsonAdapterTest() {
     fun create() {
     }
 
-    @Test
-    fun `toJson null value`() {
-        val writer = mockk<JsonWriter>()
+    @Nested
+    inner class toJson {
 
-        dateTimeAdapter.toJson(writer, null)
+        @Test
+        fun `null value`() {
+            val writer = mockk<JsonWriter>()
 
-        verifyNever { writer.value(any<String>()) }
-    }
+            dateTimeAdapter.toJson(writer, null)
 
-    @Test
-    fun `toJson not null value`() {
-        val writer = mockk<JsonWriter> {
-            justMock { value(any<String>()) }
+            verifyNever { writer.value(any<String>()) }
         }
-        val date = LocalDateTime.now()
 
-        dateTimeAdapter.toJson(writer, date)
+        @Test
+        fun `not null value`() {
+            val writer = mockk<JsonWriter> {
+                justMock { value(any<String>()) }
+            }
+            val date = LocalDateTime.now()
 
-        verifyOnce { writer.value(date.format(LocalDateTimeAdapter.FORMATTER)) }
+            dateTimeAdapter.toJson(writer, date)
+
+            verifyOnce { writer.value(date.format(LocalDateTimeAdapter.FORMATTER)) }
+        }
+
     }
 
-    @Test
-    fun `fromJson peek NULL`() {
-        val reader = createReaderWithPeekMock(JsonReader.Token.NULL)
-        justRun { reader.nextNull<Any>() }
+    @Nested
+    inner class fromJson {
 
-        val result = dateTimeAdapter.fromJson(reader)
+        @Test
+        fun `peek NULL`() {
+            val reader = createReaderWithPeekMock(JsonReader.Token.NULL)
+            justRun { reader.nextNull<Any>() }
 
-        verifyOnce { reader.nextNull<Any>() }
-        assertNull(result)
-    }
+            val result = dateTimeAdapter.fromJson(reader)
 
-    @Test
-    fun `fromJson peek not STRING`() {
-        val reader = createReaderWithPeekMock(JsonReader.Token.NUMBER)
-        justRun { reader.nextNull<Any>() }
+            verifyOnce { reader.nextNull<Any>() }
+            assertNull(result)
+        }
 
-        val result = dateTimeAdapter.fromJson(reader)
+        @Test
+        fun `peek not STRING`() {
+            val reader = createReaderWithPeekMock(JsonReader.Token.NUMBER)
+            justRun { reader.nextNull<Any>() }
 
-        verifyOnce { reader.nextNull<Any>() }
-        assertNull(result)
-    }
+            val result = dateTimeAdapter.fromJson(reader)
 
-    @Test
-    fun `fromJson peek STRING value `() {
-        val date = LocalDateTime.now()
-        val formattedDate = date.format(LocalDateTimeAdapter.FORMATTER)
-        val reader = createReaderWithPeekMock(JsonReader.Token.STRING)
-        every { reader.nextString() } returns formattedDate
+            verifyOnce { reader.nextNull<Any>() }
+            assertNull(result)
+        }
 
-        val result = dateTimeAdapter.fromJson(reader)
+        @Test
+        fun `peek STRING value `() {
+            val date = LocalDateTime.now()
+            val formattedDate = date.format(LocalDateTimeAdapter.FORMATTER)
+            val reader = createReaderWithPeekMock(JsonReader.Token.STRING)
+            every { reader.nextString() } returns formattedDate
 
-        verifyNever { reader.nextNull<Any>() }
-        assertEquals(date, result)
+            val result = dateTimeAdapter.fromJson(reader)
+
+            verifyNever { reader.nextNull<Any>() }
+            assertEquals(date, result)
+        }
+
     }
 
 }

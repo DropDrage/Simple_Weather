@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import kotlin.time.Duration.Companion.seconds
@@ -36,38 +37,43 @@ internal class CitiesWeatherViewModelTest {
     lateinit var updateAllCitiesWeather: UpdateAllCitiesWeatherUseCase
 
 
-    @Test
-    fun `cities empty flow`() = runTest {
-        coEvery { cityRepository.orderedCities } returns emptyFlow()
-        val viewModel = createViewModel()
+    @Nested
+    inner class cities {
 
-        val initialItem = viewModel.cities.first()
-        assertThat(initialItem).isEmpty()
-        val firstItem = withTimeoutOrNull(1.seconds) { viewModel.cities.drop(1).first() }
-        assertNull(firstItem)
-    }
+        @Test
+        fun `empty flow`() = runTest {
+            coEvery { cityRepository.orderedCities } returns emptyFlow()
+            val viewModel = createViewModel()
 
-    @Test
-    fun `cities filled flow`() = runTestViewModelScope {
-        val expectedFirst = listOf<City>(mockk(), mockk(), mockk())
-        val expectedSecond = listOf<City>(mockk(), mockk(), mockk())
-        val orderedCities = MutableSharedFlow<List<City>>()
-        coEvery { cityRepository.orderedCities } returns orderedCities
-        val viewModel = createViewModel()
-
-        viewModel.cities.test {
-            orderedCities.emit(expectedFirst)
-            orderedCities.emit(expectedSecond)
-            val initialItem = awaitItem()
-            val firstCities = awaitItem()
-            val secondCities = awaitItem()
-
-            cancel()
-
+            val initialItem = viewModel.cities.first()
             assertThat(initialItem).isEmpty()
-            assertThat(firstCities).containsExactlyElementsIn(expectedFirst)
-            assertThat(secondCities).containsExactlyElementsIn(expectedSecond)
+            val firstItem = withTimeoutOrNull(1.seconds) { viewModel.cities.drop(1).first() }
+            assertNull(firstItem)
         }
+
+        @Test
+        fun `filled flow`() = runTestViewModelScope {
+            val expectedFirst = listOf<City>(mockk(), mockk(), mockk())
+            val expectedSecond = listOf<City>(mockk(), mockk(), mockk())
+            val orderedCities = MutableSharedFlow<List<City>>()
+            coEvery { cityRepository.orderedCities } returns orderedCities
+            val viewModel = createViewModel()
+
+            viewModel.cities.test {
+                orderedCities.emit(expectedFirst)
+                orderedCities.emit(expectedSecond)
+                val initialItem = awaitItem()
+                val firstCities = awaitItem()
+                val secondCities = awaitItem()
+
+                cancel()
+
+                assertThat(initialItem).isEmpty()
+                assertThat(firstCities).containsExactlyElementsIn(expectedFirst)
+                assertThat(secondCities).containsExactlyElementsIn(expectedSecond)
+            }
+        }
+
     }
 
     @Test

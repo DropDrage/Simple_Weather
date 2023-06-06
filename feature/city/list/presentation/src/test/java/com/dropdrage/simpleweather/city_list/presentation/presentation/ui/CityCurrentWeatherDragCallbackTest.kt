@@ -17,6 +17,7 @@ import io.mockk.verifyOrder
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.extension.ExtendWith
@@ -64,48 +65,58 @@ internal class CityCurrentWeatherDragCallbackTest {
         assertDoesNotThrow { callback.onSwiped(mockk(), ItemTouchHelper.DOWN) }
     }
 
-    @Test
-    fun `onSelectedChanged state not ACTION_STATE_DRAG then nothing`() {
-        assertDoesNotThrow { callback.onSelectedChanged(null, ItemTouchHelper.ACTION_STATE_IDLE) }
-    }
+    @Nested
+    inner class onSelectedChanged {
 
-    @Test
-    fun `onSelectedChanged state ACTION_STATE_DRAG but viewHolder null then nothing`() {
-        assertDoesNotThrow { callback.onSelectedChanged(null, ItemTouchHelper.ACTION_STATE_DRAG) }
-    }
-
-    @Test
-    fun `onSelectedChanged state ACTION_STATE_DRAG then nothing`() {
-        val viewHolder = mockk<RecyclerView.ViewHolder>(moreInterfaces = arrayOf(DragListener::class)) {
-            justRun { (this@mockk as DragListener).onDragStart() }
+        @Test
+        fun `state not ACTION_STATE_DRAG then nothing`() {
+            assertDoesNotThrow { callback.onSelectedChanged(null, ItemTouchHelper.ACTION_STATE_IDLE) }
         }
 
-        assertDoesNotThrow { callback.onSelectedChanged(viewHolder, ItemTouchHelper.ACTION_STATE_DRAG) }
-
-        val viewHolderDragListener = viewHolder as DragListener
-        verifyNever { viewHolderDragListener.onDragEnd() }
-        verifyOnce { viewHolderDragListener.onDragStart() }
-    }
-
-    @Test
-    fun `clearView but viewHolder not DragListener then just dragEnd`() {
-        val viewHolder = FakeViewHolder(mockk(relaxed = true))
-
-        assertDoesNotThrow { callback.clearView(mockk(), viewHolder) }
-
-        verifyOnce { dragEnd() }
-    }
-
-    @Test
-    fun `clearView viewHolder DragListener then onDragEnd and dragEnd`() {
-        val viewHolder = spyk(FakeViewHolder(mockk(relaxed = true)), moreInterfaces = arrayOf(DragListener::class))
-
-        assertDoesNotThrow { callback.clearView(mockk(), viewHolder) }
-
-        verifyOrder {
-            (viewHolder as DragListener).onDragEnd()
-            dragEnd()
+        @Test
+        fun `state ACTION_STATE_DRAG but viewHolder null then nothing`() {
+            assertDoesNotThrow { callback.onSelectedChanged(null, ItemTouchHelper.ACTION_STATE_DRAG) }
         }
+
+        @Test
+        fun `state ACTION_STATE_DRAG then nothing`() {
+            val viewHolder = mockk<RecyclerView.ViewHolder>(moreInterfaces = arrayOf(DragListener::class)) {
+                justRun { (this@mockk as DragListener).onDragStart() }
+            }
+
+            assertDoesNotThrow { callback.onSelectedChanged(viewHolder, ItemTouchHelper.ACTION_STATE_DRAG) }
+
+            val viewHolderDragListener = viewHolder as DragListener
+            verifyNever { viewHolderDragListener.onDragEnd() }
+            verifyOnce { viewHolderDragListener.onDragStart() }
+        }
+
+    }
+
+    @Nested
+    inner class clearView {
+
+        @Test
+        fun `but viewHolder not DragListener then just dragEnd`() {
+            val viewHolder = FakeViewHolder(mockk(relaxed = true))
+
+            assertDoesNotThrow { callback.clearView(mockk(), viewHolder) }
+
+            verifyOnce { dragEnd() }
+        }
+
+        @Test
+        fun `viewHolder DragListener then onDragEnd and dragEnd`() {
+            val viewHolder = spyk(FakeViewHolder(mockk(relaxed = true)), moreInterfaces = arrayOf(DragListener::class))
+
+            assertDoesNotThrow { callback.clearView(mockk(), viewHolder) }
+
+            verifyOrder {
+                (viewHolder as DragListener).onDragEnd()
+                dragEnd()
+            }
+        }
+
     }
 
     @Test
