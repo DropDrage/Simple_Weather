@@ -20,10 +20,10 @@ android {
 }
 
 dependencies {
-    implementation project(':core:domain')
-    implementation project(':core:utils')
     implementation project(':common:data')
     implementation project(':common:domain')
+    implementation project(':core:domain')
+    implementation project(':core:util')
     implementation project(':data:settings')
     implementation project(':feature:city:list:domain')
     implementation project(':feature:weather:domain')

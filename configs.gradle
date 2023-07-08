@@ -56,6 +56,9 @@ ext.configAndroid = { Project project, Closure<Project>... modifiers ->
 
         lint {
             htmlReport false
+            baseline file("$project.projectDir/lint-baseline.xml")
+
+            disable 'NewApi'
         }
         packagingOptions {
             resources {

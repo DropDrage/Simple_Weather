@@ -19,16 +19,16 @@ internal class CacheClearWorker @AssistedInject constructor(
     private val cacheRepository: CacheRepository,
 ) : CoroutineWorker(applicationContext, workerParams) {
     override suspend fun doWork(): Result {
-        try {
+        return try {
             cacheRepository.clearOutdated()
             if (!cacheRepository.hasCache()) {
                 WorkManager.getInstance(applicationContext).cancelWorkById(id)
             }
 
-            return Result.success()
+            Result.success()
         } catch (e: Exception) {
             Log.e(TAG, e.message, e)
-            return Result.failure()
+            Result.failure()
         }
     }
 }

@@ -3,5 +3,5 @@ kotlinLibrary(project)
 dependencies {
     implementation kotlinLibs.coroutines
 
-    implementation project(':core:domain')
+    api project(':core:domain')
 }

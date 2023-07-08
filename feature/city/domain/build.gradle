@@ -3,6 +3,6 @@ kotlinLibrary(project)
 dependencies {
     implementation kotlinLibs.coroutines
 
-    implementation project(':core:domain')
-    implementation project(':common:domain')
+    api project(':common:domain')
+    api project(':core:domain')
 }

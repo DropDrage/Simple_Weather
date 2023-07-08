@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.util.extension.implicitAccess
 
 class SimpleMarginItemDecoration(
     @Px private val topMargin: Int = 0,
@@ -25,7 +26,7 @@ class SimpleMarginItemDecoration(
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        outRect.apply {
+        outRect.implicitAccess {
             top = topMargin
             bottom = bottomMargin
             left = leftMargin

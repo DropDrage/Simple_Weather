@@ -5,13 +5,13 @@ import com.dropdrage.common.data.LocalResource
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.core.domain.Location
-import com.dropdrage.simpleweather.core.utils.LogTags
+import com.dropdrage.simpleweather.core.util.LogTags
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.HourWeatherDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.LocationModel
 import com.dropdrage.simpleweather.data.weather.local.cache.util.LocalDateTimeUtils
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomain
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomain
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.remote.toDomainCurrentWeather
 import kotlinx.coroutines.Dispatchers

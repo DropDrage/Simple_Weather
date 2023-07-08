@@ -1,12 +1,18 @@
 package com.dropdrage.test.util
 
+import app.cash.turbine.TurbineContext
+import app.cash.turbine.turbineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import java.lang.Thread
+
+inline fun runTestViewModelScopeAndTurbine(
+    crossinline block: suspend TurbineContext.(backgroundScope: CoroutineScope) -> Unit,
+) = runTestViewModelScope { turbineScope { block(backgroundScope) } }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 inline fun runTestViewModelScope(crossinline block: suspend TestScope.() -> Unit) = runReliableTest {
@@ -25,7 +31,6 @@ inline fun runTestViewModelScope(crossinline block: suspend TestScope.() -> Unit
  *
  * [This has been a known issue for the last 3 years.](https://github.com/Kotlin/kotlinx.coroutines/issues/1205)
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 fun runReliableTest(block: suspend TestScope.() -> Unit) = runTest {
     // Capture exceptions that may occur in `testBody()` since `runTest` will swallow
     // them if the exception occurs within another scope even though all dispatchers

@@ -13,8 +13,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    def coroutinesVersion = '1.7.1'
-    def navigationVersion = '2.5.3'
+    def coroutinesVersion = '1.7.2'
+    def navigationVersion = '2.6.0'
     def hiltVersion = '2.46.1'
     versionCatalogs {
         buildLibs {
@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             plugin('android-application', 'com.android.application').version(gradleVersion)
             plugin('android-library', 'com.android.library').version(gradleVersion)
 
-            def kotlinVersion = '1.8.21'
+            def kotlinVersion = '1.9.0'
             plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').version(kotlinVersion)
             plugin('kotlin-android', 'org.jetbrains.kotlin.android').version(kotlinVersion)
 
@@ -33,7 +33,7 @@ dependencyResolutionManagement {
 
             plugin('hilt', 'com.google.dagger.hilt.android').version(hiltVersion)
 
-            plugin('gradle-versions', 'com.github.ben-manes.versions').version('0.46.0')
+            plugin('gradle-versions', 'com.github.ben-manes.versions').version('0.47.0')
         }
 
         kotlinLibs {
@@ -44,7 +44,7 @@ dependencyResolutionManagement {
             library('androidx-core', 'androidx.core', 'core-ktx').version('1.10.1')
             library('androidx-annotation', 'androidx.annotation', 'annotation').version('1.6.0')
             library('androidx-constraintlayout', 'androidx.constraintlayout', 'constraintlayout').version('2.1.4')
-            library('androidx-fragment', 'androidx.fragment', 'fragment-ktx').version('1.5.7')
+            library('androidx-fragment', 'androidx.fragment', 'fragment-ktx').version('1.6.0')
             library('android', 'com.google.android', 'android').version('4.1.1.4')
             library('android-material', 'com.google.android.material', 'material').version('1.9.0')
             bundle('ui-core', ['androidx-core', 'android-material'])
@@ -70,7 +70,7 @@ dependencyResolutionManagement {
             library('services-play-coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-play-services').version(coroutinesVersion)
             bundle('location', ['services-location', 'services-play-coroutines'])
 
-            def roomVersion = '2.5.1'
+            def roomVersion = '2.5.2'
             library('room-ktx', 'androidx.room', 'room-ktx').version(roomVersion)
             library('room-runtime', 'androidx.room', 'room-runtime').version(roomVersion)
             library('room-common', 'androidx.room', 'room-common').version(roomVersion)
@@ -105,7 +105,7 @@ dependencyResolutionManagement {
             library('junit5-params', 'org.junit.jupiter', 'junit-jupiter-params').version(junit5Version)
             library('slf4j', 'org.slf4j', 'slf4j-simple').version('2.0.7')
 
-            library('truth', 'com.google.truth', 'truth').version('1.1.3')
+            library('truth', 'com.google.truth', 'truth').version('1.1.5')
 
             def junit5AndroidVersion = '1.3.0'
             library('junit5-android', 'de.mannodermaus.junit5', 'android-test-core').version(junit5AndroidVersion)
@@ -119,7 +119,7 @@ dependencyResolutionManagement {
             library('mockk-agent', 'io.mockk', 'mockk-agent').version(mockkVersion)
 
             library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-test').version(coroutinesVersion)
-            library('turbine', 'app.cash.turbine', 'turbine').version('0.13.0')
+            library('turbine', 'app.cash.turbine', 'turbine').version('1.0.0')
 
             bundle('unit5', ['junit5', 'slf4j', 'truth', 'mockk', 'mockk-android', 'mockk-agent'])
             bundle('instrumental5', ['junit5-android', 'espresso'])
@@ -133,24 +133,25 @@ rootProject.name = "Simple Weather"
 
 include ':app'
 include ':adapters'
-include ':core:domain'
-include ':core:presentation'
-include ':core:style'
-include ':core:utils'
 include ':common:data'
 include ':common:domain'
 include ':common:presentation'
 include ':common:build_config_checks'
 include ':common:test'
+include ':common:util'
+include ':core:domain'
+include ':core:presentation'
+include ':core:style'
+include ':core:util'
 include ':data:location'
 include ':data:city'
 include ':data:settings'
 include ':data:weather'
 include ':feature:city:domain'
+include ':feature:city:list'
 include ':feature:city:list:domain'
-include ':feature:city:list:presentation'
+include ':feature:city:search'
 include ':feature:city:search:domain'
-include ':feature:city:search:presentation'
-include ':feature:settings:presentation'
+include ':feature:settings'
+include ':feature:weather'
 include ':feature:weather:domain'
-include ':feature:weather:presentation'

@@ -9,7 +9,7 @@ import com.dropdrage.simpleweather.data.weather.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.LocationModel
 import com.dropdrage.simpleweather.data.weather.local.cache.relation.DayToHourWeather
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomainWeather
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomainWeather
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.remote.WeatherResponseDto
 import com.dropdrage.simpleweather.data.weather.repository.WeatherRepositoryImpl
@@ -33,7 +33,6 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkStatic
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -44,7 +43,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDateTime
 
 @ExtendWith(MockKExtension::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class WeatherRepositoryImplTest {
 
     @MockK

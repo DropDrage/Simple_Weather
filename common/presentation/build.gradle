@@ -12,4 +12,6 @@ dependencies {
     implementation androidLibs.android.material
 
     implementation kotlinLibs.coroutines
+
+    implementation project(':common:util')
 }

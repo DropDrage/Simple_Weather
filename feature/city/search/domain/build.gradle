@@ -1,6 +1,5 @@
 kotlinLibrary(project)
 
 dependencies {
-    implementation project(':common:domain')
-    implementation project(':feature:city:domain')
+    api project(':feature:city:domain')
 }

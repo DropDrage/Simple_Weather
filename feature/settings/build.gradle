@@ -1,0 +1,23 @@
+androidLibrary(
+    project,
+    bundle_uiScreen,
+    component_android_unitTests,
+)
+
+android {
+    namespace 'com.dropdrage.simpleweather.feature.settings'
+}
+
+dependencies {
+    implementation project(':adapters')
+    implementation project(':common:presentation')
+    implementation project(':common:util')
+    implementation project(':core:style')
+    implementation project(':data:settings')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.junit5.params
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(':common:test'))
+}

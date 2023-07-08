@@ -5,16 +5,16 @@ import com.dropdrage.common.data.LocalResource
 import com.dropdrage.common.data.repository.CachedRepository
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.core.domain.Location
-import com.dropdrage.simpleweather.core.utils.LogTags
+import com.dropdrage.simpleweather.core.util.LogTags
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.LocationDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.LocationModel
 import com.dropdrage.simpleweather.data.weather.local.cache.util.CacheUnits
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDayModels
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomainWeather
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toHourModels
 import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toNewModel
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDayModels
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomainWeather
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toHourModels
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.remote.WeatherResponseDto
 import com.dropdrage.simpleweather.weather.domain.weather.Weather
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.TimeZone
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject internal constructor(

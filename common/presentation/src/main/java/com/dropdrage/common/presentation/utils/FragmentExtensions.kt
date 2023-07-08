@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
@@ -27,7 +26,10 @@ val Fragment.viewLifecycleScope: LifecycleCoroutineScope
 val Fragment.viewLifecycle: Lifecycle
     get() = viewLifecycleOwner.lifecycle
 
-@OptIn(InternalCoroutinesApi::class)
+fun <T> Fragment.collectWithViewLifecycle(flow: Flow<T>, collector: FlowCollector<T>) {
+    collectWithLifecycle(flow, collector, viewLifecycleScope, viewLifecycle)
+}
+
 fun <T> collectWithLifecycle(
     flow: Flow<T>,
     collector: FlowCollector<T>,
@@ -35,8 +37,4 @@ fun <T> collectWithLifecycle(
     flowLifecycle: Lifecycle,
 ) {
     scope.launch { flow.flowWithLifecycle(flowLifecycle).collect(collector) }
-}
-
-fun <T> Fragment.collectWithViewLifecycle(flow: Flow<T>, collector: FlowCollector<T>) {
-    collectWithLifecycle(flow, collector, viewLifecycleScope, viewLifecycle)
 }

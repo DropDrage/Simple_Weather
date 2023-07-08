@@ -60,19 +60,18 @@ dependencies {
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    implementation project(':core:style')
     implementation project(':common:data'), { because "SimpleRepository Hilt resolve" }
     implementation project(':common:presentation'), { because "ChangeableAppBar" }
+    implementation project(':core:style')
     implementation project(':data:city')
     implementation project(':data:location')
     implementation project(':data:weather')
-    implementation project(':feature:city:domain')
+    implementation project(':feature:city:list')
     implementation project(':feature:city:list:domain')
-    implementation project(':feature:city:list:presentation')
     implementation project(':feature:city:search:domain')
-    implementation project(':feature:settings:presentation')
+    implementation project(':feature:settings')
+    implementation project(':feature:weather')
     implementation project(':feature:weather:domain')
-    implementation project(':feature:weather:presentation')
 
     //Tests
     testImplementation testLibs.coroutines

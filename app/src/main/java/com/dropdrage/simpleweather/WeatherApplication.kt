@@ -13,10 +13,6 @@ import dagger.hilt.android.HiltAndroidApp
 import java.time.Duration
 import javax.inject.Inject
 
-private const val CACHE_CLEAR_WORK_NAME = "work_cache_clear"
-private val CACHE_CLEAR_PERIOD = Duration.ofDays(1)
-private val CACHE_CLEAR_INITIAL_DELAY = CACHE_CLEAR_PERIOD
-
 @HiltAndroidApp
 internal class WeatherApplication : Application(), Configuration.Provider {
 
@@ -32,17 +28,24 @@ internal class WeatherApplication : Application(), Configuration.Provider {
         startClearCacheWorker()
     }
 
-
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
-
-    fun startClearCacheWorker() {
+    private fun startClearCacheWorker() {
         val cacheClearWorker = PeriodicWorkRequestBuilder<CacheClearWorker>(CACHE_CLEAR_PERIOD)
             .setInitialDelay(CACHE_CLEAR_INITIAL_DELAY)
             .build()
         WorkManager.getInstance(applicationContext)
             .enqueueUniquePeriodicWork(CACHE_CLEAR_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, cacheClearWorker)
+    }
+
+
+    override fun getWorkManagerConfiguration() = Configuration.Builder()
+        .setWorkerFactory(workerFactory)
+        .build()
+
+
+    companion object {
+        private const val CACHE_CLEAR_WORK_NAME = "work_cache_clear"
+        private val CACHE_CLEAR_PERIOD = Duration.ofDays(1)
+        private val CACHE_CLEAR_INITIAL_DELAY = CACHE_CLEAR_PERIOD
     }
 
 }

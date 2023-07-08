@@ -1,0 +1,22 @@
+androidLibrary(
+    project,
+    bundle_uiScreen,
+    component_android_unitTests,
+)
+
+android {
+    namespace 'com.dropdrage.simpleweather.feature.city.search'
+}
+
+dependencies {
+    implementation project(':adapters')
+    implementation project(':common:presentation')
+    implementation project(':common:util')
+    implementation project(':core:style')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:search:domain')
+
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(':common:test'))
+}

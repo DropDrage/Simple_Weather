@@ -1,0 +1,37 @@
+androidLibrary(
+    project,
+    bundle_uiScreen,
+    component_android_unitTests,
+)
+
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    namespace 'com.dropdrage.simpleweather.feature.weather'
+}
+
+dependencies {
+    implementation androidLibs.androidx.constraintlayout
+
+    implementation androidLibs.collapsingtoolbarlayout.subtitle
+
+    implementation androidLibs.bundles.location
+
+    implementation project(':adapters')
+    implementation project(':common:domain')
+    implementation project(':common:presentation')
+    implementation project(':common:util')
+    implementation project(':core:domain')
+    implementation project(':core:presentation')
+    implementation project(':core:style')
+    implementation project(':core:util')
+    implementation project(':data:settings')
+    implementation project(':feature:city:domain')
+    implementation project(':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.junit5.params
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(':common:test'))
+}

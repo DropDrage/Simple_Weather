@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.dropdrage.simpleweather.settings.presentation.SettingsFragment"
+        android:name="com.dropdrage.simpleweather.feature.settings.presentation.ui.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 

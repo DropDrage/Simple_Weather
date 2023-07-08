@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dropdrage.simpleweather.weather.com.dropdrage.simpleweather.MainActivity">
+
+    <item
+        android:id="@+id/addCity"
+        android:icon="@drawable/ic_city"
+        android:title="@string/action_city_list"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+</menu>

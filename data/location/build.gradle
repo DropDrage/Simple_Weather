@@ -10,8 +10,8 @@ android {
 dependencies {
     implementation androidLibs.bundles.location
 
-    implementation project(':common:build_config_checks')
     implementation project(':core:domain')
+    implementation project(':common:build_config_checks')
     implementation project(':feature:weather:domain')
 
     testImplementation testLibs.coroutines

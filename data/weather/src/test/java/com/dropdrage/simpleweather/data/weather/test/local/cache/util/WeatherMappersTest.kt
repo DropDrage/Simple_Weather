@@ -7,10 +7,10 @@ import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherMod
 import com.dropdrage.simpleweather.data.weather.local.cache.model.TemperatureRange
 import com.dropdrage.simpleweather.data.weather.local.cache.relation.DayToHourWeather
 import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.WeatherUnitsDeconverter
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDayModels
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomain
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toDomainWeather
-import com.dropdrage.simpleweather.data.weather.local.util.mapper.toHourModels
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDayModels
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomain
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomainWeather
+import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toHourModels
 import com.dropdrage.simpleweather.data.weather.remote.DailyWeatherDto
 import com.dropdrage.simpleweather.data.weather.remote.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.weather.util.createDailyWeatherDto
