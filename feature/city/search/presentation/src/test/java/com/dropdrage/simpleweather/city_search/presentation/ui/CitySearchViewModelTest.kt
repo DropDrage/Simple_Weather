@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertSame
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
@@ -37,59 +38,64 @@ internal class CitySearchViewModelTest {
     lateinit var cityRepository: CityRepository
 
 
-    @Test
-    fun `updateQuery debounce search error`() = runTestViewModelScope {
-        mockLogE {
+    @Nested
+    inner class updateQuery {
+
+        @Test
+        fun `debounce search error`() = runTestViewModelScope {
+            mockLogE {
+                val viewModel = createViewModel()
+                val query = "query"
+                coEvery { searchRepository.searchCities(query) } returns Resource.Error(IOException())
+
+                viewModel.updateQuery(query)
+                val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
+
+                coVerifyOnce { searchRepository.searchCities(query) }
+                assertNull(searchResult)
+            }
+        }
+
+        @Test
+        fun `debounce search success with empty list`() = runTestViewModelScope {
+            val query = "query"
+            coEvery { searchRepository.searchCities(query) } returns Resource.Success(emptyList())
+            val viewModel = createViewModel()
+
+            viewModel.searchResults.test {
+                viewModel.updateQuery(query)
+
+                val searchResults = awaitItem()
+
+                cancel()
+
+                coVerifyOnce { searchRepository.searchCities(query) }
+                assertThat(searchResults).isEmpty()
+            }
+        }
+
+        @Test
+        fun `debounce search success with filled list`() = runTestViewModelScope {
             val viewModel = createViewModel()
             val query = "query"
-            coEvery { searchRepository.searchCities(query) } returns Resource.Error(IOException())
+            val cities = listOf(
+                City("City1", Location(1f, 2f), Country("Country1", "CY")),
+                City("City3", Location(2f, 2f), Country("Country2", "CY")),
+                City("City2", Location(3f, 4f), Country("Country1", "RY")),
+            )
+            coEvery { searchRepository.searchCities(query) } returns Resource.Success(cities)
 
-            viewModel.updateQuery(query)
-            val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
+            viewModel.searchResults.test {
+                viewModel.updateQuery(query)
+                val searchResults = awaitItem()
 
-            coVerifyOnce { searchRepository.searchCities(query) }
-            assertNull(searchResult)
+                cancel()
+
+                coVerifyOnce { searchRepository.searchCities(query) }
+                assertThat(searchResults).containsExactlyElementsIn(cities.map(::ViewCitySearchResult))
+            }
         }
-    }
 
-    @Test
-    fun `updateQuery debounce search success with empty list`() = runTestViewModelScope {
-        val query = "query"
-        coEvery { searchRepository.searchCities(query) } returns Resource.Success(emptyList())
-        val viewModel = createViewModel()
-
-        viewModel.searchResults.test {
-            viewModel.updateQuery(query)
-
-            val searchResults = awaitItem()
-
-            cancel()
-
-            coVerifyOnce { searchRepository.searchCities(query) }
-            assertThat(searchResults).isEmpty()
-        }
-    }
-
-    @Test
-    fun `updateQuery debounce search success with filled list`() = runTestViewModelScope {
-        val viewModel = createViewModel()
-        val query = "query"
-        val cities = listOf(
-            City("City1", Location(1f, 2f), Country("Country1", "CY")),
-            City("City3", Location(2f, 2f), Country("Country2", "CY")),
-            City("City2", Location(3f, 4f), Country("Country1", "RY")),
-        )
-        coEvery { searchRepository.searchCities(query) } returns Resource.Success(cities)
-
-        viewModel.searchResults.test {
-            viewModel.updateQuery(query)
-            val searchResults = awaitItem()
-
-            cancel()
-
-            coVerifyOnce { searchRepository.searchCities(query) }
-            assertThat(searchResults).containsExactlyElementsIn(cities.map(::ViewCitySearchResult))
-        }
     }
 
     @Test

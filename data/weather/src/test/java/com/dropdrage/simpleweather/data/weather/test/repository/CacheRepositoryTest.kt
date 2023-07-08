@@ -17,6 +17,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDate
@@ -40,23 +41,25 @@ internal class CacheRepositoryTest {
     }
 
 
-    @Test
-    fun `clearOutdated locations ids empty then locations not deleted`() = runTestWithMockLogD {
-        coEvery { dayWeatherDao.deleteOutdatedForAllLocations(LocalDate.now()) } returns 10
-        coEvery { locationDao.getAllIds() } returns emptyList()
+    @Nested
+    inner class `clearOutdated locations` {
 
-        cacheRepository.clearOutdated()
+        @Test
+        fun `ids empty then locations not deleted`() = runTestWithMockLogD {
+            coEvery { dayWeatherDao.deleteOutdatedForAllLocations(LocalDate.now()) } returns 10
+            coEvery { locationDao.getAllIds() } returns emptyList()
 
-        coVerifyOnce { locationDao.getAllIds() }
-        coVerifyNever {
-            dayWeatherDao.hasWeatherForLocation(any())
-            locationDao.delete(any<Long>())
+            cacheRepository.clearOutdated()
+
+            coVerifyOnce { locationDao.getAllIds() }
+            coVerifyNever {
+                dayWeatherDao.hasWeatherForLocation(any())
+                locationDao.delete(any<Long>())
+            }
         }
-    }
 
-    @Test
-    fun `clearOutdated locations ids filled and all location have weathers then locations not deleted`() =
-        runTestWithMockLogD {
+        @Test
+        fun `ids filled and all location have weathers then locations not deleted`() = runTestWithMockLogD {
             coEvery { dayWeatherDao.deleteOutdatedForAllLocations(LocalDate.now()) } returns 10
             val locations = createListIndexed(10) { it.toLong() }
             coEvery { locationDao.getAllIds() } returns locations
@@ -69,9 +72,8 @@ internal class CacheRepositoryTest {
             coVerifyNever { locationDao.delete(any<Long>()) }
         }
 
-    @Test
-    fun `clearOutdated locations ids filled and all location have no weathers then locations deleted`() =
-        runTestWithMockLogD {
+        @Test
+        fun `ids filled and all location have no weathers then locations deleted`() = runTestWithMockLogD {
             coEvery { dayWeatherDao.deleteOutdatedForAllLocations(LocalDate.now()) } returns 10
             val locations = createListIndexed(10) { it.toLong() }
             coEvery { locationDao.getAllIds() } returns locations
@@ -87,25 +89,31 @@ internal class CacheRepositoryTest {
             }
         }
 
-
-    @Test
-    fun `hasCache false`() = runTest {
-        coEvery { locationDao.hasItems() } returns false
-
-        val hasCache = cacheRepository.hasCache()
-
-        coVerifyOnce { locationDao.hasItems() }
-        assertFalse(hasCache)
     }
 
-    @Test
-    fun `hasCache true`() = runTest {
-        coEvery { locationDao.hasItems() } returns true
+    @Nested
+    inner class hasCache {
 
-        val hasCache = cacheRepository.hasCache()
+        @Test
+        fun `no items then false`() = runTest {
+            coEvery { locationDao.hasItems() } returns false
 
-        coVerifyOnce { locationDao.hasItems() }
-        assertTrue(hasCache)
+            val hasCache = cacheRepository.hasCache()
+
+            coVerifyOnce { locationDao.hasItems() }
+            assertFalse(hasCache)
+        }
+
+        @Test
+        fun `has items then true`() = runTest {
+            coEvery { locationDao.hasItems() } returns true
+
+            val hasCache = cacheRepository.hasCache()
+
+            coVerifyOnce { locationDao.hasItems() }
+            assertTrue(hasCache)
+        }
+
     }
 
 }

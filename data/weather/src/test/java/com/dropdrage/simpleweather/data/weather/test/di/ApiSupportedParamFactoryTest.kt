@@ -4,6 +4,7 @@ import com.dropdrage.simpleweather.data.weather.di.ApiSupportedParamFactory
 import io.mockk.mockk
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertSame
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class ApiSupportedParamFactoryTest {
@@ -11,18 +12,23 @@ internal class ApiSupportedParamFactoryTest {
     private var factory: ApiSupportedParamFactory = ApiSupportedParamFactory()
 
 
-    @Test
-    fun `stringConverter type not ApiSupportedParam`() {
-        val result = factory.stringConverter(Any::class.java, emptyArray(), mockk())
+    @Nested
+    inner class `stringConverter type` {
 
-        assertNotSame(ApiSupportedParamFactory.ApiSupportedParamConverter, result)
-    }
+        @Test
+        fun `is ApiSupportedParam`() {
+            val result = factory.stringConverter(FakeApiSupportedParam::class.java, emptyArray(), mockk())
 
-    @Test
-    fun `stringConverter type ApiSupportedParam`() {
-        val result = factory.stringConverter(FakeApiSupportedParam::class.java, emptyArray(), mockk())
+            assertSame(ApiSupportedParamFactory.ApiSupportedParamConverter, result)
+        }
 
-        assertSame(ApiSupportedParamFactory.ApiSupportedParamConverter, result)
+        @Test
+        fun `is not ApiSupportedParam`() {
+            val result = factory.stringConverter(Any::class.java, emptyArray(), mockk())
+
+            assertNotSame(ApiSupportedParamFactory.ApiSupportedParamConverter, result)
+        }
+
     }
 
 }

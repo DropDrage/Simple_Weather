@@ -10,6 +10,7 @@ import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
 import com.dropdrage.simpleweather.data.location.util.mockLocation
 import com.dropdrage.simpleweather.weather.domain.location.LocationResult
+import com.dropdrage.test.util.assertInstanceOf
 import com.dropdrage.test.util.justMock
 import com.dropdrage.test.util.mockLooper
 import com.dropdrage.test.util.runTestWithMockLooper
@@ -18,7 +19,6 @@ import com.dropdrage.test.util.verifyOnce
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
-import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -34,6 +34,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -59,97 +60,45 @@ internal class DefaultLocationTrackerTest {
     }
 
 
-    //region getCurrentLocation
+    @Nested
+    inner class getCurrentLocation {
 
-    @Test
-    fun `getCurrentLocation but location unavailable due to no permission`() =
-        runContextCompatPermissionTest(PERMISSION_DENIED) {
-            val result = locationTracker.getCurrentLocation()
-
-            verifyNever {
-                locationClient.lastLocation
-                locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
-            }
-            assertThat(result).isInstanceOf(LocationResult.NoPermission::class.java)
-            val resultPermission = (result as LocationResult.NoPermission).permission
-            assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, resultPermission)
-        }
-
-    @Test
-    fun `getCurrentLocation but location unavailable due to gps disabled with SDK P`() =
-        runContextCompatPermissionTest {
-            mockSdkGreaterCheck(true) {
-                val locationManager = mockk<LocationManager> {
-                    every { isLocationEnabled } returns false
-                }
-                every { context.getSystemService(eq(LocationManager::class.java)) } returns locationManager
-
+        @Test
+        fun `but location unavailable due to no permission`() =
+            runContextCompatPermissionTest(PERMISSION_DENIED) {
                 val result = locationTracker.getCurrentLocation()
 
                 verifyNever {
                     locationClient.lastLocation
                     locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
                 }
-                assertSame(LocationResult.GpsDisabled, result)
+                assertInstanceOf<LocationResult.NoPermission>(result)
+                assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, result.permission)
             }
-        }
 
-    @Test
-    fun `getCurrentLocation location available but lastLocation null returns NoLocation`() = runTest {
-        mockTaskKt {
-            every { locationTracker["checkLocationAvailability"]() } returns null
-            coEvery { locationClient.lastLocation.await() } returns null
+        @Test
+        fun `but location unavailable due to gps disabled with SDK P`() =
+            runContextCompatPermissionTest {
+                mockSdkGreaterCheck(true) {
+                    val locationManager = mockk<LocationManager> {
+                        every { isLocationEnabled } returns false
+                    }
+                    every { context.getSystemService(eq(LocationManager::class.java)) } returns locationManager
 
-            val result = locationTracker.getCurrentLocation()
+                    val result = locationTracker.getCurrentLocation()
 
-            verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-            verifyOnce { locationClient.lastLocation }
-            assertSame(LocationResult.NoLocation, result)
-        }
-    }
-
-    @Test
-    fun `getCurrentLocation location available and lastLocation exists returns Success`() = runTest {
-        mockTaskKt {
-            every { locationTracker["checkLocationAvailability"]() } returns null
-            val latitude = 1.0
-            val longitude = 2.0
-            val lastLocation = mockLocation(latitude, longitude)
-            coEvery { locationClient.lastLocation.await() } returns lastLocation
-
-            val result = locationTracker.getCurrentLocation()
-
-            verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-            verifyOnce { locationClient.lastLocation }
-            assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-            val resultLocation = (result as LocationResult.Success).location
-            assertEquals(latitude.toFloat(), resultLocation.latitude)
-            assertEquals(longitude.toFloat(), resultLocation.longitude)
-        }
-    }
-
-    @Test
-    fun `getCurrentLocation but location unavailable due to gps disabled both providers with SDK O`() =
-        runContextCompatPermissionTest {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(false, false)
-
-                val result = locationTracker.getCurrentLocation()
-
-                verifyNever {
-                    locationClient.lastLocation
-                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                    verifyNever {
+                        locationClient.lastLocation
+                        locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                    }
+                    assertSame(LocationResult.GpsDisabled, result)
                 }
-                assertSame(LocationResult.GpsDisabled, result)
             }
-        }
 
-    @Test
-    fun `getCurrentLocation but location available with gps by network provider with SDK O but NoLocation`() = runTest {
-        mockTaskKt {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(true, false)
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+        @Test
+        fun `location available but lastLocation null returns NoLocation`() = runTest {
+            mockTaskKt {
+                every { locationTracker["checkLocationAvailability"]() } returns null
                 coEvery { locationClient.lastLocation.await() } returns null
 
                 val result = locationTracker.getCurrentLocation()
@@ -159,14 +108,11 @@ internal class DefaultLocationTrackerTest {
                 assertSame(LocationResult.NoLocation, result)
             }
         }
-    }
 
-    @Test
-    fun `getCurrentLocation but location available with gps by network provider with SDK O and Success`() = runTest {
-        mockTaskKt {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(true, false)
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+        @Test
+        fun `location available and lastLocation exists returns Success`() = runTest {
+            mockTaskKt {
+                every { locationTracker["checkLocationAvailability"]() } returns null
                 val latitude = 1.0
                 val longitude = 2.0
                 val lastLocation = mockLocation(latitude, longitude)
@@ -176,237 +122,199 @@ internal class DefaultLocationTrackerTest {
 
                 verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                 verifyOnce { locationClient.lastLocation }
-                assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                val resultLocation = (result as LocationResult.Success).location
+                assertInstanceOf<LocationResult.Success>(result)
+                val resultLocation = result.location
                 assertEquals(latitude.toFloat(), resultLocation.latitude)
                 assertEquals(longitude.toFloat(), resultLocation.longitude)
             }
         }
-    }
 
-    @Test
-    fun `getCurrentLocation but location available with gps by gps provider with SDK O but NoLocation`() =
-        runContextCompatPermissionTest {
+        @Test
+        fun `but location unavailable due to gps disabled both providers with SDK O`() =
+            runContextCompatPermissionTest {
+                mockSdkGreaterCheck(false) {
+                    mockLocationManager(false, false)
+
+                    val result = locationTracker.getCurrentLocation()
+
+                    verifyNever {
+                        locationClient.lastLocation
+                        locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                    }
+                    assertSame(LocationResult.GpsDisabled, result)
+                }
+            }
+
+        @Test
+        fun `but location available with gps by network provider with SDK O but NoLocation`() =
+            runTest {
+                mockTaskKt {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(true, false)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        coEvery { locationClient.lastLocation.await() } returns null
+
+                        val result = locationTracker.getCurrentLocation()
+
+                        verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        verifyOnce { locationClient.lastLocation }
+                        assertSame(LocationResult.NoLocation, result)
+                    }
+                }
+            }
+
+        @Test
+        fun `but location available with gps by network provider with SDK O and Success`() =
+            runTest {
+                mockTaskKt {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(true, false)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        val latitude = 1.0
+                        val longitude = 2.0
+                        val lastLocation = mockLocation(latitude, longitude)
+                        coEvery { locationClient.lastLocation.await() } returns lastLocation
+
+                        val result = locationTracker.getCurrentLocation()
+
+                        verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        verifyOnce { locationClient.lastLocation }
+                        assertInstanceOf<LocationResult.Success>(result)
+                        val resultLocation = result.location
+                        assertEquals(latitude.toFloat(), resultLocation.latitude)
+                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                    }
+                }
+            }
+
+        @Test
+        fun `but location available with gps by gps provider with SDK O but NoLocation`() =
+            runContextCompatPermissionTest {
+                mockTaskKt {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(false, true)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        coEvery { locationClient.lastLocation.await() } returns null
+
+                        val result = locationTracker.getCurrentLocation()
+
+                        verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        verifyOnce { locationClient.lastLocation }
+                        assertSame(LocationResult.NoLocation, result)
+                    }
+                }
+            }
+
+        @Test
+        fun `but location available with gps by gps provider with SDK O and Success`() = runTest {
             mockTaskKt {
                 mockSdkGreaterCheck(false) {
                     mockLocationManager(false, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                    coEvery { locationClient.lastLocation.await() } returns null
+                    val latitude = 1.0
+                    val longitude = 2.0
+                    val lastLocation = mockLocation(latitude, longitude)
+                    coEvery { locationClient.lastLocation.await() } returns lastLocation
 
                     val result = locationTracker.getCurrentLocation()
 
                     verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
                     verifyOnce { locationClient.lastLocation }
-                    assertSame(LocationResult.NoLocation, result)
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
+                    assertEquals(latitude.toFloat(), resultLocation.latitude)
+                    assertEquals(longitude.toFloat(), resultLocation.longitude)
                 }
             }
         }
 
-    @Test
-    fun `getCurrentLocation but location available with gps by gps provider with SDK O and Success`() = runTest {
-        mockTaskKt {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(false, true)
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                val latitude = 1.0
-                val longitude = 2.0
-                val lastLocation = mockLocation(latitude, longitude)
-                coEvery { locationClient.lastLocation.await() } returns lastLocation
+        @Test
+        fun `but location available with gps by both provider with SDK O but NoLocation`() =
+            runTest {
+                mockTaskKt {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(true, true)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        coEvery { locationClient.lastLocation.await() } returns null
 
-                val result = locationTracker.getCurrentLocation()
+                        val result = locationTracker.getCurrentLocation()
 
-                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                verifyOnce { locationClient.lastLocation }
-                assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                val resultLocation = (result as LocationResult.Success).location
-                assertEquals(latitude.toFloat(), resultLocation.latitude)
-                assertEquals(longitude.toFloat(), resultLocation.longitude)
-            }
-        }
-    }
-
-    @Test
-    fun `getCurrentLocation but location available with gps by both provider with SDK O but NoLocation`() = runTest {
-        mockTaskKt {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(true, true)
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                coEvery { locationClient.lastLocation.await() } returns null
-
-                val result = locationTracker.getCurrentLocation()
-
-                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                verifyOnce { locationClient.lastLocation }
-                assertSame(LocationResult.NoLocation, result)
-            }
-        }
-    }
-
-    @Test
-    fun `getCurrentLocation but location available with gps by both provider with SDK O and Success`() = runTest {
-        mockTaskKt {
-            mockSdkGreaterCheck(false) {
-                mockLocationManager(true, true)
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                val latitude = 1.0
-                val longitude = 2.0
-                val lastLocation = mockLocation(latitude, longitude)
-                coEvery { locationClient.lastLocation.await() } returns lastLocation
-
-                val result = locationTracker.getCurrentLocation()
-
-                verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                verifyOnce { locationClient.lastLocation }
-                assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                val resultLocation = (result as LocationResult.Success).location
-                assertEquals(latitude.toFloat(), resultLocation.latitude)
-                assertEquals(longitude.toFloat(), resultLocation.longitude)
-            }
-        }
-    }
-
-    //endregion
-
-
-    //region requestLocationUpdate
-
-    @Test
-    fun `requestLocationUpdate but location unavailable due to no permission`() =
-        runContextCompatPermissionTest(PERMISSION_DENIED) {
-            val result = locationTracker.requestLocationUpdate().first()
-
-            verifyNever {
-                locationClient.lastLocation
-                locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
-            }
-            assertThat(result).isInstanceOf(LocationResult.NoPermission::class.java)
-            val resultPermission = (result as LocationResult.NoPermission).permission
-            assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, resultPermission)
-        }
-
-    @Test
-    fun `requestLocationUpdate but location unavailable due to gps disabled with SDK P`() =
-        mockSdkGreaterCheck(true) {
-            runContextCompatPermissionTest {
-                val locationManager = mockk<LocationManager> {
-                    every { isLocationEnabled } returns false
+                        verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        verifyOnce { locationClient.lastLocation }
+                        assertSame(LocationResult.NoLocation, result)
+                    }
                 }
-                every { context.getSystemService(eq(LocationManager::class.java)) } returns locationManager
-
-                val result = locationTracker.requestLocationUpdate().first()
-
-                verifyNever {
-                    locationClient.lastLocation
-                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
-                }
-                assertSame(LocationResult.GpsDisabled, result)
             }
-        }
 
-    @Test
-    fun `requestLocationUpdate location available returns Success`() = runTestWithMockLooper {
-        mockLocationRequestBuilder {
+        @Test
+        fun `but location available with gps by both provider with SDK O and Success`() = runTest {
             mockTaskKt {
-                every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                val latitude = 1.0
-                val longitude = 2.0
-                val location = mockLocation(latitude, longitude)
-                every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                    (args[1] as LocationListener).onLocationChanged(location)
-                    mockk(relaxed = true)
-                }
-
-                val result = locationTracker.requestLocationUpdate().first()
-
-                verifyNever { locationClient.lastLocation }
-                verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                val resultLocation = (result as LocationResult.Success).location
-                assertEquals(latitude.toFloat(), resultLocation.latitude)
-                assertEquals(longitude.toFloat(), resultLocation.longitude)
-            }
-        }
-    }
-
-    @Test
-    fun `requestLocationUpdate but location unavailable due to gps disabled both providers with SDK O`() =
-        mockSdkGreaterCheck(false) {
-            runContextCompatPermissionTest {
-                mockLocationManager(false, false)
-
-                val result = locationTracker.requestLocationUpdate().first()
-
-                verifyNever {
-                    locationClient.lastLocation
-                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
-                }
-                assertSame(LocationResult.GpsDisabled, result)
-            }
-        }
-
-    @Test
-    fun `requestLocationUpdate but location available with gps by network provider with SDK O and Success`() =
-        runContextCompatPermissionTest {
-            mockLooper {
-                mockSdkGreaterCheck(false) {
-                    mockLocationManager(true, false)
-                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                    val latitude = 1.0
-                    val longitude = 2.0
-                    val location = mockLocation(latitude, longitude)
-                    every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                        (args[1] as LocationListener).onLocationChanged(location)
-                        mockk(relaxed = true)
-                    }
-
-                    val result = locationTracker.requestLocationUpdate().first()
-
-                    verifyNever { locationClient.lastLocation }
-                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                    assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                    val resultLocation = (result as LocationResult.Success).location
-                    assertEquals(latitude.toFloat(), resultLocation.latitude)
-                    assertEquals(longitude.toFloat(), resultLocation.longitude)
-                }
-            }
-        }
-
-    @Test
-    fun `requestLocationUpdate but location available with gps by gps provider with SDK O and Success`() =
-        runContextCompatPermissionTest {
-            mockLooper {
-                mockSdkGreaterCheck(false) {
-                    mockLocationManager(false, true)
-                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                    val latitude = 1.0
-                    val longitude = 2.0
-                    val location = mockLocation(latitude, longitude)
-                    every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                        (args[1] as LocationListener).onLocationChanged(location)
-                        mockk(relaxed = true)
-                    }
-
-                    val result = locationTracker.requestLocationUpdate().first()
-
-                    verifyNever { locationClient.lastLocation }
-                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                    assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                    val resultLocation = (result as LocationResult.Success).location
-                    assertEquals(latitude.toFloat(), resultLocation.latitude)
-                    assertEquals(longitude.toFloat(), resultLocation.longitude)
-                }
-            }
-        }
-
-    @Test
-    fun `requestLocationUpdate but location available with gps by both provider with SDK O and Success`() =
-        runContextCompatPermissionTest {
-            mockLooper {
                 mockSdkGreaterCheck(false) {
                     mockLocationManager(true, true)
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
                     val latitude = 1.0
                     val longitude = 2.0
+                    val lastLocation = mockLocation(latitude, longitude)
+                    coEvery { locationClient.lastLocation.await() } returns lastLocation
+
+                    val result = locationTracker.getCurrentLocation()
+
+                    verifyNever { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                    verifyOnce { locationClient.lastLocation }
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
+                    assertEquals(latitude.toFloat(), resultLocation.latitude)
+                    assertEquals(longitude.toFloat(), resultLocation.longitude)
+                }
+            }
+        }
+
+    }
+
+
+    @Nested
+    inner class requestLocationUpdate {
+
+        @Test
+        fun `but location unavailable due to no permission`() =
+            runContextCompatPermissionTest(PERMISSION_DENIED) {
+                val result = locationTracker.requestLocationUpdate().first()
+
+                verifyNever {
+                    locationClient.lastLocation
+                    locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                }
+                assertInstanceOf<LocationResult.NoPermission>(result)
+                val resultPermission = result.permission
+                assertEquals(Manifest.permission.ACCESS_COARSE_LOCATION, resultPermission)
+            }
+
+        @Test
+        fun `but location unavailable due to gps disabled with SDK P`() =
+            mockSdkGreaterCheck(true) {
+                runContextCompatPermissionTest {
+                    val locationManager = mockk<LocationManager> {
+                        every { isLocationEnabled } returns false
+                    }
+                    every { context.getSystemService(eq(LocationManager::class.java)) } returns locationManager
+
+                    val result = locationTracker.requestLocationUpdate().first()
+
+                    verifyNever {
+                        locationClient.lastLocation
+                        locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                    }
+                    assertSame(LocationResult.GpsDisabled, result)
+                }
+            }
+
+        @Test
+        fun `location available returns Success`() = runTestWithMockLooper {
+            mockLocationRequestBuilder {
+                mockTaskKt {
+                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                    val latitude = 1.0
+                    val longitude = 2.0
                     val location = mockLocation(latitude, longitude)
                     every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
                         (args[1] as LocationListener).onLocationChanged(location)
@@ -417,15 +325,112 @@ internal class DefaultLocationTrackerTest {
 
                     verifyNever { locationClient.lastLocation }
                     verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                    assertThat(result).isInstanceOf(LocationResult.Success::class.java)
-                    val resultLocation = (result as LocationResult.Success).location
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
                     assertEquals(latitude.toFloat(), resultLocation.latitude)
                     assertEquals(longitude.toFloat(), resultLocation.longitude)
                 }
             }
         }
 
-    //endregion
+        @Test
+        fun `but location unavailable due to gps disabled both providers with SDK O`() =
+            mockSdkGreaterCheck(false) {
+                runContextCompatPermissionTest {
+                    mockLocationManager(false, false)
+
+                    val result = locationTracker.requestLocationUpdate().first()
+
+                    verifyNever {
+                        locationClient.lastLocation
+                        locationClient.requestLocationUpdates(any(), any<LocationListener>(), any())
+                    }
+                    assertSame(LocationResult.GpsDisabled, result)
+                }
+            }
+
+        @Test
+        fun `but location available with gps by network provider with SDK O and Success`() =
+            runContextCompatPermissionTest {
+                mockLooper {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(true, false)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        val latitude = 1.0
+                        val longitude = 2.0
+                        val location = mockLocation(latitude, longitude)
+                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                            (args[1] as LocationListener).onLocationChanged(location)
+                            mockk(relaxed = true)
+                        }
+
+                        val result = locationTracker.requestLocationUpdate().first()
+
+                        verifyNever { locationClient.lastLocation }
+                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        assertInstanceOf<LocationResult.Success>(result)
+                        val resultLocation = result.location
+                        assertEquals(latitude.toFloat(), resultLocation.latitude)
+                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                    }
+                }
+            }
+
+        @Test
+        fun `but location available with gps by gps provider with SDK O and Success`() =
+            runContextCompatPermissionTest {
+                mockLooper {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(false, true)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        val latitude = 1.0
+                        val longitude = 2.0
+                        val location = mockLocation(latitude, longitude)
+                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                            (args[1] as LocationListener).onLocationChanged(location)
+                            mockk(relaxed = true)
+                        }
+
+                        val result = locationTracker.requestLocationUpdate().first()
+
+                        verifyNever { locationClient.lastLocation }
+                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        assertInstanceOf<LocationResult.Success>(result)
+                        val resultLocation = result.location
+                        assertEquals(latitude.toFloat(), resultLocation.latitude)
+                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                    }
+                }
+            }
+
+        @Test
+        fun `but location available with gps by both provider with SDK O and Success`() =
+            runContextCompatPermissionTest {
+                mockLooper {
+                    mockSdkGreaterCheck(false) {
+                        mockLocationManager(true, true)
+                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                        val latitude = 1.0
+                        val longitude = 2.0
+                        val location = mockLocation(latitude, longitude)
+                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                            (args[1] as LocationListener).onLocationChanged(location)
+                            mockk(relaxed = true)
+                        }
+
+                        val result = locationTracker.requestLocationUpdate().first()
+
+                        verifyNever { locationClient.lastLocation }
+                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                        assertInstanceOf<LocationResult.Success>(result)
+                        val resultLocation = result.location
+                        assertEquals(latitude.toFloat(), resultLocation.latitude)
+                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                    }
+                }
+            }
+
+    }
 
 
     private inline fun runContextCompatPermissionTest(

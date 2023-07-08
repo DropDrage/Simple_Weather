@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -96,99 +97,106 @@ internal class CurrentLocationWeatherViewModelTest {
         }
     }
 
-    @Test
-    fun `loadWeather error NoLocation`() = runTestViewModelScope {
-        coEvery { getLocation() } returns flowOf(LocationResult.NoLocation)
+    @Nested
+    inner class loadWeather {
 
-        viewModel.error.test {
+        @Test
+        fun `returns error NoLocation`() = runTestViewModelScope {
+            coEvery { getLocation() } returns flowOf(LocationResult.NoLocation)
+
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
+
+                cancel()
+
+                val message = "Error Message"
+                val context = mockk<Context> {
+                    every { getString(any()) } returns message
+                }
+                assertEquals(message, error.getMessage(context))
+            }
+        }
+
+        @Test
+        fun `returns error GpsDisabled`() = runTestViewModelScope {
+            val locationResult = LocationResult.GpsDisabled
+            coEvery { getLocation() } returns flowOf(locationResult)
+            val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
+            val errorFlow = viewModel.error.testIn(backgroundScope)
+
             viewModel.loadWeather()
-            val error = awaitItem()
+            val locationError = locationErrorFlow.awaitItem()
+            val error = errorFlow.awaitItem()
 
-            cancel()
-
+            assertSame(locationResult, locationError)
             val message = "Error Message"
             val context = mockk<Context> {
                 every { getString(any()) } returns message
             }
             assertEquals(message, error.getMessage(context))
         }
-    }
 
-    @Test
-    fun `loadWeather error GpsDisabled`() = runTestViewModelScope {
-        val locationResult = LocationResult.GpsDisabled
-        coEvery { getLocation() } returns flowOf(locationResult)
-        val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
-        val errorFlow = viewModel.error.testIn(backgroundScope)
+        @Test
+        fun `returns error NoPermission`() = runTestViewModelScope {
+            val locationResult = LocationResult.NoPermission("permission")
+            coEvery { getLocation() } returns flowOf(locationResult)
+            val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
+            val errorFlow = viewModel.error.testIn(backgroundScope)
 
-        viewModel.loadWeather()
-        val locationError = locationErrorFlow.awaitItem()
-        val error = errorFlow.awaitItem()
+            viewModel.loadWeather()
+            val locationError = locationErrorFlow.awaitItem()
+            val error = errorFlow.awaitItem()
 
-        assertSame(locationResult, locationError)
-        val message = "Error Message"
-        val context = mockk<Context> {
-            every { getString(any()) } returns message
+            assertSame(locationResult, locationError)
+            val message = "Error Message"
+            val context = mockk<Context> {
+                every { getString(any()) } returns message
+            }
+            assertEquals(message, error.getMessage(context))
         }
-        assertEquals(message, error.getMessage(context))
-    }
 
-    @Test
-    fun `loadWeather error NoPermission`() = runTestViewModelScope {
-        val locationResult = LocationResult.NoPermission("permission")
-        coEvery { getLocation() } returns flowOf(locationResult)
-        val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
-        val errorFlow = viewModel.error.testIn(backgroundScope)
+        @Test
+        fun `returns success`() = runTestViewModelScope {
+            mockConverters(
+                currentHourWeatherConverter,
+                currentDayWeatherConverter,
+                hourWeatherConverter,
+                dailyWeatherConverter
+            )
+            val daysCount = 3
+            val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
+            val location = mockk<Location>()
+            val locationResult = LocationResult.Success(location)
+            coEvery { getLocation() } returns flowOf(locationResult)
+            coEvery {
+                weatherRepository.getUpdatedWeatherFromNow(eq(location))
+            } returns flowOf(Resource.Success(weather))
+            val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
+            val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
+            val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
+            val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
+            val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
+            val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
+            val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
+            val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
 
-        viewModel.loadWeather()
-        val locationError = locationErrorFlow.awaitItem()
-        val error = errorFlow.awaitItem()
+            viewModel.loadWeather()
 
-        assertSame(locationResult, locationError)
-        val message = "Error Message"
-        val context = mockk<Context> {
-            every { getString(any()) } returns message
+            coVerify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
+            coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
+                hourWeatherConverter.convertToView(any(), any())
+            }
+            verifyOnce {
+                currentDayWeatherConverter.convertToView(any())
+                currentHourWeatherConverter.convertToView(any())
+            }
+            assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
+            assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
+            assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
+            assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
         }
-        assertEquals(message, error.getMessage(context))
-    }
 
-    @Test
-    fun `loadWeather success`() = runTestViewModelScope {
-        mockConverters(
-            currentHourWeatherConverter,
-            currentDayWeatherConverter,
-            hourWeatherConverter,
-            dailyWeatherConverter
-        )
-        val daysCount = 3
-        val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
-        val location = mockk<Location>()
-        val locationResult = LocationResult.Success(location)
-        coEvery { getLocation() } returns flowOf(locationResult)
-        coEvery { weatherRepository.getUpdatedWeatherFromNow(eq(location)) } returns flowOf(Resource.Success(weather))
-        val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
-        val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
-        val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
-        val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
-        val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
-        val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
-        val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
-        val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
-
-        viewModel.loadWeather()
-
-        coVerify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
-        coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
-            hourWeatherConverter.convertToView(any(), any())
-        }
-        verifyOnce {
-            currentDayWeatherConverter.convertToView(any())
-            currentHourWeatherConverter.convertToView(any())
-        }
-        assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
-        assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
-        assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
-        assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
     }
 
 }

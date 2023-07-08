@@ -15,6 +15,7 @@ import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDate
@@ -28,117 +29,122 @@ internal class WeatherCacheDaoTest {
     lateinit var dao: WeatherCacheDao
 
 
-    @Test
-    fun `updateWeather empty days and hours`() = runTest {
-        val locationId = 1L
-        coJustRun { dao["clearForLocation"](any<Long>()) }
-        val insertedIds = listOf(1L, 2L, 4L, 6L)
-        val insertedDayWeathers = slot<List<DayWeatherModel>>()
-        coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
-        val insertedHourWeathers = slot<List<HourWeatherModel>>()
-        coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
-        coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
-        val dayWeathers = emptyList<DayWeatherModel>()
-        coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
-        coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
+    @Nested
+    inner class updateWeather {
 
-        dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModelEmpty)
+        @Test
+        fun `empty days and hours`() = runTest {
+            val locationId = 1L
+            coJustRun { dao["clearForLocation"](any<Long>()) }
+            val insertedIds = listOf(1L, 2L, 4L, 6L)
+            val insertedDayWeathers = slot<List<DayWeatherModel>>()
+            coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
+            val insertedHourWeathers = slot<List<HourWeatherModel>>()
+            coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
+            coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
+            val dayWeathers = emptyList<DayWeatherModel>()
+            coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
+            coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
 
-        coVerifyOnce {
-            dao["clearForLocation"](any<Long>())
-            dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
-            dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
-            dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModelEmpty)
+
+            coVerifyOnce {
+                dao["clearForLocation"](any<Long>())
+                dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
+                dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
+                dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            }
+            assertThat(insertedDayWeathers.captured).isEmpty()
+            assertThat(insertedHourWeathers.captured).isEmpty()
         }
-        assertThat(insertedDayWeathers.captured).isEmpty()
-        assertThat(insertedHourWeathers.captured).isEmpty()
-    }
 
-    @Test
-    fun `updateWeather empty days and filled hours`() = runTest {
-        val locationId = 1L
-        coJustRun { dao["clearForLocation"](any<Long>()) }
-        val insertedDayWeathers = slot<List<DayWeatherModel>>()
-        coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns emptyList<Long>()
-        val insertedHourWeathers = slot<List<HourWeatherModel>>()
-        coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
-        coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
-        val dayWeathers = emptyList<DayWeatherModel>()
-        coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
-        coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
+        @Test
+        fun `empty days and filled hours`() = runTest {
+            val locationId = 1L
+            coJustRun { dao["clearForLocation"](any<Long>()) }
+            val insertedDayWeathers = slot<List<DayWeatherModel>>()
+            coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns emptyList<Long>()
+            val insertedHourWeathers = slot<List<HourWeatherModel>>()
+            coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
+            coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
+            val dayWeathers = emptyList<DayWeatherModel>()
+            coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
+            coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
 
-        dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModel)
+            dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModel)
 
-        coVerifyOnce {
-            dao["clearForLocation"](any<Long>())
-            dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
-            dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
-            dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            coVerifyOnce {
+                dao["clearForLocation"](any<Long>())
+                dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
+                dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
+                dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            }
+            assertThat(insertedDayWeathers.captured).isEmpty()
+            assertThat(insertedHourWeathers.captured).isEmpty()
         }
-        assertThat(insertedDayWeathers.captured).isEmpty()
-        assertThat(insertedHourWeathers.captured).isEmpty()
-    }
 
-    @Test
-    fun `updateWeather filled days and empty hours`() = runTest {
-        val locationId = 1L
-        coJustRun { dao["clearForLocation"](any<Long>()) }
-        val insertedIds = listOf(1L, 2L, 4L, 6L)
-        val insertedDayWeathers = slot<List<DayWeatherModel>>()
-        coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
-        val insertedHourWeathers = slot<List<HourWeatherModel>>()
-        coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
-        coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
-        val dayWeathers = listOf(
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-        )
-        coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
-        coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
+        @Test
+        fun `filled days and empty hours`() = runTest {
+            val locationId = 1L
+            coJustRun { dao["clearForLocation"](any<Long>()) }
+            val insertedIds = listOf(1L, 2L, 4L, 6L)
+            val insertedDayWeathers = slot<List<DayWeatherModel>>()
+            coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
+            val insertedHourWeathers = slot<List<HourWeatherModel>>()
+            coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
+            coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
+            val dayWeathers = listOf(
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+            )
+            coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
+            coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
 
-        dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModelEmpty)
+            dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModelEmpty)
 
-        coVerifyOnce {
-            dao["clearForLocation"](any<Long>())
-            dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
-            dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
-            dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            coVerifyOnce {
+                dao["clearForLocation"](any<Long>())
+                dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
+                dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
+                dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            }
+            assertThat(insertedDayWeathers.captured).containsExactlyElementsIn(dayWeathers)
+            assertThat(insertedHourWeathers.captured).isEmpty()
         }
-        assertThat(insertedDayWeathers.captured).containsExactlyElementsIn(dayWeathers)
-        assertThat(insertedHourWeathers.captured).isEmpty()
-    }
 
-    @Test
-    fun `updateWeather filled days and hours`() = runTest {
-        val locationId = 1L
-        coJustRun { dao["clearForLocation"](any<Long>()) }
-        val insertedIds = listOf(1L, 2L, 4L, 6L)
-        val insertedDayWeathers = slot<List<DayWeatherModel>>()
-        coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
-        val insertedHourWeathers = slot<List<HourWeatherModel>>()
-        coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
-        coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
-        val dayWeathers = listOf(
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-            mockDayWeatherModel(locationId),
-        )
-        coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
-        coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
+        @Test
+        fun `filled days and hours`() = runTest {
+            val locationId = 1L
+            coJustRun { dao["clearForLocation"](any<Long>()) }
+            val insertedIds = listOf(1L, 2L, 4L, 6L)
+            val insertedDayWeathers = slot<List<DayWeatherModel>>()
+            coEvery { dao["insertAllDayWeathersAndGetIds"](capture(insertedDayWeathers)) } returns insertedIds
+            val insertedHourWeathers = slot<List<HourWeatherModel>>()
+            coJustRun { dao["insertAllHourWeathers"](capture(insertedHourWeathers)) }
+            coJustRun { dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>()) }
+            val dayWeathers = listOf(
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+                mockDayWeatherModel(locationId),
+            )
+            coEvery { dao["clearAndInsertWeather"](eq(locationId), eq(dayWeathers)) } answers { callOriginal() }
+            coEvery { dao.updateWeather(eq(locationId), eq(dayWeathers), any()) } answers { callOriginal() }
 
-        dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModel)
+            dao.updateWeather(locationId, dayWeathers, ::convertIdsToHourWeatherModel)
 
-        coVerifyOnce {
-            dao["clearForLocation"](any<Long>())
-            dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
-            dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
-            dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            coVerifyOnce {
+                dao["clearForLocation"](any<Long>())
+                dao["insertAllDayWeathersAndGetIds"](any<List<DayWeatherModel>>())
+                dao["insertAllHourWeathers"](any<List<HourWeatherModel>>())
+                dao["updateLocationUpdateTime"](eq(locationId), any<LocalDateTime>())
+            }
+            assertThat(insertedDayWeathers.captured).containsExactlyElementsIn(dayWeathers)
+            assertThat(insertedHourWeathers.captured.map { it.dayId }).containsExactlyElementsIn(insertedIds)
         }
-        assertThat(insertedDayWeathers.captured).containsExactlyElementsIn(dayWeathers)
-        assertThat(insertedHourWeathers.captured.map { it.dayId }).containsExactlyElementsIn(insertedIds)
+
     }
 
 

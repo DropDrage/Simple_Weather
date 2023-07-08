@@ -13,6 +13,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -24,38 +25,43 @@ internal class CityDaoTest {
     lateinit var dao: FakeCityDao
 
 
-    @Test
-    fun `updateOrders empty list`() = runTest {
-        val updatedCities = slot<List<CityModel>>()
-        coJustRun { dao.updateAll(capture(updatedCities)) }
-        coEvery { dao.updateOrders(any()) } answers { callOriginal() }
-        val cities = listOf(
-            CityModel(1, "City", 0, Country("Country", "CY"), Location(1f, 2f)),
-            CityModel(2, "City1", 1, Country("Country2", "CY"), Location(1f, 2f)),
-            CityModel(3, "City2", 2, Country("Country", "CY"), Location(1f, 24f)),
-            CityModel(5, "City2", 3, Country("Country", "CY"), Location(1f, 24f)),
-        )
-        val citiesCopy = cities.map(CityModel::copy)
+    @Nested
+    inner class updateOrders {
 
-        dao.updateOrders(citiesCopy)
+        @Test
+        fun `empty list`() = runTest {
+            val updatedCities = slot<List<CityModel>>()
+            coJustRun { dao.updateAll(capture(updatedCities)) }
+            coEvery { dao.updateOrders(any()) } answers { callOriginal() }
+            val cities = listOf(
+                CityModel(1, "City", 0, Country("Country", "CY"), Location(1f, 2f)),
+                CityModel(2, "City1", 1, Country("Country2", "CY"), Location(1f, 2f)),
+                CityModel(3, "City2", 2, Country("Country", "CY"), Location(1f, 24f)),
+                CityModel(5, "City2", 3, Country("Country", "CY"), Location(1f, 24f)),
+            )
+            val citiesCopy = cities.map(CityModel::copy)
 
-        coVerifyOnce { dao.updateOrders(any()) }
-        coVerifyTwice { dao.updateAll(any()) }
-        assertThat(updatedCities.captured).containsExactlyElementsIn(cities)
-    }
+            dao.updateOrders(citiesCopy)
 
-    @Test
-    fun `updateOrders not empty ordered list`() = runTest {
-        val updatedCities = slot<List<CityModel>>()
-        coJustRun { dao.updateAll(capture(updatedCities)) }
-        coEvery { dao.updateOrders(any()) } answers { callOriginal() }
-        val cities = emptyList<CityModel>()
+            coVerifyOnce { dao.updateOrders(any()) }
+            coVerifyTwice { dao.updateAll(any()) }
+            assertThat(updatedCities.captured).containsExactlyElementsIn(cities)
+        }
 
-        dao.updateOrders(cities)
+        @Test
+        fun `not empty ordered list`() = runTest {
+            val updatedCities = slot<List<CityModel>>()
+            coJustRun { dao.updateAll(capture(updatedCities)) }
+            coEvery { dao.updateOrders(any()) } answers { callOriginal() }
+            val cities = emptyList<CityModel>()
 
-        coVerifyOnce { dao.updateOrders(any()) }
-        coVerifyTwice { dao.updateAll(any()) }
-        assertThat(updatedCities.captured).isEmpty()
+            dao.updateOrders(cities)
+
+            coVerifyOnce { dao.updateOrders(any()) }
+            coVerifyTwice { dao.updateAll(any()) }
+            assertThat(updatedCities.captured).isEmpty()
+        }
+
     }
 
 

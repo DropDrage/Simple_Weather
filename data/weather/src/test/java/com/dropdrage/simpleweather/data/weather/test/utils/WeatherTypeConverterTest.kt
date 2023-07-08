@@ -4,29 +4,37 @@ import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 import com.dropdrage.test.util.mockLogW
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.provider.ArgumentsSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
 internal class WeatherTypeConverterTest {
 
-    @ParameterizedTest
-    @MethodSource("provideWeatherCodeWithType")
-    fun `toWeatherType success`(weatherCode: Int, weatherType: WeatherType) {
-        val resultWeatherType = WeatherTypeConverter.toWeatherType(weatherCode)
+    @Nested
+    inner class toWeatherType {
 
-        assertEquals(weatherType, resultWeatherType)
+        @ParameterizedTest
+        @ArgumentsSource(WeatherCodeWithTypeProvider::class)
+        fun success(weatherCode: Int, weatherType: WeatherType) {
+            val resultWeatherType = WeatherTypeConverter.toWeatherType(weatherCode)
+
+            assertEquals(weatherType, resultWeatherType)
+        }
+
+        @Test
+        fun `unsupported code then ClearSky`() = mockLogW {
+            val resultWeatherType = WeatherTypeConverter.toWeatherType(-100)
+
+            assertEquals(WeatherType.ClearSky, resultWeatherType)
+        }
+
     }
-
-    @Test
-    fun `toWeatherType unsupported code then ClearSky`() = mockLogW {
-        val resultWeatherType = WeatherTypeConverter.toWeatherType(-100)
-
-        assertEquals(WeatherType.ClearSky, resultWeatherType)
-    }
-
 
     @ParameterizedTest
     @MethodSource("provideWeatherTypeWithCode")
@@ -37,10 +45,8 @@ internal class WeatherTypeConverterTest {
     }
 
 
-    private companion object {
-
-        @JvmStatic
-        fun provideWeatherCodeWithType() = Stream.of(
+    private object WeatherCodeWithTypeProvider : ArgumentsProvider {
+        override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> = Stream.of(
             Arguments.of(0, WeatherType.ClearSky),
             Arguments.of(1, WeatherType.MainlyClear),
             Arguments.of(2, WeatherType.PartlyCloudy),
@@ -70,7 +76,9 @@ internal class WeatherTypeConverterTest {
             Arguments.of(96, WeatherType.SlightHailThunderstorm),
             Arguments.of(99, WeatherType.HeavyHailThunderstorm),
         )
+    }
 
+    private companion object {
         @JvmStatic
         fun provideWeatherTypeWithCode() = Stream.of(
             Arguments.of(WeatherType.ClearSky, 0),
@@ -101,7 +109,6 @@ internal class WeatherTypeConverterTest {
             Arguments.of(WeatherType.SlightHailThunderstorm, 96),
             Arguments.of(WeatherType.HeavyHailThunderstorm, 99),
         )
-
     }
 
 }

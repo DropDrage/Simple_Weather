@@ -13,10 +13,11 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -32,66 +33,9 @@ internal class CitiesSharedViewModelTest {
     }
 
     @Test
-    fun `createHourWeatherPoolIfNeeded not initialized then created`() =
-        mockkObject(PrefetchPlainViewPool) {
-            justMock { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
-
-            assertFalse(viewModel.isHourlyWeatherPoolInitialized)
-
-            viewModel.createHourWeatherPoolIfNeeded(mockk(), mockk())
-
-            verifyOnce { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
-            assertNotNull(viewModel.hourlyWeatherRecyclerPool)
-            assertTrue(viewModel.isHourlyWeatherPoolInitialized)
-        }
-
-    @Test
-    fun `createHourWeatherPoolIfNeeded initialized then not created`() =
-        mockkObject(PrefetchPlainViewPool) {
-            val viewModel = spyk(viewModel) {
-                every { isHourlyWeatherPoolInitialized } returns true
-            }
-
-            viewModel.createHourWeatherPoolIfNeeded(mockk(), mockk())
-
-            clearAllMocks()
-            assertThrows<UninitializedPropertyAccessException> { viewModel.hourlyWeatherRecyclerPool }
-            assertFalse(viewModel.isHourlyWeatherPoolInitialized)
-        }
-
-
-    @Test
     fun `isDailyWeatherPoolInitialized not initialized returns false`() {
         assertFalse(viewModel.isDailyWeatherPoolInitialized)
     }
-
-    @Test
-    fun `createDailyWeatherPoolIfNeeded not initialized then created`() =
-        mockkObject(PrefetchPlainViewPool) {
-            justMock { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
-
-            assertFalse(viewModel.isDailyWeatherPoolInitialized)
-
-            viewModel.createDailyWeatherPoolIfNeeded(mockk(), mockk())
-
-            assertNotNull(viewModel.dailyWeatherRecyclerPool)
-            assertTrue(viewModel.isDailyWeatherPoolInitialized)
-        }
-
-    @Test
-    fun `createDailyWeatherPoolIfNeeded initialized then not created`() =
-        mockkObject(PrefetchPlainViewPool) {
-            val viewModel = spyk(viewModel) {
-                every { isDailyWeatherPoolInitialized } returns true
-            }
-
-            viewModel.createDailyWeatherPoolIfNeeded(mockk(), mockk())
-
-            clearAllMocks()
-            assertThrows<UninitializedPropertyAccessException> { viewModel.dailyWeatherRecyclerPool }
-            assertFalse(viewModel.isDailyWeatherPoolInitialized)
-        }
-
 
     @Test
     fun `setCityTitle success`() = runTestViewModelScope {
@@ -103,8 +47,69 @@ internal class CitiesSharedViewModelTest {
 
             cancel()
 
-            assertEquals(expectedTitle, newTitle)
+            Assertions.assertEquals(expectedTitle, newTitle)
         }
+    }
+
+    @Nested
+    inner class createHourWeatherPoolIfNeeded {
+
+        @Test
+        fun `not initialized then created`() = mockkObject(PrefetchPlainViewPool) {
+            justMock { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
+
+            assertFalse(viewModel.isHourlyWeatherPoolInitialized)
+
+            viewModel.createHourWeatherPoolIfNeeded(mockk(), mockk())
+
+            verifyOnce { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
+            assertNotNull(viewModel.hourlyWeatherRecyclerPool)
+            assertTrue(viewModel.isHourlyWeatherPoolInitialized)
+        }
+
+        @Test
+        fun `initialized then not created`() = mockkObject(PrefetchPlainViewPool) {
+            val viewModel = spyk(viewModel) {
+                every { isHourlyWeatherPoolInitialized } returns true
+            }
+
+            viewModel.createHourWeatherPoolIfNeeded(mockk(), mockk())
+
+            clearAllMocks()
+            assertThrows<UninitializedPropertyAccessException> { viewModel.hourlyWeatherRecyclerPool }
+            assertFalse(viewModel.isHourlyWeatherPoolInitialized)
+        }
+
+    }
+
+    @Nested
+    inner class createDailyWeatherPoolIfNeeded {
+
+        @Test
+        fun `createDailyWeatherPoolIfNeeded not initialized then created`() = mockkObject(PrefetchPlainViewPool) {
+            justMock { PrefetchPlainViewPool.createPrefetchedWithCoroutineSupplier(any(), any(), any(), any()) }
+
+            assertFalse(viewModel.isDailyWeatherPoolInitialized)
+
+            viewModel.createDailyWeatherPoolIfNeeded(mockk(), mockk())
+
+            assertNotNull(viewModel.dailyWeatherRecyclerPool)
+            assertTrue(viewModel.isDailyWeatherPoolInitialized)
+        }
+
+        @Test
+        fun `createDailyWeatherPoolIfNeeded initialized then not created`() = mockkObject(PrefetchPlainViewPool) {
+            val viewModel = spyk(viewModel) {
+                every { isDailyWeatherPoolInitialized } returns true
+            }
+
+            viewModel.createDailyWeatherPoolIfNeeded(mockk(), mockk())
+
+            clearAllMocks()
+            assertThrows<UninitializedPropertyAccessException> { viewModel.dailyWeatherRecyclerPool }
+            assertFalse(viewModel.isDailyWeatherPoolInitialized)
+        }
+
     }
 
 }

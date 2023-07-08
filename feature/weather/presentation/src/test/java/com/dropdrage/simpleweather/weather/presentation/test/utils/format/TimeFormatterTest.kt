@@ -19,6 +19,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -40,27 +41,32 @@ internal class TimeFormatterTest {
     }
 
 
-    @ParameterizedTest
-    @EnumSource(value = TimeFormat::class)
-    fun `formatAsHourOrNow not now success`(format: TimeFormat) {
-        every { GeneralPreferences.timeFormat } returns format
-        val localTime = LocalDateTime.now()
+    @Nested
+    inner class formatAsHourOrNow {
 
-        val hourOrNow = formatter.formatAsHourOrNow(localTime, false)
+        @Test
+        fun `returns now`() {
+            val now = "Now"
+            every { context.getString(eq(R.string.weather_hourly_now)) } returns now
+            val localTime = LocalDateTime.now()
 
-        val expectedFormat = localTime.format(format.hourFormatter)
-        assertEquals(expectedFormat, hourOrNow)
-    }
+            val hourOrNow = formatter.formatAsHourOrNow(localTime, true)
 
-    @Test
-    fun `formatAsHourOrNow now success`() {
-        val now = "Now"
-        every { context.getString(eq(R.string.weather_hourly_now)) } returns now
-        val localTime = LocalDateTime.now()
+            assertEquals(now, hourOrNow)
+        }
 
-        val hourOrNow = formatter.formatAsHourOrNow(localTime, true)
+        @ParameterizedTest
+        @EnumSource(value = TimeFormat::class)
+        fun `not now returns hour`(format: TimeFormat) {
+            every { GeneralPreferences.timeFormat } returns format
+            val localTime = LocalDateTime.now()
 
-        assertEquals(now, hourOrNow)
+            val hourOrNow = formatter.formatAsHourOrNow(localTime, false)
+
+            val expectedFormat = localTime.format(format.hourFormatter)
+            assertEquals(expectedFormat, hourOrNow)
+        }
+
     }
 
     @ParameterizedTest

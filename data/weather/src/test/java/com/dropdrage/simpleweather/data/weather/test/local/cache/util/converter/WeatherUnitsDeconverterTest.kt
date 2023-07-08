@@ -24,40 +24,39 @@ import io.mockk.unmockkObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-@Suppress("UnnecessaryVariable")
 internal class WeatherUnitsDeconverterTest {
 
-    //region Temperature
+    @Nested
+    inner class deconvertTemperatureIfApiDontSupport {
 
-    @Test
-    fun `deconvertTemperatureIfApiDontSupport supported`() {
-        every { CacheUnits.isTemperatureConversionNeeded } returns true
-        val value = 124f
-        val valueConverted = value
+        @Test
+        fun `supported then returns same value`() {
+            every { CacheUnits.isTemperatureConversionNeeded } returns true
+            val value = 124f
 
-        val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
+            val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
 
-        assertEquals(valueConverted, result)
-    }
+            assertEquals(value, result)
+        }
 
-    @Test
-    fun `deconvertTemperatureIfApiDontSupport not supported and ApiUnit Fahrenheit`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isTemperatureConversionNeeded } returns false
-        every { ApiUnits.TEMPERATURE } returns TemperatureUnit.FAHRENHEIT
-        val value = 124f
-        val valueConverted = (value - CELSIUS_TO_FAHRENHEIT_OFFSET) / CELSIUS_TO_FAHRENHEIT_MODIFIER
+        @Test
+        fun `not supported and ApiUnit Fahrenheit`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isTemperatureConversionNeeded } returns false
+            every { ApiUnits.TEMPERATURE } returns TemperatureUnit.FAHRENHEIT
+            val value = 124f
+            val valueConverted = (value - CELSIUS_TO_FAHRENHEIT_OFFSET) / CELSIUS_TO_FAHRENHEIT_MODIFIER
 
-        val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
+            val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
 
-        assertEquals(valueConverted, result)
-    }
+            assertEquals(valueConverted, result)
+        }
 
-    @Test
-    fun `deconvertTemperatureIfApiDontSupport not supported but ApiUnit API_SUPPORTED_UNIT and throws`() =
-        mockkObject(ApiUnits) {
+        @Test
+        fun `not supported but ApiUnit API_SUPPORTED_UNIT and throws`() = mockkObject(ApiUnits) {
             every { CacheUnits.isTemperatureConversionNeeded } returns false
             every { ApiUnits.TEMPERATURE } returns ApiUnits.API_SUPPORTED_UNIT
             val value = 124f
@@ -67,50 +66,48 @@ internal class WeatherUnitsDeconverterTest {
             }
         }
 
-    @Test
-    fun `deconvertTemperatureIfApiDontSupport not supported and ApiUnit Celsius`() = mockLogW {
-        mockkObject(ApiUnits) {
-            every { CacheUnits.isTemperatureConversionNeeded } returns false
-            every { ApiUnits.TEMPERATURE } returns TemperatureUnit.CELSIUS
-            val value = 124f
-            val valueConverted = value
+        @Test
+        fun `not supported and ApiUnit Celsius then returns same value`() = mockLogW {
+            mockkObject(ApiUnits) {
+                every { CacheUnits.isTemperatureConversionNeeded } returns false
+                every { ApiUnits.TEMPERATURE } returns TemperatureUnit.CELSIUS
+                val value = 124f
 
-            val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
+                val result = WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(value)
+
+                assertEquals(value, result)
+            }
+        }
+
+    }
+
+    @Nested
+    inner class deconvertPressureIfApiDontSupport {
+
+        @Test
+        fun `supported then returns same value`() {
+            every { CacheUnits.isPressureConversionNeeded } returns true
+            val value = 124
+
+            val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
+
+            assertEquals(value, result)
+        }
+
+        @Test
+        fun `not supported and ApiUnit MM_HG`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isPressureConversionNeeded } returns false
+            every { ApiUnits.PRESSURE } returns PressureUnit.MM_HG
+            val value = 124
+            val valueConverted = (value / HPA_TO_MM_HG_MODIFIER).toInt()
+
+            val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
 
             assertEquals(valueConverted, result)
         }
-    }
 
-    //endregion
-
-    //region Pressure
-
-    @Test
-    fun `deconvertPressureIfApiDontSupport supported`() {
-        every { CacheUnits.isPressureConversionNeeded } returns true
-        val value = 124
-        val valueConverted = value
-
-        val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertPressureIfApiDontSupport not supported and ApiUnit MM_HG`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isPressureConversionNeeded } returns false
-        every { ApiUnits.PRESSURE } returns PressureUnit.MM_HG
-        val value = 124
-        val valueConverted = (value / HPA_TO_MM_HG_MODIFIER).toInt()
-
-        val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertPressureIfApiDontSupport not supported but ApiUnit API_SUPPORTED_UNIT and throws`() =
-        mockkObject(ApiUnits) {
+        @Test
+        fun `not supported but ApiUnit API_SUPPORTED_UNIT and throws`() = mockkObject(ApiUnits) {
             every { CacheUnits.isPressureConversionNeeded } returns false
             every { ApiUnits.PRESSURE } returns ApiUnits.API_SUPPORTED_UNIT
             val value = 124
@@ -120,74 +117,72 @@ internal class WeatherUnitsDeconverterTest {
             }
         }
 
-    @Test
-    fun `deconvertPressureIfApiDontSupport not supported and ApiUnit H_PASCAL`() = mockLogW {
-        mockkObject(ApiUnits) {
-            every { CacheUnits.isPressureConversionNeeded } returns false
-            every { ApiUnits.PRESSURE } returns PressureUnit.H_PASCAL
-            val value = 124
-            val valueConverted = value
+        @Test
+        fun `not supported and ApiUnit H_PASCAL then returns same value`() = mockLogW {
+            mockkObject(ApiUnits) {
+                every { CacheUnits.isPressureConversionNeeded } returns false
+                every { ApiUnits.PRESSURE } returns PressureUnit.H_PASCAL
+                val value = 124
 
-            val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
+                val result = WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(value)
+
+                assertEquals(value, result)
+            }
+        }
+
+    }
+
+    @Nested
+    inner class deconvertWindSpeedIfApiDontSupport {
+
+        @Test
+        fun `supported then returns same value`() {
+            every { CacheUnits.isWindSpeedConversionNeeded } returns true
+            val value = 124f
+
+            val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
+
+            assertEquals(value, result)
+        }
+
+        @Test
+        fun `not supported and ApiUnit MPH`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isWindSpeedConversionNeeded } returns false
+            every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.MPH
+            val value = 124f
+            val valueConverted = value * KM_H_TO_MPH_DIVIDER
+
+            val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
 
             assertEquals(valueConverted, result)
         }
-    }
 
-    //endregion
+        @Test
+        fun `not supported and ApiUnit M_S`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isWindSpeedConversionNeeded } returns false
+            every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.M_S
+            val value = 124f
+            val valueConverted = value * KM_H_TO_M_S_DIVIDER
 
-    //region Wind Speed
+            val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
 
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport supported`() {
-        every { CacheUnits.isWindSpeedConversionNeeded } returns true
-        val value = 124f
-        val valueConverted = value
+            assertEquals(valueConverted, result)
+        }
 
-        val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
+        @Test
+        fun `not supported and ApiUnit KNOTS`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isWindSpeedConversionNeeded } returns false
+            every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.KNOTS
+            val value = 124f
+            val valueConverted = value / KM_H_TO_M_S_MULTIPLIER
 
-        assertEquals(valueConverted, result)
-    }
+            val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
 
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport not supported and ApiUnit MPH`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isWindSpeedConversionNeeded } returns false
-        every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.MPH
-        val value = 124f
-        val valueConverted = value * KM_H_TO_MPH_DIVIDER
+            assertEquals(valueConverted, result)
+        }
 
-        val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport not supported and ApiUnit M_S`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isWindSpeedConversionNeeded } returns false
-        every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.M_S
-        val value = 124f
-        val valueConverted = value * KM_H_TO_M_S_DIVIDER
-
-        val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport not supported and ApiUnit KNOTS`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isWindSpeedConversionNeeded } returns false
-        every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.KNOTS
-        val value = 124f
-        val valueConverted = value / KM_H_TO_M_S_MULTIPLIER
-
-        val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport not supported but ApiUnit API_SUPPORTED_UNIT and throws`() =
-        mockkObject(ApiUnits) {
+        @Test
+        fun `not supported but ApiUnit API_SUPPORTED_UNIT and throws`() = mockkObject(ApiUnits) {
             every { CacheUnits.isWindSpeedConversionNeeded } returns false
             every { ApiUnits.WIND_SPEED } returns ApiUnits.API_SUPPORTED_UNIT
             val value = 124f
@@ -197,62 +192,60 @@ internal class WeatherUnitsDeconverterTest {
             }
         }
 
-    @Test
-    fun `deconvertWindSpeedIfApiDontSupport not supported and ApiUnit KM_H`() = mockLogW {
-        mockkObject(ApiUnits) {
-            every { CacheUnits.isWindSpeedConversionNeeded } returns false
-            every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.KM_H
-            val value = 124f
-            val valueConverted = value
+        @Test
+        fun `deconvertWindSpeedIfApiDontSupport not supported and ApiUnit KM_H then returns same value`() = mockLogW {
+            mockkObject(ApiUnits) {
+                every { CacheUnits.isWindSpeedConversionNeeded } returns false
+                every { ApiUnits.WIND_SPEED } returns WindSpeedUnit.KM_H
+                val value = 124f
 
-            val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
+                val result = WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(value)
+
+                assertEquals(value, result)
+            }
+        }
+
+    }
+
+    @Nested
+    inner class deconvertVisibilityIfApiDontSupport {
+
+        @Test
+        fun `supported then returns same value`() {
+            every { CacheUnits.isVisibilityConversionNeeded } returns true
+            val value = 124f
+
+            val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
+
+            assertEquals(value, result)
+        }
+
+        @Test
+        fun `not supported and ApiUnit K_METER`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isVisibilityConversionNeeded } returns false
+            every { ApiUnits.VISIBILITY } returns VisibilityUnit.K_METER
+            val value = 124f
+            val valueConverted = value * METER_TO_KM_DIVIDER
+
+            val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
 
             assertEquals(valueConverted, result)
         }
-    }
 
-    //endregion
+        @Test
+        fun `not supported and ApiUnit MILE`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isVisibilityConversionNeeded } returns false
+            every { ApiUnits.VISIBILITY } returns VisibilityUnit.MILE
+            val value = 124f
+            val valueConverted = value * METER_TO_MILE_DIVIDER
 
-    //region Visibility
+            val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
 
-    @Test
-    fun `deconvertVisibilityIfApiDontSupport supported`() {
-        every { CacheUnits.isVisibilityConversionNeeded } returns true
-        val value = 124f
-        val valueConverted = value
+            assertEquals(valueConverted, result)
+        }
 
-        val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertVisibilityIfApiDontSupport not supported and ApiUnit K_METER`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isVisibilityConversionNeeded } returns false
-        every { ApiUnits.VISIBILITY } returns VisibilityUnit.K_METER
-        val value = 124f
-        val valueConverted = value * METER_TO_KM_DIVIDER
-
-        val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertVisibilityIfApiDontSupport not supported and ApiUnit MILE`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isVisibilityConversionNeeded } returns false
-        every { ApiUnits.VISIBILITY } returns VisibilityUnit.MILE
-        val value = 124f
-        val valueConverted = value * METER_TO_MILE_DIVIDER
-
-        val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertVisibilityIfApiDontSupport not supported but ApiUnit API_SUPPORTED_UNIT and throws`() =
-        mockkObject(ApiUnits) {
+        @Test
+        fun `not supported but ApiUnit API_SUPPORTED_UNIT and throws`() = mockkObject(ApiUnits) {
             every { CacheUnits.isVisibilityConversionNeeded } returns false
             every { ApiUnits.VISIBILITY } returns ApiUnits.API_SUPPORTED_UNIT
             val value = 124f
@@ -262,50 +255,48 @@ internal class WeatherUnitsDeconverterTest {
             }
         }
 
-    @Test
-    fun `deconvertVisibilityIfApiDontSupport not supported and ApiUnit METER`() = mockLogW {
-        mockkObject(ApiUnits) {
-            every { CacheUnits.isVisibilityConversionNeeded } returns false
-            every { ApiUnits.VISIBILITY } returns VisibilityUnit.METER
-            val value = 124f
-            val valueConverted = value
+        @Test
+        fun `not supported and ApiUnit METER then returns same value`() = mockLogW {
+            mockkObject(ApiUnits) {
+                every { CacheUnits.isVisibilityConversionNeeded } returns false
+                every { ApiUnits.VISIBILITY } returns VisibilityUnit.METER
+                val value = 124f
 
-            val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
+                val result = WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(value)
+
+                assertEquals(value, result)
+            }
+        }
+
+    }
+
+    @Nested
+    inner class deconvertPrecipitationIfApiDontSupport {
+
+        @Test
+        fun `supported then returns same value`() {
+            every { CacheUnits.isPrecipitationConversionNeeded } returns true
+            val value = 124f
+
+            val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
+
+            assertEquals(value, result)
+        }
+
+        @Test
+        fun `not supported and ApiUnit INCH`() = mockkObject(ApiUnits) {
+            every { CacheUnits.isPrecipitationConversionNeeded } returns false
+            every { ApiUnits.PRECIPITATION } returns PrecipitationUnit.INCH
+            val value = 124f
+            val valueConverted = value * MM_TO_INCH_DIVIDER
+
+            val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
 
             assertEquals(valueConverted, result)
         }
-    }
 
-    //endregion
-
-    //region Precipitation
-
-    @Test
-    fun `deconvertPrecipitationIfApiDontSupport supported`() {
-        every { CacheUnits.isPrecipitationConversionNeeded } returns true
-        val value = 124f
-        val valueConverted = value
-
-        val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertPrecipitationIfApiDontSupport not supported and ApiUnit INCH`() = mockkObject(ApiUnits) {
-        every { CacheUnits.isPrecipitationConversionNeeded } returns false
-        every { ApiUnits.PRECIPITATION } returns PrecipitationUnit.INCH
-        val value = 124f
-        val valueConverted = value * MM_TO_INCH_DIVIDER
-
-        val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
-
-        assertEquals(valueConverted, result)
-    }
-
-    @Test
-    fun `deconvertPrecipitationIfApiDontSupport not supported but ApiUnit API_SUPPORTED_UNIT and throws`() =
-        mockkObject(ApiUnits) {
+        @Test
+        fun `not supported but ApiUnit API_SUPPORTED_UNIT and throws`() = mockkObject(ApiUnits) {
             every { CacheUnits.isPrecipitationConversionNeeded } returns false
             every { ApiUnits.VISIBILITY } returns ApiUnits.API_SUPPORTED_UNIT
             val value = 124f
@@ -315,21 +306,20 @@ internal class WeatherUnitsDeconverterTest {
             }
         }
 
-    @Test
-    fun `deconvertPrecipitationIfApiDontSupport not supported and ApiUnit MM`() = mockLogW {
-        mockkObject(ApiUnits) {
-            every { CacheUnits.isPrecipitationConversionNeeded } returns false
-            every { ApiUnits.PRECIPITATION } returns PrecipitationUnit.MM
-            val value = 124f
-            val valueConverted = value
+        @Test
+        fun `not supported and ApiUnit MM then returns same value`() = mockLogW {
+            mockkObject(ApiUnits) {
+                every { CacheUnits.isPrecipitationConversionNeeded } returns false
+                every { ApiUnits.PRECIPITATION } returns PrecipitationUnit.MM
+                val value = 124f
 
-            val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
+                val result = WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(value)
 
-            assertEquals(valueConverted, result)
+                assertEquals(value, result)
+            }
         }
-    }
 
-    //endregion
+    }
 
 
     private companion object {

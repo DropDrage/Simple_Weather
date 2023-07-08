@@ -37,6 +37,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
@@ -79,107 +80,116 @@ internal class CityWeatherViewModelTest {
     }
 
 
-    @Test
-    fun `updateCityName error`() = runTestViewModelScope {
-        coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
-        val expectedCityTitle = ViewCityTitle(TextMessage.UnknownErrorMessage, TextMessage.UnknownErrorMessage)
+    @Nested
+    inner class updateCityName {
 
-        viewModel.cityTitle.test {
-            viewModel.updateCityName()
+        @Test
+        fun `returns error`() = runTestViewModelScope {
+            coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
+            val expectedCityTitle = ViewCityTitle(TextMessage.UnknownErrorMessage, TextMessage.UnknownErrorMessage)
 
-            val newCityTitle = awaitItem()
+            viewModel.cityTitle.test {
+                viewModel.updateCityName()
 
-            cancel()
+                val newCityTitle = awaitItem()
 
-            coVerifyOnce { cityRepository.getCityWithOrder(eq(viewModel.order)) }
-            assertEquals(expectedCityTitle, newCityTitle)
+                cancel()
+
+                coVerifyOnce { cityRepository.getCityWithOrder(eq(viewModel.order)) }
+                assertEquals(expectedCityTitle, newCityTitle)
+            }
         }
+
+        @Test
+        fun `returns success`() = runTestViewModelScope {
+            val city = City("Name1", mockk(), Country("Country", "CY"))
+            coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Success(city)
+
+            viewModel.cityTitle.test {
+                viewModel.updateCityName()
+
+                val newCityTitle = awaitItem()
+
+                cancel()
+
+                coVerifyOnce { cityRepository.getCityWithOrder(eq(viewModel.order)) }
+                assertEquals(city.name, newCityTitle.city.getMessage(mockk()))
+                assertEquals(city.country.code, newCityTitle.countryCode.getMessage(mockk()))
+            }
+        }
+
     }
 
-    @Test
-    fun `updateCityName success`() = runTestViewModelScope {
-        val city = City("Name1", mockk(), Country("Country", "CY"))
-        coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Success(city)
+    @Nested
+    inner class loadWeather {
 
-        viewModel.cityTitle.test {
-            viewModel.updateCityName()
+        @Test
+        fun `returns error IOException without message then UnknownMessage`() = runTestViewModelScope {
+            coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
 
-            val newCityTitle = awaitItem()
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
 
-            cancel()
+                cancel()
 
-            coVerifyOnce { cityRepository.getCityWithOrder(eq(viewModel.order)) }
-            assertEquals(city.name, newCityTitle.city.getMessage(mockk()))
-            assertEquals(city.country.code, newCityTitle.countryCode.getMessage(mockk()))
+                Assertions.assertSame(TextMessage.UnknownErrorMessage, error)
+            }
         }
-    }
 
+        @Test
+        fun `returns error IOException with message`() = runTestViewModelScope {
+            val message = "Error Message"
+            coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException(message))
 
-    @Test
-    fun `loadWeather error IOException without message then UnknownMessage`() = runTestViewModelScope {
-        coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
+            viewModel.error.test {
+                viewModel.loadWeather()
+                val error = awaitItem()
 
-        viewModel.error.test {
+                cancel()
+
+                assertEquals(message, error.getMessage(mockk()))
+            }
+        }
+
+        @Test
+        fun `returns success`() = runTestViewModelScope {
+            mockConverters(
+                currentHourWeatherConverter,
+                currentDayWeatherConverter,
+                hourWeatherConverter,
+                dailyWeatherConverter
+            )
+            val daysCount = 3
+            val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
+            val city = City("Name1", mockk(), Country("Country", "CY"))
+            coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Success(city)
+            coEvery { weatherRepository.getWeatherFromNow(eq(city.location)) } returns Resource.Success(weather)
+            val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
+            val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
+            val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
+            val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
+            val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
+            val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
+            val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
+            val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
+
             viewModel.loadWeather()
-            val error = awaitItem()
 
-            cancel()
-
-            Assertions.assertSame(TextMessage.UnknownErrorMessage, error)
+            verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
+            coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
+                hourWeatherConverter.convertToView(any(), any())
+            }
+            verifyOnce {
+                currentDayWeatherConverter.convertToView(any())
+                currentHourWeatherConverter.convertToView(any())
+            }
+            assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
+            assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
+            assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
+            assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
         }
-    }
 
-    @Test
-    fun `loadWeather error IOException with message`() = runTestViewModelScope {
-        val message = "Error Message"
-        coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException(message))
-
-        viewModel.error.test {
-            viewModel.loadWeather()
-            val error = awaitItem()
-
-            cancel()
-
-            assertEquals(message, error.getMessage(mockk()))
-        }
-    }
-
-    @Test
-    fun `loadWeather success`() = runTestViewModelScope {
-        mockConverters(
-            currentHourWeatherConverter,
-            currentDayWeatherConverter,
-            hourWeatherConverter,
-            dailyWeatherConverter
-        )
-        val daysCount = 3
-        val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
-        val city = City("Name1", mockk(), Country("Country", "CY"))
-        coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Success(city)
-        coEvery { weatherRepository.getWeatherFromNow(eq(city.location)) } returns Resource.Success(weather)
-        val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
-        val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
-        val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
-        val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
-        val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
-        val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
-        val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
-        val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
-
-        viewModel.loadWeather()
-
-        verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
-        coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
-            hourWeatherConverter.convertToView(any(), any())
-        }
-        verifyOnce {
-            currentDayWeatherConverter.convertToView(any())
-            currentHourWeatherConverter.convertToView(any())
-        }
-        assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
-        assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
-        assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
-        assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
     }
 
 }

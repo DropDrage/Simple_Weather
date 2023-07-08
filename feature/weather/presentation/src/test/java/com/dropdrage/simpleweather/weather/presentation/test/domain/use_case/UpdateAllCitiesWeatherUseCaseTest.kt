@@ -18,6 +18,7 @@ import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
@@ -41,39 +42,44 @@ internal class UpdateAllCitiesWeatherUseCaseTest {
     }
 
 
-    @Test
-    fun `invoke city empty list then nothing`() = runTest {
-        coEvery { cityRepository.getAllCitiesOrdered() } returns emptyList()
+    @Nested
+    inner class invoke {
 
-        updateAllCitiesWeather()
+        @Test
+        fun `city empty list then nothing`() = runTest {
+            coEvery { cityRepository.getAllCitiesOrdered() } returns emptyList()
 
-        coVerifyNever { weatherRepository.updateWeather(any()) }
-        coVerifyOnce { cityRepository.getAllCitiesOrdered() }
-    }
+            updateAllCitiesWeather()
 
-    @Test
-    fun `invoke city filled list then nothing`() = runTest {
-        val allCitiesOrdered = listOf(
-            City("Name", Location(1f, 2f), Country("Country", "CY")),
-            City("Name2", Location(5f, 2f), Country("Country1", "CY")),
-            City("Name3", Location(6f, 4f), Country("Country", "CY")),
-        )
-        coEvery { cityRepository.getAllCitiesOrdered() } returns allCitiesOrdered
-        val updatedLocations = arrayListOf<Location>()
-        coJustRun { weatherRepository.updateWeather(capture(updatedLocations)) }
+            coVerifyNever { weatherRepository.updateWeather(any()) }
+            coVerifyOnce { cityRepository.getAllCitiesOrdered() }
+        }
 
-        updateAllCitiesWeather()
+        @Test
+        fun `city filled list then nothing`() = runTest {
+            val allCitiesOrdered = listOf(
+                City("Name", Location(1f, 2f), Country("Country", "CY")),
+                City("Name2", Location(5f, 2f), Country("Country1", "CY")),
+                City("Name3", Location(6f, 4f), Country("Country", "CY")),
+            )
+            coEvery { cityRepository.getAllCitiesOrdered() } returns allCitiesOrdered
+            val updatedLocations = arrayListOf<Location>()
+            coJustRun { weatherRepository.updateWeather(capture(updatedLocations)) }
 
-        coVerifyOnce { cityRepository.getAllCitiesOrdered() }
-        coVerify(exactly = allCitiesOrdered.size) { weatherRepository.updateWeather(any()) }
-        assertThat(updatedLocations).containsExactlyElementsIn(allCitiesOrdered.map { it.location })
-    }
+            updateAllCitiesWeather()
 
-    @Test
-    fun `invoke throws but not throws it outside`() = runTestWithMockLogE {
-        coEvery { cityRepository.getAllCitiesOrdered() } throws IOException()
+            coVerifyOnce { cityRepository.getAllCitiesOrdered() }
+            coVerify(exactly = allCitiesOrdered.size) { weatherRepository.updateWeather(any()) }
+            assertThat(updatedLocations).containsExactlyElementsIn(allCitiesOrdered.map { it.location })
+        }
 
-        updateAllCitiesWeather()
+        @Test
+        fun `throws but not throws it outside`() = runTestWithMockLogE {
+            coEvery { cityRepository.getAllCitiesOrdered() } throws IOException()
+
+            updateAllCitiesWeather()
+        }
+
     }
 
 }

@@ -34,7 +34,7 @@ ext.configAndroid = { Project project, Closure<Project>... modifiers ->
             minSdk project.minSdk
             targetSdk project.sdk
 
-            resConfigs "en"
+            resourceConfigurations = ['en']
         }
         buildTypes {
             debug {

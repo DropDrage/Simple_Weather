@@ -1,4 +1,4 @@
-androidLibrary(project, component_tests)
+androidLibrary(project, component_android_unitTests)
 
 android {
     namespace 'com.dropdrage.common.data'

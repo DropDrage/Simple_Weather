@@ -4,6 +4,8 @@ apply plugin: 'java-test-fixtures'
 dependencies {
     testFixturesCompileOnly androidLibs.android
 
+    testFixturesImplementation testLibs.junit5
+
     testFixturesImplementation testLibs.mockk
     testFixturesImplementation testLibs.mockk.agent
 

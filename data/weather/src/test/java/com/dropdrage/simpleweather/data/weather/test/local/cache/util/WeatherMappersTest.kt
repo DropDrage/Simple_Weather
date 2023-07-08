@@ -30,6 +30,7 @@ import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -37,17 +38,18 @@ private const val HOURS_IN_DAY = 24
 
 internal class WeatherMappersTest {
 
-    @Test
-    fun `list DayToHourWeather toDomain empty list then throws due to dailyWeather first()`() =
-        mockWeatherUnitsConverter {
+    @Nested
+    inner class `list DayToHourWeather toDomain` {
+
+        @Test
+        fun `empty list then throws NoSuchElementException`() = mockWeatherUnitsConverter {
             val dayToHourWeathers = emptyList<DayToHourWeather>()
 
             assertThrows<NoSuchElementException> { dayToHourWeathers.toDomainWeather() }
         }
 
-    @Test
-    fun `list DayToHourWeather toDomain not empty list with empty hours then success`() =
-        mockWeatherUnitsConverter {
+        @Test
+        fun `not empty list with empty hours then success`() = mockWeatherUnitsConverter {
             val dayToHourWeathers = createList(3) { createDayToHourWeather(0) }
 
             val result = dayToHourWeathers.toDomainWeather()
@@ -65,9 +67,8 @@ internal class WeatherMappersTest {
             }
         }
 
-    @Test
-    fun `list DayToHourWeather toDomain not empty list with not empty hours then success`() =
-        mockWeatherUnitsConverter {
+        @Test
+        fun `not empty list with not empty hours then success`() = mockWeatherUnitsConverter {
             val daysCount = 3
             val hoursCount = 5
             val dayToHourWeathers = createList(daysCount) { createDayToHourWeather(hoursCount) }
@@ -86,90 +87,102 @@ internal class WeatherMappersTest {
             }
         }
 
-    @Test
-    fun `DailyWeatherDto toDayModels empty then success`() = mockWeatherUnitsDeconverter {
-        mockLogW {
-            val dto = createDailyWeatherDto(0)
-            val locationId = 1L
-
-            val result = dto.toDayModels(locationId)
-
-            assertThat(result).isEmpty()
-            verifyNever {
-                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-            }
-        }
     }
 
-    @Test
-    fun `DailyWeatherDto toDayModels filled then success`() = mockWeatherUnitsDeconverter {
-        mockLogW {
-            val daysCount = 5
-            val dto = createDailyWeatherDto(daysCount)
-            val locationId = 1L
+    @Nested
+    inner class `DailyWeatherDto toDayModels` {
 
-            val result = dto.toDayModels(locationId)
+        @Test
+        fun `empty then success`() = mockWeatherUnitsDeconverter {
+            mockLogW {
+                val dto = createDailyWeatherDto(0)
+                val locationId = 1L
 
-            assertThat(result).containsExactlyElementsIn(dailyWeatherDtoToDayModels(dto, locationId))
-            verify(exactly = daysCount * 4) { WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any()) }
-            verify(exactly = daysCount) {
-                WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                val result = dto.toDayModels(locationId)
+
+                assertThat(result).isEmpty()
+                verifyNever {
+                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                }
             }
         }
-    }
 
-    @Test
-    fun `HourlyWeatherDto toHourModels hours empty days filled then success`() = mockWeatherUnitsDeconverter {
-        mockLogW {
-            val daysCount = 5
-            val dto = createHourlyWeatherDto(0)
-            val dayIds = createListIndexed(daysCount) { it.toLong() }
+        @Test
+        fun `filled then success`() = mockWeatherUnitsDeconverter {
+            mockLogW {
+                val daysCount = 5
+                val dto = createDailyWeatherDto(daysCount)
+                val locationId = 1L
 
-            val result = dto.toHourModels(dayIds)
+                val result = dto.toDayModels(locationId)
 
-            assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
-            verifyNever {
-                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
+                assertThat(result).containsExactlyElementsIn(dailyWeatherDtoToDayModels(dto, locationId))
+                verify(exactly = daysCount * 4) { WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any()) }
+                verify(exactly = daysCount) {
+                    WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                }
             }
         }
+
     }
 
-    @Test
-    fun `HourlyWeatherDto toHourModels hours filled days empty then success`() = mockWeatherUnitsDeconverter {
-        mockLogW {
-            val daysCount = 5
-            val hoursCount = daysCount * HOURS_IN_DAY
-            val dto = createHourlyWeatherDto(hoursCount)
-            val dayIds = emptyList<Long>()
+    @Nested
+    inner class `HourlyWeatherDto toHourModels` {
 
-            assertThrows<IndexOutOfBoundsException> { dto.toHourModels(dayIds) }
-        }
-    }
+        @Test
+        fun `hours empty, days filled then success`() = mockWeatherUnitsDeconverter {
+            mockLogW {
+                val daysCount = 5
+                val dto = createHourlyWeatherDto(0)
+                val dayIds = createListIndexed(daysCount) { it.toLong() }
 
-    @Test
-    fun `HourlyWeatherDto toHourModels hours days filled then success`() = mockWeatherUnitsDeconverter {
-        mockLogW {
-            val daysCount = 5
-            val hoursCount = daysCount * HOURS_IN_DAY
-            val dto = createHourlyWeatherDto(hoursCount)
-            val dayIds = createListIndexed(daysCount) { it.toLong() }
+                val result = dto.toHourModels(dayIds)
 
-            val result = dto.toHourModels(dayIds)
-
-            assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
-            verify(exactly = hoursCount) {
-                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
+                assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
+                verifyNever {
+                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
+                }
             }
         }
+
+        @Test
+        fun `hours filled, days empty then success`() = mockWeatherUnitsDeconverter {
+            mockLogW {
+                val daysCount = 5
+                val hoursCount = daysCount * HOURS_IN_DAY
+                val dto = createHourlyWeatherDto(hoursCount)
+                val dayIds = emptyList<Long>()
+
+                assertThrows<IndexOutOfBoundsException> { dto.toHourModels(dayIds) }
+            }
+        }
+
+        @Test
+        fun `hours and days filled then success`() = mockWeatherUnitsDeconverter {
+            mockLogW {
+                val daysCount = 5
+                val hoursCount = daysCount * HOURS_IN_DAY
+                val dto = createHourlyWeatherDto(hoursCount)
+                val dayIds = createListIndexed(daysCount) { it.toLong() }
+
+                val result = dto.toHourModels(dayIds)
+
+                assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
+                verify(exactly = hoursCount) {
+                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                    WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
+                }
+            }
+        }
+
     }
 
     @Test

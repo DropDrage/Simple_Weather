@@ -9,7 +9,7 @@ plugins {
 configAndroid(
     project,
     bundle_uiScreen,
-    component_retrofit, component_tests,
+    component_retrofit, component_android_unitTests,
     buildFeature_buildConfig,
 )
 

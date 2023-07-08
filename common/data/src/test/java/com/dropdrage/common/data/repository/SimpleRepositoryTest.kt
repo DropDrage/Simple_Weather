@@ -1,10 +1,11 @@
 package com.dropdrage.common.data.repository
 
 import com.dropdrage.common.domain.Resource
+import com.dropdrage.test.util.assertInstanceOf
 import com.dropdrage.test.util.mockLogE
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.coroutines.cancellation.CancellationException
@@ -20,32 +21,38 @@ internal class SimpleRepositoryTest {
     }
 
 
-    @Test
-    fun `simplyResourceWrap success`() {
-        val data = Any()
-        val result = repository.simplyResourceWrapFake { data }
+    @Nested
+    inner class simplyResourceWrap {
 
-        assertTrue(result is Resource.Success)
-        assertEquals(data, (result as Resource.Success<Any>).data)
+        @Test
+        fun success() {
+            val data = Any()
+            val result = repository.simplyResourceWrapFake { data }
+
+            assertInstanceOf<Resource.Success<Any>>(result)
+            assertEquals(data, result.data)
+        }
+
+        @Test
+        fun `throws CancellationException`() {
+            assertThrows<CancellationException> { repository.simplyResourceWrapFake { throw CancellationException() } }
+        }
+
+        @Test
+        fun `throws Exception`() = mockLogE {
+            val exception = Exception()
+
+            val result = repository.simplyResourceWrapFake { throw exception }
+
+            assertInstanceOf<Resource.Error<Any>>(result)
+            assertEquals(exception, result.exception)
+        }
+
     }
 
-    @Test
-    fun `simplyResourceWrap throws CancellationException`() {
-        assertThrows<CancellationException> { repository.simplyResourceWrapFake { throw CancellationException() } }
+
+    private class FakeSimpleRepository<T>(tag: String) : SimpleRepository<T>(tag) {
+        fun simplyResourceWrapFake(tryGetData: () -> T): Resource<T> = simplyResourceWrap(tryGetData)
     }
 
-    @Test
-    fun `simplyResourceWrap throws Exception`() = mockLogE {
-        val exception = Exception()
-
-        val result = repository.simplyResourceWrapFake { throw exception }
-
-        assertTrue(result is Resource.Error)
-        assertEquals(exception, (result as Resource.Error).exception)
-    }
-
-}
-
-private class FakeSimpleRepository<T>(tag: String) : SimpleRepository<T>(tag) {
-    fun simplyResourceWrapFake(tryGetData: () -> T): Resource<T> = simplyResourceWrap(tryGetData)
 }

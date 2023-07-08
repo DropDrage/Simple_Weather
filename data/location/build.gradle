@@ -1,6 +1,6 @@
 androidLibrary(
     project,
-    component_android_hilt, component_tests,
+    component_android_hilt, component_android_unitTests,
 )
 
 android {

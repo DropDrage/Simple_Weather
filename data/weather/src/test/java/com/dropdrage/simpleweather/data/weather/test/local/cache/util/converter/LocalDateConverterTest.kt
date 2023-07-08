@@ -3,44 +3,54 @@ package com.dropdrage.simpleweather.data.weather.test.local.cache.util.converter
 import com.dropdrage.simpleweather.data.weather.local.cache.util.converter.LocalDateConverter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 internal class LocalDateConverterTest {
 
-    @Test
-    fun `fromLocalDate null`() {
-        val result = LocalDateConverter.fromLocalDate(null)
+    @Nested
+    inner class fromLocalDate {
 
-        assertNull(result)
+        @Test
+        fun `input null then returns null`() {
+            val result = LocalDateConverter.fromLocalDate(null)
+
+            assertNull(result)
+        }
+
+        @Test
+        fun `input not null then returns days`() {
+            val epochDay = 50L
+            val date = LocalDate.ofEpochDay(epochDay)
+
+            val result = LocalDateConverter.fromLocalDate(date)
+
+            assertEquals(epochDay, result)
+        }
+
     }
 
-    @Test
-    fun `fromLocalDate not null returns days`() {
-        val epochDay = 50L
-        val date = LocalDate.ofEpochDay(epochDay)
+    @Nested
+    inner class toLocalDate {
 
-        val result = LocalDateConverter.fromLocalDate(date)
+        @Test
+        fun `input null then returns null`() {
+            val result = LocalDateConverter.toLocalDate(null)
 
-        assertEquals(epochDay, result)
-    }
+            assertNull(result)
+        }
 
+        @Test
+        fun `input not null then returns days`() {
+            val epochDay = 50L
+            val date = LocalDate.ofEpochDay(epochDay)
 
-    @Test
-    fun `toLocalDate null`() {
-        val result = LocalDateConverter.toLocalDate(null)
+            val result = LocalDateConverter.toLocalDate(epochDay)
 
-        assertNull(result)
-    }
+            assertEquals(date, result)
+        }
 
-    @Test
-    fun `toLocalDate not null returns days`() {
-        val epochDay = 50L
-        val date = LocalDate.ofEpochDay(epochDay)
-
-        val result = LocalDateConverter.toLocalDate(epochDay)
-
-        assertEquals(date, result)
     }
 
 }
