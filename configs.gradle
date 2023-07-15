@@ -1,6 +1,6 @@
 def javaVersion = JavaVersion.VERSION_17
 
-ext.kotlinLibrary = { Project project ->
+ext.library_kotlin = { Project project ->
     project.apply plugin: 'java-library'
     project.apply plugin: 'org.jetbrains.kotlin.jvm'
     project.apply plugin: 'com.android.lint'
@@ -12,11 +12,11 @@ ext.kotlinLibrary = { Project project ->
 }
 
 
-ext.androidLibrary = { Project project, Closure<Project>... modifiers ->
+ext.library_android = { Project project, Closure<Project>... modifiers ->
     project.apply plugin: 'com.android.library'
     project.apply plugin: 'org.jetbrains.kotlin.android'
 
-    configAndroid(project, modifiers)
+    config_android(project, modifiers)
 
     project.android {
         defaultConfig {
@@ -25,7 +25,7 @@ ext.androidLibrary = { Project project, Closure<Project>... modifiers ->
     }
 }
 
-ext.configAndroid = { Project project, Closure<Project>... modifiers ->
+ext.config_android = { Project project, Closure<Project>... modifiers ->
     project.android {
         compileSdk sdk
         buildToolsVersion buildTools

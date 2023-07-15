@@ -4,6 +4,7 @@ ext.component_retrofit = { Project project ->
         implementation networkLibs.moshi.kotlin
     }
 }
+
 ext.component_android_unitTests = { Project project ->
     project.android {
         testOptions.unitTests.all {

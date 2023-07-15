@@ -1,4 +1,4 @@
-kotlinLibrary(project)
+library_kotlin(project)
 
 dependencies {
     implementation kotlinLibs.coroutines

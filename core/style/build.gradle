@@ -1,4 +1,4 @@
-androidLibrary(project)
+library_android(project)
 
 android {
     namespace 'com.dropdrage.simpleweather.core.style'

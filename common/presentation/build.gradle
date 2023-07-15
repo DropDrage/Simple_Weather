@@ -1,4 +1,4 @@
-androidLibrary(
+library_android(
     project,
     buildFeature_resValues,
 )

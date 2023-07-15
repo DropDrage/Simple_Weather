@@ -1,4 +1,4 @@
-androidLibrary(
+library_android(
     project,
     bundle_uiScreen,
     component_android_unitTests,

@@ -1,4 +1,4 @@
-androidLibrary(project)
+library_android(project)
 
 android {
     namespace 'com.dropdrage.common.build_config_checks'

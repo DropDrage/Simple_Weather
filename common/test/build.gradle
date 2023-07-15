@@ -1,4 +1,4 @@
-kotlinLibrary(project)
+library_kotlin(project)
 
 apply plugin: 'java-test-fixtures'
 

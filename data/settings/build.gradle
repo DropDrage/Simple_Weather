@@ -1,4 +1,4 @@
-androidLibrary(
+library_android(
     project,
     component_android_unitTests,
     buildFeature_resValues
