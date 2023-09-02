@@ -1,0 +1,38 @@
+[versions]
+lifecycle = '2.6.1'
+hiltWork = '1.0.0'
+
+[libraries]
+androidx-core = 'androidx.core:core-ktx:1.10.1'
+androidx-annotation = 'androidx.annotation:annotation:1.6.0'
+androidx-constraintlayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
+androidx-fragment = 'androidx.fragment:fragment-ktx:1.6.1'
+android-material = 'com.google.android.material:material:1.9.0'
+
+android-minified = 'com.google.android:android:4.1.1.4'
+
+lifecycle-runtime = { module = 'androidx.lifecycle:lifecycle-runtime-ktx', version.ref = 'lifecycle' }
+lifecycle-viewmodel = { module = 'androidx.lifecycle:lifecycle-viewmodel-ktx', version.ref = 'lifecycle' }
+
+navigation-fragment = { module = 'androidx.navigation:navigation-fragment-ktx', version.ref = 'navigation' }
+navigation-ui = { module = 'androidx.navigation:navigation-ui-ktx', version.ref = 'navigation' }
+
+hilt-android = { module = 'com.google.dagger:hilt-android', version.ref = 'hilt' }
+hilt-compiler = { module = 'com.google.dagger:hilt-compiler', version.ref = 'hilt' }
+hilt-gradle-plugin = { module = 'com.google.dagger:hilt-android-gradle-plugin', version.ref = 'hilt' }
+
+hilt-work-core = { module = 'androidx.hilt:hilt-work', version.ref = 'hiltWork' }
+hilt-work-compiler = { module = 'androidx.hilt:hilt-compiler', version.ref = 'hiltWork' }
+
+work = 'androidx.work:work-runtime-ktx:2.8.1'
+
+services-location = 'com.google.android.gms:play-services-location:21.0.1'
+services-play-coroutines = { module = 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services', version.ref = 'coroutines' }
+
+viewBinding = 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9'
+
+collapsingtoolbarlayoutSubtitle = 'com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.5.0'
+
+[bundles]
+ui-core = ['androidx-core', 'android-material']
+location = ['services-location', 'services-play-coroutines']

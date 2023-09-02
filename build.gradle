@@ -7,10 +7,10 @@ plugins {
     alias(buildLibs.plugins.ksp) apply false
 
     alias(buildLibs.plugins.hilt) apply false
-    alias(buildLibs.plugins.navigation.safeargs) apply false
+    alias(buildLibs.plugins.navigationSafeargs) apply false
     alias(testLibs.plugins.junit5.android) apply false
 
-    alias(buildLibs.plugins.gradle.versions)
+    alias(buildLibs.plugins.gradleVersions)
 }
 
 apply from: 'buildFeatures.gradle'
@@ -19,9 +19,9 @@ apply from: 'configs.gradle'
 apply from: 'bundles.gradle'
 
 ext {
-    sdk = 33
+    sdk = 34
     minSdk = 26
-    buildTools = '33.0.1'
+    buildTools = '34.0.0'
 
     versionCode = 1
     versionName = '1.0'

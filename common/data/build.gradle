@@ -8,8 +8,8 @@ android {
 }
 
 dependencies {
-    implementation androidLibs.room.common
     implementation kotlinLibs.coroutines
+    implementation localStorageLibs.room.common
 
     implementation project(':common:domain')
 

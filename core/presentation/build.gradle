@@ -11,7 +11,7 @@ android {
 dependencies {
     implementation androidLibs.androidx.fragment
     implementation androidLibs.android.material
-    implementation androidLibs.hilt
+    implementation androidLibs.hilt.android
 
     implementation project(':core:domain')
     implementation project(':data:settings')

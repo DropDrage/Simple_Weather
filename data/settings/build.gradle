@@ -11,8 +11,8 @@ android {
 dependencies {
     implementation androidLibs.androidx.annotation
 
-    api androidLibs.kotpref
-    implementation androidLibs.kotpref.enum
+    api localStorageLibs.kotpref.core
+    implementation localStorageLibs.kotpref.enum
 
     implementation project(':common:build_config_checks')
 

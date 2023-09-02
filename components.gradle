@@ -1,6 +1,6 @@
 ext.component_retrofit = { Project project ->
     project.dependencies {
-        implementation networkLibs.retrofit
+        implementation networkLibs.retrofit.core
         implementation networkLibs.moshi.kotlin
     }
 }
@@ -29,7 +29,7 @@ ext.component_android_hilt = { Project project ->
     project.apply plugin: 'com.google.dagger.hilt.android'
 
     project.dependencies {
-        implementation androidLibs.hilt
+        implementation androidLibs.hilt.android
         kapt androidLibs.hilt.compiler
     }
 }
@@ -37,8 +37,8 @@ ext.component_android_room = { Project project ->
     project.apply plugin: 'com.google.devtools.ksp'
 
     project.dependencies {
-        implementation androidLibs.bundles.room
-        ksp androidLibs.room.compiler
+        implementation localStorageLibs.bundles.room
+        ksp localStorageLibs.room.compiler
     }
 }
 ext.component_android_test = { Project project ->
