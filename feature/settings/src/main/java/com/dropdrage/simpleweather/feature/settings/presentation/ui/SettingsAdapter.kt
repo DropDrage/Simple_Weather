@@ -3,14 +3,14 @@ package com.dropdrage.simpleweather.feature.settings.presentation.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dropdrage.adapters.OnItemClickListener
-import com.dropdrage.adapters.simple.SimpleRecyclerListAdapter
+import com.dropdrage.adapters.simple.SimpleRecyclerAdapter
 import com.dropdrage.simpleweather.feature.settings.databinding.ItemSettingBinding
 import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewSetting
 
 internal class SettingsAdapter(
     settings: List<ViewSetting>,
     private val openSettingChangeDialog: OnItemClickListener<ViewSetting>,
-) : SimpleRecyclerListAdapter<ViewSetting, SettingsViewHolder>() {
+) : SimpleRecyclerAdapter<ViewSetting, SettingsViewHolder>() {
 
     init {
         values = settings

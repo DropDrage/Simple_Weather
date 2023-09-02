@@ -170,49 +170,49 @@ internal class SettingsViewModelTest {
         every { weatherUnitConverter.convertToViewSetting(any()) } answers {
             val unit = firstArg<WeatherUnit>()
             val viewUnit = convertToSetting(unit)
-            ViewSetting(viewUnit.unitResId.toString(), viewUnit.unitResId.toString() + " Value", viewUnit.values)
+            ViewSetting(viewUnit.unitResId.toString(), "${viewUnit.unitResId} Value", viewUnit.values)
         }
         every { generalFormatConverter.convertToViewSetting(any()) } answers {
             val unit = firstArg<GeneralFormat>()
             val viewUnit = convertToSetting(unit)
-            ViewSetting(viewUnit.unitResId.toString(), viewUnit.unitResId.toString() + " Value", viewUnit.values)
+            ViewSetting(viewUnit.unitResId.toString(), "${viewUnit.unitResId} Value", viewUnit.values)
         }
     }
 
     private fun createListOfAllViewSettings() = listOf(
         ViewSetting(
             ViewTemperatureUnit.CELSIUS.unitResId.toString(),
-            ViewTemperatureUnit.CELSIUS.unitResId.toString() + " Value",
+            "${ViewTemperatureUnit.CELSIUS.unitResId} Value",
             ViewTemperatureUnit.CELSIUS.values
         ),
         ViewSetting(
             ViewPressureUnit.MM_HG.unitResId.toString(),
-            ViewPressureUnit.MM_HG.unitResId.toString() + " Value",
+            "${ViewPressureUnit.MM_HG.unitResId} Value",
             ViewPressureUnit.MM_HG.values
         ),
         ViewSetting(
             ViewWindSpeedUnit.KM_H.unitResId.toString(),
-            ViewWindSpeedUnit.KM_H.unitResId.toString() + " Value",
+            "${ViewWindSpeedUnit.KM_H.unitResId} Value",
             ViewWindSpeedUnit.KM_H.values
         ),
         ViewSetting(
             ViewVisibilityUnit.K_METER.unitResId.toString(),
-            ViewVisibilityUnit.K_METER.unitResId.toString() + " Value",
+            "${ViewVisibilityUnit.K_METER.unitResId} Value",
             ViewVisibilityUnit.K_METER.values
         ),
         ViewSetting(
             ViewPrecipitationUnit.MM.unitResId.toString(),
-            ViewPrecipitationUnit.MM.unitResId.toString() + " Value",
+            "${ViewPrecipitationUnit.MM.unitResId} Value",
             ViewPrecipitationUnit.MM.values
         ),
         ViewSetting(
             ViewTimeFormat.H_24.unitResId.toString(),
-            ViewTimeFormat.H_24.unitResId.toString() + " Value",
+            "${ViewTimeFormat.H_24.unitResId} Value",
             ViewTimeFormat.H_24.values
         ),
         ViewSetting(
             ViewDateFormat.STRAIGHT.unitResId.toString(),
-            ViewDateFormat.STRAIGHT.unitResId.toString() + " Value",
+            "${ViewDateFormat.STRAIGHT.unitResId} Value",
             ViewDateFormat.STRAIGHT.values
         )
     )
@@ -250,12 +250,12 @@ internal class SettingsViewModelTest {
         slots: Map<KClass<out T>, CapturingSlot<out T>>,
     ) {
         val expectedUnitClass = expectedFormat::class
-        slots.forEach { entry ->
-            if (entry.key != expectedUnitClass) {
-                assertFalse(entry.value.isCaptured)
+        slots.forEach { (key, value) ->
+            if (key != expectedUnitClass) {
+                assertFalse(value.isCaptured)
             } else {
-                assertTrue(entry.value.isCaptured)
-                assertEquals(expectedFormat, entry.value.captured)
+                assertTrue(value.isCaptured)
+                assertEquals(expectedFormat, value.captured)
             }
         }
     }
@@ -271,7 +271,7 @@ internal class SettingsViewModelTest {
             Kotpref.init(mockk {
                 justMock({ applicationContext }) {
                     justMock({ applicationContext }) {
-                        every { getSharedPreferences(any(), any()) } returns mockk(relaxed = true)
+                        justMock(relaxed = true) { getSharedPreferences(any(), any()) }
                     }
                 }
             })

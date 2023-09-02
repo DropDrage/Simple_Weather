@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 internal class SettingChangeViewModel : ViewModel() {
 
-    private val _selectedSetting = MutableSharedFlow<AnySetting>()
+    private val _selectedSetting = MutableSharedFlow<AnySetting>(replay = 1)
     val selectedSetting: Flow<AnySetting> = _selectedSetting.asSharedFlow()
 
     private val _title = MutableStateFlow("")

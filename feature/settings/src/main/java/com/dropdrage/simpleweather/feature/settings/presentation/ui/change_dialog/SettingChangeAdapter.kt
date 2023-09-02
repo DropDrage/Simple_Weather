@@ -3,16 +3,16 @@ package com.dropdrage.simpleweather.feature.settings.presentation.ui.change_dial
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dropdrage.adapters.OnItemClickListener
-import com.dropdrage.adapters.simple.SimpleRecyclerListAdapter
+import com.dropdrage.adapters.simple.SimpleRecyclerAdapter
 import com.dropdrage.simpleweather.feature.settings.databinding.ItemSettingChangeBinding
 import com.dropdrage.simpleweather.feature.settings.presentation.model.AnySetting
 import kotlin.properties.Delegates
 
 internal class SettingChangeAdapter(private val onSettingClickListener: OnItemClickListener<AnySetting>) :
-    SimpleRecyclerListAdapter<AnySetting, SettingChangeViewHolder>() {
+    SimpleRecyclerAdapter<AnySetting, SettingChangeViewHolder>() {
 
     var selectedSetting: AnySetting? by Delegates.observable(null) { _, _, _ ->
-        values = values.toList()
+        notifyDataSetChanged()
     }
 
 

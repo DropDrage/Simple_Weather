@@ -103,7 +103,8 @@ inline fun runTestWithMockLooper(crossinline block: suspend () -> Unit) = runTes
 }
 
 
-inline fun <reified T : Any> justMock(noinline block: MockKMatcherScope.() -> T) = every(block) returns mockk()
+inline fun <reified T : Any> justMock(relaxed: Boolean = false, noinline block: MockKMatcherScope.() -> T) =
+    every(block) returns mockk(relaxed = relaxed)
 
 inline fun <reified T : Any> justMock(noinline block: MockKMatcherScope.() -> T, mockInit: T.() -> Unit = {}) =
     every(block) returns mockk(block = mockInit)

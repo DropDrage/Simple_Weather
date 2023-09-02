@@ -6,7 +6,7 @@ import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.properties.Delegates
 
-abstract class SimpleRecyclerListAdapter<T, VH : SimpleViewHolder<T, *>> : RecyclerView.Adapter<VH>() {
+abstract class SimpleRecyclerAdapter<T, VH : SimpleViewHolder<T, *>> : RecyclerView.Adapter<VH>() {
 
     var values: List<T> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()

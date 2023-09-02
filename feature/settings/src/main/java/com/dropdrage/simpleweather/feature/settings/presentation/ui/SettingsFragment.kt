@@ -42,7 +42,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private fun onSettingChanged(setting: AnySetting) {
         viewModel.changeSetting(setting)
         dialogViewModel.setSelectedSetting(setting)
-        settingsChangeDialog.dismiss()
+        binding.root.post { settingsChangeDialog.dismiss() }
     }
 
     private fun initSettingsList() = binding.settingsList.implicitAccess {
