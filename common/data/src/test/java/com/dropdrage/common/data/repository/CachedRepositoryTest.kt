@@ -2,8 +2,8 @@ package com.dropdrage.common.data.repository
 
 import com.dropdrage.common.data.LocalResource
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.test.util.assertInstanceOf
-import com.dropdrage.test.util.runTestWithMockLogE
+import com.dropdrage.common.test.util.assertInstanceOf
+import com.dropdrage.common.test.util.runTestWithMockLogE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.CancellationException

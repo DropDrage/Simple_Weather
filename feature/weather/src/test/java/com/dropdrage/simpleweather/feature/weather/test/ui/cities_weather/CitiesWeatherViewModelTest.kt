@@ -1,12 +1,12 @@
 package com.dropdrage.simpleweather.feature.weather.test.ui.cities_weather
 
 import app.cash.turbine.test
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.CityRepository
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.runTestViewModelScope
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
 import com.dropdrage.simpleweather.feature.weather.domain.use_case.UpdateAllCitiesWeatherUseCase
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesWeatherViewModel
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.runTestViewModelScope
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun

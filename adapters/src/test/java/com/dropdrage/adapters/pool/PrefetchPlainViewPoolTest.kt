@@ -1,9 +1,9 @@
 package com.dropdrage.adapters.pool
 
 import androidx.recyclerview.widget.RecyclerView
-import com.dropdrage.test.util.mockLooper
-import com.dropdrage.test.util.verifyNever
-import com.dropdrage.test.util.verifyOnce
+import com.dropdrage.common.test.util.mockLooper
+import com.dropdrage.common.test.util.verifyNever
+import com.dropdrage.common.test.util.verifyOnce
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

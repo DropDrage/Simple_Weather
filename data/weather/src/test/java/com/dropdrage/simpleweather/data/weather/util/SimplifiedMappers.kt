@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.data.weather.util
 
 import com.dropdrage.simpleweather.data.weather.local.cache.relation.DayToHourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.Weather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
 
 internal fun List<DayToHourWeather>.simplyToDomainWeather() = Weather(map(DayToHourWeather::simplyToDayWeather))
 

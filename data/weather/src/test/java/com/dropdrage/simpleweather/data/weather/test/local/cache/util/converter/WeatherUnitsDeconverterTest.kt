@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.weather.test.local.cache.util.converter
 
+import com.dropdrage.common.test.util.mockLogW
 import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
 import com.dropdrage.simpleweather.data.settings.PressureUnit
 import com.dropdrage.simpleweather.data.settings.TemperatureUnit
@@ -17,7 +18,6 @@ import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModi
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_KM_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.METER_TO_MILE_DIVIDER
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConversionModifiers.MM_TO_INCH_DIVIDER
-import com.dropdrage.test.util.mockLogW
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkObject

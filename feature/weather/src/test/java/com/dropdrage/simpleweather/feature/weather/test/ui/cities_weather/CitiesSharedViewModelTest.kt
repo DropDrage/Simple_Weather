@@ -2,11 +2,11 @@ package com.dropdrage.simpleweather.feature.weather.test.ui.cities_weather
 
 import app.cash.turbine.test
 import com.dropdrage.adapters.pool.PrefetchPlainViewPool
+import com.dropdrage.common.test.util.justMock
+import com.dropdrage.common.test.util.runTestViewModelScope
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesSharedViewModel
-import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.runTestViewModelScope
-import com.dropdrage.test.util.verifyOnce
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk

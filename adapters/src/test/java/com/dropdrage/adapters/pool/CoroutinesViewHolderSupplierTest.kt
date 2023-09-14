@@ -4,9 +4,9 @@ import android.os.Handler
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.dropdrage.test.util.mockLogW
-import com.dropdrage.test.util.mockLooper
-import com.dropdrage.test.util.verifyNever
+import com.dropdrage.common.test.util.mockLogW
+import com.dropdrage.common.test.util.mockLooper
+import com.dropdrage.common.test.util.verifyNever
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK

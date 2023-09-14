@@ -4,10 +4,10 @@ import android.icu.util.LocaleData
 import android.icu.util.ULocale
 import android.text.format.DateFormat
 import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
+import com.dropdrage.common.test.util.justMock
+import com.dropdrage.common.test.util.setStaticFields
 import com.dropdrage.simpleweather.data.settings.util.isDateFormatStraight
 import com.dropdrage.simpleweather.data.settings.util.isLocaleMetric
-import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.setStaticFields
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

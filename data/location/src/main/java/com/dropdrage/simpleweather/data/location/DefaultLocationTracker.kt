@@ -11,8 +11,8 @@ import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
 import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
 import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
-import com.dropdrage.simpleweather.weather.domain.location.LocationResult
-import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationTracker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.Priority

@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.feature.weather.util
 
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.CurrentDayWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.CurrentHourWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.HourWeatherConverter
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
 import io.mockk.every
 
 internal fun mockConverters(

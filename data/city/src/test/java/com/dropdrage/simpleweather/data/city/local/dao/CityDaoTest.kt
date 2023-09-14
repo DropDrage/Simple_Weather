@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.data.city.local.dao
 
-import com.dropdrage.simpleweather.city.domain.Country
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.coVerifyTwice
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.coVerifyTwice
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun

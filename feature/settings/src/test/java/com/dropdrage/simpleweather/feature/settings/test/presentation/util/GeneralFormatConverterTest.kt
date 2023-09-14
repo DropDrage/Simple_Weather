@@ -1,6 +1,9 @@
 package com.dropdrage.simpleweather.feature.settings.test.presentation.util
 
 import android.content.Context
+import com.dropdrage.common.test.util.justArgToString
+import com.dropdrage.common.test.util.verifyOnce
+import com.dropdrage.common.test.util.verifyTwice
 import com.dropdrage.simpleweather.data.settings.DateFormat
 import com.dropdrage.simpleweather.data.settings.GeneralFormat
 import com.dropdrage.simpleweather.data.settings.TimeFormat
@@ -10,9 +13,6 @@ import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewSetti
 import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewTimeFormat
 import com.dropdrage.simpleweather.feature.settings.presentation.util.GeneralFormatConverter
 import com.dropdrage.simpleweather.feature.settings.util.matchEnumsAsArguments
-import com.dropdrage.test.util.justArgToString
-import com.dropdrage.test.util.verifyOnce
-import com.dropdrage.test.util.verifyTwice
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals

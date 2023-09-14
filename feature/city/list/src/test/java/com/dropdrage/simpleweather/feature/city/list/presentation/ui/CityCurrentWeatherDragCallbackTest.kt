@@ -3,10 +3,10 @@ package com.dropdrage.simpleweather.feature.city.list.presentation.ui
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.dropdrage.common.test.util.verifyNever
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.city.list.presentation.utils.DragListener
 import com.dropdrage.simpleweather.feature.city.list.presentation.utils.ItemsMovable
-import com.dropdrage.test.util.verifyNever
-import com.dropdrage.test.util.verifyOnce
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

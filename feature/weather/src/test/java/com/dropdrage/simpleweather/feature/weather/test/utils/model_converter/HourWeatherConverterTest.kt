@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.feature.weather.test.utils.model_converter
 
+import com.dropdrage.common.test.util.justArgToString
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.util.createHourWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewHourWeather
-import com.dropdrage.test.util.justArgToString
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

@@ -2,16 +2,16 @@ package com.dropdrage.simpleweather.feature.settings.test.presentation.ui
 
 import app.cash.turbine.test
 import com.chibatching.kotpref.Kotpref
+import com.dropdrage.common.test.util.justArgToString
+import com.dropdrage.common.test.util.justCallOriginal
+import com.dropdrage.common.test.util.justMock
+import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.data.settings.*
 import com.dropdrage.simpleweather.feature.settings.presentation.model.*
 import com.dropdrage.simpleweather.feature.settings.presentation.ui.SettingsViewModel
 import com.dropdrage.simpleweather.feature.settings.presentation.util.GeneralFormatConverter
 import com.dropdrage.simpleweather.feature.settings.presentation.util.WeatherUnitConverter
 import com.dropdrage.simpleweather.feature.settings.util.matchEnumsAsArguments
-import com.dropdrage.test.util.justArgToString
-import com.dropdrage.test.util.justCallOriginal
-import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.runTestViewModelScope
 import com.google.common.truth.Truth.assertThat
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

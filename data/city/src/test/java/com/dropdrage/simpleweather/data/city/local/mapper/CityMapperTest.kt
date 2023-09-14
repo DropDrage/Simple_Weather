@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.data.city.local.mapper
 
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toModel
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.jupiter.api.Test

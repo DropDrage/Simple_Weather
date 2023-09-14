@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.feature.settings.test.presentation.ui.change_dialog
 
 import app.cash.turbine.test
+import com.dropdrage.common.test.util.runTestViewModelScope
+import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
 import com.dropdrage.simpleweather.feature.settings.presentation.model.AnySetting
 import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewTemperatureUnit
 import com.dropdrage.simpleweather.feature.settings.presentation.ui.change_dialog.SettingChangeViewModel
-import com.dropdrage.test.util.runTestViewModelScope
-import com.dropdrage.test.util.runTestViewModelScopeAndTurbine
 import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals

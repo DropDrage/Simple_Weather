@@ -10,10 +10,10 @@ import com.dropdrage.simpleweather.data.weather.remote.DailyWeatherDto
 import com.dropdrage.simpleweather.data.weather.remote.HourlyWeatherDto
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConverter
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather as DomainCurrentWeather
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather as DomainDayWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather as DomainHourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.Weather as DomainWeather
+import com.dropdrage.simpleweather.feature.city.list.domain.weather.CurrentWeather as DomainCurrentWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather as DomainDayWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather as DomainHourWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather as DomainWeather
 
 private const val HOURS_IN_DAY = 24
 

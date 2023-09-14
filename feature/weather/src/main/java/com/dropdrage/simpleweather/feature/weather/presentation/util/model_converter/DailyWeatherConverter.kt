@@ -3,10 +3,10 @@ package com.dropdrage.simpleweather.feature.weather.presentation.util.model_conv
 import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewDayWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.DateFormatter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.DayNameFormat
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
 import java.time.LocalDate
 import javax.inject.Inject
 

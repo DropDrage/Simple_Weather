@@ -2,9 +2,9 @@ package com.dropdrage.simpleweather.feature.weather.test.utils.extension
 
 import android.content.Context
 import android.widget.ImageView
+import com.dropdrage.common.test.util.justArgToString
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.feature.weather.presentation.util.extension.setWeather
-import com.dropdrage.test.util.justArgToString
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk

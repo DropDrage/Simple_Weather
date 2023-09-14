@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city.domain.CityRepository
-import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.feature.city.search.presentation.model.ViewCitySearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview

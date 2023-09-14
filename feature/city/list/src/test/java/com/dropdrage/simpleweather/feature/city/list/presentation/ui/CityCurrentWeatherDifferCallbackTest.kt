@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.feature.city.list.presentation.ui
 
+import com.dropdrage.common.test.util.verifyNever
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCurrentWeather
-import com.dropdrage.test.util.verifyNever
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

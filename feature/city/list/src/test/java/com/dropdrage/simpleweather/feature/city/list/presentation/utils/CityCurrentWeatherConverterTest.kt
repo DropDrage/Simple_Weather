@@ -1,18 +1,18 @@
 package com.dropdrage.simpleweather.feature.city.list.presentation.utils
 
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
+import com.dropdrage.common.test.util.justArgToString
+import com.dropdrage.common.test.util.verifyNever
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.dropdrage.simpleweather.feature.city.list.domain.CityCurrentWeather
+import com.dropdrage.simpleweather.feature.city.list.domain.weather.CurrentWeather
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCurrentWeather
-import com.dropdrage.test.util.justArgToString
-import com.dropdrage.test.util.verifyNever
-import com.dropdrage.test.util.verifyOnce
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

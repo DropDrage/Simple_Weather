@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.data.weather.util
 
+import com.dropdrage.common.test.util.createList
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.weather.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
@@ -7,7 +8,6 @@ import com.dropdrage.simpleweather.data.weather.local.cache.model.TemperatureRan
 import com.dropdrage.simpleweather.data.weather.local.cache.relation.DayToHourWeather
 import com.dropdrage.simpleweather.data.weather.remote.DailyWeatherDto
 import com.dropdrage.simpleweather.data.weather.remote.HourlyWeatherDto
-import com.dropdrage.test.util.createList
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.random.Random

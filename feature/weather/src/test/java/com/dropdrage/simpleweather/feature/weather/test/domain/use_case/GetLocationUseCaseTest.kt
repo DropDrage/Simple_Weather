@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.feature.weather.test.domain.use_case
 
+import com.dropdrage.common.test.util.coVerifyNever
+import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationTracker
 import com.dropdrage.simpleweather.feature.weather.domain.use_case.GetLocationUseCase
-import com.dropdrage.simpleweather.weather.domain.location.LocationResult
-import com.dropdrage.simpleweather.weather.domain.location.LocationTracker
-import com.dropdrage.test.util.coVerifyNever
-import com.dropdrage.test.util.coVerifyOnce
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

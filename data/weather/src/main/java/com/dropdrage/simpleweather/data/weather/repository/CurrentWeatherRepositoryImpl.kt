@@ -2,8 +2,6 @@ package com.dropdrage.simpleweather.data.weather.repository
 
 import android.util.Log
 import com.dropdrage.common.data.LocalResource
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeatherRepository
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.util.LogTags
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
@@ -14,6 +12,8 @@ import com.dropdrage.simpleweather.data.weather.local.cache.util.LocalDateTimeUt
 import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toDomain
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.remote.toDomainCurrentWeather
+import com.dropdrage.simpleweather.feature.city.list.domain.weather.CurrentWeather
+import com.dropdrage.simpleweather.feature.city.list.domain.weather.CurrentWeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

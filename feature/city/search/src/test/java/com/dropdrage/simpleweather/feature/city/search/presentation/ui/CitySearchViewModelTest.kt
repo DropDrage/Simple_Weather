@@ -2,15 +2,15 @@ package com.dropdrage.simpleweather.feature.city.search.presentation.ui
 
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.CityRepository
-import com.dropdrage.simpleweather.city.domain.Country
-import com.dropdrage.simpleweather.city_search.domain.CitySearchRepository
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.mockLogE
+import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.domain.Country
+import com.dropdrage.simpleweather.feature.city.search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.feature.city.search.presentation.model.ViewCitySearchResult
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.mockLogE
-import com.dropdrage.test.util.runTestViewModelScope
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.coJustRun

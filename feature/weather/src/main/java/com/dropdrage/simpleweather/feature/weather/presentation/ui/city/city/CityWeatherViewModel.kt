@@ -4,14 +4,14 @@ import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.common.presentation.util.toTextMessage
 import com.dropdrage.common.presentation.util.toTextMessageOrUnknownErrorMessage
-import com.dropdrage.simpleweather.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.weather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.city.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.CurrentDayWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.CurrentHourWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.DailyWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.HourWeatherConverter
-import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
