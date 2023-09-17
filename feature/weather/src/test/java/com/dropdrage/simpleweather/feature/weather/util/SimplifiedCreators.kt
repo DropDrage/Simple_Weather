@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.feature.weather.util
 
 import com.dropdrage.common.domain.Range
+import com.dropdrage.common.test.util.createListIndexed
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
-import com.dropdrage.test.util.createListIndexed
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import java.time.LocalDateTime
 import kotlin.random.Random
 

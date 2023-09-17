@@ -2,10 +2,10 @@ package com.dropdrage.simpleweather.data.util
 
 import androidx.work.ListenableWorker.*
 import androidx.work.WorkManager
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.justMock
+import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.runTestWithMockLogE
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

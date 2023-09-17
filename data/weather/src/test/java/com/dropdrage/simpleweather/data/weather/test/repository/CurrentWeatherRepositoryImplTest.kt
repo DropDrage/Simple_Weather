@@ -1,6 +1,9 @@
 package com.dropdrage.simpleweather.data.weather.test.repository
 
-import com.dropdrage.simpleweather.city_list.domain.weather.CurrentWeather
+import com.dropdrage.common.test.util.coVerifyNever
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.createList
+import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.settings.TemperatureUnit
@@ -13,10 +16,7 @@ import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.repository.CurrentWeatherRepositoryImpl
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 import com.dropdrage.simpleweather.data.weather.utils.WeatherUnitsConverter
-import com.dropdrage.test.util.coVerifyNever
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.createList
-import com.dropdrage.test.util.runTestWithMockLogE
+import com.dropdrage.simpleweather.feature.city.list.domain.weather.CurrentWeather
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify

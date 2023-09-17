@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.data.weather.test.local.cache.dao
 
+import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.WeatherCacheDao
 import com.dropdrage.simpleweather.data.weather.local.cache.model.DayWeatherModel
 import com.dropdrage.simpleweather.data.weather.local.cache.model.HourWeatherModel
-import com.dropdrage.test.util.coVerifyOnce
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun

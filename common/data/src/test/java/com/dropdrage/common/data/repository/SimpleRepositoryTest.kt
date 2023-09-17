@@ -1,8 +1,8 @@
 package com.dropdrage.common.data.repository
 
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.test.util.assertInstanceOf
-import com.dropdrage.test.util.mockLogE
+import com.dropdrage.common.test.util.assertInstanceOf
+import com.dropdrage.common.test.util.mockLogE
 import junit.framework.TestCase.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

@@ -2,6 +2,12 @@ package com.dropdrage.simpleweather.data.weather.test.repository
 
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
+import com.dropdrage.common.test.util.assertInstanceOf
+import com.dropdrage.common.test.util.coVerifyNever
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.coVerifyTwice
+import com.dropdrage.common.test.util.createList
+import com.dropdrage.common.test.util.runTestWithMockLogEShort
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.LocationDao
@@ -18,13 +24,7 @@ import com.dropdrage.simpleweather.data.weather.util.createDayToHourWeather
 import com.dropdrage.simpleweather.data.weather.util.createHourlyWeatherDto
 import com.dropdrage.simpleweather.data.weather.util.simplyToDayWeather
 import com.dropdrage.simpleweather.data.weather.util.simplyToDomainWeather
-import com.dropdrage.simpleweather.weather.domain.weather.Weather
-import com.dropdrage.test.util.assertInstanceOf
-import com.dropdrage.test.util.coVerifyNever
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.coVerifyTwice
-import com.dropdrage.test.util.createList
-import com.dropdrage.test.util.runTestWithMockLogEShort
+import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun

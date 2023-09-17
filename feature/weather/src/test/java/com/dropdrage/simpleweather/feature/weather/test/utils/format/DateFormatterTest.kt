@@ -1,10 +1,10 @@
 package com.dropdrage.simpleweather.feature.weather.test.utils.format
 
 import com.chibatching.kotpref.Kotpref
+import com.dropdrage.common.test.util.justMock
 import com.dropdrage.simpleweather.data.settings.DateFormat
 import com.dropdrage.simpleweather.data.settings.GeneralPreferences
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.DateFormatter
-import com.dropdrage.test.util.justMock
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

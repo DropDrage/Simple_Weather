@@ -1,14 +1,14 @@
 package com.dropdrage.simpleweather.feature.weather.test.domain.use_case
 
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.CityRepository
-import com.dropdrage.simpleweather.city.domain.Country
+import com.dropdrage.common.test.util.coVerifyNever
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.dropdrage.simpleweather.feature.weather.domain.use_case.UpdateAllCitiesWeatherUseCase
-import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
-import com.dropdrage.test.util.coVerifyNever
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.runTestWithMockLogE
+import com.dropdrage.simpleweather.feature.weather.domain.weather.WeatherRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coJustRun

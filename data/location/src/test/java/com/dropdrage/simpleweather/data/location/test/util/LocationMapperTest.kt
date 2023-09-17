@@ -1,11 +1,11 @@
 package com.dropdrage.simpleweather.data.location.test.util
 
+import com.dropdrage.common.test.util.assertInstanceOf
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.location.util.mockLocation
 import com.dropdrage.simpleweather.data.util.mapper.toDomainLocation
 import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
-import com.dropdrage.simpleweather.weather.domain.location.LocationResult
-import com.dropdrage.test.util.assertInstanceOf
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.jupiter.api.Test

@@ -3,9 +3,9 @@ package com.dropdrage.simpleweather.feature.weather.presentation.util.model_conv
 import com.dropdrage.common.domain.Range
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.weather.domain.weather.DayWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCurrentDayWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter
-import com.dropdrage.simpleweather.weather.domain.weather.DayWeather
 import javax.inject.Inject
 
 internal class CurrentDayWeatherConverter @Inject constructor(

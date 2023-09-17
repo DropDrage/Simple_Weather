@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.di.adapter
 
-import com.dropdrage.test.util.justMock
-import com.dropdrage.test.util.verifyNever
-import com.dropdrage.test.util.verifyOnce
+import com.dropdrage.common.test.util.justMock
+import com.dropdrage.common.test.util.verifyNever
+import com.dropdrage.common.test.util.verifyOnce
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import io.mockk.every

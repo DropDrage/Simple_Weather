@@ -1,14 +1,14 @@
 package com.dropdrage.simpleweather.data.city.repository
 
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.remote.CitiesDto
 import com.dropdrage.simpleweather.data.city.remote.CityDto
 import com.dropdrage.simpleweather.data.city.remote.SearchApi
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.runTestWithMockLogE
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK

@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.feature.city.list.presentation.model
 
-import com.dropdrage.simpleweather.city.domain.City
+import com.dropdrage.adapters.differ.SameEquatable
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
-import com.dropdrage.simpleweather.feature.city_list.presentation.ui.drag_list.SameEquatable
+import com.dropdrage.simpleweather.feature.city.domain.City
 
 internal data class ViewCityCurrentWeather(
     val city: City,

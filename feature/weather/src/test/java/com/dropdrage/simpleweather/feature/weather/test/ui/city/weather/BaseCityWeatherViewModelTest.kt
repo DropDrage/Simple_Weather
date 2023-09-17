@@ -4,6 +4,12 @@ import app.cash.turbine.test
 import com.dropdrage.common.domain.CantObtainResourceException
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.test.util.createListIndexed
+import com.dropdrage.common.test.util.mockLogD
+import com.dropdrage.common.test.util.runTestViewModelScope
+import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
+import com.dropdrage.common.test.util.verifyOnce
+import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.city.BaseCityWeatherViewModel
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.CurrentDayWeatherConverter
@@ -17,12 +23,6 @@ import com.dropdrage.simpleweather.feature.weather.util.toViewCurrentDayWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewCurrentHourWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewDayWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewHourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.Weather
-import com.dropdrage.test.util.createListIndexed
-import com.dropdrage.test.util.mockLogD
-import com.dropdrage.test.util.runTestViewModelScope
-import com.dropdrage.test.util.runTestViewModelScopeAndTurbine
-import com.dropdrage.test.util.verifyOnce
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK

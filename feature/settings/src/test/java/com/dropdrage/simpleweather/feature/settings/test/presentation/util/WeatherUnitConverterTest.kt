@@ -1,6 +1,8 @@
 package com.dropdrage.simpleweather.feature.settings.test.presentation.util
 
 import android.content.Context
+import com.dropdrage.common.test.util.justArgToString
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.data.settings.PrecipitationUnit
 import com.dropdrage.simpleweather.data.settings.PressureUnit
 import com.dropdrage.simpleweather.data.settings.TemperatureUnit
@@ -16,8 +18,6 @@ import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewVisib
 import com.dropdrage.simpleweather.feature.settings.presentation.model.ViewWindSpeedUnit
 import com.dropdrage.simpleweather.feature.settings.presentation.util.WeatherUnitConverter
 import com.dropdrage.simpleweather.feature.settings.util.matchEnumsAsArguments
-import com.dropdrage.test.util.justArgToString
-import com.dropdrage.test.util.verifyOnce
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.*

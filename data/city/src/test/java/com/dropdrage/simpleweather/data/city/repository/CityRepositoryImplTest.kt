@@ -1,17 +1,17 @@
 package com.dropdrage.simpleweather.data.city.repository
 
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
+import com.dropdrage.common.test.util.assertInstanceOf
+import com.dropdrage.common.test.util.coVerifyNever
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.runTestWithMockLogE
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.dao.CityDao
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
-import com.dropdrage.test.util.assertInstanceOf
-import com.dropdrage.test.util.coVerifyNever
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.runTestWithMockLogE
-import com.dropdrage.test.util.verifyOnce
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.google.common.truth.Truth.assertThat
 import io.mockk.CapturingSlot
 import io.mockk.coEvery

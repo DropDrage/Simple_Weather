@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.data.city.remote
 
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 

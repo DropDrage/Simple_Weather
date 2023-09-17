@@ -1,34 +1,34 @@
 [versions]
-lifecycle = '2.6.2'
-hiltWork = '1.0.0'
+lifecycle = "2.6.2"
+hiltWork = "1.0.0"
 accompanist = "0.32.0"
 
 [libraries]
-androidx-core = 'androidx.core:core-ktx:1.12.0'
-androidx-annotation = 'androidx.annotation:annotation:1.7.0'
+androidx-core = "androidx.core:core-ktx:1.12.0"
+androidx-annotation = "androidx.annotation:annotation:1.7.0"
 
-androidx-constraintlayout = 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
-compose-bom = 'androidx.compose:compose-bom:2023.09.00'
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+compose-bom = "androidx.compose:compose-bom:2023.09.00"
 compose-activity = { module = "androidx.activity:activity-compose" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 
-android-minified = 'com.google.android:android:4.1.1.4'
+android-minified = "com.google.android:android:4.1.1.4"
 
-lifecycle-runtime = { module = 'androidx.lifecycle:lifecycle-runtime-ktx', version.ref = 'lifecycle' }
-lifecycle-viewmodel = { module = 'androidx.lifecycle:lifecycle-viewmodel-ktx', version.ref = 'lifecycle' }
-lifecycle-viewmodel-compose = { module = 'androidx.lifecycle:lifecycle-viewmodel-compose', version.ref = 'lifecycle' }
+lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = 'lifecycle' }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = 'lifecycle' }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = 'lifecycle' }
 
-hilt-android = { module = 'com.google.dagger:hilt-android', version.ref = 'hilt' }
-hilt-compiler = { module = 'com.google.dagger:hilt-compiler', version.ref = 'hilt' }
-hilt-navigation-compose = 'androidx.hilt:hilt-navigation-compose:1.1.0-alpha01'
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = 'hilt' }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = 'hilt' }
+hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 
-hilt-work-core = { module = 'androidx.hilt:hilt-work', version.ref = 'hiltWork' }
-hilt-work-compiler = { module = 'androidx.hilt:hilt-compiler', version.ref = 'hiltWork' }
+hilt-work-core = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
+hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWork" }
 
-work = 'androidx.work:work-runtime-ktx:2.8.1'
+work = "androidx.work:work-runtime-ktx:2.8.1"
 
-services-location = 'com.google.android.gms:play-services-location:21.0.1'
-services-play-coroutines = { module = 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services', version.ref = 'coroutines' }
+services-location = "com.google.android.gms:play-services-location:21.0.1"
+services-play-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
 
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -36,5 +36,5 @@ accompanist-permissions = { module = "com.google.accompanist:accompanist-permiss
 toolbar-compose = "me.onebone:toolbar-compose:2.3.5"
 
 [bundles]
-ui-core = ['androidx-core']
-location = ['services-location', 'services-play-coroutines']
+ui-core = ["androidx-core"]
+location = ["services-location", "services-play-coroutines"]

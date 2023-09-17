@@ -42,3 +42,13 @@ static def isNonStable(String version) {
     def regex = /^[0-9,.v-]+(-r)?$/
     return !stableKeyword && !(version ==~ regex)
 }
+
+tasks.register("cleanBaselines") {
+    def baselineFile = "/lint-baseline.xml"
+    rootProject.allprojects.forEach(project -> {
+        if (project.subprojects.isEmpty()) {//size() == 0) {
+            println(project.projectDir.path)
+            delete project.projectDir.path + baselineFile
+        }
+    })
+}

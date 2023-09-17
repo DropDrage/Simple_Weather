@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.feature.weather.test.utils.format
 
 import android.content.Context
+import com.dropdrage.common.test.util.justArgToString
 import com.dropdrage.simpleweather.feature.weather.R
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.DayNameFormat
-import com.dropdrage.test.util.justArgToString
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals

@@ -2,9 +2,9 @@ package com.dropdrage.simpleweather.feature.weather.presentation.util.model_conv
 
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
 import java.time.LocalDateTime
 import javax.inject.Inject
 

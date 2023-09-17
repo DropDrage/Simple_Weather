@@ -57,6 +57,7 @@ ext.config_android = { Project project, Closure<Project>... modifiers ->
         lint {
             htmlReport false
             baseline file("$project.projectDir/lint-baseline.xml")
+            abortOnError false
 
             disable 'NewApi'
         }

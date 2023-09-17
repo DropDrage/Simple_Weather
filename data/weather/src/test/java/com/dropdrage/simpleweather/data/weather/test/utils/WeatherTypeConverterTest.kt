@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.data.weather.test.utils
 
+import com.dropdrage.common.test.util.mockLogW
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
-import com.dropdrage.test.util.mockLogW
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.feature.weather.presentation.util.model_conv
 
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCurrentHourWeather
-import com.dropdrage.simpleweather.weather.domain.weather.HourWeather
 import javax.inject.Inject
 
 internal class CurrentHourWeatherConverter @Inject constructor(private val unitsFormatter: WeatherUnitsFormatter) {

@@ -17,8 +17,8 @@ import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toHourMo
 import com.dropdrage.simpleweather.data.weather.local.cache.util.mapper.toNewModel
 import com.dropdrage.simpleweather.data.weather.remote.WeatherApi
 import com.dropdrage.simpleweather.data.weather.remote.WeatherResponseDto
-import com.dropdrage.simpleweather.weather.domain.weather.Weather
-import com.dropdrage.simpleweather.weather.domain.weather.WeatherRepository
+import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
+import com.dropdrage.simpleweather.feature.weather.domain.weather.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext

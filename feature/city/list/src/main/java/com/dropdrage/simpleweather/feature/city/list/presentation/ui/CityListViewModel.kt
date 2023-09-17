@@ -3,7 +3,7 @@ package com.dropdrage.simpleweather.feature.city.list.presentation.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dropdrage.common.presentation.utils.Constants.FLOW_SUBSCRIPTION_TIME
-import com.dropdrage.simpleweather.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
 import com.dropdrage.simpleweather.feature.city.list.domain.use_case.ObserveCitiesWithWeatherUseCase
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.feature.city.list.presentation.utils.CityCurrentWeatherConverter

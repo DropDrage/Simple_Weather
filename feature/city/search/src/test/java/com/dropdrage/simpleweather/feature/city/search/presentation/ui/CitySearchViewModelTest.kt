@@ -2,15 +2,15 @@ package com.dropdrage.simpleweather.feature.city.search.presentation.ui
 
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.CityRepository
-import com.dropdrage.simpleweather.city.domain.Country
+import com.dropdrage.common.test.util.coVerifyOnce
+import com.dropdrage.common.test.util.mockLogE
+import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.core.domain.Location
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.CityRepository
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.dropdrage.simpleweather.feature.city.search.domain.CitySearchRepository
 import com.dropdrage.simpleweather.feature.city.search.presentation.model.ViewCitySearchResult
-import com.dropdrage.test.util.coVerifyOnce
-import com.dropdrage.test.util.mockLogE
-import com.dropdrage.test.util.runTestViewModelScope
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.coJustAwait
@@ -44,12 +44,12 @@ internal class CitySearchViewModelTest {
             mockLogE {
                 val viewModel = createViewModel()
                 val query = "query"
-                coEvery { searchRepository.searchCities(query) } returns Resource.Error(IOException())
+                coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Error(IOException())
 
                 viewModel.updateQuery(query)
                 val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Assertions.assertNull(searchResult)
             }
         }
@@ -57,7 +57,7 @@ internal class CitySearchViewModelTest {
         @Test
         fun `debounce search success with empty list`() = runTestViewModelScope {
             val query = "query"
-            coEvery { searchRepository.searchCities(query) } returns Resource.Success(emptyList())
+            coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Success(emptyList())
             val viewModel = createViewModel()
 
             viewModel.searchResults.test {
@@ -67,7 +67,7 @@ internal class CitySearchViewModelTest {
 
                 cancel()
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Truth.assertThat(searchResults).isEmpty()
             }
         }
@@ -81,7 +81,7 @@ internal class CitySearchViewModelTest {
                 City("City3", Location(2f, 2f), Country("Country2", "CY")),
                 City("City2", Location(3f, 4f), Country("Country1", "RY")),
             )
-            coEvery { searchRepository.searchCities(query) } returns Resource.Success(cities)
+            coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Success(cities)
 
             viewModel.searchResults.test {
                 viewModel.updateQuery(query)
@@ -89,7 +89,7 @@ internal class CitySearchViewModelTest {
 
                 cancel()
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Truth.assertThat(searchResults).containsExactlyElementsIn(cities.map(::ViewCitySearchResult))
             }
         }

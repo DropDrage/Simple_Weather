@@ -3,11 +3,11 @@ package com.dropdrage.simpleweather.feature.weather.test.utils.format
 import android.content.Context
 import android.text.format.DateFormat
 import com.chibatching.kotpref.Kotpref
+import com.dropdrage.common.test.util.justMock
 import com.dropdrage.simpleweather.data.settings.GeneralPreferences
 import com.dropdrage.simpleweather.data.settings.TimeFormat
 import com.dropdrage.simpleweather.feature.weather.R
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter
-import com.dropdrage.test.util.justMock
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
