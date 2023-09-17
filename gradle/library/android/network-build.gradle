@@ -1,3 +1,0 @@
-apply from: import_androidEmptyLibrary
-apply from: component_retrofit
-apply from: build_feature_buildConfig

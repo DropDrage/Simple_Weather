@@ -1,0 +1,15 @@
+library_kotlin(project)
+
+apply plugin: 'java-test-fixtures'
+
+dependencies {
+    testFixturesCompileOnly androidLibs.android.minified
+
+    testFixturesImplementation testLibs.junit5.api
+
+    testFixturesImplementation testLibs.mockk.core
+    testFixturesImplementation testLibs.mockk.agent
+
+    testFixturesImplementation testLibs.coroutines
+    testFixturesImplementation testLibs.turbine
+}

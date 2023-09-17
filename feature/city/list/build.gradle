@@ -1,0 +1,24 @@
+library_android(
+    project,
+    bundle_uiScreen,
+    component_android_unitTests,
+)
+
+android {
+    namespace 'com.dropdrage.simpleweather.feature.city.list'
+}
+
+dependencies {
+    implementation project(':common:presentation')
+    implementation project(':common:util')
+    implementation project(':core:presentation')
+    implementation project(':core:style')
+    implementation project(':feature:city:domain')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:search')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(':common:test'))
+}

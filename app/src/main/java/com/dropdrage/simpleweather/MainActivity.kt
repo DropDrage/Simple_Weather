@@ -23,11 +23,11 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.dropdrage.simpleweather.city_list.presentation.presentation.ui.CityListScreen
-import com.dropdrage.simpleweather.city_search.presentation.ui.CitySearchScreen
 import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
+import com.dropdrage.simpleweather.feature.city.search.presentation.ui.CitySearchScreen
+import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesWeatherScreen
 import com.dropdrage.simpleweather.settings.presentation.ui.SettingsScreen
-import com.dropdrage.simpleweather.weather.presentation.presentation.ui.cities_weather.CitiesWeatherScreen
+import com.dropdrage.simpleweatherfeature.city_list.presentation.ui.CityListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -65,7 +65,7 @@ internal class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = Screen.CITIES_WEATHER.route,
-                        modifier = Modifier.padding(it)
+                        modifier = Modifier.padding(it),
                     ) {
                         composable(Screen.CITY_LIST) {
                             CityListScreen(openSearchScreen = { navController.navigate(route = Screen.CITY_SEARCH) })

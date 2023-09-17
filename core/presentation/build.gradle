@@ -1,15 +1,18 @@
-apply from: import_androidNoUiLibrary
-apply from: build_feature_resValues
-apply from: component_compose
+library_android(
+    project,
+    component_android_compose, component_android_unitTests,
+    buildFeature_resValues,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.core.presentation'
 }
 
 dependencies {
-    implementation androidLibs.fragment.ktx
-    implementation androidLibs.hilt
+    implementation androidLibs.hilt.android
 
-    implementation project(path: ':core:domain')
-    implementation project(path: ':data:settings')
+    implementation project(':core:domain')
+    implementation project(':data:settings')
+
+    testImplementation testLibs.junit5.params
 }

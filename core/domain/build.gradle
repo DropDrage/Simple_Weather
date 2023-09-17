@@ -1,1 +1,1 @@
-apply from: import_library
+library_kotlin(project)

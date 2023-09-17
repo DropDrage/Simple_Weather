@@ -1,8 +1,8 @@
-apply from: import_library
+library_kotlin(project)
 
 dependencies {
     implementation kotlinLibs.coroutines
 
-    implementation project(path: ':core:domain')
-    implementation project(path: ':common:domain')
+    api project(':common:domain')
+    api project(':core:domain')
 }

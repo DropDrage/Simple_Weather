@@ -22,8 +22,7 @@ internal interface DayWeatherDao : CrudDao<DayWeatherModel> {
     @Query("SELECT COUNT(*) > 0 FROM DayWeatherModel WHERE location_id = :locationId")
     suspend fun hasWeatherForLocation(locationId: Long): Boolean
 
-
-    @Query("DELETE FROM DayWeatherModel WHERE location_id = :locationId AND date < :currentDate")
-    suspend fun deleteOutdatedForLocation(locationId: Long, currentDate: LocalDate): Int
+    @Query("DELETE FROM DayWeatherModel WHERE date < :currentDate")
+    suspend fun deleteOutdatedForAllLocations(currentDate: LocalDate): Int
 
 }

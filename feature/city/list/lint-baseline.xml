@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.0.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.0.2)" variant="all"
+    version="8.0.2">
+
+    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
+        <location file="src/main/res/layout/item_city.xml" line="33" column="6" />
+    </issue>
+
+    <issue id="ContentDescription" message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView" errorLine2="     ~~~~~~~~~">
+        <location file="src/main/res/layout/item_city.xml" line="52" column="6" />
+    </issue>
+
+</issues>

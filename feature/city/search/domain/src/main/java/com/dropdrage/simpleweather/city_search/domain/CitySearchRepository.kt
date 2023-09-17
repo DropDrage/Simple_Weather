@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.city_search.domain
+package com.dropdrage.simpleweather.feature.city.search.domain
 
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.city.domain.City

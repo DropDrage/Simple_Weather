@@ -1,0 +1,73 @@
+def javaVersion = JavaVersion.VERSION_17
+
+ext.library_kotlin = { Project project ->
+    project.apply plugin: 'java-library'
+    project.apply plugin: 'org.jetbrains.kotlin.jvm'
+    project.apply plugin: 'com.android.lint'
+
+    project.java {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+}
+
+
+ext.library_android = { Project project, Closure<Project>... modifiers ->
+    project.apply plugin: 'com.android.library'
+    project.apply plugin: 'org.jetbrains.kotlin.android'
+
+    config_android(project, modifiers)
+
+    project.android {
+        defaultConfig {
+            consumerProguardFiles "consumer-rules.pro"
+        }
+    }
+}
+
+ext.config_android = { Project project, Closure<Project>... modifiers ->
+    project.android {
+        compileSdk sdk
+        buildToolsVersion buildTools
+
+        defaultConfig {
+            minSdk project.minSdk
+            targetSdk project.sdk
+
+            resourceConfigurations = ['en']
+        }
+        buildTypes {
+            debug {
+                minifyEnabled false
+            }
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility javaVersion
+            targetCompatibility javaVersion
+        }
+        kotlinOptions {
+            jvmTarget = javaVersion.toString()
+        }
+
+        lint {
+            htmlReport false
+            baseline file("$project.projectDir/lint-baseline.xml")
+
+            disable 'NewApi'
+        }
+        packagingOptions {
+            resources {
+                excludes += ['META-INF/ASL2.0', 'META-INF/LICENSE*', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/MANIFEST.MF']
+            }
+        }
+    }
+
+    for (final def modifier in modifiers) {
+        modifier(project)
+    }
+}

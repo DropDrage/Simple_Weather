@@ -8,21 +8,23 @@ import java.time.format.DateTimeFormatter
 
 internal class LocalDateAdapter : JsonAdapter<LocalDate>() {
 
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-
-
     override fun toJson(writer: JsonWriter, value: LocalDate?) {
-        value?.let { writer.value(it.format(formatter)) }
+        value?.let { writer.value(it.format(FORMATTER)) }
     }
 
     override fun fromJson(reader: JsonReader): LocalDate? =
-        if (reader.peek() != JsonReader.Token.NULL) {
+        if (reader.peek() == JsonReader.Token.STRING) {
             fromNonNullString(reader.nextString())
         } else {
             reader.nextNull<Any>()
             null
         }
 
-    private fun fromNonNullString(nextString: String): LocalDate = LocalDate.parse(nextString, formatter)
+    private fun fromNonNullString(nextString: String): LocalDate = LocalDate.parse(nextString, FORMATTER)
+
+
+    companion object {
+        val FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE
+    }
 
 }

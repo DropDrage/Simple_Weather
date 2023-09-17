@@ -107,4 +107,5 @@ internal object WeatherTypeConverter {
         WeatherType.SlightHailThunderstorm -> SLIGHT_HAIL_THUNDERSTORM
         WeatherType.HeavyHailThunderstorm -> HEAVY_HAIL_THUNDERSTORM
     }
+
 }

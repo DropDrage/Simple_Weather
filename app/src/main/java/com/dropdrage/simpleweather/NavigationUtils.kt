@@ -6,7 +6,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-internal fun NavGraphBuilder.composable(route: Route, content: @Composable (NavBackStackEntry) -> Unit) {
+internal fun NavGraphBuilder.composable(
+    route: Route,
+    content: @Composable (NavBackStackEntry) -> Unit,
+) {
     composable(route = route.route, content = content)
 }
 

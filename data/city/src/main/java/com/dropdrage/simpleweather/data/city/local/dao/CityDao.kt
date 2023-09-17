@@ -31,15 +31,17 @@ internal interface CityDao : CrudDao<CityModel> {
     suspend fun getLastOrder(): Int?
 
 
-    @Query("DELETE FROM CityModel " +
-        "WHERE name = :name AND country_code = :countryCode " +
-        "AND location_latitude = :latitude AND location_longitude = :longitude")
+    @Query(
+        "DELETE FROM CityModel " +
+            "WHERE name = :name AND country_code = :countryCode " +
+            "AND location_latitude = :latitude AND location_longitude = :longitude"
+    )
     suspend fun delete(name: String, countryCode: String, latitude: Float, longitude: Float)
 
 
     @Transaction
     suspend fun updateOrders(orderedCities: List<CityModel>) {
-        val citiesToResetOrders = orderedCities.onEach { it.order = -it.order - 1 }
+        val citiesToResetOrders = orderedCities.onEach { it.order = 0 - it.order - 1 }
         updateAll(citiesToResetOrders)
         val correctlyOrderedCities = orderedCities.onEach { it.order = -it.order - 1 }
         updateAll(correctlyOrderedCities)

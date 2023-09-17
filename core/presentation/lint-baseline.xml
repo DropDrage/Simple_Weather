@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.1.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.1)" variant="all"
+    version="8.1.1">
+
+    <issue id="ModifierParameter" message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier," errorLine2="    ~~~~~~~~">
+        <location file="src/main/java/com/dropdrage/simpleweather/core/presentation/ui/TextWithSubtext.kt" line="18"
+            column="5" />
+    </issue>
+
+</issues>

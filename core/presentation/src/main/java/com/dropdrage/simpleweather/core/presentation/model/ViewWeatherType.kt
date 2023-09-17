@@ -9,6 +9,7 @@ sealed class ViewWeatherType(
     @StringRes val weatherDescriptionRes: Int,
     @DrawableRes val iconRes: Int,
 ) {
+
     object ClearSky : ViewWeatherType(
         weatherDescriptionRes = R.string.weather_label_clear_sky,
         iconRes = R.drawable.ic_sunny
@@ -144,6 +145,7 @@ sealed class ViewWeatherType(
         iconRes = R.drawable.ic_rainythunder
     )
 
+
     companion object {
         fun fromWeatherType(weatherType: WeatherType): ViewWeatherType = when (weatherType) {
             WeatherType.ClearSky -> ClearSky
@@ -175,4 +177,5 @@ sealed class ViewWeatherType(
             WeatherType.HeavyHailThunderstorm -> HeavyHailThunderstorm
         }
     }
+
 }

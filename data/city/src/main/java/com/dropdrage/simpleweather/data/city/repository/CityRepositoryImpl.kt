@@ -4,7 +4,7 @@ import com.dropdrage.common.data.repository.SimpleRepository
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.simpleweather.city.domain.City
 import com.dropdrage.simpleweather.city.domain.CityRepository
-import com.dropdrage.simpleweather.core.utils.LogTags
+import com.dropdrage.simpleweather.core.util.LogTags
 import com.dropdrage.simpleweather.data.city.local.dao.CityDao
 import com.dropdrage.simpleweather.data.city.local.model.CityModel
 import com.dropdrage.simpleweather.data.source.local.app.util.mapper.toDomain
@@ -17,7 +17,8 @@ class CityRepositoryImpl @Inject internal constructor(
     private val dao: CityDao,
 ) : SimpleRepository<City>(LogTags.CITY), CityRepository {
 
-    override val orderedCities: Flow<List<City>> = dao.getAllOrderedList().map { it.map(CityModel::toDomain) }
+    override val orderedCities: Flow<List<City>>
+        get() = dao.getAllOrderedList().map { it.map(CityModel::toDomain) }
 
 
     override suspend fun addCity(city: City) {

@@ -1,0 +1,17 @@
+[versions]
+room = '2.5.2'
+kotpref = '2.13.2'
+
+[libraries]
+room-ktx = { module = 'androidx.room:room-ktx', version.ref = 'room' }
+room-runtime = { module = 'androidx.room:room-runtime', version.ref = 'room' }
+room-common = { module = 'androidx.room:room-common', version.ref = 'room' }
+room-compiler = { module = 'androidx.room:room-compiler', version.ref = 'room' }
+
+kotpref-core = { module = 'com.chibatching.kotpref:kotpref', version.ref = 'kotpref' }
+kotpref-enum = { module = 'com.chibatching.kotpref:enum-support', version.ref = 'kotpref' }
+
+[plugins]
+
+[bundles]
+room = ['room-ktx', 'room-runtime']

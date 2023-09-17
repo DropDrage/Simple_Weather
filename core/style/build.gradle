@@ -1,5 +1,7 @@
-apply from: import_androidEmptyLibrary
-apply from: build_feature_compose
+library_android(
+    project,
+    buildFeature_compose
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.core.style'

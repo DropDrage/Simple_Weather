@@ -1,5 +1,8 @@
-apply from: import_androidDataLibrary
-apply from: component_android_hilt
+library_android(
+    project,
+    bundle_data,
+    component_android_unitTests,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.data.weather'
@@ -17,11 +20,17 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':common:data')
-    implementation project(path: ':common:domain')
-    implementation project(path: ':core:domain')
-    implementation project(path: ':core:utils')
-    implementation project(path: ':data:settings')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:weather:domain')
+    implementation project(':common:data')
+    implementation project(':common:domain')
+    implementation project(':core:domain')
+    implementation project(':core:util')
+    implementation project(':data:settings')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
+    testImplementation testLibs.junit5.params
+    testImplementation testLibs.turbine
+
+    testImplementation testFixtures(project(':common:test'))
 }

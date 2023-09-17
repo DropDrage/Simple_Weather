@@ -1,80 +1,89 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp'
+    alias(buildLibs.plugins.android.application)
+    alias(buildLibs.plugins.kotlin.android)
+    alias(buildLibs.plugins.ksp)
+
+    alias(testLibs.plugins.junit5.android)
 }
 
-apply from: import_android
-apply from: component_retrofit
-apply from: component_compose
-apply from: build_feature_buildConfig
-apply from: build_feature_resValues
+config_android(
+    project,
+    bundle_uiScreen,
+    component_retrofit, component_android_compose, component_android_unitTests,
+    buildFeature_buildConfig,
+    buildFeature_resValues,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather'
 
     defaultConfig {
         applicationId "com.dropdrage.simpleweather"
+        applicationIdSuffix ".compose"
+
+        versionCode project.versionCode
+        versionName project.versionName
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-        }
         release {
-            minifyEnabled true
             shrinkResources true
-
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ksp {
                 arg("dagger.fullBindingGraphValidation", "ERROR")
             }
         }
     }
+
+    lint {
+        checkDependencies true
+
+        baseline project.rootProject.file('lint-baseline.xml')
+        warningsAsErrors true
+    }
 }
 
 dependencies {
-    implementation "androidx.activity:activity-compose"
+    implementation androidLibs.compose.activity
 
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.navigation:navigation-compose"
 
-    def work_version = "2.7.1"
-    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation androidLibs.work
 
     //Hilt
-    implementation androidLibs.hilt.work
+    implementation androidLibs.hilt.work.core
     ksp androidLibs.hilt.work.compiler
 
     //Moshi
     implementation networkLibs.bundles.moshi
     ksp networkLibs.moshi.compiler
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
+    implementation networkLibs.logging.interceptor
 
     //Utils
-    implementation androidLibs.kotpref
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
+    implementation localStorageLibs.kotpref.core
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    //Tests
-    androidTestImplementation androidLibs.hilt.testing
-    kspAndroidTest androidLibs.hilt.compiler
-    testImplementation androidLibs.hilt.testing
-    kspTest androidLibs.hilt.compiler
+    implementation project(':common:data'), { because "SimpleRepository Hilt resolve" }
+    implementation project(':core:style')
+    implementation project(':data:city')
+    implementation project(':data:location')
+    implementation project(':data:weather')
+    implementation project(':feature:city:list')
+    implementation project(':feature:city:list:domain')
+    implementation project(':feature:city:search')
+    implementation project(':feature:city:search:domain')
+    implementation project(':feature:settings')
+    implementation project(':feature:weather')
+    implementation project(':feature:weather:domain')
 
-    implementation project(path: ':common:data') // for SimpleRepository Hilt resolve
-    implementation project(path: ':core:style')
-    implementation project(path: ':data:city')
-    implementation project(path: ':data:location')
-    implementation project(path: ':data:weather')
-    implementation project(path: ':feature:city:domain')
-    implementation project(path: ':feature:city:list:domain')
-    implementation project(path: ':feature:city:list:presentation')
-    implementation project(path: ':feature:city:search:domain')
-    implementation project(path: ':feature:city:search:presentation')
-    implementation project(path: ':feature:settings:presentation')
-    implementation project(path: ':feature:weather:domain')
-    implementation project(path: ':feature:weather:presentation')
+    //Tests
+    testImplementation testLibs.coroutines
+
+    testImplementation testLibs.hilt.testing
+    kspTest androidLibs.hilt.compiler
+    androidTestImplementation testLibs.hilt.testing
+    kspAndroidTest androidLibs.hilt.compiler
+
+    testImplementation testFixtures(project(':common:test'))
 }

@@ -1,12 +1,20 @@
-apply from: import_androidNoUiLibrary
-apply from: component_android_hilt
-apply from: component_android_location
+library_android(
+    project,
+    component_android_hilt, component_android_unitTests,
+)
 
 android {
     namespace 'com.dropdrage.simpleweather.data.location'
 }
 
 dependencies {
-    implementation project(path: ':core:domain')
-    implementation project(path: ':feature:weather:domain')
+    implementation androidLibs.bundles.location
+
+    implementation project(':core:domain')
+    implementation project(':common:build_config_checks')
+    implementation project(':feature:weather:domain')
+
+    testImplementation testLibs.coroutines
+
+    testImplementation testFixtures(project(':common:test'))
 }

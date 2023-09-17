@@ -1,12 +1,19 @@
-apply from: import_androidEmptyLibrary
+library_android(
+    project,
+    component_android_unitTests
+)
 
 android {
     namespace 'com.dropdrage.common.data'
 }
 
 dependencies {
-    implementation androidLibs.room.common
     implementation kotlinLibs.coroutines
+    implementation localStorageLibs.room.common
 
-    implementation project(path: ':common:domain')
+    implementation project(':common:domain')
+
+    testImplementation testLibs.coroutines
+
+    testImplementation testFixtures(project(':common:test'))
 }

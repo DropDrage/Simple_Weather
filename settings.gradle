@@ -13,85 +13,37 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    def coroutinesVersion = '1.6.4'
+    def coroutinesVersion = '1.7.3'
+    def hiltVersion = '2.48'
+    def tomlDirectory = 'gradle'
     versionCatalogs {
         buildLibs {
-            def kotlinVersion = version('kotlin', '1.8.0')
-            plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm').versionRef(kotlinVersion)
-            plugin('kotlin-android', 'org.jetbrains.kotlin.android').versionRef(kotlinVersion)
-            plugin('kotlin-kapt', 'org.jetbrains.kotlin.kapt').versionRef(kotlinVersion)
-            library('gradle-plugin-kotlin', 'org.jetbrains.kotlin', 'kotlin-gradle-plugin').versionRef(kotlinVersion)
-
-            def kspVersion = version('ksp', '1.8.0-1.0.8')
-            library('ksp', 'com.google.devtools.ksp', 'symbol-processing-api').versionRef(kspVersion)
-            plugin('ksp', 'com.google.devtools.ksp').versionRef(kspVersion)
+            version('hilt', hiltVersion)
+            from(files("$tomlDirectory/buildLibs.versions.toml"))
         }
 
         kotlinLibs {
-            library('coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-core').version(coroutinesVersion)
+            version('coroutines', coroutinesVersion)
+            from(files("$tomlDirectory/kotlinLibs.versions.toml"))
         }
 
         androidLibs {
-            library('compose-bom', 'androidx.compose', 'compose-bom').version('2023.01.00')
-            library('androidx-core', 'androidx.core', 'core-ktx').version('1.9.0')
-            library('androidx-appcompat', 'androidx.appcompat', 'appcompat').version('1.6.0')
-            library('android-material', 'com.google.android.material', 'material').version('1.7.0')
-            library('fragment-ktx', 'androidx.fragment', 'fragment-ktx').version('1.5.5')
-            bundle('ui-core', ['androidx-core', 'androidx-appcompat', 'android-material'])
-
-            def lifecycleVersion = version('lifecycle', '2.5.1')
-            library('lifecycle-runtime', 'androidx.lifecycle', 'lifecycle-runtime-ktx').versionRef(lifecycleVersion)
-            library('lifecycle-viewmodel', 'androidx.lifecycle', 'lifecycle-viewmodel-ktx').versionRef(lifecycleVersion)
-            library('lifecycle-viewmodel-compose', 'androidx.lifecycle', 'lifecycle-viewmodel-compose').versionRef(lifecycleVersion)
-
-            def navigationVersion = version('navigation', '2.5.3')
-            library('navigation-fragment', 'androidx.navigation', 'navigation-fragment-ktx').versionRef(navigationVersion)
-            library('navigation-ui', 'androidx.navigation', 'navigation-ui-ktx').versionRef(navigationVersion)
-            bundle('navigation', ['navigation-fragment', 'navigation-ui'])
-
-            def hiltVersion = version('hilt', '2.44.2')
-            library('hilt', 'com.google.dagger', 'hilt-android').versionRef(hiltVersion)
-            library('hilt-compiler', 'com.google.dagger', 'hilt-compiler').versionRef(hiltVersion)
-            library('hilt-testing', 'com.google.dagger', 'hilt-android-testing').versionRef(hiltVersion)
-            def hiltWorkVersion = version('hilt-work', '1.0.0')
-            library('hilt-work', 'androidx.hilt', 'hilt-work').versionRef(hiltWorkVersion)
-            library('hilt-work-compiler', 'androidx.hilt', 'hilt-compiler').versionRef(hiltWorkVersion)
-            library('gradle-plugin-hilt', 'com.google.dagger', 'hilt-android-gradle-plugin').versionRef(hiltVersion)
-
-            library('services-location', 'com.google.android.gms', 'play-services-location').version('21.0.1')
-            library('services-play-coroutines', 'org.jetbrains.kotlinx', 'kotlinx-coroutines-play-services').version(coroutinesVersion)
-            bundle('location', ['services-location', 'services-play-coroutines'])
-
-            def roomVersion = version('room', '2.5.0')
-            library('room-ktx', 'androidx.room', 'room-ktx').versionRef(roomVersion)
-            library('room-runtime', 'androidx.room', 'room-runtime').versionRef(roomVersion)
-            library('room-common', 'androidx.room', 'room-common').versionRef(roomVersion)
-            library('room-compiler', 'androidx.room', 'room-compiler').versionRef(roomVersion)
-            bundle('room', ['room-ktx', 'room-runtime'])
-
-            def kotprefVersion = version('kotpref', '2.13.2')
-            library('kotpref', 'com.chibatching.kotpref', 'kotpref').versionRef(kotprefVersion)
-            library('kotpref-enum', 'com.chibatching.kotpref', 'enum-support').versionRef(kotprefVersion)
+            version('hilt', hiltVersion)
+            version('coroutines', coroutinesVersion)
+            from(files("$tomlDirectory/androidLibs.versions.toml"))
         }
 
         networkLibs {
-            def retrofitVersion = version('retrofit', '2.9.0')
-            library('retrofit', 'com.squareup.retrofit2', 'retrofit').versionRef(retrofitVersion)
-
-            library('moshi-core', 'com.squareup.retrofit2', 'converter-moshi').versionRef(retrofitVersion)
-            def moshiVersion = version('moshi', '1.14.0')
-            library('moshi-kotlin', 'com.squareup.moshi', 'moshi-kotlin').versionRef(moshiVersion)
-            library('moshi-compiler', 'com.squareup.moshi', 'moshi-kotlin-codegen').versionRef(moshiVersion)
-            bundle('moshi', ['moshi-core', 'moshi-kotlin'])
+            from(files("$tomlDirectory/networkLibs.versions.toml"))
         }
 
         testLibs {
-            library('junit', 'junit', 'junit').version('4.13.2')
-            library('junit-ext', 'androidx.test.ext', 'junit').version('1.1.5')
-            library('espresso', 'androidx.test.espresso', 'espresso-core').version('3.5.1')
-
-            bundle('unit', ['junit'])
-            bundle('instrumental', ['junit-ext', 'espresso'])
+            version('coroutines', coroutinesVersion)
+            version('hilt', hiltVersion)
+            from(files("$tomlDirectory/testLibs.versions.toml"))
+        }
+        localStorageLibs {
+            from files('gradle/localStorageLibs.versions.toml')
         }
     }
 }
@@ -99,22 +51,29 @@ dependencyResolutionManagement {
 rootProject.name = "Simple Weather"
 
 include ':app'
-include ':core:domain'
-include ':core:presentation'
-include ':core:style'
-include ':core:utils'
+
 include ':common:data'
 include ':common:domain'
 include ':common:presentation'
-include ':data:weather'
+include ':common:build_config_checks'
+include ':common:test'
+include ':common:util'
+
+include ':core:domain'
+include ':core:presentation'
+include ':core:style'
+include ':core:util'
+
 include ':data:location'
 include ':data:city'
 include ':data:settings'
+include ':data:weather'
+
 include ':feature:city:domain'
+include ':feature:city:list'
 include ':feature:city:list:domain'
-include ':feature:city:list:presentation'
+include ':feature:city:search'
 include ':feature:city:search:domain'
-include ':feature:city:search:presentation'
-include ':feature:settings:presentation'
+include ':feature:settings'
+include ':feature:weather'
 include ':feature:weather:domain'
-include ':feature:weather:presentation'

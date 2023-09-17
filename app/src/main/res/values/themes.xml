@@ -1,7 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.Theme.SimpleWeather" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Base.Theme.SimpleWeather" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.SimpleWeather" parent="Base.Theme.SimpleWeather" />
+    <style name="Theme.SimpleWeather" parent="Base.Theme.SimpleWeather">
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 
 </resources>

@@ -1,6 +1,5 @@
-apply from: import_library
+library_kotlin(project)
 
 dependencies {
-    implementation project(path: ':common:domain')
-    implementation project(path: ':feature:city:domain')
+    api project(':feature:city:domain')
 }

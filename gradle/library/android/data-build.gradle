@@ -1,2 +1,0 @@
-apply from: import_androidNetworkLibrary
-apply from: component_android_room

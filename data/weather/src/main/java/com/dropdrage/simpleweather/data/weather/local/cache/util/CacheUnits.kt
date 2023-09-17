@@ -5,7 +5,7 @@ import com.dropdrage.simpleweather.data.settings.PressureUnit
 import com.dropdrage.simpleweather.data.settings.TemperatureUnit
 import com.dropdrage.simpleweather.data.settings.VisibilityUnit
 import com.dropdrage.simpleweather.data.settings.WindSpeedUnit
-import com.dropdrage.simpleweather.data.settings.utils.ApiSupportedUnits
+import com.dropdrage.simpleweather.data.settings.util.ApiSupportedUnits
 import com.dropdrage.simpleweather.data.weather.remote.utils.ApiUnits
 
 internal object CacheUnits {

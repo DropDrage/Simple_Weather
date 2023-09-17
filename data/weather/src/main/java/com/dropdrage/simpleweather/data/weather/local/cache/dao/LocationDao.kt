@@ -22,8 +22,8 @@ internal interface LocationDao : CrudDao<LocationModel> {
     )
     suspend fun getLocationApproximately(latitude: Float, longitude: Float): LocationModel?
 
-    @Query("SELECT * FROM LocationModel")
-    suspend fun getAll(): List<LocationModel>
+    @Query("SELECT id FROM LocationModel")
+    suspend fun getAllIds(): List<Long>
 
 
     @Query("SELECT COUNT(*) > 0 FROM LocationModel")

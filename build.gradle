@@ -1,73 +1,44 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    ext.kotlin_version = "1.8.0"
-
-    dependencies {
-        classpath buildLibs.gradle.plugin.kotlin
-
-        classpath androidLibs.gradle.plugin.hilt
-    }
-}
-
 plugins {
-    id 'com.android.application' version '7.4.0' apply false
-    id 'com.android.library' version '7.4.0' apply false
+    alias(buildLibs.plugins.android.application) apply false
+    alias(buildLibs.plugins.android.library) apply false
 
-    alias(buildLibs.plugins.kotlin.jvm)
+    alias(buildLibs.plugins.kotlin.jvm) // not apply false bcz of test {}
     alias(buildLibs.plugins.kotlin.android) apply false
-    alias(buildLibs.plugins.kotlin.kapt) apply false
-    alias(buildLibs.plugins.ksp)
+    alias(buildLibs.plugins.ksp) apply false
+
+    alias(buildLibs.plugins.hilt) apply false
+    alias(testLibs.plugins.junit5.android) apply false
+
+    alias(buildLibs.plugins.gradleVersions)
 }
+
+apply from: 'buildFeatures.gradle'
+apply from: 'components.gradle'
+apply from: 'configs.gradle'
+apply from: 'bundles.gradle'
 
 ext {
-    sdk = 33
+    sdk = 34
     minSdk = 26
-    buildTools = '33.0.1'
+    buildTools = '34.0.0'
 
     versionCode = 1
     versionName = '1.0'
-
-    //imports
-    def gradleDir = "$rootDir/gradle"
-    def baseDir = "$gradleDir/base"
-    import_androidEmpty = "$baseDir/android-empty-build.gradle"
-    import_android = "$baseDir/android-build.gradle"
-
-    def libraryDir = "$gradleDir/library"
-    def androidLibraryDir = "$gradleDir/library/android"
-    import_androidEmptyLibrary = "$androidLibraryDir/empty-build.gradle"
-    import_androidNoUiLibrary = "$androidLibraryDir/no-ui-build.gradle"
-    import_androidUiLibrary = "$androidLibraryDir/ui-build.gradle"
-    import_androidLibrary = "$androidLibraryDir/build.gradle"
-    import_androidNetworkLibrary = "$androidLibraryDir/network-build.gradle"
-    import_androidDataLibrary = "$androidLibraryDir/data-build.gradle"
-
-    import_library = "$libraryDir/java-kotlin/build.gradle"
-
-    def componentDir = "$gradleDir/component"
-    component_android_room = "$componentDir/android-room.gradle"
-    component_android_hilt = "$componentDir/android-hilt.gradle"
-    component_android_location = "$componentDir/android-location.gradle"
-    component_retrofit = "$componentDir/retrofit.gradle"
-    component_compose = "$componentDir/compose.gradle"
-
-    def buildFeatureDir = "$gradleDir/build-feature"
-    build_feature_buildConfig = "$buildFeatureDir/build_config.gradle"
-    build_feature_resValues = "$buildFeatureDir/res_values.gradle"
-    build_feature_compose = "$buildFeatureDir/compose.gradle"
 }
 
-task cleanBaselines() {
-    def baselineFile = "/lint-baseline.xml"
-    rootProject.allprojects.forEach(project -> {
-        if (project.subprojects.size() == 0) {
-            println(project.projectDir.path)
-            delete project.projectDir.path + baselineFile
-        }
-    })
+test {
+    useJUnitPlatform()
+}
+
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
+
+static def isNonStable(String version) {
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
 }

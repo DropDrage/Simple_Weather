@@ -1,0 +1,65 @@
+ext.component_android_compose = { Project project ->
+    buildFeature_compose(project)
+
+    project.dependencies {
+        implementation platform(androidLibs.compose.bom)
+
+        implementation androidLibs.compose.material3
+        implementation androidLibs.lifecycle.viewmodel.compose
+
+        implementation 'androidx.compose.ui:ui-tooling-preview'
+        debugImplementation 'androidx.compose.ui:ui-tooling'
+    }
+}
+
+ext.component_retrofit = { Project project ->
+    project.dependencies {
+        implementation networkLibs.retrofit.core
+        implementation networkLibs.moshi.kotlin
+    }
+}
+
+ext.component_android_unitTests = { Project project ->
+    project.android {
+        testOptions.unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    project.dependencies {
+        testImplementation testLibs.bundles.unit5
+        testRuntimeOnly testLibs.junit5.runtime
+    }
+}
+
+ext.component_android_hilt = { Project project ->
+    project.apply plugin: 'kotlin-kapt'
+    project.apply plugin: 'com.google.dagger.hilt.android'
+
+    project.dependencies {
+        implementation androidLibs.hilt.android
+        kapt androidLibs.hilt.compiler
+    }
+}
+ext.component_android_room = { Project project ->
+    project.apply plugin: 'com.google.devtools.ksp'
+
+    project.dependencies {
+        implementation localStorageLibs.bundles.room
+        ksp localStorageLibs.room.compiler
+    }
+}
+ext.component_android_test = { Project project ->
+    project.android {
+        defaultConfig {
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        }
+    }
+
+    project.dependencies {
+        androidTestImplementation testLibs.bundles.instrumental5
+        androidTestRuntimeOnly testLibs.junit5.android.runtime
+        androidTestImplementation platform(androidLibs.compose.bom)
+    }
+}
