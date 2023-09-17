@@ -16,4 +16,4 @@ navigationSafeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref =
 
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
-gradleVersions = { id = "com.github.ben-manes.versions", version = "0.47.0" }
+gradleVersions = { id = "com.github.ben-manes.versions", version = "0.48.0" }

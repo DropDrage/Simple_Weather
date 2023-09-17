@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 
     def coroutinesVersion = '1.7.3'
-    def navigationVersion = '2.7.1'
+    def navigationVersion = '2.7.2'
     def hiltVersion = '2.48'
     def tomlDirectory = 'gradle'
     versionCatalogs {

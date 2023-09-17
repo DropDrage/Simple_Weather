@@ -43,12 +43,12 @@ internal class CitySearchViewModelTest {
             mockLogE {
                 val viewModel = createViewModel()
                 val query = "query"
-                coEvery { searchRepository.searchCities(query) } returns Resource.Error(IOException())
+                coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Error(IOException())
 
                 viewModel.updateQuery(query)
                 val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Assertions.assertNull(searchResult)
             }
         }
@@ -56,7 +56,7 @@ internal class CitySearchViewModelTest {
         @Test
         fun `debounce search success with empty list`() = runTestViewModelScope {
             val query = "query"
-            coEvery { searchRepository.searchCities(query) } returns Resource.Success(emptyList())
+            coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Success(emptyList())
             val viewModel = createViewModel()
 
             viewModel.searchResults.test {
@@ -66,7 +66,7 @@ internal class CitySearchViewModelTest {
 
                 cancel()
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Truth.assertThat(searchResults).isEmpty()
             }
         }
@@ -80,7 +80,7 @@ internal class CitySearchViewModelTest {
                 City("City3", Location(2f, 2f), Country("Country2", "CY")),
                 City("City2", Location(3f, 4f), Country("Country1", "RY")),
             )
-            coEvery { searchRepository.searchCities(query) } returns Resource.Success(cities)
+            coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Success(cities)
 
             viewModel.searchResults.test {
                 viewModel.updateQuery(query)
@@ -88,7 +88,7 @@ internal class CitySearchViewModelTest {
 
                 cancel()
 
-                coVerifyOnce { searchRepository.searchCities(query) }
+                coVerifyOnce { searchRepository.searchCities(eq(query)) }
                 Truth.assertThat(searchResults).containsExactlyElementsIn(cities.map(::ViewCitySearchResult))
             }
         }
@@ -98,7 +98,7 @@ internal class CitySearchViewModelTest {
     @Test
     fun `addCity success and emit cityAddedEvent`() = runTestViewModelScope {
         val cityResult = ViewCitySearchResult(City("City1", Location(1f, 2f), Country("Country1", "CY")))
-        coJustRun { cityRepository.addCity(cityResult.city) }
+        coJustRun { cityRepository.addCity(eq(cityResult.city)) }
         val viewModel = createViewModel()
 
         viewModel.cityAddedEvent.test {
@@ -107,7 +107,7 @@ internal class CitySearchViewModelTest {
 
             cancel()
 
-            coVerifyOnce { cityRepository.addCity(cityResult.city) }
+            coVerifyOnce { cityRepository.addCity(eq(cityResult.city)) }
             Assertions.assertSame(Unit, cityAddedEvent)
         }
     }

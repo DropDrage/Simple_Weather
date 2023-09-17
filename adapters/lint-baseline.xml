@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.0.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.0.2)" variant="all"
-    version="8.0.2">
+<issues format="6" by="lint 8.1.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.1)" variant="all"
+    version="8.1.1">
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="        notifyDataSetChanged()" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/java/com/dropdrage/adapters/simple/SimpleRecyclerListAdapter.kt" line="12"
-            column="9" />
+        <location file="src/main/java/com/dropdrage/adapters/simple/SimpleRecyclerAdapter.kt" line="12" column="9" />
     </issue>
 
 </issues>
