@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
 import com.dropdrage.simpleweather.core.util.LogTags
+import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesSharedViewModel
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.city.current_location.CurrentLocationWeatherViewModel
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.city.weather.BaseCityWeatherScreen
-import com.dropdrage.simpleweather.weather.domain.location.LocationResult
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

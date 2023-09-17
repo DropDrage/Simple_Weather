@@ -41,8 +41,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.presentation.model.ViewWeatherType
 import com.dropdrage.simpleweather.core.presentation.ui.TextWithSubtext
@@ -54,6 +52,8 @@ import com.dropdrage.simpleweather.core.style.Medium100
 import com.dropdrage.simpleweather.core.style.Medium150
 import com.dropdrage.simpleweather.core.style.Small100
 import com.dropdrage.simpleweather.core.style.Small50
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.dropdrage.simpleweather.feature.city.list.R
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCityCurrentWeather
 import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCurrentWeather

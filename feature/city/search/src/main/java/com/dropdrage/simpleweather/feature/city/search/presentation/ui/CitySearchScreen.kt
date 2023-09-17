@@ -34,14 +34,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dropdrage.common.presentation.utils.collectInLaunchedEffect
-import com.dropdrage.simpleweather.city.domain.City
-import com.dropdrage.simpleweather.city.domain.Country
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.presentation.ui.TextWithSubtext
 import com.dropdrage.simpleweather.core.style.ComposeMaterial3Theme
 import com.dropdrage.simpleweather.core.style.Medium100
 import com.dropdrage.simpleweather.core.style.Medium150
 import com.dropdrage.simpleweather.core.style.Small150
+import com.dropdrage.simpleweather.feature.city.domain.City
+import com.dropdrage.simpleweather.feature.city.domain.Country
 import com.dropdrage.simpleweather.feature.city.search.R
 import com.dropdrage.simpleweather.feature.city.search.presentation.model.ViewCitySearchResult
 

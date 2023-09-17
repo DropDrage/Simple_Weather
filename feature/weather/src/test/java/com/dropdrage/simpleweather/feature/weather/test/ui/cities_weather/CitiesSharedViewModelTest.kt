@@ -2,9 +2,9 @@ package com.dropdrage.simpleweather.feature.weather.test.ui.cities_weather
 
 import app.cash.turbine.test
 import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesSharedViewModel
-import com.dropdrage.test.util.runTestViewModelScope
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
