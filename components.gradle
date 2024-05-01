@@ -5,19 +5,6 @@ ext.component_retrofit = { Project project ->
     }
 }
 
-ext.component_android_unitTests = { Project project ->
-    project.android {
-        testOptions.unitTests.all {
-            useJUnitPlatform()
-        }
-    }
-
-    project.dependencies {
-        testImplementation testLibs.bundles.unit5
-        testRuntimeOnly testLibs.junit5.runtime
-    }
-}
-
 ext.component_android_viewBinding = { Project project ->
     buildFeature_viewBinding(project)
     project.dependencies {
@@ -41,7 +28,20 @@ ext.component_android_room = { Project project ->
         ksp localStorageLibs.room.compiler
     }
 }
-ext.component_android_test = { Project project ->
+
+ext.component_android_unitTests = { Project project ->
+    project.android {
+        testOptions.unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    project.dependencies {
+        testImplementation testLibs.bundles.unit5
+        testRuntimeOnly testLibs.junit5.runtime
+    }
+}
+ext.component_android_uiTest = { Project project ->
     project.android {
         defaultConfig {
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -51,6 +51,6 @@ ext.component_android_test = { Project project ->
 
     project.dependencies {
         androidTestImplementation testLibs.bundles.instrumental5
-        androidTestRuntimeOnly testLibs.junit5.android.runtime
+        androidTestRuntimeOnly testLibs.junit5.android.test.runner
     }
 }

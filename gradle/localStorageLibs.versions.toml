@@ -1,5 +1,5 @@
 [versions]
-room = "2.5.2"
+room = "2.6.1"
 kotpref = "2.13.2"
 
 [libraries]

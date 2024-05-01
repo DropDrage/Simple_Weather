@@ -53,7 +53,7 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
 
     private fun initWeatherLists() {
         val marginDecoration = SimpleMarginItemDecoration(
-            horizontalMargin = resources.getDimensionPixelSize(CommonDimen.small_100)
+            horizontalMargin = resources.getDimensionPixelSize(CommonDimen.small_100),
         )
         val horizontalScrollInterceptor = HorizontalScrollInterceptor()
 
@@ -150,10 +150,8 @@ internal abstract class BaseCityWeatherFragment<VM : BaseCityWeatherViewModel>(
     }
 
     private fun showErrorMessage(message: TextMessage) {
-        message.let {
-            val context = requireContext()
-            Toast.makeText(context, it.getMessage(context), Toast.LENGTH_SHORT).show()
-        }
+        val context = requireContext()
+        Toast.makeText(context, message.getMessage(context), Toast.LENGTH_SHORT).show()
     }
 
 

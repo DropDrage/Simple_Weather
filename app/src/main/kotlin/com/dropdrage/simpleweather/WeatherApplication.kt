@@ -19,6 +19,11 @@ internal class WeatherApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+
 
     override fun onCreate() {
         super.onCreate()
@@ -35,11 +40,6 @@ internal class WeatherApplication : Application(), Configuration.Provider {
         WorkManager.getInstance(applicationContext)
             .enqueueUniquePeriodicWork(CACHE_CLEAR_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, cacheClearWorker)
     }
-
-
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
 
 
     companion object {

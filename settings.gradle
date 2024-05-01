@@ -13,9 +13,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 
-    def coroutinesVersion = '1.7.3'
-    def navigationVersion = '2.7.2'
-    def hiltVersion = '2.48'
+    def coroutinesVersion = '1.8.0'
+    def navigationVersion = '2.7.7'
+    def hiltVersion = '2.51.1'
     def tomlDirectory = 'gradle'
     versionCatalogs {
         buildLibs {
@@ -53,27 +53,31 @@ dependencyResolutionManagement {
 
 rootProject.name = "Simple Weather"
 
-include ':app'
-include ':adapters'
-include ':common:data'
-include ':common:domain'
-include ':common:presentation'
-include ':common:build_config_checks'
-include ':common:test'
-include ':common:util'
-include ':core:domain'
-include ':core:presentation'
-include ':core:style'
-include ':core:util'
-include ':data:location'
-include ':data:city'
-include ':data:settings'
-include ':data:weather'
-include ':feature:city:domain'
-include ':feature:city:list'
-include ':feature:city:list:domain'
-include ':feature:city:search'
-include ':feature:city:search:domain'
-include ':feature:settings'
-include ':feature:weather'
-include ':feature:weather:domain'
+include ':app',
+    ':adapters',
+
+    ':common:data',
+    ':common:domain',
+    ':common:presentation',
+    ':common:build_config_checks',
+    ':common:test',
+    ':common:util',
+
+    ':core:domain',
+    ':core:presentation',
+    ':core:style',
+    ':core:util',
+
+    ':data:location',
+    ':data:city',
+    ':data:settings',
+    ':data:weather',
+
+    ':feature:city:domain',
+    ':feature:city:list',
+    ':feature:city:list:domain',
+    ':feature:city:search',
+    ':feature:city:search:domain',
+    ':feature:settings',
+    ':feature:weather',
+    ':feature:weather:domain'

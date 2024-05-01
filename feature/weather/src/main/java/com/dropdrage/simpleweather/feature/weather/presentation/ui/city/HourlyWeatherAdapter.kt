@@ -11,6 +11,6 @@ internal class HourlyWeatherAdapter(private val onItemClick: OnItemClickListener
     DifferRecyclerAdapter<ViewHourWeather, HourWeatherViewHolder>() {
     override fun createViewHolder(inflater: LayoutInflater, parent: ViewGroup) = HourWeatherViewHolder(
         ItemHourWeatherBinding.inflate(inflater, parent, false),
-        onItemClick
+        onItemClick,
     )
 }
