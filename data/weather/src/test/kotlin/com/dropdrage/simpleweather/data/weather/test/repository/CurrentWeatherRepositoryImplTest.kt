@@ -3,7 +3,6 @@ package com.dropdrage.simpleweather.data.weather.test.repository
 import com.dropdrage.common.test.util.coVerifyNever
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createList
-import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.settings.TemperatureUnit
@@ -24,7 +23,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -36,7 +34,6 @@ import com.dropdrage.simpleweather.data.source.remote.dto.CurrentWeatherDto as R
 import com.dropdrage.simpleweather.data.weather.local.cache.dto.CurrentWeatherDto as LocalCurrentWeatherDto
 
 @ExtendWith(MockKExtension::class)
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class CurrentWeatherRepositoryImplTest {
 
     @MockK
@@ -184,41 +181,40 @@ internal class CurrentWeatherRepositoryImplTest {
         }
 
         @Test
-        fun `locations filled and weather in db but api throws UnknownHost then only first list`() =
-            runTestWithMockLogE {
-                mockTemperatureConversion {
-                    var id = 0L
-                    coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
-                        LocationModel(id++, firstArg(), secondArg())
-                    }
-                    val localTemperature = 10f
-                    val localWeatherType = WeatherType.Foggy
-                    coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns LocalCurrentWeatherDto(
-                        localTemperature, localWeatherType
-                    )
-                    coEvery { api.getCurrentWeather(any(), any(), any()) } throws UnknownHostException()
-                    val location = listOf(
-                        Location(1f, 2f),
-                        Location(3f, 2f),
-                        Location(4f, 2f),
-                    )
-
-                    val result = repository.getCurrentWeather(location).toList()
-
-                    coVerify(exactly = location.size) {
-                        locationDao.getLocationApproximately(any(), any())
-                        hourWeatherDao.getCurrentWeather(any(), any())
-                    }
-                    coVerifyOnce { api.getCurrentWeather(any(), any(), any()) }
-                    assertThat(result).hasSize(1)
-                    assertThat(result[0]).containsExactlyElementsIn(createList(location.size) {
-                        CurrentWeather(localTemperature, localWeatherType)
-                    })
+        fun `locations filled and weather in db but api throws UnknownHost then only first list`() = runTest {
+            mockTemperatureConversion {
+                var id = 0L
+                coEvery { locationDao.getLocationApproximately(any(), any()) } answers {
+                    LocationModel(id++, firstArg(), secondArg())
                 }
+                val localTemperature = 10f
+                val localWeatherType = WeatherType.Foggy
+                coEvery { hourWeatherDao.getCurrentWeather(any(), any()) } returns LocalCurrentWeatherDto(
+                    localTemperature, localWeatherType
+                )
+                coEvery { api.getCurrentWeather(any(), any(), any()) } throws UnknownHostException()
+                val location = listOf(
+                    Location(1f, 2f),
+                    Location(3f, 2f),
+                    Location(4f, 2f),
+                )
+
+                val result = repository.getCurrentWeather(location).toList()
+
+                coVerify(exactly = location.size) {
+                    locationDao.getLocationApproximately(any(), any())
+                    hourWeatherDao.getCurrentWeather(any(), any())
+                }
+                coVerifyOnce { api.getCurrentWeather(any(), any(), any()) }
+                assertThat(result).hasSize(1)
+                assertThat(result[0]).containsExactlyElementsIn(createList(location.size) {
+                    CurrentWeather(localTemperature, localWeatherType)
+                })
             }
+        }
 
         @Test
-        fun `locations filled and weather in db but api throws Exception then only first list`() = runTestWithMockLogE {
+        fun `locations filled and weather in db but api throws Exception then only first list`() = runTest {
             mockTemperatureConversion {
                 var id = 0L
                 coEvery { locationDao.getLocationApproximately(any(), any()) } answers {

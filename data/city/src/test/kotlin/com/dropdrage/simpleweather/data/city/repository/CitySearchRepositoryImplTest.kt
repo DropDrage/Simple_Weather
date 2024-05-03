@@ -2,7 +2,6 @@ package com.dropdrage.simpleweather.data.city.repository
 
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.test.util.coVerifyOnce
-import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.remote.CitiesDto
 import com.dropdrage.simpleweather.data.city.remote.CityDto
@@ -13,7 +12,6 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -25,7 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class CitySearchRepositoryImplTest {
 
@@ -89,7 +86,7 @@ internal class CitySearchRepositoryImplTest {
         }
 
         @Test
-        fun `throws exception without message and returns error`() = runTestWithMockLogE {
+        fun `throws exception without message and returns error`() = runTest {
             val query = "query"
             val exception = IOException()
             coEvery { api.searchCities(eq(query)) } throws exception
@@ -104,7 +101,7 @@ internal class CitySearchRepositoryImplTest {
         }
 
         @Test
-        fun `throws exception with message and returns error`() = runTestWithMockLogE {
+        fun `throws exception with message and returns error`() = runTest {
             val query = "query"
             val exceptionMessage = "Error message"
             val exception = IOException(exceptionMessage)

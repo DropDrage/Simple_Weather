@@ -7,7 +7,6 @@ import com.dropdrage.common.test.util.coVerifyNever
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.coVerifyTwice
 import com.dropdrage.common.test.util.createList
-import com.dropdrage.common.test.util.runTestWithMockLogEShort
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.DayWeatherDao
 import com.dropdrage.simpleweather.data.weather.local.cache.dao.LocationDao
@@ -151,8 +150,7 @@ internal class WeatherRepositoryImplTest {
     inner class getUpdatedWeatherFromNow {
 
         @Test
-        fun `but location not in db and no weather from api then CantObtainResource`() =
-            runTestWithMockLogEShort {
+        fun `but location not in db and no weather from api then CantObtainResource`() = runTest {
                 val locationId = 2L
                 val location = Location(1f, 2f)
                 coEvery {
@@ -183,8 +181,7 @@ internal class WeatherRepositoryImplTest {
             }
 
         @Test
-        fun `location in db but no weather from api and db then CantObtainResource`() =
-            runTestWithMockLogEShort {
+        fun `location in db but no weather from api and db then CantObtainResource`() = runTest {
                 val locationId = 2L
                 val location = Location(1f, 2f)
                 val locationModel = LocationModel(locationId, location.latitude, location.longitude)
@@ -210,8 +207,7 @@ internal class WeatherRepositoryImplTest {
             }
 
         @Test
-        fun `location in db and no update required then Success and cancel`() =
-            runTestWithMockLogEShort {
+        fun `location in db and no update required then Success and cancel`() = runTest {
                 mockDayToHourWeatherToDomainWeather {
                     val locationId = 2L
                     val location = Location(1f, 2f)
@@ -247,8 +243,7 @@ internal class WeatherRepositoryImplTest {
             }
 
         @Test
-        fun `location in db and update required then Success and CantObtainResource`() =
-            runTestWithMockLogEShort {
+        fun `location in db and update required then Success and CantObtainResource`() = runTest {
                 mockDayToHourWeatherToDomainWeather {
                     val locationId = 2L
                     val location = Location(1f, 2f)

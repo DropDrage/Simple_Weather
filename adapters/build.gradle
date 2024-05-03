@@ -2,6 +2,7 @@ library_android(
     project,
     component_android_unitTests,
     buildFeature_buildConfig, buildFeature_viewBinding,
+    testOptions_unitTests_returnDefaultValues,
 )
 
 android {

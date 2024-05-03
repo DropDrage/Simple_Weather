@@ -20,3 +20,7 @@ ext.buildFeature_viewBinding = { Project project ->
         }
     }
 }
+
+ext.testOptions_unitTests_returnDefaultValues = { Project project ->
+    project.android.testOptions.unitTests.returnDefaultValues true
+}

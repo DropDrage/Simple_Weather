@@ -6,7 +6,6 @@ import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.mockLogD
 import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
 import com.dropdrage.common.test.util.verifyOnce
@@ -152,37 +151,35 @@ internal class BaseCityWeatherViewModelTest {
 
         @Test
         fun `returns success`() = runTestViewModelScopeAndTurbine { backgroundScope ->
-            mockLogD {
-                mockConverters(
-                    currentHourWeatherConverter,
-                    currentDayWeatherConverter,
-                    hourWeatherConverter,
-                    dailyWeatherConverter
-                )
-                val daysCount = 3
-                val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
-                val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
-                val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
-                val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
-                val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
-                val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
-                val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
-                val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
-                val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
-                viewModel.weatherResult = Resource.Success(weather)
+            mockConverters(
+                currentHourWeatherConverter,
+                currentDayWeatherConverter,
+                hourWeatherConverter,
+                dailyWeatherConverter,
+            )
+            val daysCount = 3
+            val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
+            val expectedCurrentDayWeather = toViewCurrentDayWeather(weather.currentDayWeather)
+            val expectedCurrentHourWeather = toViewCurrentHourWeather(weather.currentHourWeather)
+            val expectedDailyWeather = weather.dailyWeather.map(::toViewDayWeather)
+            val expectedHourlyWeather = weather.hourlyWeather.map(::toViewHourWeather)
+            val currentDayWeatherFlow = viewModel.currentDayWeather.testIn(backgroundScope)
+            val currentHourWeatherFlow = viewModel.currentHourWeather.testIn(backgroundScope)
+            val dailyWeatherFlow = viewModel.dailyWeather.testIn(backgroundScope)
+            val hourlyWeatherFlow = viewModel.hourlyWeather.testIn(backgroundScope)
+            viewModel.weatherResult = Resource.Success(weather)
 
-                viewModel.loadWeather()
+            viewModel.loadWeather()
 
-                assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
-                assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
-                assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
-                assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
-                verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
-                coVerifyOnce { hourWeatherConverter.convertToView(any<List<HourWeather>>(), any()) }
-                verifyOnce {
-                    currentDayWeatherConverter.convertToView(any())
-                    currentHourWeatherConverter.convertToView(any())
-                }
+            assertEquals(expectedCurrentDayWeather, currentDayWeatherFlow.awaitItem())
+            assertEquals(expectedCurrentHourWeather, currentHourWeatherFlow.awaitItem())
+            assertThat(dailyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedDailyWeather)
+            assertThat(hourlyWeatherFlow.awaitItem()).containsExactlyElementsIn(expectedHourlyWeather)
+            verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
+            coVerifyOnce { hourWeatherConverter.convertToView(any<List<HourWeather>>(), any()) }
+            verifyOnce {
+                currentDayWeatherConverter.convertToView(any())
+                currentHourWeatherConverter.convertToView(any())
             }
         }
     }

@@ -2,7 +2,6 @@ package com.dropdrage.simpleweather.data.weather.test.local.cache.util
 
 import com.dropdrage.common.test.util.createList
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.mockLogW
 import com.dropdrage.common.test.util.verifyNever
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
@@ -94,36 +93,32 @@ internal class WeatherMappersTest {
 
         @Test
         fun `empty then success`() = mockWeatherUnitsDeconverter {
-            mockLogW {
-                val dto = createDailyWeatherDto(0)
-                val locationId = 1L
+            val dto = createDailyWeatherDto(0)
+            val locationId = 1L
 
-                val result = dto.toDayModels(locationId)
+            val result = dto.toDayModels(locationId)
 
-                assertThat(result).isEmpty()
-                verifyNever {
-                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                }
+            assertThat(result).isEmpty()
+            verifyNever {
+                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
             }
         }
 
         @Test
         fun `filled then success`() = mockWeatherUnitsDeconverter {
-            mockLogW {
-                val daysCount = 5
-                val dto = createDailyWeatherDto(daysCount)
-                val locationId = 1L
+            val daysCount = 5
+            val dto = createDailyWeatherDto(daysCount)
+            val locationId = 1L
 
-                val result = dto.toDayModels(locationId)
+            val result = dto.toDayModels(locationId)
 
-                assertThat(result).containsExactlyElementsIn(dailyWeatherDtoToDayModels(dto, locationId))
-                verify(exactly = daysCount * 4) { WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any()) }
-                verify(exactly = daysCount) {
-                    WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                }
+            assertThat(result).containsExactlyElementsIn(dailyWeatherDtoToDayModels(dto, locationId))
+            verify(exactly = daysCount * 4) { WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any()) }
+            verify(exactly = daysCount) {
+                WeatherUnitsDeconverter.deconvertPrecipitationIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
             }
         }
 
@@ -134,52 +129,46 @@ internal class WeatherMappersTest {
 
         @Test
         fun `hours empty, days filled then success`() = mockWeatherUnitsDeconverter {
-            mockLogW {
-                val daysCount = 5
-                val dto = createHourlyWeatherDto(0)
-                val dayIds = createListIndexed(daysCount) { it.toLong() }
+            val daysCount = 5
+            val dto = createHourlyWeatherDto(0)
+            val dayIds = createListIndexed(daysCount) { it.toLong() }
 
-                val result = dto.toHourModels(dayIds)
+            val result = dto.toHourModels(dayIds)
 
-                assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
-                verifyNever {
-                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
-                }
+            assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
+            verifyNever {
+                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
             }
         }
 
         @Test
         fun `hours filled, days empty then success`() = mockWeatherUnitsDeconverter {
-            mockLogW {
-                val daysCount = 5
-                val hoursCount = daysCount * HOURS_IN_DAY
-                val dto = createHourlyWeatherDto(hoursCount)
-                val dayIds = emptyList<Long>()
+            val daysCount = 5
+            val hoursCount = daysCount * HOURS_IN_DAY
+            val dto = createHourlyWeatherDto(hoursCount)
+            val dayIds = emptyList<Long>()
 
-                assertThrows<IndexOutOfBoundsException> { dto.toHourModels(dayIds) }
-            }
+            assertThrows<IndexOutOfBoundsException> { dto.toHourModels(dayIds) }
         }
 
         @Test
         fun `hours and days filled then success`() = mockWeatherUnitsDeconverter {
-            mockLogW {
-                val daysCount = 5
-                val hoursCount = daysCount * HOURS_IN_DAY
-                val dto = createHourlyWeatherDto(hoursCount)
-                val dayIds = createListIndexed(daysCount) { it.toLong() }
+            val daysCount = 5
+            val hoursCount = daysCount * HOURS_IN_DAY
+            val dto = createHourlyWeatherDto(hoursCount)
+            val dayIds = createListIndexed(daysCount) { it.toLong() }
 
-                val result = dto.toHourModels(dayIds)
+            val result = dto.toHourModels(dayIds)
 
-                assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
-                verify(exactly = hoursCount) {
-                    WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
-                    WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
-                }
+            assertThat(result).containsExactlyElementsIn(hourlyWeatherDtoToHourModels(dto, dayIds))
+            verify(exactly = hoursCount) {
+                WeatherUnitsDeconverter.deconvertTemperatureIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertPressureIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertWindSpeedIfApiDontSupport(any())
+                WeatherUnitsDeconverter.deconvertVisibilityIfApiDontSupport(any())
             }
         }
 

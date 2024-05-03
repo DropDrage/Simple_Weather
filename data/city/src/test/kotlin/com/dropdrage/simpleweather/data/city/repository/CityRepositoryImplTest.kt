@@ -4,7 +4,6 @@ import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.test.util.assertInstanceOf
 import com.dropdrage.common.test.util.coVerifyNever
 import com.dropdrage.common.test.util.coVerifyOnce
-import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.data.city.local.dao.CityDao
@@ -20,7 +19,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -36,12 +34,12 @@ import kotlin.coroutines.cancellation.CancellationException
 
 private const val FIRST_ORDER = 0
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class CityRepositoryImplTest {
 
     @MockK
     lateinit var dao: CityDao
+
     private lateinit var repository: CityRepositoryImpl
 
 
@@ -157,35 +155,33 @@ internal class CityRepositoryImplTest {
         }
 
         @Test
-        fun `throws exception without message  and returns error without message`() =
-            runTestWithMockLogE {
-                val order = 1
-                val exception = IOException()
-                coEvery { dao.getWithOrder(order) } throws exception
+        fun `throws exception without message  and returns error without message`() = runTest {
+            val order = 1
+            val exception = IOException()
+            coEvery { dao.getWithOrder(order) } throws exception
 
-                val result = repository.getCityWithOrder(order)
+            val result = repository.getCityWithOrder(order)
 
-                coVerifyOnce { dao.getWithOrder(eq(order)) }
-                assertInstanceOf<Resource.Error<City>>(result)
-                assertNull(result.message)
-                assertEquals(exception, result.exception)
-            }
+            coVerifyOnce { dao.getWithOrder(eq(order)) }
+            assertInstanceOf<Resource.Error<City>>(result)
+            assertNull(result.message)
+            assertEquals(exception, result.exception)
+        }
 
         @Test
-        fun `throws exception without message  and returns error with message`() =
-            runTestWithMockLogE {
-                val order = 1
-                val exceptionMessage = "Error message"
-                val exception = IOException(exceptionMessage)
-                coEvery { dao.getWithOrder(order) } throws exception
+        fun `throws exception without message  and returns error with message`() = runTest {
+            val order = 1
+            val exceptionMessage = "Error message"
+            val exception = IOException(exceptionMessage)
+            coEvery { dao.getWithOrder(order) } throws exception
 
-                val result = repository.getCityWithOrder(order)
+            val result = repository.getCityWithOrder(order)
 
-                coVerifyOnce { dao.getWithOrder(eq(order)) }
-                assertInstanceOf<Resource.Error<City>>(result)
-                assertEquals(exceptionMessage, result.message)
-                assertEquals(exception, result.exception)
-            }
+            coVerifyOnce { dao.getWithOrder(eq(order)) }
+            assertInstanceOf<Resource.Error<City>>(result)
+            assertEquals(exceptionMessage, result.message)
+            assertEquals(exception, result.exception)
+        }
 
     }
 

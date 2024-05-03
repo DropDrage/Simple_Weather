@@ -3,7 +3,6 @@ package com.dropdrage.simpleweather.feature.city.search.presentation.ui
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.test.util.coVerifyOnce
-import com.dropdrage.common.test.util.mockLogE
 import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.feature.city.domain.City
@@ -40,17 +39,15 @@ internal class CitySearchViewModelTest {
 
         @Test
         fun `debounce search error`() = runTestViewModelScope {
-            mockLogE {
-                val viewModel = createViewModel()
-                val query = "query"
-                coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Error(IOException())
+            val viewModel = createViewModel()
+            val query = "query"
+            coEvery { searchRepository.searchCities(eq(query)) } returns Resource.Error(IOException())
 
-                viewModel.updateQuery(query)
-                val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
+            viewModel.updateQuery(query)
+            val searchResult = withTimeoutOrNull(1.seconds) { viewModel.searchResults.first() }
 
-                coVerifyOnce { searchRepository.searchCities(eq(query)) }
-                Assertions.assertNull(searchResult)
-            }
+            coVerifyOnce { searchRepository.searchCities(eq(query)) }
+            Assertions.assertNull(searchResult)
         }
 
         @Test

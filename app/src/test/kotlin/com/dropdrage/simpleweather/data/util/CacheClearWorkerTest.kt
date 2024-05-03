@@ -4,27 +4,24 @@ import androidx.work.ListenableWorker.Result
 import androidx.work.WorkManager
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.justMock
-import com.dropdrage.common.test.util.runTestWithMockLogE
 import com.dropdrage.simpleweather.data.weather.repository.CacheRepository
 import io.mockk.coEvery
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class CacheClearWorkerTest {
 
-    @MockK(relaxed = true)
+    @RelaxedMockK
     lateinit var cacheRepository: CacheRepository
 
     private lateinit var worker: CacheClearWorker
@@ -77,7 +74,7 @@ internal class CacheClearWorkerTest {
         }
 
         @Test
-        fun `throws exception`() = runTestWithMockLogE {
+        fun `throws exception`() = runTest {
             coEvery { cacheRepository.clearOutdated() } throws Exception()
 
             val result = worker.doWork()

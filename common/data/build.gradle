@@ -1,6 +1,7 @@
 library_android(
     project,
-    component_android_unitTests
+    component_android_unitTests,
+    testOptions_unitTests_returnDefaultValues,
 )
 
 android {

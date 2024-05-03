@@ -9,8 +9,6 @@ import androidx.core.content.ContextCompat
 import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
 import com.dropdrage.common.test.util.assertInstanceOf
 import com.dropdrage.common.test.util.justMock
-import com.dropdrage.common.test.util.mockLooper
-import com.dropdrage.common.test.util.runTestWithMockLooper
 import com.dropdrage.common.test.util.verifyNever
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.data.location.DefaultLocationTracker
@@ -27,7 +25,6 @@ import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
 import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
@@ -41,7 +38,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 private const val TASK_KT = "kotlinx.coroutines.tasks.TasksKt"
 private const val CHECK_LOCATION_AVAILABILITY_METHOD = "checkLocationAvailability"
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 internal class DefaultLocationTrackerTest {
 
@@ -309,7 +305,7 @@ internal class DefaultLocationTrackerTest {
             }
 
         @Test
-        fun `location available returns Success`() = runTestWithMockLooper {
+        fun `location available returns Success`() = runTest {
             mockLocationRequestBuilder {
                 mockTaskKt {
                     every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
@@ -352,81 +348,75 @@ internal class DefaultLocationTrackerTest {
         @Test
         fun `but location available with gps by network provider with SDK O and Success`() =
             runContextCompatPermissionTest {
-                mockLooper {
-                    mockSdkGreaterCheck(false) {
-                        mockLocationManager(true, false)
-                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                        val latitude = 1.0
-                        val longitude = 2.0
-                        val location = mockLocation(latitude, longitude)
-                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                            (args[1] as LocationListener).onLocationChanged(location)
-                            mockk(relaxed = true)
-                        }
-
-                        val result = locationTracker.requestLocationUpdate().first()
-
-                        verifyNever { locationClient.lastLocation }
-                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                        assertInstanceOf<LocationResult.Success>(result)
-                        val resultLocation = result.location
-                        assertEquals(latitude.toFloat(), resultLocation.latitude)
-                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                mockSdkGreaterCheck(false) {
+                    mockLocationManager(true, false)
+                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                    val latitude = 1.0
+                    val longitude = 2.0
+                    val location = mockLocation(latitude, longitude)
+                    every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                        (args[1] as LocationListener).onLocationChanged(location)
+                        mockk(relaxed = true)
                     }
+
+                    val result = locationTracker.requestLocationUpdate().first()
+
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
+                    assertEquals(latitude.toFloat(), resultLocation.latitude)
+                    assertEquals(longitude.toFloat(), resultLocation.longitude)
                 }
             }
 
         @Test
         fun `but location available with gps by gps provider with SDK O and Success`() =
             runContextCompatPermissionTest {
-                mockLooper {
-                    mockSdkGreaterCheck(false) {
-                        mockLocationManager(false, true)
-                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                        val latitude = 1.0
-                        val longitude = 2.0
-                        val location = mockLocation(latitude, longitude)
-                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                            (args[1] as LocationListener).onLocationChanged(location)
-                            mockk(relaxed = true)
-                        }
-
-                        val result = locationTracker.requestLocationUpdate().first()
-
-                        verifyNever { locationClient.lastLocation }
-                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                        assertInstanceOf<LocationResult.Success>(result)
-                        val resultLocation = result.location
-                        assertEquals(latitude.toFloat(), resultLocation.latitude)
-                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                mockSdkGreaterCheck(false) {
+                    mockLocationManager(false, true)
+                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                    val latitude = 1.0
+                    val longitude = 2.0
+                    val location = mockLocation(latitude, longitude)
+                    every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                        (args[1] as LocationListener).onLocationChanged(location)
+                        mockk(relaxed = true)
                     }
+
+                    val result = locationTracker.requestLocationUpdate().first()
+
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
+                    assertEquals(latitude.toFloat(), resultLocation.latitude)
+                    assertEquals(longitude.toFloat(), resultLocation.longitude)
                 }
             }
 
         @Test
         fun `but location available with gps by both provider with SDK O and Success`() =
             runContextCompatPermissionTest {
-                mockLooper {
-                    mockSdkGreaterCheck(false) {
-                        mockLocationManager(true, true)
-                        every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
-                        val latitude = 1.0
-                        val longitude = 2.0
-                        val location = mockLocation(latitude, longitude)
-                        every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
-                            (args[1] as LocationListener).onLocationChanged(location)
-                            mockk(relaxed = true)
-                        }
-
-                        val result = locationTracker.requestLocationUpdate().first()
-
-                        verifyNever { locationClient.lastLocation }
-                        verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
-                        assertInstanceOf<LocationResult.Success>(result)
-                        val resultLocation = result.location
-                        assertEquals(latitude.toFloat(), resultLocation.latitude)
-                        assertEquals(longitude.toFloat(), resultLocation.longitude)
+                mockSdkGreaterCheck(false) {
+                    mockLocationManager(true, true)
+                    every { locationTracker[CHECK_LOCATION_AVAILABILITY_METHOD]() } returns null
+                    val latitude = 1.0
+                    val longitude = 2.0
+                    val location = mockLocation(latitude, longitude)
+                    every { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) } answers {
+                        (args[1] as LocationListener).onLocationChanged(location)
+                        mockk(relaxed = true)
                     }
+
+                    val result = locationTracker.requestLocationUpdate().first()
+
+                    verifyNever { locationClient.lastLocation }
+                    verifyOnce { locationClient.requestLocationUpdates(any(), any<LocationListener>(), any()) }
+                    assertInstanceOf<LocationResult.Success>(result)
+                    val resultLocation = result.location
+                    assertEquals(latitude.toFloat(), resultLocation.latitude)
+                    assertEquals(longitude.toFloat(), resultLocation.longitude)
                 }
             }
 

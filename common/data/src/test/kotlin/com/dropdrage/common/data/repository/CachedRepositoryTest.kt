@@ -3,11 +3,9 @@ package com.dropdrage.common.data.repository
 import com.dropdrage.common.data.LocalResource
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.test.util.assertInstanceOf
-import com.dropdrage.common.test.util.runTestWithMockLogE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,7 +17,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.IOException
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class CachedRepositoryTest {
 
     private lateinit var repository: FakeCachedRepository<Any>
@@ -69,7 +66,7 @@ internal class CachedRepositoryTest {
 
 
         @Test
-        fun `throw IOException with LocalResource Success`() = runTestWithMockLogE {
+        fun `throw IOException with LocalResource Success`() = runTest {
             val exception = IOException()
             val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.Success(Any())) {
                 throw exception
@@ -79,7 +76,7 @@ internal class CachedRepositoryTest {
         }
 
         @Test
-        fun `throw IOException with LocalResource NotFound`() = runTestWithMockLogE {
+        fun `throw IOException with LocalResource NotFound`() = runTest {
             val exception = IOException()
             val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
                 throw exception
@@ -100,7 +97,7 @@ internal class CachedRepositoryTest {
         }
 
         @Test
-        fun `throw Exception with LocalResource NotFound`() = runTestWithMockLogE {
+        fun `throw Exception with LocalResource NotFound`() = runTest {
             val exception = Exception()
             val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.Success(Any())) {
                 throw exception
@@ -110,7 +107,7 @@ internal class CachedRepositoryTest {
         }
 
         @Test
-        fun `throw Exception with LocalResource not Success`() = runTestWithMockLogE {
+        fun `throw Exception with LocalResource not Success`() = runTest {
             val exception = Exception()
             val result = repository.tryProcessRemoteResourceOrEmitErrorExposed(LocalResource.NotFound<Any>()) {
                 throw exception

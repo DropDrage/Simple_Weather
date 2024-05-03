@@ -1,6 +1,5 @@
 package com.dropdrage.simpleweather.data.weather.test.utils
 
-import com.dropdrage.common.test.util.mockLogW
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
 import com.dropdrage.simpleweather.data.weather.utils.WeatherTypeConverter
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,7 +27,7 @@ internal class WeatherTypeConverterTest {
         }
 
         @Test
-        fun `unsupported code then ClearSky`() = mockLogW {
+        fun `unsupported code then ClearSky`() {
             val resultWeatherType = WeatherTypeConverter.toWeatherType(-100)
 
             assertEquals(WeatherType.ClearSky, resultWeatherType)
