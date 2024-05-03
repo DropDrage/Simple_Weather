@@ -12,6 +12,7 @@ import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.city.domain.City
 import com.dropdrage.simpleweather.feature.city.domain.CityRepository
 import com.dropdrage.simpleweather.feature.city.domain.Country
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
 import com.dropdrage.simpleweather.feature.weather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
@@ -181,7 +182,7 @@ internal class CityWeatherViewModelTest {
 
                 verify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
                 coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
-                    hourWeatherConverter.convertToView(any(), any())
+                    hourWeatherConverter.convertToView(any<List<HourWeather>>(), any())
                 }
                 verifyOnce {
                     currentDayWeatherConverter.convertToView(any())

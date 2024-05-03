@@ -13,6 +13,7 @@ import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.feature.weather.R
 import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
 import com.dropdrage.simpleweather.feature.weather.domain.use_case.GetLocationUseCase
+import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
 import com.dropdrage.simpleweather.feature.weather.domain.weather.WeatherRepository
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.city.current_location.CurrentLocationWeatherViewModel
@@ -162,7 +163,7 @@ internal class CurrentLocationWeatherViewModelTest {
                     currentHourWeatherConverter,
                     currentDayWeatherConverter,
                     hourWeatherConverter,
-                    dailyWeatherConverter
+                    dailyWeatherConverter,
                 )
                 val daysCount = 3
                 val weather = Weather(createListIndexed(daysCount) { createDayWeather(it.toLong()) })
@@ -185,7 +186,7 @@ internal class CurrentLocationWeatherViewModelTest {
 
                 coVerify(exactly = daysCount) { dailyWeatherConverter.convertToView(any(), any()) }
                 coVerify(atLeast = HOURS_IN_DAY, atMost = daysCount * HOURS_IN_DAY) { // flaks
-                    hourWeatherConverter.convertToView(any(), any())
+                    hourWeatherConverter.convertToView(any<List<HourWeather>>(), any())
                 }
                 verifyOnce {
                     currentDayWeatherConverter.convertToView(any())

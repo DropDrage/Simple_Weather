@@ -28,7 +28,28 @@ internal class HourWeatherConverter @Inject constructor(
         )
     }
 
-    private fun isNow(dateTime: LocalDateTime, currentDateTime: LocalDateTime) =
+    fun convertToView(hourWeathers: List<HourWeather>, currentDateTime: LocalDateTime): List<ViewHourWeather> =
+        timeFormatter.bulkFormat {
+            unitsFormatter.bulkFormat {
+                hourWeathers.map { hourWeather ->
+                    val isNow = isNow(hourWeather.dateTime, currentDateTime)
+                    ViewHourWeather(
+                        dateTime = hourWeather.dateTime,
+                        timeFormatted = formatAsHourOrNow(hourWeather.dateTime, isNow),
+                        isNow = isNow,
+                        weatherType = ViewWeatherType.fromWeatherType(hourWeather.weatherType),
+                        temperature = formatTemperature(hourWeather.temperature),
+                        pressure = formatPressure(hourWeather.pressure),
+                        windSpeed = formatWindSpeed(hourWeather.windSpeed),
+                        humidity = formatHumidity(hourWeather.humidity),
+                        visibility = formatVisibility(hourWeather.visibility),
+                    )
+                }
+            }
+        }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun isNow(dateTime: LocalDateTime, currentDateTime: LocalDateTime) =
         dateTime.hour == currentDateTime.hour && dateTime.dayOfMonth == currentDateTime.dayOfMonth
 
 }

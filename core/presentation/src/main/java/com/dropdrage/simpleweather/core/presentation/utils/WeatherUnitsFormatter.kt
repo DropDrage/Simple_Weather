@@ -7,36 +7,45 @@ import com.dropdrage.simpleweather.data.settings.WeatherUnit
 import com.dropdrage.simpleweather.data.settings.WeatherUnitsPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
-private const val FLOAT_DOT = '.'
-
-private const val NO_VALUE = "--"
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val context: Context) {
 
     val noTemperature = context.getString(
         WeatherUnitsPreferences.temperatureUnit.unitResId,
-        NO_VALUE
+        NO_VALUE,
     )
 
 
     fun formatTemperature(value: Float): String =
-        formatUnit(value, WeatherUnitsPreferences.temperatureUnit)
+        formatTemperature(value, WeatherUnitsPreferences.temperatureUnit)
+
+    private fun formatTemperature(value: Float, unit: WeatherUnit): String = formatUnit(value, unit)
 
     fun formatPressure(value: Int): String =
-        formatUnit(value, WeatherUnitsPreferences.pressureUnit)
+        formatPressure(value, WeatherUnitsPreferences.pressureUnit)
+
+    private fun formatPressure(value: Int, unit: WeatherUnit): String = formatUnit(value, unit)
 
     fun formatHumidity(value: Int): String =
         context.getString(R.string.weather_unit_humidity, value.toString())
 
     fun formatWindSpeed(value: Float): String =
-        formatPlural(value.toInt(), WeatherUnitsPreferences.windSpeedUnit)
+        formatWindSpeed(value, WeatherUnitsPreferences.windSpeedUnit)
+
+    private fun formatWindSpeed(value: Float, unit: CanBePluralUnit): String = formatPlural(value.toInt(), unit)
 
     fun formatVisibility(value: Float): String =
-        formatPlural(value, WeatherUnitsPreferences.visibilityUnit)
+        formatVisibility(value, WeatherUnitsPreferences.visibilityUnit)
+
+    private fun formatVisibility(value: Float, unit: CanBePluralUnit): String = formatPlural(value, unit)
 
     fun formatPrecipitation(value: Float): String =
-        formatPlural(value, WeatherUnitsPreferences.precipitationUnit)
+        formatPrecipitation(value, WeatherUnitsPreferences.precipitationUnit)
+
+    private fun formatPrecipitation(value: Float, unit: CanBePluralUnit): String = formatPlural(value, unit)
 
 
     private fun formatUnit(value: Int, unit: WeatherUnit) =
@@ -61,6 +70,46 @@ class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val 
     private inline fun fastFormat(value: Float): String {
         val valueString = value.toString()
         return valueString.take(valueString.indexOf(FLOAT_DOT) + 2)
+    }
+
+
+    @OptIn(ExperimentalContracts::class)
+    fun <T> bulkFormat(block: BulkWeatherUnitsFormatter.() -> T): T {
+        contract {
+            callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+        }
+
+        return BulkWeatherUnitsFormatter().run(block)
+    }
+
+    inner class BulkWeatherUnitsFormatter {
+
+        private val temperatureUnit = WeatherUnitsPreferences.temperatureUnit
+        private val pressureUnit = WeatherUnitsPreferences.pressureUnit
+        private val windSpeedUnit = WeatherUnitsPreferences.windSpeedUnit
+        private val visibilityUnit = WeatherUnitsPreferences.visibilityUnit
+        private val precipitationUnit = WeatherUnitsPreferences.precipitationUnit
+
+
+        fun formatTemperature(value: Float): String = formatTemperature(value, temperatureUnit)
+
+        fun formatPressure(value: Int): String = formatPressure(value, pressureUnit)
+
+        fun formatHumidity(value: Int): String = this@WeatherUnitsFormatter.formatHumidity(value)
+
+        fun formatWindSpeed(value: Float): String = formatWindSpeed(value, windSpeedUnit)
+
+        fun formatVisibility(value: Float): String = formatVisibility(value, visibilityUnit)
+
+        fun formatPrecipitation(value: Float): String = formatPrecipitation(value, precipitationUnit)
+
+    }
+
+
+    companion object {
+        private const val FLOAT_DOT = '.'
+
+        private const val NO_VALUE = "--"
     }
 
 }

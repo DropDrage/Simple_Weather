@@ -27,8 +27,8 @@ internal fun mockConverters(
         val dayWeather = firstArg<DayWeather>()
         toViewDayWeather(dayWeather)
     }
-    every { hourWeatherConverter.convertToView(any(), any()) } answers {
-        val hourWeather = firstArg<HourWeather>()
-        toViewHourWeather(hourWeather)
+    every { hourWeatherConverter.convertToView(any<List<HourWeather>>(), any()) } answers {
+        val hourWeathers = firstArg<List<HourWeather>>()
+        hourWeathers.map(::toViewHourWeather)
     }
 }

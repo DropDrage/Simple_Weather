@@ -12,9 +12,11 @@ import com.dropdrage.simpleweather.feature.weather.presentation.util.format.Time
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.util.createHourWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewHourWeather
+import com.google.common.truth.Truth
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -87,6 +89,67 @@ internal class HourWeatherConverterTest {
             verifyOnce { unitsFormatter.formatHumidity(any()) }
             verifyOnce { unitsFormatter.formatVisibility(any()) }
             assertEquals(expectedCurrentHourWeather, viewCurrentHourWeather)
+        }
+
+    }
+
+
+    @Nested
+    inner class convertListToViewList {
+
+        @Test
+        fun `returns not now success`() {
+            every { timeFormatter.bulkFormat<List<ViewHourWeather>>(any()) } answers {
+                mockk<BulkTimeFormatter> {
+                    justArgToString { formatAsHourOrNow(any(), eq(false)) }
+                }.run(firstArg())
+            }
+            every { unitsFormatter.bulkFormat<List<ViewHourWeather>>(any()) } answers {
+                mockk<BulkWeatherUnitsFormatter> {
+                    justArgToString { formatTemperature(any()) }
+                    justArgToString { formatPressure(any()) }
+                    justArgToString { formatWindSpeed(any()) }
+                    justArgToString { formatHumidity(any()) }
+                    justArgToString { formatVisibility(any()) }
+                }.run(firstArg())
+            }
+            val now = LocalDateTime.now()
+            val hourWeather = createList(5) { createHourWeather(now) }
+            val expectedCurrentHourWeather = hourWeather.map(::toViewHourWeather)
+
+            val viewCurrentHourWeather = converter.convertToView(hourWeather, LocalDateTime.MIN)
+
+            Truth.assertThat(viewCurrentHourWeather).containsExactlyElementsIn(expectedCurrentHourWeather)
+        }
+
+        @Test
+        fun `returns now success`() {
+            every { timeFormatter.bulkFormat<List<ViewHourWeather>>(any()) } answers {
+                mockk<BulkTimeFormatter> {
+                    justArgToString { formatAsHourOrNow(any(), any()) }
+                }.run(firstArg())
+            }
+            every { unitsFormatter.bulkFormat<List<ViewHourWeather>>(any()) } answers {
+                mockk<BulkWeatherUnitsFormatter> {
+                    justArgToString { formatTemperature(any()) }
+                    justArgToString { formatPressure(any()) }
+                    justArgToString { formatWindSpeed(any()) }
+                    justArgToString { formatHumidity(any()) }
+                    justArgToString { formatVisibility(any()) }
+                }.run(firstArg())
+            }
+            val now = LocalDateTime.now()
+            val hourWeather = createListIndexed(5) {
+                if (it == 0) createHourWeather(now)
+                else createHourWeather(LocalDateTime.MIN)
+            }
+            val expectedCurrentHourWeather = hourWeather.map {
+                toViewHourWeather(it, it.dateTime == now)
+            }
+
+            val viewCurrentHourWeather = converter.convertToView(hourWeather, now)
+
+            Truth.assertThat(viewCurrentHourWeather).containsExactlyElementsIn(expectedCurrentHourWeather)
         }
 
     }

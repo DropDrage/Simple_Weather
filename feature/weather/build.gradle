@@ -32,6 +32,7 @@ dependencies {
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
     testImplementation testLibs.turbine
+    testImplementation testLibs.truth
 
     testImplementation testFixtures(project(':common:test'))
 }

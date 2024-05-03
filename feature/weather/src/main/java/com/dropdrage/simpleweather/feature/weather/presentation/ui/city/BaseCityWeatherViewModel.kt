@@ -75,7 +75,7 @@ internal abstract class BaseCityWeatherViewModel constructor(
     protected abstract suspend fun tryLoadWeather()
 
     private inline fun performAsyncWithLoadingIndication(crossinline action: suspend () -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 _isLoading.emit(true)
                 action()
@@ -109,7 +109,7 @@ internal abstract class BaseCityWeatherViewModel constructor(
             val viewHourWeathers: List<ViewHourWeather>
             val time = measureTime {
                 val now = LocalDateTime.now()
-                viewHourWeathers = weather.hourlyWeather.map { hourWeatherConverter.convertToView(it, now) }
+                viewHourWeathers = hourWeatherConverter.convertToView(weather.hourlyWeather, now)
             }
             Log.d(TAG, "Time: $time")
             _hourlyWeather.emit(viewHourWeathers)
