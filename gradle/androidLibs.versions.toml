@@ -7,7 +7,7 @@ androidx-core = "androidx.core:core-ktx:1.13.1"
 androidx-annotation = "androidx.annotation:annotation:1.7.1"
 androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 androidx-fragment = "androidx.fragment:fragment-ktx:1.7.0"
-android-material = "com.google.android.material:material:1.11.0"
+android-material = "com.google.android.material:material:1.12.0"
 
 android-minified = "com.google.android:android:4.1.1.4"
 
