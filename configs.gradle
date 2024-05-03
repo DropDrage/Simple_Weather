@@ -1,8 +1,8 @@
 def javaVersion = JavaVersion.VERSION_17
 
 ext.library_kotlin = { Project project ->
-    project.apply plugin: 'java-library'
     project.apply plugin: 'org.jetbrains.kotlin.jvm'
+    project.apply plugin: 'java-library'
     project.apply plugin: 'com.android.lint'
 
     project.java {

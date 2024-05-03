@@ -1,7 +1,6 @@
 ext.bundle_uiScreen = { Project project ->
     component_android_viewBinding(project)
     component_android_hilt(project)
-    component_android_uiTest(project)
     buildFeature_resValues(project)
 
     project.dependencies {
