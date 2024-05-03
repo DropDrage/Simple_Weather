@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation androidLibs.navigation.ui
+    implementation androidLibs.services.location
 
     implementation androidLibs.work
 

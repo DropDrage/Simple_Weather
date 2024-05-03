@@ -43,7 +43,7 @@ internal class SunTimesView @JvmOverloads constructor(
     private var arcGroundEdgeMargin: Float = 0f
     private var arcThickness: Float = 0f
         set(value) {
-            arcThicknessHalf = value / 2
+            arcThicknessHalf = value * 0.5f
             field = value
         }
     private var arcThicknessHalf: Float = 0f
@@ -172,7 +172,7 @@ internal class SunTimesView @JvmOverloads constructor(
             color = timeColor
             textAlign = Paint.Align.CENTER
 
-            density = resources.getDisplayMetrics().density
+            density = resources.displayMetrics.density
             textHeight = calculateTextHeight()
         }
     }
@@ -213,7 +213,7 @@ internal class SunTimesView @JvmOverloads constructor(
 
         textLeftX = arcRectangle.left
         textRightX = arcRectangle.right
-        timeTextY = arcCenterY + timeTextTopMargin + textHeight / 2
+        timeTextY = arcCenterY + timeTextTopMargin + textHeight * 0.5f
     }
 
     override fun onDraw(canvas: Canvas) {

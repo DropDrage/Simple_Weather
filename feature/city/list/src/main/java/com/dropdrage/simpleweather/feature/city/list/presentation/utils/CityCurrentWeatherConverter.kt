@@ -24,7 +24,7 @@ internal class CityCurrentWeatherConverter @Inject constructor(
 
         return ViewCityCurrentWeather(
             city = cityCurrentWeather.city,
-            currentWeather = ViewCurrentWeather(currentTemperature, weatherType)
+            currentWeather = ViewCurrentWeather(currentTemperature, weatherType),
         )
     }
 }

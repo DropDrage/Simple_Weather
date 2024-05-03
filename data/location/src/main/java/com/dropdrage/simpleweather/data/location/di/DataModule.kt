@@ -1,4 +1,4 @@
-package com.dropdrage.simpleweather.di.module
+package com.dropdrage.simpleweather.data.location.di
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient

@@ -42,7 +42,7 @@ internal fun toViewDayWeather(dayWeather: DayWeather) = ViewDayWeather(
 
 internal fun toViewHourWeather(hourWeather: HourWeather, isNow: Boolean = false) = ViewHourWeather(
     dateTime = hourWeather.dateTime,
-    timeFormatted = hourWeather.dateTime.toLocalTime().toString(),
+    timeFormatted = hourWeather.dateTime.toString(),
     isNow = isNow,
     weatherType = ViewWeatherType.fromWeatherType(hourWeather.weatherType),
     temperature = hourWeather.temperature.toString(),

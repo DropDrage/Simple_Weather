@@ -2,7 +2,11 @@ package com.dropdrage.simpleweather.feature.weather.presentation.ui.view
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.fonts.FontStyle
 import android.os.Build
@@ -53,7 +57,7 @@ internal class WeatherMetricView @JvmOverloads constructor(
     private lateinit var dividerPaint: Paint
     private var dividerThickness: Float = 0f
         set(value) {
-            dividerThicknessHalf = value / 2
+            dividerThicknessHalf = value * 0.5f
             field = value
         }
     private var dividerThicknessHalf: Float = 0f
@@ -77,9 +81,8 @@ internal class WeatherMetricView @JvmOverloads constructor(
                 _iconIntrinsicWidth = value.intrinsicWidth
                 _iconIntrinsicHeight = value.intrinsicHeight
 
-                var wrappedDrawable = value
-                wrappedDrawable.setTint(iconColor)
-                field = wrappedDrawable
+                value.setTint(iconColor)
+                field = value
                 recalculateIconRect()
             } else {
                 _iconIntrinsicWidth = 0
@@ -288,16 +291,16 @@ internal class WeatherMetricView @JvmOverloads constructor(
 
         if (isOnlyTopText) {
             topTextX = textStartDrawX
-            topTextY = centerY + textHeight / 2
+            topTextY = centerY + textHeight * 0.5f
         } else {
-            topTextX = textStartDrawX + (maxTextWidth - topTextWidth) / 2
+            topTextX = textStartDrawX + (maxTextWidth - topTextWidth) * 0.5f
             val dividerMargin = _textDividerMargin + dividerThicknessHalf
             topTextY = centerY - dividerMargin
         }
 
         dividerEndX = textStartDrawX + maxTextWidth
 
-        bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) / 2
+        bottomTextX = textStartDrawX + (maxTextWidth - bottomTextWidth) * 0.5f
     }
 
     private fun recalculateIconRect() {

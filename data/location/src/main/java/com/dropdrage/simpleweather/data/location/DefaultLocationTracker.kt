@@ -10,7 +10,7 @@ import android.os.Looper
 import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
 import com.dropdrage.common.build_config_checks.isSdkVersionGreaterOrEquals
-import com.dropdrage.simpleweather.data.util.mapper.toLocationResult
+import com.dropdrage.simpleweather.data.location.util.toLocationResult
 import com.dropdrage.simpleweather.feature.weather.domain.location.LocationResult
 import com.dropdrage.simpleweather.feature.weather.domain.location.LocationTracker
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -19,8 +19,7 @@ import com.google.android.gms.location.Priority
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -42,12 +41,12 @@ class DefaultLocationTracker @Inject constructor(
         return lastLocation.toLocationResult()
     }
 
-    override suspend fun requestLocationUpdate(): Flow<LocationResult> = channelFlow {
+    override suspend fun requestLocationUpdate(): Flow<LocationResult> = callbackFlow {
         val locationAvailabilityResult = checkLocationAvailability()
         if (locationAvailabilityResult != null) {
             channel.send(locationAvailabilityResult)
             channel.close()
-            return@channelFlow
+            return@callbackFlow
         }
 
         val locationRequest: LocationRequest =
@@ -56,12 +55,14 @@ class DefaultLocationTracker @Inject constructor(
                 .build()
 
         //noinspection MissingPermission
-        locationClient.requestLocationUpdates(locationRequest, { location ->
-            runBlocking {
-                channel.send(location.toLocationResult())
+        locationClient.requestLocationUpdates(
+            locationRequest,
+            { location ->
+                channel.trySend(location.toLocationResult())
                 channel.close()
-            }
-        }, Looper.getMainLooper()).await()
+            },
+            Looper.getMainLooper(),
+        ).await()
 
         awaitClose()
     }

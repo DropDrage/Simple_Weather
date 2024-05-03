@@ -12,12 +12,12 @@ ext.component_android_viewBinding = { Project project ->
     }
 }
 ext.component_android_hilt = { Project project ->
-    project.apply plugin: 'kotlin-kapt'
+    project.apply plugin: 'com.google.devtools.ksp'
     project.apply plugin: 'com.google.dagger.hilt.android'
 
     project.dependencies {
         implementation androidLibs.hilt.android
-        kapt androidLibs.hilt.compiler
+        ksp androidLibs.hilt.compiler
     }
 }
 ext.component_android_room = { Project project ->

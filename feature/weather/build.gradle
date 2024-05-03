@@ -15,7 +15,7 @@ dependencies {
 
     implementation androidLibs.collapsingtoolbarlayoutSubtitle
 
-    implementation androidLibs.bundles.location
+    implementation androidLibs.services.location
 
     implementation project(':adapters')
     implementation project(':common:domain')

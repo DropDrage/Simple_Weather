@@ -1,8 +1,14 @@
 package com.dropdrage.simpleweather.feature.weather.test.utils.model_converter
 
+import com.dropdrage.common.test.util.createList
+import com.dropdrage.common.test.util.createListIndexed
 import com.dropdrage.common.test.util.justArgToString
+import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter
+import com.dropdrage.simpleweather.core.presentation.utils.WeatherUnitsFormatter.BulkWeatherUnitsFormatter
+import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewHourWeather
 import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter
+import com.dropdrage.simpleweather.feature.weather.presentation.util.format.TimeFormatter.BulkTimeFormatter
 import com.dropdrage.simpleweather.feature.weather.presentation.util.model_converter.HourWeatherConverter
 import com.dropdrage.simpleweather.feature.weather.util.createHourWeather
 import com.dropdrage.simpleweather.feature.weather.util.toViewHourWeather
@@ -39,9 +45,7 @@ internal class HourWeatherConverterTest {
 
         @Test
         fun `returns not now success`() {
-            every { timeFormatter.formatAsHourOrNow(any(), eq(false)) } answers {
-                firstArg<LocalDateTime>().toLocalTime().toString()
-            }
+            justArgToString { timeFormatter.formatAsHourOrNow(any(), eq(false)) }
             justArgToString { unitsFormatter.formatTemperature(any()) }
             justArgToString { unitsFormatter.formatPressure(any()) }
             justArgToString { unitsFormatter.formatWindSpeed(any()) }
@@ -52,15 +56,19 @@ internal class HourWeatherConverterTest {
 
             val viewCurrentHourWeather = converter.convertToView(hourWeather, LocalDateTime.MIN)
 
+            verifyOnce { timeFormatter.formatAsHourOrNow(any(), eq(false)) }
+            verifyOnce { unitsFormatter.formatTemperature(any()) }
+            verifyOnce { unitsFormatter.formatPressure(any()) }
+            verifyOnce { unitsFormatter.formatWindSpeed(any()) }
+            verifyOnce { unitsFormatter.formatHumidity(any()) }
+            verifyOnce { unitsFormatter.formatVisibility(any()) }
             assertEquals(expectedCurrentHourWeather, viewCurrentHourWeather)
         }
 
 
         @Test
         fun `returns now success`() {
-            every { timeFormatter.formatAsHourOrNow(any(), eq(true)) } answers {
-                firstArg<LocalDateTime>().toLocalTime().toString()
-            }
+            justArgToString { timeFormatter.formatAsHourOrNow(any(), eq(true)) }
             justArgToString { unitsFormatter.formatTemperature(any()) }
             justArgToString { unitsFormatter.formatPressure(any()) }
             justArgToString { unitsFormatter.formatWindSpeed(any()) }
@@ -72,6 +80,12 @@ internal class HourWeatherConverterTest {
 
             val viewCurrentHourWeather = converter.convertToView(hourWeather, dateTimeNow)
 
+            verifyOnce { timeFormatter.formatAsHourOrNow(any(), eq(true)) }
+            verifyOnce { unitsFormatter.formatTemperature(any()) }
+            verifyOnce { unitsFormatter.formatPressure(any()) }
+            verifyOnce { unitsFormatter.formatWindSpeed(any()) }
+            verifyOnce { unitsFormatter.formatHumidity(any()) }
+            verifyOnce { unitsFormatter.formatVisibility(any()) }
             assertEquals(expectedCurrentHourWeather, viewCurrentHourWeather)
         }
 
