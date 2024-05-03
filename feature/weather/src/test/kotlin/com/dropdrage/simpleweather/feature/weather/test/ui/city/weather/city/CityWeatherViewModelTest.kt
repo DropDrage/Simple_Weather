@@ -3,10 +3,10 @@ package com.dropdrage.simpleweather.feature.weather.test.ui.city.weather.city
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.runTestViewModelScope
-import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
+import com.dropdrage.common.test.util.runTurbineTest
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.city.domain.City
 import com.dropdrage.simpleweather.feature.city.domain.CityRepository
@@ -32,6 +32,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -40,7 +41,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class CityWeatherViewModelTest {
 
     @MockK
@@ -72,7 +73,7 @@ internal class CityWeatherViewModelTest {
             hourWeatherConverter,
             dailyWeatherConverter,
             cityRepository,
-            weatherRepository
+            weatherRepository,
         )
     }
 
@@ -81,7 +82,7 @@ internal class CityWeatherViewModelTest {
     inner class updateCityName {
 
         @Test
-        fun `returns error`() = runTestViewModelScope {
+        fun `returns error`() = runTest {
             coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
             val expectedCityTitle = ViewCityTitle(TextMessage.UnknownErrorMessage, TextMessage.UnknownErrorMessage)
 
@@ -98,7 +99,7 @@ internal class CityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns success`() = runTestViewModelScope {
+        fun `returns success`() = runTest {
             val city = City("Name1", mockk(), Country("Country", "CY"))
             coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Success(city)
 
@@ -121,7 +122,7 @@ internal class CityWeatherViewModelTest {
     inner class loadWeather {
 
         @Test
-        fun `returns error IOException without message then UnknownMessage`() = runTestViewModelScope {
+        fun `returns error IOException without message then UnknownMessage`() = runTest {
             coEvery { cityRepository.getCityWithOrder(eq(viewModel.order)) } returns Resource.Error(IOException())
 
             viewModel.error.test {
@@ -136,7 +137,7 @@ internal class CityWeatherViewModelTest {
 
 
         @Test
-        fun `returns error IOException with message`() = runTestViewModelScope {
+        fun `returns error IOException with message`() = runTest {
             val message = "Error Message"
             coEvery {
                 cityRepository.getCityWithOrder(eq(viewModel.order))
@@ -153,7 +154,7 @@ internal class CityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns success`() = runTestViewModelScopeAndTurbine { backgroundScope ->
+        fun `returns success`() = runTurbineTest { backgroundScope ->
             mockConverters(
                 currentHourWeatherConverter,
                 currentDayWeatherConverter,

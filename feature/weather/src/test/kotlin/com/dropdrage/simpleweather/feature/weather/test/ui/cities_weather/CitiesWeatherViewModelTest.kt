@@ -1,8 +1,8 @@
 package com.dropdrage.simpleweather.feature.weather.test.ui.cities_weather
 
 import app.cash.turbine.test
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.coVerifyOnce
-import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.feature.city.domain.City
 import com.dropdrage.simpleweather.feature.city.domain.CityRepository
 import com.dropdrage.simpleweather.feature.weather.domain.use_case.UpdateAllCitiesWeatherUseCase
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import kotlin.time.Duration.Companion.seconds
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class CitiesWeatherViewModelTest {
 
     @MockK
@@ -50,7 +50,7 @@ internal class CitiesWeatherViewModelTest {
         }
 
         @Test
-        fun `filled flow`() = runTestViewModelScope {
+        fun `filled flow`() = runTest {
             val expectedFirst = listOf<City>(mockk(), mockk(), mockk())
             val expectedSecond = listOf<City>(mockk(), mockk(), mockk())
             val orderedCities = MutableSharedFlow<List<City>>()
@@ -75,7 +75,7 @@ internal class CitiesWeatherViewModelTest {
     }
 
     @Test
-    fun `updateWeather success`() = runTestViewModelScope {
+    fun `updateWeather success`() = runTest {
         coEvery { cityRepository.orderedCities } returns emptyFlow()
         coJustRun { updateAllCitiesWeather() }
         val viewModel = createViewModel()

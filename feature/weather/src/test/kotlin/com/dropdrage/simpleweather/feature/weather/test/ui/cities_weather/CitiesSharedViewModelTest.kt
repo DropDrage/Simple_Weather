@@ -2,8 +2,8 @@ package com.dropdrage.simpleweather.feature.weather.test.ui.cities_weather
 
 import app.cash.turbine.test
 import com.dropdrage.adapters.pool.PrefetchPlainViewPool
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.justMock
-import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.weather.presentation.model.ViewCityTitle
 import com.dropdrage.simpleweather.feature.weather.presentation.ui.cities_weather.CitiesSharedViewModel
@@ -12,7 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -20,8 +20,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExtendWith(ViewModelScopeExtension::class)
 internal class CitiesSharedViewModelTest {
 
     private val viewModel = CitiesSharedViewModel()
@@ -38,7 +39,7 @@ internal class CitiesSharedViewModelTest {
     }
 
     @Test
-    fun `setCityTitle success`() = runTestViewModelScope {
+    fun `setCityTitle success`() = runTest {
         val expectedTitle = ViewCityTitle(mockk(), mockk())
 
         viewModel.currentCityTitle.test {

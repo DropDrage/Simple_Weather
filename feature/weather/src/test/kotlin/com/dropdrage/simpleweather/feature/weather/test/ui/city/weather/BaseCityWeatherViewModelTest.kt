@@ -4,10 +4,10 @@ import app.cash.turbine.test
 import com.dropdrage.common.domain.CantObtainResourceException
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.runTestViewModelScope
-import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
+import com.dropdrage.common.test.util.runTurbineTest
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.feature.weather.domain.weather.HourWeather
 import com.dropdrage.simpleweather.feature.weather.domain.weather.Weather
@@ -29,6 +29,7 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertSame
@@ -39,7 +40,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class BaseCityWeatherViewModelTest {
 
     @MockK
@@ -69,7 +70,7 @@ internal class BaseCityWeatherViewModelTest {
 
 
     @Test
-    fun `updateCityName success`() = runTestViewModelScope {
+    fun `updateCityName success`() = runTest {
         val expectedCityTitle = mockk<ViewCityTitle>()
         viewModel.city = expectedCityTitle
 
@@ -88,7 +89,7 @@ internal class BaseCityWeatherViewModelTest {
     inner class loadWeather {
 
         @Test
-        fun `returns isLoading false true false`() = runTestViewModelScope {
+        fun `returns isLoading false true false`() = runTest {
             viewModel.tryLoadWeatherFake = { delay(300L) }
 
             viewModel.isLoading.test {
@@ -107,7 +108,7 @@ internal class BaseCityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns error CantObtainResourceException`() = runTestViewModelScope {
+        fun `returns error CantObtainResourceException`() = runTest {
             viewModel.weatherResult = Resource.Error(CantObtainResourceException())
 
             viewModel.error.test {
@@ -121,7 +122,7 @@ internal class BaseCityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns error IOException without message then UnknownMessage`() = runTestViewModelScope {
+        fun `returns error IOException without message then UnknownMessage`() = runTest {
             viewModel.weatherResult = Resource.Error(IOException())
 
             viewModel.error.test {
@@ -135,7 +136,7 @@ internal class BaseCityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns error IOException with message`() = runTestViewModelScope {
+        fun `returns error IOException with message`() = runTest {
             val message = "Error Message"
             viewModel.weatherResult = Resource.Error(IOException(message))
 
@@ -150,7 +151,7 @@ internal class BaseCityWeatherViewModelTest {
         }
 
         @Test
-        fun `returns success`() = runTestViewModelScopeAndTurbine { backgroundScope ->
+        fun `returns success`() = runTurbineTest { backgroundScope ->
             mockConverters(
                 currentHourWeatherConverter,
                 currentDayWeatherConverter,

@@ -1,9 +1,9 @@
 package com.dropdrage.simpleweather.feature.city.list.presentation.ui
 
 import app.cash.turbine.test
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.common.test.util.verifyNever
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.core.domain.weather.WeatherType
@@ -26,11 +26,12 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class CityListViewModelTest {
 
     @MockK
@@ -47,7 +48,7 @@ internal class CityListViewModelTest {
     inner class citiesCurrentWeathers {
 
         @Test
-        fun `no value then emits empty list`() = runTestViewModelScope {
+        fun `no value then emits empty list`() = runTest {
             every { observeCitiesWithWeather() } returns emptyFlow()
             val viewModel = CityListViewModel(observeCitiesWithWeather, cityCurrentWeatherConverter, cityRepository)
 
@@ -58,7 +59,7 @@ internal class CityListViewModelTest {
         }
 
         @Test
-        fun `emits empty then filled list`() = runTestViewModelScope {
+        fun `emits empty then filled list`() = runTest {
             every { cityCurrentWeatherConverter.convertToView(any()) } answers {
                 val (city, weather) = firstArg<CityCurrentWeather>()
                 ViewCityCurrentWeather(
@@ -108,7 +109,7 @@ internal class CityListViewModelTest {
     inner class saveOrder {
 
         @Test
-        fun `empty list`() = runTestViewModelScope {
+        fun `empty list`() = runTest {
             coJustRun { cityRepository.updateCitiesOrders(eq(emptyList())) }
             val viewModel = createViewModelNotForTestCitiesCurrentWeathers()
 
@@ -118,7 +119,7 @@ internal class CityListViewModelTest {
         }
 
         @Test
-        fun `filled list`() = runTestViewModelScope {
+        fun `filled list`() = runTest {
             val cities = listOf(
                 City("Name", Location(1f, 2f), Country("Name", "CY")),
                 City("Name1", Location(2f, 2f), Country("Name", "RY")),
@@ -139,7 +140,7 @@ internal class CityListViewModelTest {
 
 
     @Test
-    fun `deleteCity success`() = runTestViewModelScope {
+    fun `deleteCity success`() = runTest {
         val city = City("Name", Location(1f, 2f), Country("Name", "CY"))
         coJustRun { cityRepository.deleteCity(eq(city)) }
         val viewCityCurrentWeather = mockk<ViewCityCurrentWeather> {

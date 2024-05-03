@@ -2,10 +2,10 @@ package com.dropdrage.simpleweather.feature.settings.test.presentation.ui
 
 import app.cash.turbine.test
 import com.chibatching.kotpref.Kotpref
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.justArgToString
 import com.dropdrage.common.test.util.justCallOriginal
 import com.dropdrage.common.test.util.justMock
-import com.dropdrage.common.test.util.runTestViewModelScope
 import com.dropdrage.simpleweather.data.settings.*
 import com.dropdrage.simpleweather.feature.settings.presentation.model.*
 import com.dropdrage.simpleweather.feature.settings.presentation.ui.SettingsViewModel
@@ -24,6 +24,7 @@ import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.unmockkObject
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -42,7 +43,7 @@ import java.util.stream.Stream
 import kotlin.reflect.KClass
 import android.text.format.DateFormat as AndroidDateFormat
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class SettingsViewModelTest {
 
     @MockK
@@ -110,63 +111,61 @@ internal class SettingsViewModelTest {
 
         @ParameterizedTest
         @ArgumentsSource(WeatherAnySettingMatchedProvider::class)
-        fun `WeatherUnit success`(setting: AnySetting, expectedUnit: WeatherUnit) =
-            runTestViewModelScope {
-                justArgToString { weatherUnitConverter.convertToValue(any()) }
-                val weatherUnitSlots = hashMapOf<KClass<out WeatherUnit>, CapturingSlot<out WeatherUnit>>()
-                val newTemperatureUnitSlot =
-                    slot<TemperatureUnit>().also { weatherUnitSlots[TemperatureUnit::class] = it }
-                justRun { WeatherUnitsPreferences.temperatureUnit = capture(newTemperatureUnitSlot) }
-                val newPressureUnitSlot = slot<PressureUnit>().also { weatherUnitSlots[PressureUnit::class] = it }
-                justRun { WeatherUnitsPreferences.pressureUnit = capture(newPressureUnitSlot) }
-                val newWindSpeedUnitSlot = slot<WindSpeedUnit>().also { weatherUnitSlots[WindSpeedUnit::class] = it }
-                justRun { WeatherUnitsPreferences.windSpeedUnit = capture(newWindSpeedUnitSlot) }
-                val newVisibilityUnitSlot = slot<VisibilityUnit>().also { weatherUnitSlots[VisibilityUnit::class] = it }
-                justRun { WeatherUnitsPreferences.visibilityUnit = capture(newVisibilityUnitSlot) }
-                val newPrecipitationUnitSlot =
-                    slot<PrecipitationUnit>().also { weatherUnitSlots[PrecipitationUnit::class] = it }
-                justRun { WeatherUnitsPreferences.precipitationUnit = capture(newPrecipitationUnitSlot) }
+        fun `WeatherUnit success`(setting: AnySetting, expectedUnit: WeatherUnit) = runTest {
+            justArgToString { weatherUnitConverter.convertToValue(any()) }
+            val weatherUnitSlots = hashMapOf<KClass<out WeatherUnit>, CapturingSlot<out WeatherUnit>>()
+            val newTemperatureUnitSlot =
+                slot<TemperatureUnit>().also { weatherUnitSlots[TemperatureUnit::class] = it }
+            justRun { WeatherUnitsPreferences.temperatureUnit = capture(newTemperatureUnitSlot) }
+            val newPressureUnitSlot = slot<PressureUnit>().also { weatherUnitSlots[PressureUnit::class] = it }
+            justRun { WeatherUnitsPreferences.pressureUnit = capture(newPressureUnitSlot) }
+            val newWindSpeedUnitSlot = slot<WindSpeedUnit>().also { weatherUnitSlots[WindSpeedUnit::class] = it }
+            justRun { WeatherUnitsPreferences.windSpeedUnit = capture(newWindSpeedUnitSlot) }
+            val newVisibilityUnitSlot = slot<VisibilityUnit>().also { weatherUnitSlots[VisibilityUnit::class] = it }
+            justRun { WeatherUnitsPreferences.visibilityUnit = capture(newVisibilityUnitSlot) }
+            val newPrecipitationUnitSlot =
+                slot<PrecipitationUnit>().also { weatherUnitSlots[PrecipitationUnit::class] = it }
+            justRun { WeatherUnitsPreferences.precipitationUnit = capture(newPrecipitationUnitSlot) }
 
-                viewModel.settingChanged.test {
-                    val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
-                    val expectedCurrentValue = setting.toString()
+            viewModel.settingChanged.test {
+                val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
+                val expectedCurrentValue = setting.toString()
 
-                    viewModel.changeSetting(setting)
+                viewModel.changeSetting(setting)
 
-                    val changedSetting = awaitItem()
+                val changedSetting = awaitItem()
 
-                    assertEquals(expectedChangedSetting, changedSetting)
-                    assertEquals(expectedCurrentValue, changedSetting.currentValue)
-                }
-
-                assertExpectedValueCapturedAndOthersNot(expectedUnit, weatherUnitSlots)
+                assertEquals(expectedChangedSetting, changedSetting)
+                assertEquals(expectedCurrentValue, changedSetting.currentValue)
             }
+
+            assertExpectedValueCapturedAndOthersNot(expectedUnit, weatherUnitSlots)
+        }
 
         @ParameterizedTest
         @ArgumentsSource(GeneralAnySettingMatchedProvider::class)
-        fun `GeneralFormat success`(setting: AnySetting, expectedFormat: GeneralFormat) =
-            runTestViewModelScope {
-                justArgToString { weatherUnitConverter.convertToValue(any()) }
-                val weatherUnitSlots = hashMapOf<KClass<out GeneralFormat>, CapturingSlot<out GeneralFormat>>()
-                val newTimeFormatSlot = slot<TimeFormat>().also { weatherUnitSlots[TimeFormat::class] = it }
-                justRun { GeneralPreferences.timeFormat = capture(newTimeFormatSlot) }
-                val newDateFormatSlot = slot<DateFormat>().also { weatherUnitSlots[DateFormat::class] = it }
-                justRun { GeneralPreferences.dateFormat = capture(newDateFormatSlot) }
+        fun `GeneralFormat success`(setting: AnySetting, expectedFormat: GeneralFormat) = runTest {
+            justArgToString { weatherUnitConverter.convertToValue(any()) }
+            val weatherUnitSlots = hashMapOf<KClass<out GeneralFormat>, CapturingSlot<out GeneralFormat>>()
+            val newTimeFormatSlot = slot<TimeFormat>().also { weatherUnitSlots[TimeFormat::class] = it }
+            justRun { GeneralPreferences.timeFormat = capture(newTimeFormatSlot) }
+            val newDateFormatSlot = slot<DateFormat>().also { weatherUnitSlots[DateFormat::class] = it }
+            justRun { GeneralPreferences.dateFormat = capture(newDateFormatSlot) }
 
-                viewModel.settingChanged.test {
-                    val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
-                    val expectedCurrentValue = setting.toString()
+            viewModel.settingChanged.test {
+                val expectedChangedSetting = viewModel.settings.first { it.values.contains(setting) }
+                val expectedCurrentValue = setting.toString()
 
-                    viewModel.changeSetting(setting)
+                viewModel.changeSetting(setting)
 
-                    val changedSetting = awaitItem()
+                val changedSetting = awaitItem()
 
-                    assertEquals(expectedChangedSetting, changedSetting)
-                    assertEquals(expectedCurrentValue, changedSetting.currentValue)
-                }
-
-                assertExpectedValueCapturedAndOthersNot(expectedFormat, weatherUnitSlots)
+                assertEquals(expectedChangedSetting, changedSetting)
+                assertEquals(expectedCurrentValue, changedSetting.currentValue)
             }
+
+            assertExpectedValueCapturedAndOthersNot(expectedFormat, weatherUnitSlots)
+        }
 
     }
 

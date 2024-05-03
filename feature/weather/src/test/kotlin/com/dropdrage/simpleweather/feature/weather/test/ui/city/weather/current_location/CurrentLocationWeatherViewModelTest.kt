@@ -4,10 +4,10 @@ import android.content.Context
 import app.cash.turbine.test
 import com.dropdrage.common.domain.Resource
 import com.dropdrage.common.presentation.util.TextMessage
+import com.dropdrage.common.test.util.ViewModelScopeExtension
 import com.dropdrage.common.test.util.coVerifyOnce
 import com.dropdrage.common.test.util.createListIndexed
-import com.dropdrage.common.test.util.runTestViewModelScope
-import com.dropdrage.common.test.util.runTestViewModelScopeAndTurbine
+import com.dropdrage.common.test.util.runTurbineTest
 import com.dropdrage.common.test.util.verifyOnce
 import com.dropdrage.simpleweather.core.domain.Location
 import com.dropdrage.simpleweather.feature.weather.R
@@ -35,6 +35,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.BeforeEach
@@ -42,7 +43,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(MockKExtension::class)
+@ExtendWith(MockKExtension::class, ViewModelScopeExtension::class)
 internal class CurrentLocationWeatherViewModelTest {
 
     @MockK
@@ -80,7 +81,7 @@ internal class CurrentLocationWeatherViewModelTest {
 
 
     @Test
-    fun `updateCityTitle success`() = runTestViewModelScope {
+    fun `updateCityTitle success`() = runTest {
         viewModel.cityTitle.test {
             viewModel.updateCityName()
             val cityTitle = awaitItem()
@@ -100,7 +101,7 @@ internal class CurrentLocationWeatherViewModelTest {
     inner class loadWeather {
 
         @Test
-        fun `returns error NoLocation`() = runTestViewModelScope {
+        fun `returns error NoLocation`() = runTest {
             coEvery { getLocation() } returns flowOf(LocationResult.NoLocation)
 
             viewModel.error.test {
@@ -118,7 +119,7 @@ internal class CurrentLocationWeatherViewModelTest {
         }
 
         @Test
-        fun `returns error GpsDisabled`() = runTestViewModelScopeAndTurbine { backgroundScope ->
+        fun `returns error GpsDisabled`() = runTurbineTest { backgroundScope ->
             val locationResult = LocationResult.GpsDisabled
             coEvery { getLocation() } returns flowOf(locationResult)
             val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
@@ -137,7 +138,7 @@ internal class CurrentLocationWeatherViewModelTest {
         }
 
         @Test
-        fun `returns error NoPermission`() = runTestViewModelScopeAndTurbine { backgroundScope ->
+        fun `returns error NoPermission`() = runTurbineTest { backgroundScope ->
             val locationResult = LocationResult.NoPermission("permission")
             coEvery { getLocation() } returns flowOf(locationResult)
             val locationErrorFlow = viewModel.locationObtainingError.testIn(backgroundScope)
@@ -156,7 +157,7 @@ internal class CurrentLocationWeatherViewModelTest {
         }
 
         @Test
-        fun `returns success`() = runTestViewModelScopeAndTurbine { backgroundScope ->
+        fun `returns success`() = runTurbineTest { backgroundScope ->
             mockConverters(
                 currentHourWeatherConverter,
                 currentDayWeatherConverter,
