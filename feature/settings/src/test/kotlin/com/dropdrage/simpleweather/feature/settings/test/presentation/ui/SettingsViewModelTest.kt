@@ -276,9 +276,7 @@ internal class SettingsViewModelTest {
         fun setUpAll() {
             Kotpref.init(mockk {
                 justMock({ applicationContext }) {
-                    justMock({ applicationContext }) {
-                        justMock(relaxed = true) { getSharedPreferences(any(), any()) }
-                    }
+                    justMock(relaxed = true) { applicationContext }
                 }
             })
 

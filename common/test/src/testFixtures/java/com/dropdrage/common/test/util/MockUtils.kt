@@ -35,8 +35,11 @@ inline fun mockLogE(block: () -> Unit) {
 inline fun <reified T : Any> justMock(relaxed: Boolean = false, noinline block: MockKMatcherScope.() -> T) =
     every(block) returns mockk(relaxed = relaxed)
 
-inline fun <reified T : Any> justMock(noinline block: MockKMatcherScope.() -> T, mockInit: T.() -> Unit = {}) =
-    every(block) returns mockk(block = mockInit)
+inline fun <reified T : Any> justMock(
+    noinline block: MockKMatcherScope.() -> T,
+    relaxed: Boolean = false,
+    mockInit: T.() -> Unit = {},
+) = every(block) returns mockk(relaxed = relaxed, block = mockInit)
 
 inline fun <reified T : Any> justMockAndGet(noinline stubBlock: MockKMatcherScope.() -> T): T {
     val mock = mockk<T>()

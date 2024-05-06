@@ -88,7 +88,11 @@ internal class TimeFormatterTest {
         @JvmStatic
         fun setUpAll() {
             mockkStatic(DateFormat::class) {
-                Kotpref.init(mockk { justMock({ applicationContext }, { justMock { applicationContext } }) })
+                Kotpref.init(mockk {
+                    justMock({ applicationContext }) {
+                        justMock { applicationContext }
+                    }
+                })
                 every { DateFormat.is24HourFormat(any()) } returns true
                 every { DateFormat.getDateFormatOrder(any()) } returns charArrayOf('d', 'M')
 

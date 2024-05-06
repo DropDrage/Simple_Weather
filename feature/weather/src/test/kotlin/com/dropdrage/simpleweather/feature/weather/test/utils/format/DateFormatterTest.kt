@@ -42,7 +42,11 @@ internal class DateFormatterTest {
         @JvmStatic
         fun setUpAll() {
             mockkStatic(AndroidDateFormat::class) {
-                Kotpref.init(mockk { justMock({ applicationContext }, { justMock { applicationContext } }) })
+                Kotpref.init(mockk {
+                    justMock({ applicationContext }) {
+                        justMock { applicationContext }
+                    }
+                })
                 every { AndroidDateFormat.is24HourFormat(any()) } returns true
                 every { AndroidDateFormat.getDateFormatOrder(any()) } returns charArrayOf('d', 'M')
 
