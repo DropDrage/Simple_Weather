@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.1.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.1)" variant="all"
-    version="8.1.1">
+<issues format="6" by="lint 8.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.4.0)" variant="all"
+    version="8.4.0">
 
     <issue id="NotifyDataSetChanged"
         message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
         errorLine1="        notifyDataSetChanged()" errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/dropdrage/simpleweather/feature/settings/presentation/ui/change_dialog/SettingChangeAdapter.kt"
+            file="src/main/kotlin/com/dropdrage/simpleweather/feature/settings/presentation/ui/change_dialog/SettingChangeAdapter.kt"
             line="15" column="9" />
     </issue>
 

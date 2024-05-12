@@ -5,7 +5,7 @@ moshi = "1.15.1"
 [libraries]
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
-logging-interceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10"
+logging-interceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14"
 
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-compiler = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
