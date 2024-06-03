@@ -14,7 +14,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.res.getDrawableOrThrow
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.alpha
 import com.dropdrage.common.presentation.utils.CommonDimen
 import com.dropdrage.simpleweather.feature.weather.R
@@ -109,37 +109,37 @@ internal class SunTimesView @JvmOverloads constructor(
     }
 
     private fun getAttributes(attrs: AttributeSet?, defStyle: Int) {
-        context.obtainStyledAttributes(attrs, R.styleable.SunTimesView, defStyle, 0).use { a ->
-            primaryColor = a.getColor(R.styleable.SunTimesView_st_primaryColor, primaryColor)
+        context.withStyledAttributes(attrs, R.styleable.SunTimesView, defStyle, 0) {
+            primaryColor = getColor(R.styleable.SunTimesView_st_primaryColor, primaryColor)
 
-            arcBackgroundColor = a.getColor(R.styleable.SunTimesView_st_arcBackgroundColor, arcBackgroundColor)
-            arcThickness = a.getDimension(
+            arcBackgroundColor = getColor(R.styleable.SunTimesView_st_arcBackgroundColor, arcBackgroundColor)
+            arcThickness = getDimension(
                 R.styleable.SunTimesView_st_arcThickness,
-                resources.getDimension(CommonDimen.small_100)
+                resources.getDimension(CommonDimen.small_100),
             )
-            arcGroundEdgeMargin = a.getDimension(
+            arcGroundEdgeMargin = getDimension(
                 R.styleable.SunTimesView_st_arcEdgeGroundMargin,
-                resources.getDimension(CommonDimen.medium_100)
+                resources.getDimension(CommonDimen.medium_100),
             )
 
-            timeColor = a.getColor(R.styleable.SunTimesView_st_timeTextColor, timeColor)
-            timeTextSize = a.getDimension(
+            timeColor = getColor(R.styleable.SunTimesView_st_timeTextColor, timeColor)
+            timeTextSize = getDimension(
                 R.styleable.SunTimesView_st_timeTextSize,
-                resources.getDimension(CommonDimen.text_size_12)
+                resources.getDimension(CommonDimen.text_size_12),
             )
-            timeTextTopMargin = a.getDimensionPixelSize(
+            timeTextTopMargin = getDimensionPixelSize(
                 R.styleable.SunTimesView_st_timeTextTopMargin,
-                resources.getDimensionPixelSize(CommonDimen.small_100)
+                resources.getDimensionPixelSize(CommonDimen.small_100),
             )
 
-            sun = a.getDrawableOrThrow(R.styleable.SunTimesView_st_sunIcon)
-            sun.callback = this
-            sunSize = a.getDimensionPixelSize(
+            sun = getDrawableOrThrow(R.styleable.SunTimesView_st_sunIcon)
+            sun.callback = this@SunTimesView
+            sunSize = getDimensionPixelSize(
                 R.styleable.SunTimesView_st_sunSize,
-                resources.getDimensionPixelSize(CommonDimen.medium_150)
+                resources.getDimensionPixelSize(CommonDimen.medium_150),
             )
-            sunriseTime = a.getString(R.styleable.SunTimesView_st_sunriseText)
-            sunsetTime = a.getString(R.styleable.SunTimesView_st_sunsetText)
+            sunriseTime = getString(R.styleable.SunTimesView_st_sunriseText)
+            sunsetTime = getString(R.styleable.SunTimesView_st_sunsetText)
 
             arcTopMargin = (sunSize shr 1).coerceAtLeast(arcThickness.toInt())
         }
@@ -200,6 +200,8 @@ internal class SunTimesView @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
+        if (width == oldw && height == oldh) return
+
         leftBorder = paddingLeft.toFloat()
         rightBorder = (width - paddingRight).toFloat()
 
@@ -208,7 +210,7 @@ internal class SunTimesView @JvmOverloads constructor(
             leftBorder + arcGroundEdgeMargin + arcThicknessHalf,
             arcTopMarginWithPaddingTop.toFloat(),
             rightBorder - arcGroundEdgeMargin - arcThicknessHalf,
-            arcTopMarginWithPaddingTop + arcHeight * 2
+            arcTopMarginWithPaddingTop + arcHeight * 2,
         )
 
         textLeftX = arcRectangle.left
@@ -281,7 +283,7 @@ internal class SunTimesView @JvmOverloads constructor(
         val sunPastAngleRadians = Math.toRadians(sunPastAngle.toDouble()).toFloat()
         val sunPositionCenter = Point(
             (arcCenterX - cos(sunPastAngleRadians) * (arcRadius - arcThicknessHalf)).toInt(),
-            (arcCenterY - sin(sunPastAngleRadians) * arcHeight).toInt()
+            (arcCenterY - sin(sunPastAngleRadians) * arcHeight).toInt(),
         )
 
         val (width, height) = ViewUtils.resizeToTargetSize(_sunIntrinsicWidth, _sunIntrinsicHeight, sunSize)

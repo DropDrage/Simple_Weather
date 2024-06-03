@@ -6,6 +6,8 @@ pluginManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -51,7 +53,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Simple Weather"
+rootProject.name = "Simple_Weather"
 
 include ':app',
     ':adapters',

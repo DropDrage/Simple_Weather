@@ -15,7 +15,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import com.dropdrage.common.domain.Range
 import com.dropdrage.common.presentation.utils.CommonDimen
 import com.dropdrage.simpleweather.feature.weather.R
@@ -27,8 +27,7 @@ internal class WeatherMetricView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-) :
-    View(context, attrs, defStyle) {
+) : View(context, attrs, defStyle) {
 
     private var _textColor: Int = Color.BLACK
     private var _textSize: Float = 0f
@@ -120,36 +119,36 @@ internal class WeatherMetricView @JvmOverloads constructor(
     }
 
     private fun getAttributes(attrs: AttributeSet?, defStyle: Int) {
-        context.obtainStyledAttributes(attrs, R.styleable.WeatherMetricView, defStyle, 0).use { a ->
-            val topText = a.getString(R.styleable.WeatherMetricView_wm_topText).orEmpty()
-            val bottomText = a.getString(R.styleable.WeatherMetricView_wm_bottomText)
-            _textColor = a.getColor(R.styleable.WeatherMetricView_wm_textColor, _textColor)
-            _textSize = a.getDimension(
+        context.withStyledAttributes(attrs, R.styleable.WeatherMetricView, defStyle, 0) {
+            val topText = getString(R.styleable.WeatherMetricView_wm_topText).orEmpty()
+            val bottomText = getString(R.styleable.WeatherMetricView_wm_bottomText)
+            _textColor = getColor(R.styleable.WeatherMetricView_wm_textColor, _textColor)
+            _textSize = getDimension(
                 R.styleable.WeatherMetricView_wm_textSize,
-                resources.getDimension(CommonDimen.text_size_16)
+                resources.getDimension(CommonDimen.text_size_16),
             )
-            fontWeight = a.getInt(R.styleable.WeatherMetricView_wm_fontWeight, R.integer.font_weight_600)
+            fontWeight = getInt(R.styleable.WeatherMetricView_wm_fontWeight, R.integer.font_weight_600)
 
-            if (a.hasValue(R.styleable.WeatherMetricView_wm_icon)) {
-                icon = a.getDrawable(R.styleable.WeatherMetricView_wm_icon)
-                icon?.callback = this
+            if (hasValue(R.styleable.WeatherMetricView_wm_icon)) {
+                icon = getDrawable(R.styleable.WeatherMetricView_wm_icon)
+                icon?.callback = this@WeatherMetricView
 
-                _iconSize = a.getDimensionPixelSize(R.styleable.WeatherMetricView_wm_iconSize, _iconIntrinsicWidth)
-                iconColor = a.getColor(R.styleable.WeatherMetricView_wm_iconColor, Color.BLACK)
+                _iconSize = getDimensionPixelSize(R.styleable.WeatherMetricView_wm_iconSize, _iconIntrinsicWidth)
+                iconColor = getColor(R.styleable.WeatherMetricView_wm_iconColor, Color.BLACK)
 
-                _textIconMargin = a.getDimensionPixelSize(
+                _textIconMargin = getDimensionPixelSize(
                     R.styleable.WeatherMetricView_wm_textIconMargin,
-                    resources.getDimensionPixelSize(CommonDimen.small_100)
+                    resources.getDimensionPixelSize(CommonDimen.small_100),
                 )
             }
-            dividerThickness = a.getDimension(
+            dividerThickness = getDimension(
                 R.styleable.WeatherMetricView_wm_dividerThickness,
-                resources.getDimension(R.dimen.divider_thickness)
+                resources.getDimension(R.dimen.divider_thickness),
             )
 
-            _textDividerMargin = a.getDimensionPixelSize(
+            _textDividerMargin = getDimensionPixelSize(
                 R.styleable.WeatherMetricView_wm_textDividerMargin,
-                resources.getDimensionPixelSize(CommonDimen.small_50)
+                resources.getDimensionPixelSize(CommonDimen.small_50),
             )
 
             setTexts(topText, bottomText)
@@ -218,8 +217,8 @@ internal class WeatherMetricView @JvmOverloads constructor(
     }
 
     private fun setNormalTypeface(tf: Typeface?) {
-        textPaint.setFakeBoldText(false)
-        textPaint.setTextSkewX(0f)
+        textPaint.isFakeBoldText = false
+        textPaint.textSkewX = 0f
         setTypeface(tf)
     }
 
@@ -271,6 +270,8 @@ internal class WeatherMetricView @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldw: Int, oldh: Int) {
+        if (width == oldw && height == oldh) return
+
         recalculateTextMeasurements(width)
 
         val paddingTop = paddingTop
@@ -308,7 +309,7 @@ internal class WeatherMetricView @JvmOverloads constructor(
         recalculateIconRect(
             height - paddingTop - paddingBottom,
             paddingLeft,
-            paddingTop
+            paddingTop,
         )
     }
 

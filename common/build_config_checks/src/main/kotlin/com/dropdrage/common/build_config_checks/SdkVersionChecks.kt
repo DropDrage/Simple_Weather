@@ -4,4 +4,4 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 
 @ChecksSdkIntAtLeast(parameter = 0)
-fun isSdkVersionGreaterOrEquals(version: Int) = Build.VERSION.SDK_INT >= version
+fun isSdkVersionGreaterOrEquals(version: Int): Boolean = Build.VERSION.SDK_INT >= version

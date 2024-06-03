@@ -34,7 +34,7 @@ class CityRepositoryImpl @Inject internal constructor(
 
     override suspend fun updateCitiesOrders(orderedCities: List<City>) {
         val cities = dao.getAll().onEach {
-            it.order = orderedCities.indexOfFirst { city -> it.equals(city) }
+            it.order = orderedCities.indexOfFirst { city -> it.isSame(city) }
         }
         dao.updateOrders(cities)
     }

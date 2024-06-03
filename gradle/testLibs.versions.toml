@@ -1,7 +1,7 @@
 [versions]
 junit5 = "5.10.2"
 junit5Android = "1.4.0"
-mockk = "1.13.10"
+mockk = "1.13.11"
 
 [libraries]
 junit5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
@@ -15,7 +15,6 @@ android-test-runner = "androidx.test:runner:1.5.2"
 android-junit-ext = "androidx.test.ext:junit-ktx:1.1.5"
 junit5-android-core = { module = "de.mannodermaus.junit5:android-test-core", version.ref = "junit5Android" }
 junit5-android-test-runner = { module = "de.mannodermaus.junit5:android-test-runner", version.ref = "junit5Android" }
-robolectric = "org.robolectric:robolectric:4.9.2"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 
 mockk-core = { module = "io.mockk:mockk", version.ref = "mockk" }

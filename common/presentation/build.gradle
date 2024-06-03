@@ -13,5 +13,5 @@ dependencies {
 
     implementation kotlinLibs.coroutines
 
-    implementation project(':common:util')
+    implementation projects.common.util
 }

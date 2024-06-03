@@ -36,7 +36,7 @@ internal enum class ViewTemperatureUnit(@StringRes override val unitResId: Int) 
     override val labelResId: Int = R.string.weather_unit_temperature_label
 
     override val values: List<ViewTemperatureUnit>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData() = when (this) {
@@ -62,7 +62,7 @@ internal enum class ViewPressureUnit(@StringRes override val unitResId: Int) :
     override val labelResId: Int = R.string.weather_unit_pressure_label
 
     override val values: List<ViewPressureUnit>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData() = when (this) {
@@ -91,7 +91,7 @@ internal enum class ViewWindSpeedUnit(@StringRes override val unitResId: Int) :
     override val labelResId: Int = R.string.weather_unit_wind_speed_label
 
     override val values: List<ViewWindSpeedUnit>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData(): DataWindSpeedUnit = when (this) {
@@ -123,7 +123,7 @@ internal enum class ViewVisibilityUnit(@StringRes override val unitResId: Int) :
     override val labelResId: Int = R.string.weather_unit_visibility_label
 
     override val values: List<ViewVisibilityUnit>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData(): DataVisibilityUnit = when (this) {
@@ -153,7 +153,7 @@ internal enum class ViewPrecipitationUnit(
     override val labelResId: Int = R.string.weather_unit_precipitation_label
 
     override val values: List<ViewPrecipitationUnit>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData(): DataPrecipitationUnit = when (this) {
@@ -179,7 +179,7 @@ internal enum class ViewTimeFormat(@StringRes override val unitResId: Int) : Set
     override val labelResId: Int = R.string.time_format_label
 
     override val values: List<ViewTimeFormat>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData(): DataTimeFormat = when (this) {
@@ -204,7 +204,7 @@ internal enum class ViewDateFormat(@StringRes override val unitResId: Int) : Set
     override val labelResId: Int = R.string.date_format_label
 
     override val values: List<ViewDateFormat>
-        get() = values().toList()
+        get() = entries
 
 
     override fun toData(): DataDateFormat = when (this) {

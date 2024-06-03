@@ -32,5 +32,5 @@ internal data class CityModel(
     @Embedded(prefix = COUNTRY_PREFIX) val country: Country,
     @Embedded(prefix = LOCATION_PREFIX) val location: Location,
 ) {
-    fun equals(other: City): Boolean = name == other.name && country == other.country && location == other.location
+    fun isSame(other: City): Boolean = name == other.name && country == other.country && location == other.location
 }

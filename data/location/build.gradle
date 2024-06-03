@@ -11,11 +11,11 @@ android {
 dependencies {
     implementation androidLibs.bundles.location
 
-    implementation project(':core:domain')
-    implementation project(':common:build_config_checks')
-    implementation project(':feature:weather:domain')
+    implementation projects.core.domain
+    implementation projects.common.buildConfigChecks
+    implementation projects.feature.weather.domain
 
     testImplementation testLibs.coroutines
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

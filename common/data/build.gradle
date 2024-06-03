@@ -12,9 +12,9 @@ dependencies {
     implementation kotlinLibs.coroutines
     implementation localStorageLibs.room.common
 
-    implementation project(':common:domain')
+    implementation projects.common.domain
 
     testImplementation testLibs.coroutines
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

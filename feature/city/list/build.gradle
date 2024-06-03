@@ -11,17 +11,17 @@ android {
 }
 
 dependencies {
-    implementation project(':adapters')
-    implementation project(':common:presentation')
-    implementation project(':common:util')
-    implementation project(':core:presentation')
-    implementation project(':core:style')
-    implementation project(':feature:city:domain')
-    implementation project(':feature:city:list:domain')
-    implementation project(':feature:city:search')
+    implementation projects.adapters
+    implementation projects.common.presentation
+    implementation projects.common.util
+    implementation projects.core.presentation
+    implementation projects.core.style
+    implementation projects.feature.city.domain
+    implementation projects.feature.city.list.domain
+    implementation projects.feature.city.search
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.turbine
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

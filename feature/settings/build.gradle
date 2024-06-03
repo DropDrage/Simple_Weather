@@ -9,15 +9,15 @@ android {
 }
 
 dependencies {
-    implementation project(':adapters')
-    implementation project(':common:presentation')
-    implementation project(':common:util')
-    implementation project(':core:style')
-    implementation project(':data:settings')
+    implementation projects.adapters
+    implementation projects.common.presentation
+    implementation projects.common.util
+    implementation projects.core.style
+    implementation projects.data.settings
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
     testImplementation testLibs.turbine
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

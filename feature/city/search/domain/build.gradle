@@ -1,5 +1,5 @@
 library_kotlin(project)
 
 dependencies {
-    api project(':feature:city:domain')
+    api projects.feature.city.domain
 }

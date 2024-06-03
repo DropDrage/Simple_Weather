@@ -13,7 +13,7 @@ import kotlin.contracts.contract
 
 class WeatherUnitsFormatter @Inject constructor(@ApplicationContext private val context: Context) {
 
-    val noTemperature = context.getString(
+    val noTemperature: String = context.getString(
         WeatherUnitsPreferences.temperatureUnit.unitResId,
         NO_VALUE,
     )

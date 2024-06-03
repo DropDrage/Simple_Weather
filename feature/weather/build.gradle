@@ -18,22 +18,22 @@ dependencies {
 
     implementation androidLibs.services.location
 
-    implementation project(':adapters')
-    implementation project(':common:domain')
-    implementation project(':common:presentation')
-    implementation project(':common:util')
-    implementation project(':core:domain')
-    implementation project(':core:presentation')
-    implementation project(':core:style')
-    implementation project(':core:util')
-    implementation project(':data:settings')
-    implementation project(':feature:city:domain')
-    implementation project(':feature:weather:domain')
+    implementation projects.adapters
+    implementation projects.common.domain
+    implementation projects.common.presentation
+    implementation projects.common.util
+    implementation projects.core.domain
+    implementation projects.core.presentation
+    implementation projects.core.style
+    implementation projects.core.util
+    implementation projects.data.settings
+    implementation projects.feature.city.domain
+    implementation projects.feature.weather.domain
 
     testImplementation testLibs.coroutines
     testImplementation testLibs.junit5.params
     testImplementation testLibs.turbine
     testImplementation testLibs.truth
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

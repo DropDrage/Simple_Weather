@@ -1,5 +1,6 @@
 package com.dropdrage.simpleweather.di.adapter
 
+import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
@@ -24,6 +25,7 @@ internal class LocalDateAdapter : JsonAdapter<LocalDate>() {
 
 
     companion object {
+        @VisibleForTesting
         val FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE
     }
 

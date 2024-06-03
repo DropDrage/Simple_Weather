@@ -47,7 +47,7 @@ static def isNonStable(String version) {
 tasks.register("cleanBaselines") {
     def baselineFile = "/lint-baseline.xml"
     rootProject.allprojects.forEach(project -> {
-        if (project.subprojects.isEmpty()) {//size() == 0) {
+        if (project.subprojects.isEmpty()) {
             println(project.projectDir.path)
             delete project.projectDir.path + baselineFile
         }

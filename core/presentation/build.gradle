@@ -13,8 +13,8 @@ dependencies {
     implementation androidLibs.android.material
     implementation androidLibs.hilt.android
 
-    implementation project(':core:domain')
-    implementation project(':data:settings')
+    implementation projects.core.domain
+    implementation projects.data.settings
 
     testImplementation testLibs.junit5.params
 }

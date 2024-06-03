@@ -12,7 +12,7 @@ import com.dropdrage.simpleweather.feature.city.list.presentation.model.ViewCurr
 import com.dropdrage.simpleweather.feature.city.list.presentation.utils.DragListener
 import com.dropdrage.util.extension.implicitAccess
 
-internal class CityCurrentWeatherViewHolder constructor(
+internal class CityCurrentWeatherViewHolder(
     binding: ItemCityBinding,
     private val onDeleteClicked: (ViewCityCurrentWeather) -> Unit,
     private val requestDrag: (RecyclerView.ViewHolder) -> Unit,

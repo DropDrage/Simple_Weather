@@ -62,18 +62,18 @@ dependencies {
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    implementation project(':common:data'), { because "SimpleRepository Hilt resolve" }
-    implementation project(':common:presentation'), { because "ChangeableAppBar" }
-    implementation project(':core:style')
-    implementation project(':data:city')
-    implementation project(':data:location')
-    implementation project(':data:weather')
-    implementation project(':feature:city:list')
-    implementation project(':feature:city:list:domain')
-    implementation project(':feature:city:search:domain')
-    implementation project(':feature:settings')
-    implementation project(':feature:weather')
-    implementation project(':feature:weather:domain')
+    implementation projects.common.data, { because "SimpleRepository Hilt resolve" }
+    implementation projects.common.presentation, { because "ChangeableAppBar" }
+    implementation projects.core.style
+    implementation projects.data.city
+    implementation projects.data.location
+    implementation projects.data.weather
+    implementation projects.feature.city.list
+    implementation projects.feature.city.list.domain
+    implementation projects.feature.city.search.domain
+    implementation projects.feature.settings
+    implementation projects.feature.weather
+    implementation projects.feature.weather.domain
 
     //Tests
     testImplementation testLibs.coroutines
@@ -83,5 +83,5 @@ dependencies {
     androidTestImplementation testLibs.hilt.testing
     kspAndroidTest androidLibs.hilt.compiler
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

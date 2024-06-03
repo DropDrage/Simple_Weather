@@ -21,14 +21,14 @@ android {
 }
 
 dependencies {
-    implementation project(':common:data')
-    implementation project(':common:domain')
-    implementation project(':core:domain')
-    implementation project(':core:util')
-    implementation project(':feature:city:list:domain')
-    implementation project(':feature:city:search:domain')
+    implementation projects.common.data
+    implementation projects.common.domain
+    implementation projects.core.domain
+    implementation projects.core.util
+    implementation projects.feature.city.list.domain
+    implementation projects.feature.city.search.domain
 
     testImplementation testLibs.coroutines
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

@@ -14,9 +14,9 @@ dependencies {
     api localStorageLibs.kotpref.core
     implementation localStorageLibs.kotpref.enum
 
-    implementation project(':common:build_config_checks')
+    implementation projects.common.buildConfigChecks
 
     testImplementation testLibs.junit5.params
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

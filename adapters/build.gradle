@@ -17,5 +17,5 @@ dependencies {
 
     testImplementation testLibs.junit5.params
 
-    testImplementation testFixtures(project(':common:test'))
+    testImplementation testFixtures(projects.common.test)
 }

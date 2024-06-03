@@ -29,5 +29,6 @@ internal fun <VM : ViewModel> Fragment.viewModels(
         factoryProducer ?: {
             (owner as? HasDefaultViewModelProviderFactory)?.defaultViewModelProviderFactory
                 ?: defaultViewModelProviderFactory
-        })
+        },
+    )
 }

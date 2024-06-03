@@ -29,7 +29,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.time.measureTime
 
-internal abstract class BaseCityWeatherViewModel constructor(
+internal abstract class BaseCityWeatherViewModel(
     private val currentHourWeatherConverter: CurrentHourWeatherConverter,
     private val currentDayWeatherConverter: CurrentDayWeatherConverter,
     private val hourWeatherConverter: HourWeatherConverter,

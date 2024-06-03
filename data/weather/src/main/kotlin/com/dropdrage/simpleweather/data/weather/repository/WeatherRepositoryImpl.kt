@@ -96,9 +96,7 @@ class WeatherRepositoryImpl @Inject internal constructor(
         savedLocationId: Long?,
         remoteDomainWeather: WeatherResponseDto,
     ) {
-        val locationId =
-            if (savedLocationId != null) savedLocationId
-            else locationDao.insertAndGetId(location.toNewModel())
+        val locationId = savedLocationId ?: locationDao.insertAndGetId(location.toNewModel())
 
         weatherCacheDao.updateWeather(locationId, remoteDomainWeather.daily.toDayModels(locationId)) { daysIds ->
             remoteDomainWeather.hourly.toHourModels(daysIds)
@@ -109,9 +107,8 @@ class WeatherRepositoryImpl @Inject internal constructor(
         savedLocationModel: LocationModel?,
         location: Location,
     ) {
-        val locationModel: LocationModel =
-            if (savedLocationModel != null) savedLocationModel
-            else locationDao.getLocationApproximately(location.latitude, location.longitude)!!
+        val locationModel: LocationModel = savedLocationModel
+            ?: locationDao.getLocationApproximately(location.latitude, location.longitude)!!
 
         val updatedLocalWeatherResult = getLocalWeatherResult(locationModel)
         if (updatedLocalWeatherResult is LocalResource.Success) {

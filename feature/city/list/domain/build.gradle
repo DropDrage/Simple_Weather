@@ -5,5 +5,5 @@ library_kotlin(
 dependencies {
     implementation kotlinLibs.coroutines
 
-    api project(':core:domain')
+    api projects.core.domain
 }
