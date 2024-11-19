@@ -1,4 +1,8 @@
-def javaVersion = JavaVersion.VERSION_17
+def javaVersion = JavaVersion.VERSION_21
+
+def configMinSdk = 26
+def configSdk = 35
+def configBuildTools = '35.0.0'
 
 ext.library_kotlin = { Project project ->
     project.apply plugin: 'org.jetbrains.kotlin.jvm'
@@ -27,12 +31,12 @@ ext.library_android = { Project project, Closure<Project>... modifiers ->
 
 ext.config_android = { Project project, Closure<Project>... modifiers ->
     project.android {
-        compileSdk sdk
-        buildToolsVersion buildTools
+        compileSdk configSdk
+        buildToolsVersion configBuildTools
 
         defaultConfig {
-            minSdk project.minSdk
-            targetSdk project.sdk
+            minSdk configMinSdk
+            targetSdk configSdk
 
             resourceConfigurations = ['en']
         }

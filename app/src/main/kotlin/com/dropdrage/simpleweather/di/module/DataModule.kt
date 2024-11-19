@@ -20,24 +20,19 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal interface DataModule {
 
-    @Binds
-    @Singleton
+    @[Binds Singleton]
     fun bindCityRepository(cityRepository: CityRepositoryImpl): CityRepository
 
-    @Binds
-    @Singleton
+    @[Binds Singleton]
     fun bindWeatherRepository(weatherRepository: WeatherRepositoryImpl): WeatherRepository
 
-    @Binds
-    @Singleton
+    @[Binds Singleton]
     fun bindCurrentWeatherRepository(weatherRepository: CurrentWeatherRepositoryImpl): CurrentWeatherRepository
 
-    @Binds
-    @Singleton
+    @[Binds Singleton]
     fun bindCitySearchRepository(weatherRepository: CitySearchRepositoryImpl): CitySearchRepository
 
-    @Binds
-    @Singleton
+    @[Binds Singleton]
     fun bindLocationTracker(weatherRepository: DefaultLocationTracker): LocationTracker
 
 }

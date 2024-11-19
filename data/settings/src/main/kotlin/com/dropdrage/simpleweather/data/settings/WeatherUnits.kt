@@ -32,7 +32,8 @@ enum class TemperatureUnit(
 }
 
 enum class PressureUnit(@StringRes override val unitResId: Int) : WeatherUnit {
-    H_PASCAL(R.string.weather_unit_pressure_pa), MM_HG(R.string.weather_unit_pressure_mm_hg)
+    H_PASCAL(R.string.weather_unit_pressure_pa),
+    MM_HG(R.string.weather_unit_pressure_mm_hg),
 }
 
 enum class WindSpeedUnit(
@@ -43,7 +44,7 @@ enum class WindSpeedUnit(
     M_S(R.string.weather_unit_wind_speed_m_s, "ms"),
     KM_H(R.string.weather_unit_wind_speed_km_h, "kmh"),
     MPH(R.string.weather_unit_wind_speed_mph, "mph"),
-    KNOTS(R.string.weather_unit_wind_speed_knot, "kn", R.plurals.weather_unit_wind_speed_knots)
+    KNOTS(R.string.weather_unit_wind_speed_knot, "kn", R.plurals.weather_unit_wind_speed_knots),
 }
 
 enum class VisibilityUnit(

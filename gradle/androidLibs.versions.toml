@@ -1,12 +1,12 @@
 [versions]
-lifecycle = "2.8.1"
+lifecycle = "2.8.7"
 hiltWork = "1.2.0"
 
 [libraries]
-androidx-core = "androidx.core:core-ktx:1.13.1"
-androidx-annotation = "androidx.annotation:annotation:1.8.0"
-androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-androidx-fragment = "androidx.fragment:fragment-ktx:1.7.1"
+androidx-core = "androidx.core:core-ktx:1.15.0"
+androidx-annotation = "androidx.annotation:annotation:1.9.1"
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.2.0"
+androidx-fragment = "androidx.fragment:fragment-ktx:1.8.5"
 android-material = "com.google.android.material:material:1.12.0"
 
 android-minified = "com.google.android:android:4.1.1.4"
@@ -23,7 +23,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-work-core = { module = "androidx.hilt:hilt-work", version.ref = "hiltWork" }
 hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWork" }
 
-work = "androidx.work:work-runtime-ktx:2.9.0"
+work = "androidx.work:work-runtime-ktx:2.10.0"
 
 services-location = "com.google.android.gms:play-services-location:21.3.0"
 services-play-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
